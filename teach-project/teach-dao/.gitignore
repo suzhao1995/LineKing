@@ -1,0 +1,17 @@
+/target/
+.classpath
+.project
+*.class
+.settings
+*.prefs
+.component
+.lst
+
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip

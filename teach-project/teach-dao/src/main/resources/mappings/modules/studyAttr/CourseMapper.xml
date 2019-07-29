@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.studyAttr.dao.CourseMapper">
+	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Course" id="courseById">
+		<result property="courseId" column="course_id" />
+		<result property="courseName" column="course_name" />
+	</resultMap>
+	
+	<select id="queryCourseById" parameterType="java.lang.String" resultMap="courseById">
+		select co.course_id,co.course_name from tf_el_course co, user_course_rela re 
+		where co.course_id = re.course_id
+			  and re.user_id = #{userId} 
+			  and re.rela_type = '1';
+	</select>
+	
+</mapper>

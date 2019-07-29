@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.timeTable.dao.ScheduleMapper">
+	<resultMap type="com.rs.teach.mapper.timeTable.entity.Schedule" id="schedules">
+		<result property="teachUserId" column="teachUser_Id" />
+		<result property="teachUserName" column="user_Name" />
+		<result property="curriculum" column="curriculum" />
+		<result property="startDate" column="start_Date" />
+		<result property="endDate" column="end_Date" />
+		<result property="weekDay" column="week_Day" />
+		<result property="className" column="Class_Name" />
+	</resultMap>
+	
+	<select id="querySchedulesByUserId" parameterType="java.lang.String" resultMap="schedules">
+		select sd.TEACHUSER_ID,
+			   tu.user_Name,
+			   ce.course_Name as curriculum,
+			   sd.START_DATE,
+			   sd.END_DATE,
+			   sd.WEEK_DAY,
+			   ca.Class_Name
+		    from TF_EL_SCHEDULE sd, TF_EL_COURSE ce,TF_EL_CLASS ca, TF_EL_TEACH_USER tu
+			where sd.CURRICULUMID = ce.course_Id
+				and sd.CLASSID = ca.Class_Id
+				and sd.TEACHUSER_ID = tu.user_Id
+				and sd.TEACHUSER_ID = #{userId}
+	</select>
+	
+	<insert id="insertSchedule" parameterType="com.rs.teach.mapper.timeTable.entity.Schedule">
+		insert into TF_EL_SCHEDULE 
+			(
+				SCHEDULE_ID,
+				TEACHUSER_ID,
+				CURRICULUMID,
+				START_DATE,
+				END_DATE,
+				WEEK_DAY,
+				CLASSID
+			)
+		values
+			(
+				SEQ_EL_SCHEDULE.nextval,
+				#{teachUserId},
+				#{curriculum},
+				#{startDate},
+				#{endDate},
+				#{weekDay},
+				#{className}
+			)
+	</insert>
+</mapper>

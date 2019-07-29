@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.studyAttr.dao.StudyTeamMapper">
+	<resultMap type="com.rs.teach.mapper.studyAttr.entity.StudyTeam" id="studyTeam">
+		<result property="classId" column="Class_Id" />
+		<result property="className" column="Class_Name" />
+	</resultMap>
+	
+	<select id="queryClassByUserId" parameterType="java.lang.String" resultMap="studyTeam">
+		select ca.Class_Id,ca.Class_Name from TF_EL_TEACH_USER tu, TF_EL_CLASS ca 
+			where tu.school_id = ca.school_id and tu.user_id = #{userId}
+	</select>
+	
+</mapper>

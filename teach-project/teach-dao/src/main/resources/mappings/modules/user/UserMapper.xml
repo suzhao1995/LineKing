@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.user.dao.UserMapper">
+	<resultMap type="com.rs.teach.mapper.user.entity.User" id="user">
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="serialNumber" column="SERIAL_NUMBER" />
+		<result property="passWord" column="PASS_WORD" />
+		<result property="adminFlag" column="ADMIN_FLAG" />
+		<result property="endDate" column="end_Date" />
+		<result property="isDefault" column="ISDEFAULT" />
+	</resultMap>
+	<select id="getUserById" parameterType="java.lang.String" resultMap="user">
+		select * from TF_EL_TEACH_USER where user_Id = #{id}
+	</select>
+	
+	<select id="isUpdateInfo" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from TF_EL_TEACH_USER where user_Id = #{id} and ISDEFAULT = '1'
+	</select>
+</mapper>
