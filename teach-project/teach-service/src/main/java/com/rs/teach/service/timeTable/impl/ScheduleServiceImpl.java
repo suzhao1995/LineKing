@@ -1,10 +1,12 @@
 package com.rs.teach.service.timeTable.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.timeTable.dao.ScheduleMapper;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
 import com.rs.teach.service.timeTable.ScheduleService;
@@ -23,6 +25,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public int addSchedule(Schedule schedule) {
 		return dao.insertSchedule(schedule);
+	}
+
+	@Override
+	public int modifySchedule(Schedule schedule) {
+		return dao.updateSchedule(schedule);
+	}
+
+	@Override
+	public List<Map<String,Object>> getStudyTeamByUserId(String userId) {
+		return dao.queryStudyTeamById(userId);
 	}
 
 }

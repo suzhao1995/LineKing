@@ -15,4 +15,65 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  and re.rela_type = '1';
 	</select>
 	
+	<resultMap type="java.util.HashMap" id="InfoMap">
+		<result property="classId" column="class_id" />
+		<result property="className" column="class_name" />
+		<result property="courseId" column="course_id" />
+		<result property="courseName" column="course_name" />
+		<result property="sectionNumber" column="section_number" />
+	</resultMap>
+	
+	<select id="courseInfoForUser" parameterType="java.lang.String" resultMap="InfoMap">
+		select re.class_id, cl.class_name,re.course_id,tc.course_name,tc.section_number 
+			from user_course_rela re, tf_el_course tc,tf_el_class cl 
+		<where> 
+			  re.course_id = tc.course_id 
+			  and re.class_id = cl.class_id 
+			  and re.user_id = #{userId} and re.rela_type = '1'
+			  <if test="classId != null and classId != ''">
+			  	and re.class_id = #{classId}
+			  </if>
+		</where>
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="secMap">
+		<result property="sectionId" column="section_id" />
+		<result property="sectionName" column="section_name" />
+	</resultMap>
+	
+	<select id="finishStudy" parameterType="java.lang.String" resultMap="secMap">
+		select re.section_id,ts.section_name from user_course_rela re, tf_el_section ts 
+		where re.section_id = ts.section_id 
+		  and re.rela_type = '0' 
+		  and re.user_id = #{userId}
+		  and re.course_id = #{courseId}
+		  and re.class_id = #{classId} 
+		  and re.isfinish = '2'
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="noteMap">
+		<result property="sectionId" column="section_Id" />
+		<result property="sectionName" column="section_name" />
+		<result property="sectionUrl" column="section_url" />
+		<result property="classId" column="class_id" />
+		<result property="classNote" column="note" />
+		<result property="classSummary" column="summary" />
+	</resultMap>
+	<select id="queryNote" parameterType="map" resultMap="noteMap">
+		select ts.section_Id ts.section_name,ts.section_url,ns.class_id,ns.note,ns.summary 
+			from tf_el_note_summary ns, tf_el_section ts 
+		where ns.section_id = ts.section_id 
+			  and ns.user_id = #{con_userId} 
+			  and ns.course_id = #{con_courseId} 
+			  and ns.class_id = #{con_classId}
+	</select>
+	
+	<select id="isExsitSummary" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from tf_el_note_summary t 
+		where t.USER_ID = #{userId} 
+			and t.SECTION_ID = #{sectionId} 
+			and t.class_id = #{classId}
+			and t.SUMMARY is not null
+	</select>
+	
 </mapper>

@@ -44,7 +44,7 @@ public class SessionUtil {
 		Set<Entry<String, HttpSession>> entrySet = map.entrySet();
 		List<String> list = new ArrayList<>();
 		for (Entry<String, HttpSession> entry : entrySet) {
-			// 如果session过期了，就清除掉这个session
+			// 濡傛灉session杩囨湡浜嗭紝灏辨竻闄ゆ帀杩欎釜session
 			long max_age = sessionMaxAge * 1000L;
 			long time = new Date().getTime();
 			long creationTime = entry.getValue().getCreationTime();

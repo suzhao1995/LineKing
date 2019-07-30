@@ -4,6 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.timeTable.dao.ScheduleMapper">
 	<resultMap type="com.rs.teach.mapper.timeTable.entity.Schedule" id="schedules">
+		<result property="scheduleId" column="SCHEDULE_ID" />
 		<result property="teachUserId" column="teachUser_Id" />
 		<result property="teachUserName" column="user_Name" />
 		<result property="curriculum" column="curriculum" />
@@ -14,7 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="querySchedulesByUserId" parameterType="java.lang.String" resultMap="schedules">
-		select sd.TEACHUSER_ID,
+		select sd.SCHEDULE_ID,
+			   sd.TEACHUSER_ID,
 			   tu.user_Name,
 			   ce.course_Name as curriculum,
 			   sd.START_DATE,
@@ -25,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where sd.CURRICULUMID = ce.course_Id
 				and sd.CLASSID = ca.Class_Id
 				and sd.TEACHUSER_ID = tu.user_Id
-				and sd.TEACHUSER_ID = #{userId}
+				and sd.TEACHUSER_ID = #{userId} order by sd.WEEK_DAY
 	</select>
 	
 	<insert id="insertSchedule" parameterType="com.rs.teach.mapper.timeTable.entity.Schedule">
@@ -43,11 +45,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			(
 				SEQ_EL_SCHEDULE.nextval,
 				#{teachUserId},
-				#{curriculum},
+				#{curriculumId},
 				#{startDate},
 				#{endDate},
 				#{weekDay},
-				#{className}
+				#{classId}
 			)
 	</insert>
+	
+	<update id="updateSchedule" parameterType="com.rs.teach.mapper.timeTable.entity.Schedule">
+		update tf_el_schedule t 
+			set t.WEEK_DAY = #{weekDay}, 
+				t.CURRICULUMID = #{curriculumId}, 
+				t.START_DATE = #{startDate}, 
+				t.END_DATE = #{endDate}, 
+				t.CLASSID = #{classId}
+			where t.SCHEDULE_ID = #{scheduleId}
+	</update>
+	
+	<resultMap type="java.util.Map" id="stMap">
+		<result property="classId" column="CLASSID" />
+		<result property="className" column="CLASS_NAME" />
+	</resultMap>
+	<select id="queryStudyTeamById" parameterType="java.lang.String" resultMap="stMap">
+		select t.classid,tc.class_name from TF_EL_SCHEDULE t,tf_el_class tc 
+		where t.classid = tc.class_id and t.teachuser_id = #{userId} group by t.classid, tc.class_name
+	</select>
 </mapper>

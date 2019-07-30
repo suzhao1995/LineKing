@@ -7,19 +7,19 @@ import javax.servlet.http.HttpSession;
 
 /**
 * UserInfoUtil.java
-* @Description:ÓÃ»§ĞÅÏ¢¹¤¾ßÀà
+* @Description:ç”¨æˆ·ä¿¡æ¯å·¥å…·ç±»
 * @author: suzhao
-* @date: 2019Äê7ÔÂ23ÈÕ ÏÂÎç5:31:24
+* @date: 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ5:31:24
 * @version: V1.0
 */
 public class UserInfoUtil{
 	/**
-	* »ñÈ¡userId
+	* è·å–userId
 	* @param sessionKey
 	* @throws
 	* @return userId
 	* @author suzhao
-	* @date 2019Äê7ÔÂ23ÈÕ ÏÂÎç5:32:41
+	* @date 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ5:32:41
 	*/
 	public static Map<String,Object> getUserInfo(String sessionKey){
 		Map<String,Object> userInfoMap = new HashMap<String,Object>();

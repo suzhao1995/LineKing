@@ -21,8 +21,8 @@ function login(){
 	$.ajax({
         type: "get",
         dataType: "json",
-        url: '/teach-web/index/login',
-        data: 'userId='+userId+'&passWord='+pwd,
+        url: '/teach-web/personalCenter/initCourse',
+        data: 'classId=all',
         success: function (data) {
             if (data != "") {
             	alert(data.code);

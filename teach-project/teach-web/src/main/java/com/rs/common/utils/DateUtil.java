@@ -7,26 +7,26 @@ import java.util.Date;
 
 /**
 * DateUtil.java
-* @Description:ÈÕÆÚ¹¤¾ßÀà
+* @Description:æ—¥æœŸå·¥å…·ç±»
 * @author: suzhao
-* @date: 2019Äê7ÔÂ23ÈÕ ÏÂÎç5:59:49
+* @date: 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ5:59:49
 * @version: V1.0
 */
 public class DateUtil{
 	
 	/**
-	* ÈÕÆÚ×ª»»ÎªÖÜ¼¸
+	* æ—¥æœŸè½¬æ¢ä¸ºå‘¨å‡ 
 	* @param date
 	* @throws
 	* @return String
 	* @author suzhao
-	* @date 2019Äê7ÔÂ23ÈÕ ÏÂÎç6:15:38
+	* @date 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ6:15:38
 	*/
 	public static int getWeekDay(Date date){
 		Calendar calendar = Calendar.getInstance();  
 		calendar.setTime(date);
 		int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-		//weekday=1£¬µ±ÌìÊÇÖÜÈÕ;weekday=2£¬µ±ÌìÊÇÖÜÒ»;...;weekday=7£¬µ±ÌìÊÇÖÜÁù¡£
+		//weekday=1ï¼Œå½“å¤©æ˜¯å‘¨æ—¥;weekday=2ï¼Œå½“å¤©æ˜¯å‘¨ä¸€;...;weekday=7ï¼Œå½“å¤©æ˜¯å‘¨å…­ã€‚
 		if(weekDay == 1){
 			return 7;
 		}
@@ -34,13 +34,13 @@ public class DateUtil{
 	}
 	
 	/**
-	* ÈÕÆÚ×ª»»¸ñÊ½
+	* æ—¥æœŸè½¬æ¢æ ¼å¼
 	* @param date
-	* @param format ÈÕÆÚ¸ñÊ½£ºyyyy-MM-dd
+	* @param format æ—¥æœŸæ ¼å¼ï¼šyyyy-MM-dd
 	* @throws
 	* @return
 	* @author suzhao
-	* @date 2019Äê7ÔÂ23ÈÕ ÏÂÎç6:26:11
+	* @date 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ6:26:11
 	*/
 	public static String dateFormat(Date date, String format){
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -49,13 +49,13 @@ public class DateUtil{
 	
 	
 	/**
-	* ×Ö·û´®×ª»»ÈÕÆÚ  ¸ñÊ½¶ÔÓ¦
+	* å­—ç¬¦ä¸²è½¬æ¢æ—¥æœŸ  æ ¼å¼å¯¹åº”
 	* @param day 8:00
-	* @param format ¸ñÊ½ hh£ºmm
+	* @param format æ ¼å¼ hhï¼šmm
 	* @throws ParseException
 	* @return date
 	* @author suzhao
-	* @date 2019Äê7ÔÂ24ÈÕ ÉÏÎç11:55:44
+	* @date 2019å¹´7æœˆ24æ—¥ ä¸Šåˆ11:55:44
 	*/
 	public static Date StringToDate(String day, String format) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat(format);

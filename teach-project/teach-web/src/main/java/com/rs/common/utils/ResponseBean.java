@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 /**
 * ResponseBen.java
-* @Description:½Ó¿ÚÍ³Ò»×´Ì¬·µ»Øbean
+* @Description:æ¥å£ç»Ÿä¸€çŠ¶æ€è¿”å›bean
 * @author: suzhao
-* @date: 2019Äê7ÔÂ22ÈÕ ÏÂÎç4:41:52
+* @date: 2019å¹´7æœˆ22æ—¥ ä¸‹åˆ4:41:52
 * @version: V1.0
 */
 public class ResponseBean implements Serializable{
 	private static final long serialVersionUID = 3593827217136880822L;
 	
-    private static final String DEFAULT_MESSAGE_SUCCESS = "³É¹¦";
-    private static final String DEFAULT_MESSAGE_ERROR = "Ê§°Ü";
-    public static final String DEFAULT_MESSAGE_PARAMETER_ERROR = "ÇëÇó²ÎÊı²»ºÏ·¨";
-    public static final String DEFAULT_MESSAGE_SYS_ERROR = "ÏµÍ³Òì³£";
+    private static final String DEFAULT_MESSAGE_SUCCESS = "æˆåŠŸ";
+    private static final String DEFAULT_MESSAGE_ERROR = "å¤±è´¥";
+    public static final String DEFAULT_MESSAGE_PARAMETER_ERROR = "è¯·æ±‚å‚æ•°ä¸åˆæ³•";
+    public static final String DEFAULT_MESSAGE_SYS_ERROR = "ç³»ç»Ÿå¼‚å¸¸";
     private static final String CODE_SUCCESS = "0";
     private static final String CODE_ERROR = "1";
     public static final String CODE_PARAMETER_ERROR = "1000";
@@ -24,7 +24,7 @@ public class ResponseBean implements Serializable{
     public static final String CODE_SHOP_ERROR = "1020";
     public static final String CODE_DECRYPT_ERROR = "1006";
     private String code = "0";
-    private String message = "³É¹¦";
+    private String message = "æˆåŠŸ";
     private Object data = null;
     
     public ResponseBean() {
@@ -33,7 +33,7 @@ public class ResponseBean implements Serializable{
 
     public void addDefaultError() {
         this.code = CODE_SYS_ERROR;
-        this.message = "Ê§°Ü";
+        this.message = "å¤±è´¥";
     }
 
     public void addError(String message) {
@@ -48,12 +48,12 @@ public class ResponseBean implements Serializable{
 
     public void addSuccess() {
         this.code = "0";
-        this.message = "³É¹¦";
+        this.message = "æˆåŠŸ";
     }
 
     public void addSuccess(Object data) {
         this.code = "0";
-        this.message = "³É¹¦";
+        this.message = "æˆåŠŸ";
         this.data = data;
     }
 

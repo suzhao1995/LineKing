@@ -18,22 +18,23 @@ import com.rs.common.utils.SessionUtil;
 public class TeachAspect {
 	public Object doAround(ProceedingJoinPoint joinPoint){
 		Object returnObject = null;
-		// »ñÈ¡sessionÖĞµÄÓÃ»§ĞÅÏ¢
+		// è·å–sessionä¸­çš„ç”¨æˆ·ä¿¡æ¯
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	    
-	    //Ç°ºó¶ËÁªµ÷ºó´ò¿ª×¢ÊÍ 
+	    //å‰åç«¯è”è°ƒåæ‰“å¼€æ³¨é‡Š 
 	    /*if(!isLogin(request)){
-	    	//·µ»ØµÇÂ¼Ò³Ãæ
+	    	//è¿”å›ç™»å½•é¡µé¢
 	    	Map<String,Object> map = new HashMap<String,Object>();
 	    	map.put("checkTag", "0");
-	    	map.put("message", "ÓÃ»§Î´µÇÂ¼");
+	    	map.put("message", "ç”¨æˆ·æœªç™»å½•");
 	    	returnObject = map;
 	    	return returnObject;
 	    }*/
 	    try {
 			returnObject = joinPoint.proceed();
 		} catch (Throwable e) {
-			System.out.println("=========³öÏÖÒì³£========"+e);
+			e.printStackTrace();
+			System.out.println("=========å‡ºç°å¼‚å¸¸========"+e);
 		}
 		return returnObject;
 	}
@@ -41,7 +42,7 @@ public class TeachAspect {
 	
 	public boolean isLogin(HttpServletRequest request){
 		boolean isLogin = false;
-		//ÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼
+		//åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•
 	    HttpSession session = null;
 	    String sessionId = "";
 	    if(StringUtils.isNotBlank(request.getParameter("sessionKey"))){

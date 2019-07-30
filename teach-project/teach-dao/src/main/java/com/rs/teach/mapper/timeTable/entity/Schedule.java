@@ -15,12 +15,15 @@ public class Schedule implements Serializable{
 	 */
 	private static final long serialVersionUID = 6050698270693638574L;
 	
+	private String scheduleId;	//id
 	private String teachUserId;	//用户id
 	private String teachUserName;	//用户名称
 	private String curriculum;	//课程名称
+	private String curriculumId;	//课程ID
 	private String startDate;	//课程开始时间 例如：14:00
 	private String endDate;		//课程结束时间
 	private int weekDay;	//weekDay？	例如：周一
+	private String classId;	//授课班级Id
 	private String className;	//授课班级
 	private String extend1;	//预留字段1
 	private String extend2;	//预留字段2
@@ -29,6 +32,14 @@ public class Schedule implements Serializable{
 	
 	public Schedule(){
 		
+	}
+	
+	public String getScheduleId() {
+		return scheduleId;
+	}
+
+	public void setScheduleId(String scheduleId) {
+		this.scheduleId = scheduleId;
 	}
 
 	public String getTeachUserId() {
@@ -117,6 +128,22 @@ public class Schedule implements Serializable{
 
 	public void setExtend4(String extend4) {
 		this.extend4 = extend4;
+	}
+
+	public String getCurriculumId() {
+		return curriculumId;
+	}
+
+	public void setCurriculumId(String curriculumId) {
+		this.curriculumId = curriculumId;
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
 	}
 	
 	

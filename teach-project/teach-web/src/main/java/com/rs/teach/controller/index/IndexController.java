@@ -32,7 +32,7 @@ import com.rs.teach.service.timeTable.ScheduleService;
 * IndexController.java
 * @Description:TODO
 * @author: suzhao
-* @date: 2019Äê7ÔÂ23ÈÕ ÏÂÎç3:07:26
+* @date: 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ3:07:26
 * @version: V1.0
 */
 @Controller
@@ -40,25 +40,25 @@ import com.rs.teach.service.timeTable.ScheduleService;
 public class IndexController {
 	
 	/**
-	 * ÓÃ»§ service
+	 * ç”¨æˆ· service
 	 * */
 	@Autowired
 	private UserService userService;
 	
 	/**
-	 * ¿Î±í service
+	 * è¯¾è¡¨ service
 	 * */
 	@Autowired
 	private ScheduleService scheduleService;
 	
 	
 	/**
-	* Í¼ĞÎÑéÖ¤ÂëÉú³É·½·¨
+	* å›¾å½¢éªŒè¯ç ç”Ÿæˆæ–¹æ³•
 	* @param request,response
 	* @throws 
 	* @return bean
 	* @author suzhao
-	* @date 2019Äê7ÔÂ23ÈÕ ÉÏÎç11:33:09
+	* @date 2019å¹´7æœˆ23æ—¥ ä¸Šåˆ11:33:09
 	*/
 	@RequestMapping("/verifyCode")
 	@ResponseBody
@@ -74,19 +74,19 @@ public class IndexController {
 			json.put("randomCode", randomCode);
 			bean.addSuccess(json);
 		} catch (IOException e) {
-			bean.addError(ResponseBean.CODE_SYS_ERROR, "ÏµÍ³Òì³£");
+			bean.addError(ResponseBean.CODE_SYS_ERROR, "ç³»ç»Ÿå¼‚å¸¸");
 			e.printStackTrace();
 		}
 		return bean;
 	}
 	
 	/**
-	* ÓÃ»§µÇÂ¼
+	* ç”¨æˆ·ç™»å½•
 	* @param request,response
 	* @throws
 	* @return ResponseBean
 	* @author suzhao
-	* @date 2019Äê7ÔÂ22ÈÕ ÏÂÎç4:51:42
+	* @date 2019å¹´7æœˆ22æ—¥ ä¸‹åˆ4:51:42
 	*/
 	@RequestMapping("/login")
 	@ResponseBody
@@ -94,23 +94,23 @@ public class IndexController {
 		ResponseBean bean = new ResponseBean();
 		JSONObject json = new JSONObject();
 		
-		//»ñÈ¡ÓÃ»§ÊäÈëĞÅÏ¢
+		//è·å–ç”¨æˆ·è¾“å…¥ä¿¡æ¯
 		String userId = request.getParameter("userId");
 		String passWord = request.getParameter("passWord");
 		
 		try {
 			User loginUser = userService.getUserById(userId);
 			if(loginUser == null){
-				bean.addError(ResponseBean.CODE_SYS_ERROR, "ÕËºÅ²»´æÔÚ£¬ÇëºË¶Ô");
+				bean.addError(ResponseBean.CODE_SYS_ERROR, "è´¦å·ä¸å­˜åœ¨ï¼Œè¯·æ ¸å¯¹");
 			}else if(!passWord.equals(loginUser.getPassWord())){
-				bean.addError(ResponseBean.CODE_SYS_ERROR, "ÃÜÂë´íÎó£¬ÇëÖØĞÂÊäÈë");
+				bean.addError(ResponseBean.CODE_SYS_ERROR, "å¯†ç é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥");
 			}else if(passWord.equals(loginUser.getPassWord())){
-				//µÇÂ¼³É¹¦£¬±£´æÓÃ»§ĞÅÏ¢µ½session
+				//ç™»å½•æˆåŠŸï¼Œä¿å­˜ç”¨æˆ·ä¿¡æ¯åˆ°session
 				String sessionInfo = loginUser.getUserId() +","+loginUser.getUserName();
-				SessionUtil.cleanOldSession(sessionInfo);	//Èç¹ûÓÃ»§ÔÙ´ÎµÇÂ¼Çå³ıÒÑ´æÔÚµÄsession£¬È·±£Ã¿¸öÓÃ»§Ö»ÓĞÒ»¸ösession
+				SessionUtil.cleanOldSession(sessionInfo);	//å¦‚æœç”¨æˆ·å†æ¬¡ç™»å½•æ¸…é™¤å·²å­˜åœ¨çš„sessionï¼Œç¡®ä¿æ¯ä¸ªç”¨æˆ·åªæœ‰ä¸€ä¸ªsession
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userInfo", sessionInfo);
-				session.setMaxInactiveInterval(-1);	//ÉèÖÃsession¹ıÆÚÊ±¼ä
+				session.setMaxInactiveInterval(-1);	//è®¾ç½®sessionè¿‡æœŸæ—¶é—´
 				String sessionKey = System.currentTimeMillis()+"";
 				SessionUtil.getSessionMap().put(sessionKey, session);
 				loginUser.setSessionKey(sessionKey);
@@ -119,21 +119,21 @@ public class IndexController {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("======ÓÃ»§µÇÂ¼Òì³£====="+e);
-			bean.addError(ResponseBean.CODE_SYS_ERROR, "ÏµÍ³Òì³£");
+			System.out.println("=======ç”¨æˆ·ç™»å½•å¼‚å¸¸====="+e);
+			bean.addError(ResponseBean.CODE_SYS_ERROR, "ç³»ç»Ÿå¼‚å¸¸");
 		}
 		return bean;
 	}
 	
 	
 	/**
-	* Ê×Ò³Õ¹Ê¾
+	* é¦–é¡µå±•ç¤º
 	* @param request,response
 	* @throws
 	* @return bean
 	* @author suzhao
 	* @throws Exception 
-	* @date 2019Äê7ÔÂ23ÈÕ ÏÂÎç3:07:38
+	* @date 2019å¹´7æœˆ23æ—¥ ä¸‹åˆ3:07:38
 	*/
 	@RequestMapping("/home")
 	@ResponseBody
@@ -141,7 +141,7 @@ public class IndexController {
 		ResponseBean bean = new ResponseBean();
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
 		
-		//»ñÈ¡ÓÃ»§ĞÅÏ¢
+		//è·å–ç”¨æˆ·ä¿¡æ¯
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		ajaxData.put("userName", userInfo.get("userName"));
 		
@@ -150,10 +150,10 @@ public class IndexController {
 			List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
 			Schedule schedule = getSchedule(schedules);
 			if(schedule != null){
-				ajaxData.put("isContainsTable", "0");
-				ajaxData.put("curriculum", schedule.getCurriculum());	//¿Î³ÌÃû
-				ajaxData.put("startDate", schedule.getStartDate());	//¿Î³Ì¿ªÊ¼
-				ajaxData.put("endDate", schedule.getEndDate());	//¿Î³Ì½áÊø
+				ajaxData.put("isContainsTable", "0");//æ˜¯å¦ç¼–è¾‘è¿‡è¯¾è¡¨
+				ajaxData.put("curriculum", schedule.getCurriculum());	//è¯¾ç¨‹å
+				ajaxData.put("startDate", schedule.getStartDate());	//è¯¾ç¨‹å¼€å§‹
+				ajaxData.put("endDate", schedule.getEndDate());	//è¯¾ç¨‹ç»“æŸ
 			}else{
 				ajaxData.put("isContainsTable", "-1");
 			}
@@ -165,16 +165,16 @@ public class IndexController {
 	}
 	
 	/**
-	* »ñÈ¡ÏÂÒ»´ÎÉÏ¿ÎÊ±¼ä
-	* @param schedules ¿Î±ílist
+	* è·å–ä¸‹ä¸€æ¬¡ä¸Šè¯¾æ—¶é—´
+	* @param schedules è¯¾è¡¨list
 	* @throws Exception
-	* @return Schedule ¿Î±í
+	* @return Schedule è¯¾è¡¨
 	* @author suzhao
-	* @date 2019Äê7ÔÂ24ÈÕ ÏÂÎç1:31:48
+	* @date 2019å¹´7æœˆ24æ—¥ ä¸‹åˆ1:31:48
 	*/
 	public Schedule getSchedule(List<Schedule> schedules) throws Exception{
 		Schedule nextSchedule = null;
-		//»ñÈ¡ÓÃ»§µ±Ç°µÇÂ¼Ê±¼ä
+		//è·å–ç”¨æˆ·å½“å‰ç™»å½•æ—¶é—´
 		int weekDay = DateUtil.getWeekDay(new Date());
 		long loginTime = new Date().getTime();	//
 		if(schedules.size() > 0){
@@ -184,15 +184,15 @@ public class IndexController {
 						return schedules.get(i);
 					}else{
 						if(i < schedules.size()){
-							//È¡ÏÂÒ»´Î¿Î
+							//å–ä¸‹ä¸€æ¬¡è¯¾
 							return schedules.get(i+1);
 						}else{
-							//È¡Ã¿ÖÜµÚÒ»½Ú¿Î
+							//å–æ¯å‘¨ç¬¬ä¸€èŠ‚è¯¾
 							return schedules.get(0);
 						}
 					}
 				}else if(weekDay > 5){
-					//È¡Ã¿ÖÜµÚÒ»½Ú¿Î
+					//å–æ¯å‘¨ç¬¬ä¸€èŠ‚è¯¾
 					return schedules.get(0);
 				}
 			}

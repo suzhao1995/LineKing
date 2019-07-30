@@ -1,5 +1,6 @@
 package com.rs.teach.controller.personalCenter;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,34 +25,34 @@ import com.rs.teach.service.timeTable.ScheduleService;
 
 /**
 * CenterController.java
-* @Description:¸öÈËÖĞĞÄcontroller
+* @Description:ä¸ªäººä¸­å¿ƒcontroller
 * @author: suzhao
-* @date: 2019Äê7ÔÂ24ÈÕ ÏÂÎç3:06:17
+* @date: 2019å¹´7æœˆ24æ—¥ ä¸‹åˆ3:06:17
 * @version: V1.0
 */
 @Controller
 @RequestMapping(value="/personalCenter")
 public class CenterController{
 	/**
-	 * ÓÃ»§ service
+	 * ç”¨æˆ· service
 	 * */
 	@Autowired
 	private UserService userService;
 	
 	/**
-	 * ¿Î±í service
+	 * è¯¾è¡¨ service
 	 * */
 	@Autowired
 	private ScheduleService scheduleService;
 	
 	/**
-	 * °à¼¶
+	 * ç­çº§
 	 * */
 	@Autowired
 	private StudyTeamService studyTeamService;
 	
 	/**
-	 * ¿Î³Ì×ÊÔ´ service
+	 * è¯¾ç¨‹èµ„æº service
 	 * */
 	@Autowired
 	private CourseService courseService;
@@ -59,13 +60,13 @@ public class CenterController{
 	
 	
 	/**
-	* ¸öÈËÖĞĞÄ¿Î±í
+	* ä¸ªäººä¸­å¿ƒè¯¾è¡¨
 	* @param request
 	* @param response
 	* @throws
 	* @return bean
 	* @author suzhao
-	* @date 2019Äê7ÔÂ24ÈÕ ÏÂÎç3:13:02
+	* @date 2019å¹´7æœˆ24æ—¥ ä¸‹åˆ3:13:02
 	*/
 	@RequestMapping("/scheduleIndex")
 	@ResponseBody
@@ -75,13 +76,13 @@ public class CenterController{
 		
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		String userId = userInfo.get("userId").toString();	
-		//ÅĞ¶ÏÓÃ»§ÊÇ·ñ±à¼­¹ı¸öÈË×ÊÁÏ
+		//åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç¼–è¾‘è¿‡ä¸ªäººèµ„æ–™
 		boolean flag = userService.isModifyInfo(userId);
 		if(!flag){
-			bean.addError("ÇëÏÈ±à¼­¸öÈË×ÊÁÏ");
+			bean.addError("è¯·å…ˆç¼–è¾‘ä¸ªäººèµ„æ–™");
 			return bean;
 		}
-		//²éÑ¯¿Î³Ì±í
+		//æŸ¥è¯¢è¯¾ç¨‹è¡¨
 		List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
 		
 		bean.addSuccess(schedules);
@@ -89,13 +90,13 @@ public class CenterController{
 	}
 	
 	/**
-	* ³õÊ¼»¯½ÌÊ¦ĞÅÏ¢¼°¿Î±íĞÅÏ¢
+	* åˆå§‹åŒ–æ•™å¸ˆä¿¡æ¯åŠè¯¾è¡¨ä¿¡æ¯
 	* @param request
 	* @param response
 	* @throws
 	* @return
 	* @author suzhao
-	* @date 2019Äê7ÔÂ25ÈÕ ÏÂÎç2:52:30
+	* @date 2019å¹´7æœˆ25æ—¥ ä¸‹åˆ2:52:30
 	*/
 	@RequestMapping("/initEditHome")
 	@ResponseBody
@@ -105,26 +106,30 @@ public class CenterController{
 		
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		String userId = userInfo.get("userId").toString();	
-		//²éÑ¯ÓÃ»§ËùÔÚĞ£ÇøµÄ°à¼¶
+		//æŸ¥è¯¢ç”¨æˆ·æ‰€åœ¨æ ¡åŒºçš„ç­çº§
 		List<StudyTeam> teams = studyTeamService.getClassById(userId);
 		ajaxData.put("teams", teams);
 		
-		//²éÑ¯ÓÃ»§Ëù½Ì¿Î³Ì
+		//æŸ¥è¯¢ç”¨æˆ·æ‰€æ•™è¯¾ç¨‹
 		List<Course> courses = courseService.getCourseByUserId(userId);
 		ajaxData.put("courses", courses);
+		
+		//æŸ¥è¯¢è¯¾ç¨‹è¡¨
+		List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
+		ajaxData.put("schedules", schedules);
 		
 		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
 	/**
-	* ±£´æ±à¼­ºóµÄ¿Î±í
+	* ä¿å­˜ç¼–è¾‘åçš„è¯¾è¡¨
 	* @param request
 	* @param response
 	* @throws
 	* @return bean
 	* @author suzhao
-	* @date 2019Äê7ÔÂ24ÈÕ ÏÂÎç5:13:23
+	* @date 2019å¹´7æœˆ24æ—¥ ä¸‹åˆ5:13:23
 	*/
 	@RequestMapping("/editSchedule")
 	@ResponseBody
@@ -132,23 +137,125 @@ public class CenterController{
 		ResponseBean bean = new ResponseBean();
 		
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
-		//»ñÈ¡ÓÃ»§×îĞÂ±à¼­µÄĞÅÏ¢
+		//è·å–ç”¨æˆ·æœ€æ–°ç¼–è¾‘çš„ä¿¡æ¯
+		String flag = request.getParameter("flag");
+		int resultCode = 0;
 		Schedule schedule = new Schedule();
 		schedule.setTeachUserId(userInfo.get("userId").toString());
 		schedule.setTeachUserName(userInfo.get("userName").toString());
 		schedule.setWeekDay(Integer.valueOf(request.getParameter("weekDay")));
 		schedule.setStartDate(request.getParameter("startDate"));
 		schedule.setEndDate(request.getParameter("endDate"));
-		schedule.setClassName(request.getParameter("classId"));
-		schedule.setCurriculum(request.getParameter("curriculumId"));
-		
-		int resultCode = scheduleService.addSchedule(schedule);
+		schedule.setClassId(request.getParameter("classId"));
+		schedule.setCurriculumId(request.getParameter("curriculumId"));
+		if("0".equals(flag)){
+			//æ–°å¢
+			resultCode = scheduleService.addSchedule(schedule);
+		}else{
+			resultCode = scheduleService.modifySchedule(schedule);
+		}
 		if(resultCode == 1){
 			bean.addSuccess();
 		}
 		
 		return bean;
 	}
+	
+	/**
+	* åˆå§‹åŒ–æˆ‘çš„è¯¾ç¨‹
+	* @param request
+	* @param response
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019å¹´7æœˆ30æ—¥ ä¸Šåˆ11:31:08
+	*/
+	@RequestMapping("/initCourse")
+	@ResponseBody
+	public ResponseBean initSelfCourse(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		
+		//è·å–ç™»å½•çš„ç”¨æˆ·id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		//æŸ¥è¯¢ç”¨æˆ·æ‰€æ•™ç­çº§
+		List<Map<String,Object>> teams = scheduleService.getStudyTeamByUserId(userId);
+		ajaxData.put("teams", teams);
+		String classId = request.getParameter("classId");
+		if("all".equals(classId)){
+			classId = null;
+		}
+		//æŸ¥è¯¢ç”¨æˆ·æ‰€æ•™å„ç­çº§è¯¾ç¨‹
+		List<Map<String,Object>> list = courseService.getCourseInfoForUser(userId,classId);
+		for(Map<String,Object> map : list){
+			List<Map<String,Object>> finishSec = courseService.getFinishStudy(userId, map.get("classId").toString(), map.get("courseId").toString());
+			int number = finishSec == null ? 0 : finishSec.size();	//å·²å­¦å®Œç« èŠ‚æ•°é‡
+			map.put("finishNumber", number);
+			int totleNum = Integer.valueOf(map.get("sectionNumber").toString());	//è¯¾ç¨‹ç« èŠ‚æ€»æ•°
+			String percentage = getDoubleDigit(number,totleNum);	//è¿›åº¦æ¡ ä¿ç•™ä¸¤ä½å°æ•°
+			map.put("percentage", percentage);	
+		}
+		ajaxData.put("speedInfo", list);
+		bean.addSuccess(ajaxData);
+		return bean;
+	}
+	
+	/**
+	* è¯¾åç¬”è®°ï¼Œè¯¾åæ€»ç»“
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019å¹´7æœˆ30æ—¥ ä¸‹åˆ3:43:12
+	*/
+	@RequestMapping("/queryNoteSummary")
+	@ResponseBody
+	public ResponseBean queryNote(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		
+		//è·å–ç™»å½•çš„ç”¨æˆ·id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		String classId = request.getParameter("classId");
+		String courseId = request.getParameter("courseId");
+		
+		List<Map<String,Object>> list = courseService.getNoteSummary(userId, classId, courseId);
+		bean.addSuccess(list);
+		return bean;
+	}
+	
+	/**
+	* ä¿å­˜è¯¾åæ€»ç»“
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019å¹´7æœˆ30æ—¥ ä¸‹åˆ5:35:12
+	*/
+	@RequestMapping("/saveSummary")
+	@ResponseBody
+	public ResponseBean saveSummary(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//è·å–ç™»å½•çš„ç”¨æˆ·id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String summary = request.getParameter("summary");
+		String sectionId = request.getParameter("sectionId");
+		String classId = request.getParameter("classId");
+		//åˆ¤æ–­è¯¥ç« èŠ‚æ˜¯å¦å·²è®°å½•è¯¾åæ€»ç»“
+		boolean flag = courseService.isExsitSummary(userId, sectionId,classId);
+		if(flag){
+			//ä¿®æ”¹è¯¥ç« èŠ‚è¯¾åæ€»ç»“
+			
+		}
+		return bean;
+	}
+	 
+	
+	private static String getDoubleDigit(int num,int totleNum){
+		DecimalFormat df=new DecimalFormat("0.00");
+		return df.format((float)num/totleNum);
+    }
 	
 	
 }

@@ -1,7 +1,9 @@
 package com.rs.teach.service.timeTable;
 
 import java.util.List;
+import java.util.Map;
 
+import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
 
 /**
@@ -31,4 +33,25 @@ public interface ScheduleService{
 	* @date 2019年7月24日 下午6:06:29
 	*/
 	public int addSchedule(Schedule schedule);
+	
+	
+	/**
+	* 修改个人课表
+	* @param schedule
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年7月30日 上午10:17:27
+	*/
+	public int modifySchedule(Schedule schedule);
+	
+	/**
+	* 查询用户所教班级
+	* @param userId
+	* @throws
+	* @return List<StudyTeam>
+	* @author suzhao
+	* @date 2019年7月30日 上午11:43:34
+	*/
+	public List<Map<String,Object>> getStudyTeamByUserId(String userId);
 }
