@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
+import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.studyAttr.entity.Course;
+import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
 import com.rs.teach.service.User.UserService;
+import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.studyAttr.StudyTeamService;
 import com.rs.teach.service.timeTable.ScheduleService;
@@ -57,6 +60,12 @@ public class CenterController{
 	@Autowired
 	private CourseService courseService;
 	
+	/**
+	 * 章节service
+	 * */
+	@Autowired
+	private SectionService sectionService;
+	
 	
 	
 	/**
@@ -76,6 +85,7 @@ public class CenterController{
 		
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		String userId = userInfo.get("userId").toString();	
+		
 		//判断用户是否编辑过个人资料
 		boolean flag = userService.isModifyInfo(userId);
 		if(!flag){
@@ -202,6 +212,32 @@ public class CenterController{
 	}
 	
 	/**
+	* 初始化我的课程
+	* @param request
+	* @param response
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年7月30日 上午11:31:08
+	*/
+	@RequestMapping("/courseInfo")
+	@ResponseBody
+	public ResponseBean courseInfo(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		
+		//获取登录的用户id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String classId = request.getParameter("classId");
+		String courseId = request.getParameter("courseId");
+		
+		List<Map<String,Object>> finishSec = courseService.getFinishStudy(userId, classId, courseId);
+		ajaxData.put("finishSec", finishSec);
+		bean.addSuccess(ajaxData);
+		return bean;
+	}
+	
+	/**
 	* 课后笔记，课后总结
 	* @param 
 	* @throws
@@ -218,10 +254,25 @@ public class CenterController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		String classId = request.getParameter("classId");
+		String sectionId = request.getParameter("sectionId");
 		String courseId = request.getParameter("courseId");
-		
-		List<Map<String,Object>> list = courseService.getNoteSummary(userId, classId, courseId);
-		bean.addSuccess(list);
+		String code = request.getParameter("code");	//课后笔记：0， 课后总结：1, 我的资源：2
+		if("2".equals(code)){
+			//查看我修改的课件信息
+			List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
+			if(sections.size() >= 0){
+				bean.addSuccess(sections);
+			}else{
+				bean.addError("本章节，您未上传过课件");
+				return bean;
+			}
+		}else{
+			List<Map<String,Object>> list = courseService.getNoteSummary(userId, classId, courseId, code, sectionId);
+			if(list.size() > 0){
+				Map<String,Object> resultMap = list.get(0);
+				bean.addSuccess(resultMap);
+			}
+		}
 		return bean;
 	}
 	
@@ -242,11 +293,27 @@ public class CenterController{
 		String summary = request.getParameter("summary");
 		String sectionId = request.getParameter("sectionId");
 		String classId = request.getParameter("classId");
+		String courseId = request.getParameter("courseId");
+		
+		NoteSummary noteSummary = new NoteSummary();
+		noteSummary.setClassId(classId);
+		noteSummary.setSectionId(sectionId);
+		noteSummary.setSummary(summary);
+		noteSummary.setUserId(userId);
+		noteSummary.setCourseId(courseId);
 		//判断该章节是否已记录课后总结
 		boolean flag = courseService.isExsitSummary(userId, sectionId,classId);
-		if(flag){
-			//修改该章节课后总结
-			
+		try {
+			if(flag){
+				//修改该章节课后总结
+				courseService.modifySummary(noteSummary);
+			}else{
+				//保存新增课后总结
+				courseService.addSummary(noteSummary);
+			}
+			bean.addSuccess();
+		} catch (Exception e) {
+			bean.addError("保存失败,系统异常");
 		}
 		return bean;
 	}

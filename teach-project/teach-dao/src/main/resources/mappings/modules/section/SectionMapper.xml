@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.section.dao.SectionMapper">
+	<resultMap type="com.rs.teach.mapper.section.entity.Section" id="sectionMap">
+		<result property="sectionId" column="SECTION_ID" />
+		<result property="sectionName" column="SECTION_NAME" />
+		<result property="sectionUrl" column="SECTION_URL" />
+		<result property="courseId" column="COURSE_ID" />
+		<result property="updateUser" column="UPDATE_USER" />
+		<result property="updateFileName" column="UPDATE_FILENAME" />
+		<result property="extend1" column="EXTEND1" />
+		<result property="extend2" column="EXTEND2" />
+		<result property="extend3" column="EXTEND3" />
+		<result property="extend4" column="EXTEND4" />
+	</resultMap>
+	
+	<select id="querySectionByUser" parameterType="java.lang.String" resultMap="sectionMap">
+		select * from TF_EL_UPLOAD_FILE t where t.SECTION_ID = #{sectionId} and t.UPDATE_USER = #{userId}
+	</select>
+</mapper>

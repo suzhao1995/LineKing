@@ -57,23 +57,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="sectionUrl" column="section_url" />
 		<result property="classId" column="class_id" />
 		<result property="classNote" column="note" />
-		<result property="classSummary" column="summary" />
+		<result property="courseId" column="course_id" />
 	</resultMap>
 	<select id="queryNote" parameterType="map" resultMap="noteMap">
-		select ts.section_Id ts.section_name,ts.section_url,ns.class_id,ns.note,ns.summary 
-			from tf_el_note_summary ns, tf_el_section ts 
+		select ts.section_Id ts.section_name,ts.section_url,ns.class_id,ns.note,ns.course_id 
+			from tf_el_note ns, tf_el_section ts 
 		where ns.section_id = ts.section_id 
 			  and ns.user_id = #{con_userId} 
 			  and ns.course_id = #{con_courseId} 
 			  and ns.class_id = #{con_classId}
+			  and ns.section_id = #{con_sectionId}
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="summaryMap">
+		<result property="sectionId" column="section_Id" />
+		<result property="sectionName" column="section_name" />
+		<result property="classId" column="class_id" />
+		<result property="classSummary" column="summary" />
+		<result property="courseId" column="course_id" />
+	</resultMap>
+	<select id="querySummary" parameterType="map" resultMap="summaryMap">
+		select ts.section_Id ts.section_name,ns.class_id,ns.summary,ns.course_id 
+			from tf_el_summary ns, tf_el_section ts 
+		where ns.section_id = ts.section_id
+			  and ns.user_id = #{con_userId} 
+			  and ns.course_id = #{con_courseId} 
+			  and ns.class_id = #{con_classId}
+			  and ns.section_id = #{con_sectionId}
 	</select>
 	
 	<select id="isExsitSummary" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(1) from tf_el_note_summary t 
+		select count(1) from tf_el_summary t 
 		where t.USER_ID = #{userId} 
 			and t.SECTION_ID = #{sectionId} 
 			and t.class_id = #{classId}
 			and t.SUMMARY is not null
 	</select>
 	
+	<update id="updateSummary" parameterType="com.rs.teach.mapper.studyAttr.entity.NoteSummary">
+		update tf_el_summary set t.SUMMARY = #{summary}
+			where t.USER_ID = #{userId} and t.SECTION_ID = #{sectionId} and t.CLASS_ID = #{classId}
+	</update>
+	
+	<insert id="insertSummary" parameterType="com.rs.teach.mapper.studyAttr.entity.NoteSummary">
+		insert into tf_el_summary
+			(
+				USER_ID,
+				SECTION_ID,
+				COURSE_ID,
+				CLASS_ID,
+				SUMMARY
+			)
+		values
+			(
+				#{userId},
+				#{sectionId},
+				#{courseId},
+				#{classId},
+				#{summary}
+			)
+	</insert>
 </mapper>

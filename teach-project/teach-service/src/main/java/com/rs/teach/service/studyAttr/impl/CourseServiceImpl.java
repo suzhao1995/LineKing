@@ -1,5 +1,6 @@
 package com.rs.teach.service.studyAttr.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.rs.teach.mapper.studyAttr.dao.CourseMapper;
 import com.rs.teach.mapper.studyAttr.entity.Course;
+import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.service.studyAttr.CourseService;
 
 @Service
@@ -33,12 +35,19 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getNoteSummary(String userId, String classId, String courseId) {
+	public List<Map<String, Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId) {
 		Map<String,String> con_map = new HashMap<String,String>();
 		con_map.put("con_userId", userId);
 		con_map.put("con_classId", classId);
 		con_map.put("con_courseId", courseId);
-		return mapper.queryNote(con_map);
+		con_map.put("con_sectionId", sectionId);
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		if("0".equals(code)){
+			list = mapper.queryNote(con_map);
+		}else if("1".equals(code)){
+			list = mapper.querySummary(con_map);
+		}
+		return list;
 	}
 
 	@Override
@@ -48,6 +57,16 @@ public class CourseServiceImpl implements CourseService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public int modifySummary(NoteSummary noteSummary) {
+		return mapper.updateSummary(noteSummary);
+	}
+
+	@Override
+	public int addSummary(NoteSummary noteSummary) {
+		return mapper.insertSummary(noteSummary);
 	}
 	
 }

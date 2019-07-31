@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.studyAttr.entity.Course;
+import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 
 /**
 * CourseService.java
@@ -47,14 +48,14 @@ public interface CourseService{
 	public List<Map<String,Object>> getFinishStudy(String userId, String classId, String courseId);
 	
 	/**
-	* 查询各班级课程 课后笔记总结
+	* 查询各班级课程 课后笔记
 	* @param 
 	* @throws
 	* @return List<Map<String,Object>>
 	* @author suzhao
 	* @date 2019年7月30日 下午4:41:16
 	*/
-	public List<Map<String,Object>> getNoteSummary(String userId, String classId, String courseId);
+	public List<Map<String,Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId);
 	
 	/**
 	* 查询该章节是否已做课后总结
@@ -65,4 +66,24 @@ public interface CourseService{
 	* @date 2019年7月30日 下午5:45:38
 	*/
 	public boolean isExsitSummary(String userId, String sectionId,String classId);
+	
+	/**
+	* 修改课后总结
+	* @param noteSummary
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年7月31日 上午11:40:36
+	*/
+	public int modifySummary(NoteSummary noteSummary);
+	
+	/**
+	* 插入课后总结
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年7月31日 上午11:48:37
+	*/
+	public int addSummary(NoteSummary noteSummary);
 }

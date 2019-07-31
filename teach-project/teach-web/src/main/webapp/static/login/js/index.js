@@ -21,7 +21,7 @@ function login(){
 	$.ajax({
         type: "get",
         dataType: "json",
-        url: '/teach-web/personalCenter/initCourse',
+        url: '/teach-web/personalCenter/scheduleIndex',
         data: 'classId=all',
         success: function (data) {
             if (data != "") {

@@ -42,7 +42,7 @@ public interface CourseMapper{
 	public List<Map<String,Object>> finishStudy(@Param("userId") String userId, @Param("classId") String classId, @Param("courseId") String courseId);
 	
 	/**
-	* 查询各班级课程 课后笔记总结
+	* 查询各班级课程 课后笔记
 	* @param 
 	* @throws
 	* @return List<Map<String,Object>>
@@ -50,6 +50,16 @@ public interface CourseMapper{
 	* @date 2019年7月30日 下午4:41:16
 	*/
 	public List<Map<String,Object>> queryNote(Map<String,String> map);
+	
+	/**
+	* 查询各班级课程 课后总结
+	* @param 
+	* @throws
+	* @return List<Map<String,Object>>
+	* @author suzhao
+	* @date 2019年7月30日 下午4:41:16
+	*/
+	public List<Map<String,Object>> querySummary(Map<String,String> map);
 	
 	/**
 	* 查询该章节是否已做课后总结
@@ -60,4 +70,24 @@ public interface CourseMapper{
 	* @date 2019年7月30日 下午5:45:38
 	*/
 	public int isExsitSummary(@Param("userId") String userId, @Param("sectionId") String sectionId, @Param("classId") String classId);
+	
+	/**
+	* 修改课后总结
+	* @param noteSummary
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年7月31日 上午11:40:36
+	*/
+	public int updateSummary(NoteSummary noteSummary);
+	
+	/**
+	* 插入课后总结
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年7月31日 上午11:48:37
+	*/
+	public int insertSummary(NoteSummary noteSummary);
 }

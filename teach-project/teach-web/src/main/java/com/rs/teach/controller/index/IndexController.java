@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.rs.common.utils.DateUtil;
 import com.rs.common.utils.ImageUtil;
+import com.rs.common.utils.Logger;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
@@ -38,7 +39,7 @@ import com.rs.teach.service.timeTable.ScheduleService;
 @Controller
 @RequestMapping(value = "/index")
 public class IndexController {
-	
+	private Logger logger  = Logger.getLogger(IndexController.class);
 	/**
 	 * 用户 service
 	 * */
@@ -67,6 +68,7 @@ public class IndexController {
 		JSONObject json = new JSONObject();
 		
 		String randomCode = ImageUtil.generateVerifyCode(4);
+		logger.info(randomCode);
 		try {
 			String verifyCode = ImageUtil.outputImage(165, 66, randomCode);
 			verifyCode = "data:image/png;base64,"+verifyCode;
