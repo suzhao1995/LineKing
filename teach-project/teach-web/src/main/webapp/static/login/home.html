@@ -8,6 +8,15 @@
 	<span id="name"></span>
 	<span id="userId"></span>
 	<script type="text/javascript" src="js/jquery-2.2.4.js"></script>
-     <script type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
+    <form action="http://127.0.0.1:8080/teach-web/componant/sectionDownLoad?sectionId=1001" method="get">
+    	<input type="submit" value="下载">
+    </form>
+    
+    <form id="uploadForm" enctype="multipart/form-data" method="post">
+		<input type="file" name="file">
+	</form>
+	<br>
+	<input type="button" id="upload" value="上传" onclick="upload()">
 </body>
 </html>

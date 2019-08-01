@@ -21,14 +21,14 @@ function login(){
 	$.ajax({
         type: "get",
         dataType: "json",
-        url: '/teach-web/personalCenter/scheduleIndex',
-        data: 'classId=all',
+        url: '/teach-web/componant/sectionDownLoad',
+        data: 'sectionId=1001',
         success: function (data) {
             if (data != "") {
-            	alert(data.code);
+            	//alert(data.code);
             }
             if(data.code == "0"){
-            	var key = data.data.userInfo.sessionKey;
+            	//var key = data.data.userInfo.sessionKey;
             	//window.location.href="/teach-web/static/login/home.html?sessionKey="+key;
             }
         }

@@ -317,6 +317,20 @@ public class CenterController{
 		}
 		return bean;
 	}
+	
+	/**
+	* 下载课件资源
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月1日 下午1:32:49
+	*/
+	@RequestMapping("/downLoadSection")
+	public ResponseBean downLoadSection(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		return bean;
+	}
 	 
 	
 	private static String getDoubleDigit(int num,int totleNum){

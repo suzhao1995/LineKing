@@ -21,6 +21,7 @@ public class Section implements Serializable{
 	private String sectionUrl;	//	章节文件保存url
 	private String updateUser;	//修改章节的用户id
 	private String updateFileName;	//用户上传的文件名称
+	private String sectionType;	//文档类型
 	private String extend1;	//预留字段
 	private String extend2;
 	private String extend3;
@@ -76,6 +77,14 @@ public class Section implements Serializable{
 
 	public void setUpdateFileName(String updateFileName) {
 		this.updateFileName = updateFileName;
+	}
+
+	public String getSectionType() {
+		return sectionType;
+	}
+
+	public void setSectionType(String sectionType) {
+		this.sectionType = sectionType;
 	}
 
 	public String getExtend1() {

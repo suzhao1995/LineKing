@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="courseId" column="COURSE_ID" />
 		<result property="updateUser" column="UPDATE_USER" />
 		<result property="updateFileName" column="UPDATE_FILENAME" />
+		<result property="sectionType" column="section_type"/>
 		<result property="extend1" column="EXTEND1" />
 		<result property="extend2" column="EXTEND2" />
 		<result property="extend3" column="EXTEND3" />
@@ -18,5 +19,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="querySectionByUser" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.SECTION_ID = #{sectionId} and t.UPDATE_USER = #{userId}
+	</select>
+	
+	<select id="querySection" parameterType="java.lang.String" resultMap="sectionMap">
+		select * from tf_el_section t where t.section_id = #{sectionId}
 	</select>
 </mapper>

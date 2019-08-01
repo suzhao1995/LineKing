@@ -19,5 +19,11 @@ public class SectionServiceImpl implements SectionService{
 	public List<Section> getSectionByUser(String userId, String sectionId) {
 		return mapper.querySectionByUser(userId, sectionId);
 	}
+
+	@Override
+	public Section getSectionById(String sectionId) {
+		return mapper.querySection(sectionId);
+	}
+	
 	
 }
