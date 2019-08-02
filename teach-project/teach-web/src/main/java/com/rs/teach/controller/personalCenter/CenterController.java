@@ -1,5 +1,6 @@
 package com.rs.teach.controller.personalCenter;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +9,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.section.entity.Section;
@@ -28,7 +31,7 @@ import com.rs.teach.service.timeTable.ScheduleService;
 
 /**
 * CenterController.java
-* @Description:个人中心controller
+* @Description:个人中心课件课表controller
 * @author: suzhao
 * @date: 2019年7月24日 下午3:06:17
 * @version: V1.0
@@ -36,6 +39,8 @@ import com.rs.teach.service.timeTable.ScheduleService;
 @Controller
 @RequestMapping(value="/personalCenter")
 public class CenterController{
+	
+	private static final Logger logger = Logger.getLogger(CenterController.class);
 	/**
 	 * 用户 service
 	 * */
@@ -212,7 +217,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 初始化我的课程
+	* 初始化我的课程信息
 	* @param request
 	* @param response
 	* @throws
@@ -319,16 +324,70 @@ public class CenterController{
 	}
 	
 	/**
-	* 下载课件资源
+	* 个人中心-上传新资料
 	* @param 
 	* @throws
 	* @return ResponseBean
 	* @author suzhao
 	* @date 2019年8月1日 下午1:32:49
 	*/
-	@RequestMapping("/downLoadSection")
-	public ResponseBean downLoadSection(HttpServletRequest request, HttpServletResponse response){
+	@RequestMapping("/upNewSection")
+	public ResponseBean upNewSection(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
+		
+		//获取登录的用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		Section section = new Section();
+		section.setSectionId(request.getParameter("sectionId"));
+		section.setSectionName(request.getParameter("sectionName"));
+		section.setCourseId(request.getParameter("courseId"));
+		section.setSectionType(request.getParameter("sectionType"));
+		section.setSectionUrl(request.getParameter("sectionUrl"));
+		section.setUpdateUser(userId);
+		section.setUpdateFileName(request.getParameter("updateFileName"));
+		section.setUpLoadId(request.getParameter("upLoadId"));
+		try {
+			int result = sectionService.addTeachUpSection(section);
+			if(result == 1){
+				bean.addSuccess();
+			}else{
+				bean.addDefaultError();
+			}
+		} catch (Exception e) {
+			logger.error("-------保存上传文档失败------", e);
+			bean.addDefaultError();
+		}
+		return bean;
+	}
+	
+	/**
+	* 个人中心-下载个人课件
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月2日 上午10:53:29
+	*/
+	@RequestMapping("/downSelfSection")
+	@ResponseBody
+	public ResponseBean downSelfSection(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//获取用户登录的信息
+		//String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String upLoadId = request.getParameter("upLoadId");
+		Section section = sectionService.getUpLoadSection(upLoadId);
+		
+		try {
+			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getUpLoadId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getUpdateFileName());
+			if(resultMap != null && "0".equals(resultMap.get("code"))){
+				bean.addSuccess();
+			}else{
+				bean.addError(resultMap.get("message").toString());
+			}
+		} catch (IOException e) {
+			logger.error("--------文件下载异常-------", e);
+			bean.addError("系统异常");
+		}
 		return bean;
 	}
 	 

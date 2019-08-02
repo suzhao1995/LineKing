@@ -24,6 +24,16 @@ public class SectionServiceImpl implements SectionService{
 	public Section getSectionById(String sectionId) {
 		return mapper.querySection(sectionId);
 	}
+
+	@Override
+	public int addTeachUpSection(Section section) {
+		return mapper.insertTeachUpSection(section);
+	}
+
+	@Override
+	public Section getUpLoadSection(String upLoadId) {
+		return mapper.queryUpLoadSection(upLoadId);
+	}
 	
 	
 }

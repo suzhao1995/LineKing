@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
 * Section.java
-* @Description:章节实体类
+* @Description:章节及个人上传课件实体类
 * @author: suzhao
 * @date: 2019年7月31日 下午1:27:12
 * @version: V1.0
@@ -15,7 +15,9 @@ public class Section implements Serializable{
 	 */
 	private static final long serialVersionUID = -6391018433420677203L;
 	
+	private String upLoadId;	//教师上传文档住建Id
 	private String sectionId;	//章节id
+	private String sectionSort;		//章节序号
 	private String sectionName;	//章节名
 	private String courseId;	//课程资源id
 	private String sectionUrl;	//	章节文件保存url
@@ -31,12 +33,28 @@ public class Section implements Serializable{
 		
 	}
 
+	public String getUpLoadId() {
+		return upLoadId;
+	}
+
+	public void setUpLoadId(String upLoadId) {
+		this.upLoadId = upLoadId;
+	}
+
 	public String getSectionId() {
 		return sectionId;
 	}
 
 	public void setSectionId(String sectionId) {
 		this.sectionId = sectionId;
+	}
+
+	public String getSectionSort() {
+		return sectionSort;
+	}
+
+	public void setSectionSort(String sectionSort) {
+		this.sectionSort = sectionSort;
 	}
 
 	public String getSectionName() {

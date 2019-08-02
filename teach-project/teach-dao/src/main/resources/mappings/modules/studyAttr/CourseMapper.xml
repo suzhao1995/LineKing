@@ -38,11 +38,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="java.util.HashMap" id="secMap">
 		<result property="sectionId" column="section_id" />
+		<result property="sectionSort" column="section_SORT" />
 		<result property="sectionName" column="section_name" />
 	</resultMap>
 	
 	<select id="finishStudy" parameterType="java.lang.String" resultMap="secMap">
-		select re.section_id,ts.section_name from user_course_rela re, tf_el_section ts 
+		select re.section_id,ts.section_name,ts.section_SORT from user_course_rela re, tf_el_section ts 
 		where re.section_id = ts.section_id 
 		  and re.rela_type = '0' 
 		  and re.user_id = #{userId}
@@ -53,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="java.util.HashMap" id="noteMap">
 		<result property="sectionId" column="section_Id" />
+		<result property="sectionSort" column="section_SORT" />
 		<result property="sectionName" column="section_name" />
 		<result property="sectionUrl" column="section_url" />
 		<result property="classId" column="class_id" />
@@ -60,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="courseId" column="course_id" />
 	</resultMap>
 	<select id="queryNote" parameterType="map" resultMap="noteMap">
-		select ts.section_Id ts.section_name,ts.section_url,ns.class_id,ns.note,ns.course_id 
+		select ts.section_Id,ts.section_SORT, ts.section_name,ts.section_url,ns.class_id,ns.note,ns.course_id 
 			from tf_el_note ns, tf_el_section ts 
 		where ns.section_id = ts.section_id 
 			  and ns.user_id = #{con_userId} 
@@ -71,13 +73,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="java.util.HashMap" id="summaryMap">
 		<result property="sectionId" column="section_Id" />
+		<result property="sectionSort" column="section_SORT" />
 		<result property="sectionName" column="section_name" />
 		<result property="classId" column="class_id" />
 		<result property="classSummary" column="summary" />
 		<result property="courseId" column="course_id" />
 	</resultMap>
 	<select id="querySummary" parameterType="map" resultMap="summaryMap">
-		select ts.section_Id ts.section_name,ns.class_id,ns.summary,ns.course_id 
+		select ts.section_Id,ts.section_SORT, ts.section_name,ns.class_id,ns.summary,ns.course_id 
 			from tf_el_summary ns, tf_el_section ts 
 		where ns.section_id = ts.section_id
 			  and ns.user_id = #{con_userId} 

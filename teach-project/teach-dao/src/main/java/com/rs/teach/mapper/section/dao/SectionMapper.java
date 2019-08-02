@@ -33,4 +33,25 @@ public interface SectionMapper{
 	* @date 2019年8月1日 下午1:45:52
 	*/
 	public Section querySection(String sectionId);
+	
+	/**
+	* 插入老师上传的课件信息
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年8月2日 上午10:38:33
+	*/
+	public int insertTeachUpSection(Section section);
+	
+	/**
+	* 插入老师上传的课件信息
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年8月2日 上午10:38:33
+	*/
+	public Section queryUpLoadSection(String upLoadId);
+	
 }

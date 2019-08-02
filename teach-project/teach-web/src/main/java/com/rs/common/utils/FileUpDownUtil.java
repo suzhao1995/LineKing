@@ -57,9 +57,9 @@ public class FileUpDownUtil{
 		
 		if(!file.isEmpty()){
 			try {
-				String sectionId = UUID.randomUUID().toString().replace("-", "");//生成章节id
+				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
 				
-				String sectionName = file.getOriginalFilename().split("[.]")[0];
+				String updateFileName = file.getOriginalFilename().split("[.]")[0];
 				String sectionType = "."+file.getOriginalFilename().split("[.]")[1];
 				if(!upLoadType.contains(sectionType)){
 					resultMap.put("code", "-1");
@@ -67,12 +67,14 @@ public class FileUpDownUtil{
 					return resultMap;
 				}
 				//使用hash算法散列存储文件位置
-				Map<String,String> dirPathMap = findFileSavePathByFileName(sectionName,savePath);
+				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
 				String dirPath = dirPathMap.get("dir");
-				file.transferTo(new File(dirPath + "/" + file.getOriginalFilename()));
+				String saveRealName = upLoadId+"_"+file.getOriginalFilename();
 				
-				resultMap.put("sectionId", sectionId);
-				resultMap.put("sectionName", sectionName);
+				file.transferTo(new File(dirPath + "/" + saveRealName));
+				
+				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一
+				resultMap.put("updateFileName", updateFileName);
 				resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
 				resultMap.put("sectionType", sectionType);
 				resultMap.put("code", "0");
@@ -96,34 +98,36 @@ public class FileUpDownUtil{
 	}
 	/**
 	* 文件下载方法
-	* @param 
+	* @param sectionId 文件的唯一id，上传文档的uploadId
+	* @param upLoadName 文件名，保存在服务器的文件名 
+	* @param sectionUrl 保存文件的路径 根目录为/WEB-INF/upload，取上传方法 sectionUrl
+	* @param sectionType 保存文件的文档类型
+	* @param downLoadName 下载的文件名称
 	* @throws
 	* @return void
 	* @author suzhao
-	 * @throws IOException 
+	* @throws IOException 
 	* @date 2019年8月1日 上午11:46:24
 	*/
-	public static Map<String,Object> fileDownLoad(HttpServletRequest request, HttpServletResponse response, Section section) throws IOException{
+	public static Map<String,Object> fileDownLoad(HttpServletRequest request, HttpServletResponse response, String sectionId, String upLoadName, String sectionUrl, String sectionType, String downLoadName) throws IOException{
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//上传文件时，设置文件的随机id为文件名
-		String fileId = request.getParameter("sectionId");
 		
-		String fileName = fileId +"_"+ section.getSectionName();	//保存在服务器文件的名称
+		String fileName = sectionId +"_"+ upLoadName;	//保存在服务器文件的名称
 		//保存文件的地址
 		String filePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-		filePath = filePath + section.getSectionUrl().replace("/", "\\");
+		filePath = filePath + sectionUrl.replace("/", "\\");
 		
-		String fileRealPath = filePath + "\\" + fileName + section.getSectionType(); 
+		String fileRealPath = filePath + "\\" + fileName + sectionType; 
 		File file = new File(fileRealPath);
 		if(!file.exists()){
 			resultMap.put("code", "-1");
 			resultMap.put("message", "您想要下载的资源不存在或已被删除！");
 			return resultMap;
 		}
-		String realName = fileRealPath.substring(fileRealPath.indexOf("_") + 1);
 		//设置响应头，控制浏览器下载该文件
 		response.setContentType("multipart/form-data");
-		response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(realName, "UTF-8"));
+		response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downLoadName, "UTF-8"));
 		//读取文件，保存文件到输入流
 		FileInputStream inputStream = new FileInputStream(file);
 		//创建输出流
@@ -144,6 +148,7 @@ public class FileUpDownUtil{
 		out.close();
 		return resultMap;
 	}
+	
 	
 	/**
      * @Method: findFileSavePathByFileName

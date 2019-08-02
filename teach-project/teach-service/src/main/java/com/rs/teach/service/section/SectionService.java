@@ -32,4 +32,24 @@ public interface SectionService{
 	* @date 2019年8月1日 下午1:45:52
 	*/
 	public Section getSectionById(String sectionId);
+	
+	/**
+	* 插入老师上传的课件信息
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年8月2日 上午10:38:33
+	*/
+	public int addTeachUpSection(Section section);
+	
+	/**
+	* 根据upLoadId查询教师上传的文档信息
+	* @param upLoadId
+	* @throws
+	* @return Section
+	* @author suzhao
+	* @date 2019年8月2日 上午11:41:15
+	*/
+	public Section getUpLoadSection(String upLoadId);
 }

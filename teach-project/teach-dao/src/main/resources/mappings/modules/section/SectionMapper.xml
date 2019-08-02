@@ -4,7 +4,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.SectionMapper">
 	<resultMap type="com.rs.teach.mapper.section.entity.Section" id="sectionMap">
+		<result property="upLoadId" column="UPLOAD_ID" />
 		<result property="sectionId" column="SECTION_ID" />
+		<result property="sectionSory" column="SECTION_SORT" />
 		<result property="sectionName" column="SECTION_NAME" />
 		<result property="sectionUrl" column="SECTION_URL" />
 		<result property="courseId" column="COURSE_ID" />
@@ -23,5 +25,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="querySection" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from tf_el_section t where t.section_id = #{sectionId}
+	</select>
+	
+	<insert id="insertTeachUpSection" parameterType="com.rs.teach.mapper.section.entity.Section">
+		insert into TF_EL_UPLOAD_FILE 
+			(
+				UPLOAD_ID,
+				SECTION_ID,
+				SECTION_NAME,
+				COURSE_ID,
+				SECTION_URL,
+				UPDATE_USER,
+				UPDATE_FILENAME,
+				SECTION_TYPE,
+				EXTEND1,
+				EXTEND2,
+				EXTEND3,
+				EXTEND4
+			)
+		values
+			(
+				#{upLoadId},
+				#{sectionId},
+				#{sectionName},
+				#{courseId},
+				#{sectionUrl},
+				#{updateUser},
+				#{updateFileName},
+				#{sectionType},
+				#{extend1},
+				#{extend2},
+				#{extend3},
+				#{extend4}
+			)
+	</insert>
+	
+	<select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
+		select * from TF_EL_UPLOAD_FILE t where t.UPLOAD_ID = #{upLoadId}
 	</select>
 </mapper>

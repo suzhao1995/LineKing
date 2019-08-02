@@ -37,6 +37,14 @@ public class ComponantController{
 	@Autowired
 	private SectionService sectionService;
 	
+	/**
+	* 课件资源下载
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月2日 下午12:46:35
+	*/
 	@RequestMapping("/sectionDownLoad")
 	@ResponseBody
 	public ResponseBean sectionDownLoad(HttpServletRequest request, HttpServletResponse response){
@@ -46,7 +54,7 @@ public class ComponantController{
 		Section section = sectionService.getSectionById(sectionId);
 		
 		try {
-			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section);
+			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getSectionId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getSectionName());
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
 				bean.addSuccess();
 			}else{
