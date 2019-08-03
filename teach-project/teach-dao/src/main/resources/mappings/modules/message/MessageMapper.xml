@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.massage.dao.MessageMapper">
+	<insert id="insertMassage" parameterType="com.rs.teach.mapper.massage.entity.Message">
+		insert into TF_EL_MESSAGE 
+			(
+				MESSAGE_ID,
+				MESSAGE_TYPE,
+				MASSAGE_CONTENT,
+				MESSAGE_TIME,
+				USER_ID,
+				EXTEND1,
+				EXTEND2,
+				EXTEND3,
+				EXTEND4
+			)
+		values
+			(
+				SEQ_EL_MESSAGE.nextval,
+				#{messageType},
+				#{messageContent},
+				#{messageTime},
+				#{userId},
+				#{extend1},
+				#{extend2},
+				#{extend3},
+				#{extend4}
+			)
+	</insert>
+</mapper>
