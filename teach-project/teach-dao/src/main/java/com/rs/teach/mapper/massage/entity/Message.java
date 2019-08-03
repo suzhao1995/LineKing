@@ -15,7 +15,7 @@ public class Message implements Serializable{
 	private String messageTime;		//生成消息时间
 	private String userId;		//关联的userId
 	private String extend1;	//预留字段
-	private String extend2;	//
+	private String extend2;	//  
 	private String extend3;	//
 	private String extend4;	//
 	

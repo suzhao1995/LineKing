@@ -20,5 +20,5 @@ public interface MessageMapper{
 	*/
 	public int insertMassage(Message message);
 	
-	
+	  
 }

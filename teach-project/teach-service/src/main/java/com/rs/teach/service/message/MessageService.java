@@ -6,7 +6,7 @@ public interface MessageService{
 	/**
 	* 添加消息
 	* @param message
-	* @throws
+	* @throws 
 	* @return int
 	* @author suzhao
 	* @date 2019年8月3日 下午4:39:00

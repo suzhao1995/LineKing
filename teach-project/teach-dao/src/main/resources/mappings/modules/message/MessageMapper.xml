@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		values
 			(
-				SEQ_EL_MESSAGE.nextval,
+				SEQ_EL_MESSAGE.nextval, 
 				#{messageType},
 				#{messageContent},
 				#{messageTime},

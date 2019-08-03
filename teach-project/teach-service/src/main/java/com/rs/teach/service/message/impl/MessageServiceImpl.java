@@ -9,7 +9,7 @@ import com.rs.teach.service.message.MessageService;
 
 @Service
 public class MessageServiceImpl implements MessageService{
-	
+	 
 	@Autowired
 	private MessageMapper mapper;
 	
