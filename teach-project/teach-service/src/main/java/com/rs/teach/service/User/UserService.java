@@ -31,4 +31,15 @@ public interface UserService {
 	* @date 2019年7月24日 下午3:46:41
 	*/
 	public boolean isModifyInfo(String id);
+	
+	/**
+	* 修改用户信息
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年8月2日 下午3:03:15
+	*/
+	public int modifyUser(User user);
+	
 }

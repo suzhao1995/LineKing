@@ -162,11 +162,12 @@ public class CenterController{
 		schedule.setStartDate(request.getParameter("startDate"));
 		schedule.setEndDate(request.getParameter("endDate"));
 		schedule.setClassId(request.getParameter("classId"));
-		schedule.setCurriculumId(request.getParameter("curriculumId"));
+		schedule.setCurriculumId(request.getParameter("courseId"));
 		if("0".equals(flag)){
 			//新增
 			resultCode = scheduleService.addSchedule(schedule);
 		}else{
+			schedule.setScheduleId(request.getParameter("scheduleId"));
 			resultCode = scheduleService.modifySchedule(schedule);
 		}
 		if(resultCode == 1){
@@ -318,6 +319,7 @@ public class CenterController{
 			}
 			bean.addSuccess();
 		} catch (Exception e) {
+			logger.error("--------保存异常-------", e);
 			bean.addError("保存失败,系统异常");
 		}
 		return bean;

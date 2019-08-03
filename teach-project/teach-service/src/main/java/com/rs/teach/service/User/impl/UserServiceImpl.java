@@ -29,7 +29,12 @@ public class UserServiceImpl implements UserService{
 	*/
 	@Override
 	public User getUserById(String id) {
-		return dao.getUserById(id);
+		User user = dao.getTeachUser(id);
+		User userAttr = dao.getUserById(id);
+		if(userAttr != null){
+			user.setAttr(userAttr.getAttr());
+		}
+		return user;
 	}
 
 
@@ -40,6 +45,12 @@ public class UserServiceImpl implements UserService{
 			return false;
 		}
 		return true;
+	}
+
+
+	@Override
+	public int modifyUser(User user) {
+		return dao.updateUser(user);
 	}
 
 	

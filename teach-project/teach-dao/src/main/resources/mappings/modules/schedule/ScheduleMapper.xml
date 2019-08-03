@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="teachUserId" column="teachUser_Id" />
 		<result property="teachUserName" column="user_Name" />
 		<result property="curriculum" column="curriculum" />
+		<result property="curriculumId" column="curriculumId" />
 		<result property="startDate" column="start_Date" />
 		<result property="endDate" column="end_Date" />
 		<result property="weekDay" column="week_Day" />
@@ -19,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   sd.TEACHUSER_ID,
 			   tu.user_Name,
 			   ce.course_Name as curriculum,
+			   sd.curriculumId,
 			   sd.START_DATE,
 			   sd.END_DATE,
 			   sd.WEEK_DAY,

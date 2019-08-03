@@ -41,6 +41,60 @@ public class FileUpDownUtil{
 		upLoadType.add(".ppt");
 		upLoadType.add(".pdf");
 	}
+	
+	/**
+	* 图片上传 表单指定enctype="multipart/form-data"
+	* @param 
+	* @throws
+	* @return Map<String,Object>
+	* @author suzhao
+	* @date 2019年8月1日 下午4:17:25
+	*/
+	public static Map<String,Object> picUpLoad(HttpServletRequest request, HttpServletResponse response, MultipartFile file){
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		//文件保存路径
+		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
+		
+		if(!file.isEmpty()){
+			try {
+				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
+				
+				String updateFileName = file.getOriginalFilename().split("[.]")[0];
+				String sectionType = "."+file.getOriginalFilename().split("[.]")[1];
+				if(!upLoadType.contains(sectionType)){
+					resultMap.put("code", "-1");
+					resultMap.put("message", "上传文件格式错误！");
+					return resultMap;
+				}
+				//使用hash算法散列存储文件位置
+				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
+				String dirPath = dirPathMap.get("dir");
+				String saveRealName = upLoadId+sectionType;
+				
+				file.transferTo(new File(dirPath + "/" + saveRealName));
+				
+				resultMap.put("picUrl", dirPath + "/" + saveRealName);	
+				resultMap.put("picId", upLoadId);	//生成的随机章节ID，唯一
+				resultMap.put("code", "0");
+				resultMap.put("message", "文件上传成功");
+				
+			} catch (IllegalStateException e) {
+				resultMap.put("code", "-1");
+				resultMap.put("message", "文件上传异常");
+				logger.error("---------文件上传异常---------", e);
+			} catch (Exception e) {
+				resultMap.put("code", "-1");
+				resultMap.put("message", "文件上传异常");
+				logger.error("---------文件上传异常---------", e);
+			}
+			
+		}else{
+			resultMap.put("code", "-1");
+			resultMap.put("message", "上传文件为空");
+		}
+		return resultMap;
+	}
+	
 	/**
 	* 课件上传方法 表单指定enctype="multipart/form-data"
 	* @param 

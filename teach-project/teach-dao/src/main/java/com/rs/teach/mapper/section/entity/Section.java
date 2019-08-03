@@ -17,6 +17,8 @@ public class Section implements Serializable{
 	
 	private String upLoadId;	//教师上传文档住建Id
 	private String sectionId;	//章节id
+	private String totleSectionSort;	//大章节序号
+	private String totleSectionName;	//大章节名
 	private String sectionSort;		//章节序号
 	private String sectionName;	//章节名
 	private String courseId;	//课程资源id
@@ -47,6 +49,22 @@ public class Section implements Serializable{
 
 	public void setSectionId(String sectionId) {
 		this.sectionId = sectionId;
+	}
+	
+	public String getTotleSectionSort() {
+		return totleSectionSort;
+	}
+
+	public void setTotleSectionSort(String totleSectionSort) {
+		this.totleSectionSort = totleSectionSort;
+	}
+
+	public String getTotleSectionName() {
+		return totleSectionName;
+	}
+
+	public void setTotleSectionName(String totleSectionName) {
+		this.totleSectionName = totleSectionName;
 	}
 
 	public String getSectionSort() {

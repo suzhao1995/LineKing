@@ -21,9 +21,11 @@ import com.rs.common.utils.ImageUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
+import com.rs.teach.mapper.massage.entity.Message;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
+import com.rs.teach.service.message.MessageService;
 import com.rs.teach.service.timeTable.ScheduleService;
 
 /**
@@ -48,6 +50,12 @@ public class IndexController {
 	 * */
 	@Autowired
 	private ScheduleService scheduleService;
+	
+	/**
+	 * 消息service
+	 * */
+	@Autowired
+	private MessageService messageService;
 	
 	
 	/**
@@ -104,6 +112,22 @@ public class IndexController {
 			}else if(!passWord.equals(loginUser.getPassWord())){
 				bean.addError(ResponseBean.CODE_SYS_ERROR, "密码错误，请重新输入");
 			}else if(passWord.equals(loginUser.getPassWord())){
+				//获取用户账号系统时间
+				String endDate = loginUser.getEndDate().replace("-", "");
+				//获取当前系统时间
+				String today = DateUtil.dateFormat(new Date(), "yyyyMMdd");
+				if(Integer.valueOf(today) > Integer.valueOf(endDate)){
+					bean.addError(ResponseBean.CODE_SYS_ERROR, "系统使用时间已到期");
+					return bean;
+				}
+				if(Integer.valueOf(today)+7 > Integer.valueOf(endDate)){
+					Message message = new Message();
+					message.setMessageContent("您的系统使用权限即将到期！");
+					message.setMessageTime(DateUtil.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"));
+					message.setMessageType("2");
+					message.setUserId(loginUser.getUserId());
+					messageService.addMessage(message);
+				}
 				//登录成功，保存用户信息到session
 				String sessionInfo = loginUser.getUserId() +","+loginUser.getUserName();
 				SessionUtil.cleanOldSession(sessionInfo);	//如果用户再次登录清除已存在的session，确保每个用户只有一个session
@@ -144,6 +168,9 @@ public class IndexController {
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		ajaxData.put("userName", userInfo.get("userName"));
 		
+		//判断用户是否修改过密码
+		boolean flag = userService.isModifyInfo(userInfo.get("userId").toString());
+		ajaxData.put("isModifyPwd", flag);	//首页弹窗
 		if(userInfo != null){
 			String userId = userInfo.get("userId").toString();
 			List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);

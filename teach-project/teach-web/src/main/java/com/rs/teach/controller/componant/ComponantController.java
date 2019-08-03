@@ -16,7 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
+import com.rs.common.utils.UserInfoUtil;
+import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.service.User.UserService;
+import com.rs.teach.service.resourcesAttr.PicAttrService;
 import com.rs.teach.service.section.SectionService;
 
 /**
@@ -36,6 +41,15 @@ public class ComponantController{
 	 * */
 	@Autowired
 	private SectionService sectionService;
+	
+	/**
+	 * 图片属性service
+	 * */
+	@Autowired
+	private PicAttrService picAttrService;
+	
+	@Autowired
+	private UserService userService;
 	
 	/**
 	* 课件资源下载
@@ -82,6 +96,51 @@ public class ComponantController{
 		//上传文件
 		Map<String,Object> resultMap = FileUpDownUtil.fileUpLoad(request, response, file);
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
+			bean.addSuccess(resultMap);
+		}else{
+			bean.addError(resultMap.get("message").toString());
+		}
+		return bean;
+	}
+	
+	/**
+	* 图像上传
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月1日 下午5:27:45
+	*/
+	@RequestMapping("/upLoadPic")
+	@ResponseBody
+	public ResponseBean upLoadPic(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file){
+		ResponseBean bean = new ResponseBean();
+		//获取登录的用户id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		//上传文件
+		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, response, file);
+		
+		if(resultMap != null && "0".equals(resultMap.get("code"))){
+			//判断用户是否上传过图片
+			User userInfo = userService.getUserById(userId);
+			PicAttr pic = userInfo.getAttr();
+			int result = 0;
+			if(pic == null){
+				//新增
+				PicAttr picAttr = new PicAttr();
+				picAttr.setAssociationId(userId);
+				picAttr.setPicId(resultMap.get("picId").toString());
+				picAttr.setPicUrl(resultMap.get("picUrl").toString());
+				result = picAttrService.addPic(picAttr);
+			}else{
+				pic.setPicUrl(resultMap.get("picUrl").toString());
+				result = picAttrService.modifyPic(pic);
+			}
+			if(result == 0){
+				bean.addDefaultError();
+				return bean;
+			}
 			bean.addSuccess(resultMap);
 		}else{
 			bean.addError(resultMap.get("message").toString());
