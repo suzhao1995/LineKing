@@ -2,3 +2,9 @@
 /.settings/
 .project
 .classpath
+
+#IDEA
+/target
+/.idea
+*.iml
+/ci.sh

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.section.dao.UserCourseRelaMapper">
+
+    <select id="isNotEmpty" resultType="java.lang.Integer">
+        select count(1) from user_course_rela as ucr
+        where ucr.course_Id = #{courseId}
+        and ucr.user_Id = #{userId}
+        and ucr.rela_type = 1
+    </select>
+
+    <select id="selectStatus" resultType="com.rs.teach.mapper.section.entity.UserCourseRela">
+        select * from user_course_rela as ucr
+        where ucr.course_Id = #{courseId}
+        and ucr.user_Id = #{userId}
+    </select>
+</mapper>

@@ -104,7 +104,7 @@ public class IndexController {
 		//获取用户输入信息
 		String userId = request.getParameter("userId");
 		String passWord = request.getParameter("passWord");
-		
+
 		try {
 			User loginUser = userService.getUserById(userId);
 			if(loginUser == null){

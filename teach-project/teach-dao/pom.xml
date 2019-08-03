@@ -41,12 +41,25 @@
        	 <artifactId>ojdbc14</artifactId>
        	 <version>10.2.0.4.0</version>
 	</dependency>
+	  <!--mysql-->
+	  <dependency>
+		  <groupId>mysql</groupId>
+		  <artifactId>mysql-connector-java</artifactId>
+		  <version>5.1.6</version>
+	  </dependency>
 	<!-- 连接池 -->
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid</artifactId>
 		<version>${druid.version}</version>
 	</dependency>
+	  <!--lombok插件-->
+	  <dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>1.16.10</version>
+		  <optional>true</optional>
+	  </dependency>
   </dependencies>
   
   <build>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.section.dao.TrainSectionMapper">
+
+    <select id="selectAllSection" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
+        SELECT  ts.train_section_Id,
+              TC.train_course_Id,
+              tc.train_course_Name,
+              tc.train_section_number,
+              tpa.pic_url,
+              ts.train_section_sort,
+              ts.train_section_Name,
+              ts.train_litter_section_name,
+              ts.train_litter_section_sort,
+              ts.train_litter_section_url,
+              ts.train_litter_section_type
+        FROM
+          tf_el_train_course AS tc
+        LEFT JOIN tf_el_train_pic_attr AS tpa
+	        ON tpa.association_Id = tc.train_course_Id
+        LEFT JOIN tf_el_train_section AS ts
+            ON tc.train_course_Id = ts.train_course_Id
+        WHERE tc.train_course_Id = #{courseId}
+
+    </select>
+
+</mapper>
