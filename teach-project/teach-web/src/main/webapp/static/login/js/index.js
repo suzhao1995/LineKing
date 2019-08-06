@@ -34,3 +34,23 @@ function login(){
         }
     });
 }
+
+function login1(){
+	var userId = $("#username").val();
+	var pwd = $("#password1").val();
+	$.ajax({
+        type: "get",
+        dataType: "json",
+        url: '/teach-web/trainCourse/pageInfo',
+        data: 'sessionKey=1564971154615',
+        success: function (data) {
+            if (data != "") {
+            	alert(data.code);
+            }
+            if(data.code == "0"){
+            	//var key = data.data.userInfo.sessionKey;
+            	//window.location.href="/teach-web/static/login/home.html?sessionKey="+key;
+            }
+        }
+    });
+}

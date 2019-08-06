@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="com.rs.teach.mapper.section.entity.Section" id="sectionMap">
 		<result property="upLoadId" column="UPLOAD_ID" />
 		<result property="sectionId" column="SECTION_ID" />
-		<result property="sectionSory" column="SECTION_SORT" />
+		<result property="sectionSort" column="SECTION_SORT" />
 		<result property="sectionName" column="SECTION_NAME" />
 		<result property="sectionUrl" column="SECTION_URL" />
 		<result property="courseId" column="COURSE_ID" />

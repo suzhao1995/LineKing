@@ -143,7 +143,7 @@ public class FileUpDownUtil{
 					logger.error("---------文件上传异常---------");
 					return resultMap;
 				}
-				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一
+				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一	上传为章节课件 upLoadId = sectionId， 上传为修改课件， upLoadId = upLoadId
 				resultMap.put("updateFileName", updateFileName);
 				resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
 				resultMap.put("sectionType", sectionType);

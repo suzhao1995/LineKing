@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rs.common.utils.FileUpDownUtil;
+import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.section.entity.Section;
@@ -249,6 +250,7 @@ public class CenterController{
 	* @throws
 	* @return ResponseBean
 	* @author suzhao
+	 * @throws IOException 
 	* @date 2019年7月30日 下午3:43:12
 	*/
 	@RequestMapping("/queryNoteSummary")
@@ -256,6 +258,7 @@ public class CenterController{
 	public ResponseBean queryNote(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
 		
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
 		//获取登录的用户id
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
@@ -274,10 +277,32 @@ public class CenterController{
 			}
 		}else{
 			List<Map<String,Object>> list = courseService.getNoteSummary(userId, classId, courseId, code, sectionId);
+			
 			if(list.size() > 0){
+				
 				Map<String,Object> resultMap = list.get(0);
-				bean.addSuccess(resultMap);
+				ajaxData.putAll(resultMap);
 			}
+			if("0".equals(code)){
+				//转换章节信息为图片流 传给前端
+				Section section = sectionService.getSectionById(sectionId);
+				String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
+				Map<String, Object> returnMap = null;
+				try {
+					returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
+					if("0".equals(returnMap.get("code"))){
+						ajaxData.put("imgList", returnMap.get("imgList"));
+						ajaxData.put("pageCount", returnMap.get("pageCount"));
+						bean.addSuccess(ajaxData);
+					}else{
+						bean.addError(returnMap.get("message").toString());
+					}
+				} catch (Exception e) {
+					logger.error("------"+fileName+"文件转换异常------", e);
+					bean.addError("系统异常");
+				}
+			}
+			
 		}
 		return bean;
 	}

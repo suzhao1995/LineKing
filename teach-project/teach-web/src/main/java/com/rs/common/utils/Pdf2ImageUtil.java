@@ -34,7 +34,7 @@ public class Pdf2ImageUtil{
      * @param type 图片类型
 	 * @throws IOException 
      */
-    public static Map<String,Object> pdf2png(HttpServletRequest request,String fileAddress,String filename,String type) throws IOException {
+    public static Map<String,Object> pdf2png(HttpServletRequest request,String fileAddress,String filename,String type) throws Exception {
     	//文件保存路径
     	String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
         // 将pdf装图片 并且自定义图片得格式大小
@@ -60,8 +60,12 @@ public class Pdf2ImageUtil{
                 list.add(png_base64);
             }
             resultMap.put("imgList", list);
+            resultMap.put("code", "0");
+            resultMap.put("message", "转换成功");
         } catch (IOException e) {
             logger.error("------转换异常------", e);
+            resultMap.put("code", "-1");
+            resultMap.put("message", "系统异常");
         }finally {
 	        if (doc != null) {
 	            doc.close();
