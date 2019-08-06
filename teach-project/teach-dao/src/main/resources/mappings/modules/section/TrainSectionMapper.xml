@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.TrainSectionMapper">
 
-    <select id="selectAllSection" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
+    <select id="selectCourseSection" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
         SELECT  ts.train_section_Id,
               TC.train_course_Id,
               tc.train_course_Name,
@@ -17,13 +17,22 @@
               ts.train_litter_section_url,
               ts.train_litter_section_type
         FROM
-          tf_el_train_course AS tc
-        LEFT JOIN tf_el_train_pic_attr AS tpa
+          tf_el_train_course  tc
+        LEFT JOIN tf_el_train_pic_attr  tpa
 	        ON tpa.association_Id = tc.train_course_Id
-        LEFT JOIN tf_el_train_section AS ts
+        LEFT JOIN tf_el_train_section  ts
             ON tc.train_course_Id = ts.train_course_Id
         WHERE tc.train_course_Id = #{courseId}
 
+    </select>
+    <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
+        select * from tf_el_train_section
+        where train_section_Id = #{sectionId}
+    </select>
+    <select id="selectSectionList" resultType="com.rs.teach.mapper.section.entity.TrainSection">
+        select * from tf_el_train_section
+        where train_course_Id = #{trainCourseId}
+        and train_section_sort = #{trainSectionSort}
     </select>
 
 </mapper>

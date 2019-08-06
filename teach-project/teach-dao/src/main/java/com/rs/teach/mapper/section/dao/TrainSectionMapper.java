@@ -1,5 +1,6 @@
 package com.rs.teach.mapper.section.dao;
 
+import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +13,9 @@ import java.util.List;
  */
 public interface TrainSectionMapper {
 
-    List<TrainSectionVo> selectAllSection(@Param("courseId")String courseId);
+    List<TrainSectionVo> selectCourseSection(@Param("courseId")String courseId);
 
+    TrainSection selectTrainSection(@Param("sectionId") String sectionId);
+
+    List<TrainSection> selectSectionList(@Param("trainCourseId") String trainCourseId, @Param("trainSectionSort") String trainSectionSort);
 }

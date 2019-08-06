@@ -3,17 +3,61 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.UserCourseRelaMapper">
-
-    <select id="isNotEmpty" resultType="java.lang.Integer">
-        select count(1) from user_course_rela as ucr
+    <select id="studyStatus" resultType="java.lang.Integer">
+        select count(1) from user_course_rela ucr
         where ucr.course_Id = #{courseId}
         and ucr.user_Id = #{userId}
-        and ucr.rela_type = 1
+        and ucr.rela_type = #{relaType}
     </select>
 
-    <select id="selectStatus" resultType="com.rs.teach.mapper.section.entity.UserCourseRela">
-        select * from user_course_rela as ucr
+    <insert id="addRoot">
+        insert when (
+                      not exists (
+                                  select 1 from user_course_rela  where User_id = #{userId} and course_id = #{courseId} and section_id = '0'
+                                  )
+                    )
+        then
+        into USER_COURSE_RELA(course_Id,user_Id,section_id,rela_type)
+        values(#{courseId},#{userId},0,#{relaType})
+        select #{courseId},#{userId},0,#{relaType} from dual
+    </insert>
+
+    <select id="selectIsFinish" resultType="com.rs.teach.mapper.section.entity.UserCourseRela">
+        select * from user_course_rela  ucr
         where ucr.course_Id = #{courseId}
         and ucr.user_Id = #{userId}
     </select>
+
+    <!--section_id课程和用户根节点，为0代表根节点，其他对应章节表sectionId-->
+    <update id="join">
+        update user_course_rela ucr
+        set ucr.rela_type = #{relaType}
+        where ucr.course_id =#{courseId}
+        and ucr.user_id = #{userId}
+        and ucr.section_id = '0'
+    </update>
+
+    <insert id="addAll">
+        insert into user_course_rela ucr(course_ID,User_id,section_id,isfinish,rela_type)
+        select #{courseId},#{userId},train_section_id,#{isfinish},#{relaType}
+        from tf_el_train_section ts
+        where ts.train_course_id = #{courseId}
+        and not exists
+        (select 1 from user_course_rela  where User_id = #{userId} and course_id = #{courseId} and rela_type= #{relaType})
+    </insert>
+
+    <!--section_id课程和用户根节点，为0代表根节点，其他对应章节表sectionId-->
+    <update id="cancel">
+        update user_course_rela ucr
+        set ucr.rela_type = #{relaType}
+        where ucr.course_id =#{courseId}
+        and ucr.user_id = #{userId}
+        and ucr.section_id = '0'
+    </update>
+    <update id="updateIsFinish">
+        update user_course_rela set isFinish = #{isFinish}
+        where course_Id = #{trainCourseId}
+        and user_Id = #{userId]}
+        and section_Id = #{sectionId}
+    </update>
 </mapper>

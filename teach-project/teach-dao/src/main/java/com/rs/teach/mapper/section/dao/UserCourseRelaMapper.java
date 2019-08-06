@@ -1,7 +1,6 @@
 package com.rs.teach.mapper.section.dao;
 
 import com.rs.teach.mapper.section.entity.UserCourseRela;
-import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,7 +12,17 @@ import java.util.List;
  */
 public interface UserCourseRelaMapper {
 
-    int isNotEmpty(@Param("courseId") String courseId, @Param("userId") String userId);
+    Integer studyStatus(@Param("courseId") String courseId, @Param("userId") String userId, @Param("relaType")Integer relaType);
 
-    List<UserCourseRela> selectStatus(@Param("courseId")String courseId, @Param("userId")String userId);
+    void addRoot(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType")Integer relaType);
+
+    List<UserCourseRela> selectIsFinish(@Param("courseId")String courseId, @Param("userId")String userId);
+
+    void join(@Param("userId") String userId, @Param("courseId") String courseId ,@Param("relaType")Integer relaType);
+
+    void addAll(@Param("userId") String userId, @Param("courseId") String courseId,@Param("isfinish")Integer isfinish,@Param("relaType")Integer relaType);
+
+    void cancel(@Param("userId") String userId, @Param("courseId") String courseId , @Param("relaType")Integer relaType);
+
+    void updateIsFinish(@Param("trainCourseId") String trainCourseId, @Param("userId")String userId, @Param("sectionId")String sectionId, @Param("isFinish")Integer isFinish);
 }

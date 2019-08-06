@@ -1,19 +1,17 @@
 package com.rs.teach.controller.training;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
-import com.rs.teach.mapper.studyAttr.entity.TrainCourse;
+import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author 汪航
@@ -23,6 +21,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value ="/trainCourse")
 public class TrainCourseController {
+
+    private final static Logger logger = Logger.getLogger(TrainCourseController.class);
 
     @Autowired
     private TrainCourseService trainCourseService;
@@ -34,20 +34,19 @@ public class TrainCourseController {
      */
     @RequestMapping(value = "/pageInfo",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean pageInfo(TrainCourse trainCourse){
+    public ResponseBean pageInfo(PageDto pageDto){
         ResponseBean responseBean = new ResponseBean();
-        //分页查询
-        PageHelper.startPage(trainCourse.getPageNum(),trainCourse.getPageSize());
-        List<TrainCourseVo> list = trainCourseService.selectTrainCourse();
-        //查询总数
-        int resultCount = trainCourseService.count();
+        try {
+            //分页查询
+            PageInfo<TrainCourseVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> trainCourseService.selectTrainCourse());
+            responseBean.addSuccess(pageInfo);
+            return responseBean;
+        }catch (Exception  e){
+            logger.debug("培训课程-培训课程列表-查询失败",e);
+            responseBean.addError("查询失败");
+            return responseBean;
+        }
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("data",list);
-        map.put("total",resultCount);
-        responseBean.addSuccess(map);
-
-        return responseBean;
     }
 
 

@@ -14,5 +14,4 @@ public interface TrainCourseService {
 
     List<TrainCourseVo> selectTrainCourse();
 
-    int count();
 }

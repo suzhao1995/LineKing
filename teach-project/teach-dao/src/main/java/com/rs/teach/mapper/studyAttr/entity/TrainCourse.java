@@ -1,6 +1,6 @@
 package com.rs.teach.mapper.studyAttr.entity;
 
-import com.rs.teach.mapper.common.pageDto;
+import com.rs.teach.mapper.common.PageDto;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
 */
 @Data
 @ToString
-public class TrainCourse extends pageDto implements Serializable {
+public class TrainCourse extends PageDto implements Serializable {
 
 	/**
 	 *

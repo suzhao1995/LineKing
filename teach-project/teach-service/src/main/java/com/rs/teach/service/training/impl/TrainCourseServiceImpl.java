@@ -20,12 +20,8 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     private TrainCourseMapper trainCourseMapper;
 
     @Override
-    public List<TrainCourseVo> selectTrainCourse() {
+    public List<TrainCourseVo>  selectTrainCourse() {
         return trainCourseMapper.selectTrainCourse();
     }
 
-    @Override
-    public int count() {
-        return trainCourseMapper.count();
-    }
 }

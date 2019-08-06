@@ -1,5 +1,6 @@
 package com.rs.teach.service.training;
 
+import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 
 import java.util.List;
@@ -11,6 +12,10 @@ import java.util.List;
  */
 public interface TrainSectionService {
 
-    List<TrainSectionVo> selectAllSection(String courseId);
+    List<TrainSectionVo> selectCourseSection(String courseId);
+
+    TrainSection selectTrainSection(String sectionId);
+
+    List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort);
 
 }

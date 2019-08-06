@@ -13,5 +13,4 @@ public interface TrainCourseMapper {
 
     List<TrainCourseVo> selectTrainCourse();
 
-    int count();
 }

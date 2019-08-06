@@ -10,13 +10,10 @@
               PA.pic_url AS picUrl,
               TC.train_coursePic_url,
               tc.train_section_number
-        from tf_el_train_course as TC
-        left join tf_el_train_pic_attr as PA
+        from tf_el_train_course  TC
+        left join tf_el_train_pic_attr  PA
         on tc.train_course_Id = pa.association_Id
 
     </select>
 
-    <select id="count" resultType="java.lang.Integer">
-        select count(1) from tf_el_train_course
-    </select>
 </mapper>

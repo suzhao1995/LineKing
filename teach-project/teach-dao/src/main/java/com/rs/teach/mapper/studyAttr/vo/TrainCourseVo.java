@@ -1,6 +1,5 @@
 package com.rs.teach.mapper.studyAttr.vo;
 
-import com.rs.teach.mapper.common.pageDto;
 import lombok.Data;
 import lombok.ToString;
 

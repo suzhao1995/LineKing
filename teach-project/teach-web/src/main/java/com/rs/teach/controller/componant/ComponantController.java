@@ -117,10 +117,10 @@ public class ComponantController{
 		ResponseBean bean = new ResponseBean();
 		//获取登录的用户id
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-		
+
 		//上传文件
 		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, response, file);
-		
+
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
 			//判断用户是否上传过图片
 			User userInfo = userService.getUserById(userId);

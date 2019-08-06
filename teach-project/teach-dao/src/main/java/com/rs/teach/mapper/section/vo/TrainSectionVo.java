@@ -1,6 +1,5 @@
 package com.rs.teach.mapper.section.vo;
 
-import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
