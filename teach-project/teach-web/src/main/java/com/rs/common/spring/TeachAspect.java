@@ -8,10 +8,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.SessionUtil;
 
 @Component
@@ -20,16 +22,17 @@ public class TeachAspect {
 		Object returnObject = null;
 		// 获取session中的用户信息
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	    Signature signature = joinPoint.getSignature();
+	    String methodName = signature.getName();
 	    
-	    //前后端联调后打开注释 
-	    /*if(!isLogin(request)){
+	    //前后端联调后打开注释  方法名已verify开头的方法不需要进行登录验证
+	    if(!isLogin(request) && !methodName.toUpperCase().startsWith("VERIFY")){
 	    	//返回登录页面
-	    	Map<String,Object> map = new HashMap<String,Object>();
-	    	map.put("checkTag", "0");
-	    	map.put("message", "用户未登录");
-	    	returnObject = map;
+	    	ResponseBean bean = new ResponseBean();
+	    	bean.addError("-1", "用户未登录");
+	    	returnObject = bean;
 	    	return returnObject;
-	    }*/
+	    }
 	    try {
 			returnObject = joinPoint.proceed();
 		} catch (Throwable e) {

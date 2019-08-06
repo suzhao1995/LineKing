@@ -98,7 +98,7 @@ public class IndexController {
 	*/
 	@RequestMapping("/login")
 	@ResponseBody
-	public ResponseBean userLogin(HttpServletRequest request, HttpServletResponse response){
+	public ResponseBean verifyUserLogin(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
 		JSONObject json = new JSONObject();
 		

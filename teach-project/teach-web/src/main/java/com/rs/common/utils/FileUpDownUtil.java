@@ -130,18 +130,21 @@ public class FileUpDownUtil{
 				String officeUrl = dirPath + "/" + saveRealName;
 				String pdfUrl = dirPath + "/" + upLoadId+"_"+updateFileName+".pdf";
 				//调用pdf转换类
-				Map<String,Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
-				if("-1".equals(officeMap.get("resultCode"))){
-					resultMap.put("code", "-1");
-					resultMap.put("message", "文件上传异常");
-					//删除原始文件
-					File officeFile = new File(dirPath + "/" + saveRealName);
-					if(officeFile.exists()){
-						//删除
-						officeFile.delete();
+				if(!".pdf".equals(sectionType)){
+					
+					Map<String,Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
+					if("-1".equals(officeMap.get("resultCode"))){
+						resultMap.put("code", "-1");
+						resultMap.put("message", "文件上传异常");
+						//删除原始文件
+						File officeFile = new File(dirPath + "/" + saveRealName);
+						if(officeFile.exists()){
+							//删除
+							officeFile.delete();
+						}
+						logger.error("---------文件上传异常---------");
+						return resultMap;
 					}
-					logger.error("---------文件上传异常---------");
-					return resultMap;
 				}
 				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一	上传为章节课件 upLoadId = sectionId， 上传为修改课件， upLoadId = upLoadId
 				resultMap.put("updateFileName", updateFileName);
