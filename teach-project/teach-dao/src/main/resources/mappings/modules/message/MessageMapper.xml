@@ -29,4 +29,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{extend4}
 			)
 	</insert>
+	
+	<resultMap type="com.rs.teach.mapper.massage.entity.Message" id="message">
+		<result property="messageId" column="MESSAGE_ID" />
+		<result property="messageType" column="MESSAGE_TYPE" />
+		<result property="messageContent" column="MASSAGE_CONTENT" />
+		<result property="messageTime" column="MESSAGE_TIME" />
+		<result property="userId" column="USER_ID" />
+		<result property="isRead" column="IS_READ" />
+	</resultMap>
+	<select id="queryMessage" parameterType="java.lang.String" resultMap="message">
+		select * from tf_el_message t 
+			<where>
+				t.USER_ID = #{userId}
+				<if test="code != null and code != ''">
+					and t.MESSAGE_TYPE = #{code}
+				</if>
+			</where> 
+			order by to_char(to_date(t.message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
+	</select>
+	
+	
+	<select id="queryNotRead" parameterType="java.lang.String">
+		select * from tf_el_message t where t.USER_ID = #{userId} where t.IS_READ = "0" order by to_char(to_date(t.message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
+	</select>
+	
+	<update id="updateIsRead" parameterType="java.lang.String">
+		update tf_el_message t set t.IS_READ = '1' where t.USER_ID = #{userId} and t.MESSAGE_ID = #{messageId}
+	</update>
 </mapper>

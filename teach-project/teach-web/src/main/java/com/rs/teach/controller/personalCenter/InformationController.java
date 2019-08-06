@@ -1,6 +1,7 @@
 package com.rs.teach.controller.personalCenter;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DateUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
+import com.rs.teach.mapper.massage.entity.Message;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.message.MessageService;
@@ -113,6 +117,46 @@ public class InformationController{
 	@ResponseBody
 	public ResponseBean initMessage(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
+		
+		//获取页码值，默认为1
+		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
+		
+		String code = request.getParameter("code");
+		if("all".equals(code)){
+			code = null;
+		}
+		//获取登录的用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		PageHelper.startPage(Integer.valueOf(pageNum), 5);
+		//分页查询消息
+		List<Message> list = messageService.getMessageById(userId,code);
+		PageInfo<Message> pageInfo = new PageInfo<>(list,5);
+		bean.addSuccess(pageInfo);
+		return bean;
+	}
+	
+	/**
+	* 查看具体消息-修改isRead的值
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月5日 上午11:33:33
+	*/
+	@RequestMapping("/readMessage")
+	@ResponseBody
+	public ResponseBean readMessage(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//获取登录的用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String messageId = request.getParameter("messageId");
+		
+		int resultCode = messageService.modifyIsRead(userId, messageId);
+		if(resultCode == 1){
+			bean.addSuccess();
+		}else{
+			bean.addError("系统异常");
+		}
 		
 		return bean;
 	}

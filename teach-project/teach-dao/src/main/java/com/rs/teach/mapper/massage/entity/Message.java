@@ -14,6 +14,7 @@ public class Message implements Serializable{
 	private String messageContent;	//消息内容
 	private String messageTime;		//生成消息时间
 	private String userId;		//关联的userId
+	private String isRead;	//是否已读
 	private String extend1;	//预留字段
 	private String extend2;	//  
 	private String extend3;	//
@@ -61,6 +62,14 @@ public class Message implements Serializable{
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public String getIsRead() {
+		return isRead;
+	}
+
+	public void setIsRead(String isRead) {
+		this.isRead = isRead;
 	}
 
 	public String getExtend1() {

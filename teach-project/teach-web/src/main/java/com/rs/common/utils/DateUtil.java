@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 * DateUtil.java
@@ -13,7 +15,16 @@ import java.util.Date;
 * @version: V1.0
 */
 public class DateUtil{
-	
+	private static final Map<String,String> WEEK_MAP = new HashMap<String,String>();
+	static{
+		WEEK_MAP.put("1", "周一");
+		WEEK_MAP.put("2", "周二");
+		WEEK_MAP.put("3", "周三");
+		WEEK_MAP.put("4", "周四");
+		WEEK_MAP.put("5", "周五");
+		WEEK_MAP.put("6", "周六");
+		WEEK_MAP.put("7", "周日");
+	}
 	/**
 	* 日期转换为周几
 	* @param date
@@ -60,6 +71,10 @@ public class DateUtil{
 	public static Date StringToDate(String day, String format) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.parse(day);
+	}
+	
+	public static String getWeek(int weekDay){
+		return WEEK_MAP.get(weekDay);
 	}
 	
 	public static void main(String[] args) throws ParseException {

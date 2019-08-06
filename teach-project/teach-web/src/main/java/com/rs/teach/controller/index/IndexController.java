@@ -39,6 +39,7 @@ import com.rs.teach.service.timeTable.ScheduleService;
 @RequestMapping(value = "/index")
 public class IndexController {
 	private Logger logger  = Logger.getLogger(IndexController.class);
+	
 	/**
 	 * 用户 service
 	 * */
@@ -167,7 +168,10 @@ public class IndexController {
 		//获取用户信息
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		ajaxData.put("userName", userInfo.get("userName"));
-		
+		//获取用户未读消息
+		List<Message> list = messageService.queryNotRead(userInfo.get("userId").toString());
+		int messageSize = list.isEmpty() ? 0 : list.size();
+		ajaxData.put("messageSize", messageSize);
 		//判断用户是否修改过密码
 		boolean flag = userService.isModifyInfo(userInfo.get("userId").toString());
 		ajaxData.put("isModifyPwd", flag);	//首页弹窗
@@ -177,6 +181,7 @@ public class IndexController {
 			Schedule schedule = getSchedule(schedules);
 			if(schedule != null){
 				ajaxData.put("isContainsTable", "0");//是否编辑过课表
+				ajaxData.put("weekDay", DateUtil.getWeek(schedule.getWeekDay()));	//周几
 				ajaxData.put("curriculum", schedule.getCurriculum());	//课程名
 				ajaxData.put("startDate", schedule.getStartDate());	//课程开始
 				ajaxData.put("endDate", schedule.getEndDate());	//课程结束
