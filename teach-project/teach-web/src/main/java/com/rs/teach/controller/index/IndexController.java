@@ -175,6 +175,9 @@ public class IndexController {
 		//判断用户是否修改过密码
 		boolean flag = userService.isModifyInfo(userInfo.get("userId").toString());
 		ajaxData.put("isModifyPwd", flag);	//首页弹窗
+		//首页问候语
+		String helloWord = DateUtil.sayHello(new Date());
+		ajaxData.put("helloWord", helloWord);
 		if(userInfo != null){
 			String userId = userInfo.get("userId").toString();
 			List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
@@ -207,17 +210,22 @@ public class IndexController {
 		Schedule nextSchedule = null;
 		//获取用户当前登录时间
 		int weekDay = DateUtil.getWeekDay(new Date());
+		
 		long loginTime = new Date().getTime();	//
 		if(schedules.size() > 0){
 			for(int i = 0; i < schedules.size(); i++){
 				if(weekDay <= 5){
-					if(weekDay == schedules.get(i).getWeekDay() && DateUtil.StringToDate(schedules.get(i).getStartDate(), "hh:mm").getTime() > loginTime){
-						return schedules.get(i);
-					}else{
-						if(i < schedules.size()){
-							//取下一次课
-							return schedules.get(i+1);
+					if(weekDay == schedules.get(i).getWeekDay()){
+						if(DateUtil.StringToDate(schedules.get(i).getStartDate(), "hh:mm").getTime() > loginTime){
+							return schedules.get(i);
 						}else{
+							return schedules.get(i+1);
+						}
+					}else{
+						if(i < schedules.size() && schedules.get(i).getWeekDay() > weekDay){
+							//取下一次课
+							return schedules.get(i);
+						}else if( i == schedules.size()){
 							//取每周第一节课
 							return schedules.get(0);
 						}

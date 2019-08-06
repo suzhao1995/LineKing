@@ -50,8 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
-	<select id="queryNotRead" parameterType="java.lang.String">
-		select * from tf_el_message t where t.USER_ID = #{userId} where t.IS_READ = "0" order by to_char(to_date(t.message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
+	<select id="queryNotRead" parameterType="java.lang.String" resultMap="message">
+		select * from tf_el_message t where t.USER_ID = #{userId} and t.IS_READ = '0' order by to_char(to_date(t.message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
 	</select>
 	
 	<update id="updateIsRead" parameterType="java.lang.String">

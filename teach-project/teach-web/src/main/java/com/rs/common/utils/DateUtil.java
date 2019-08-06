@@ -15,15 +15,15 @@ import java.util.Map;
 * @version: V1.0
 */
 public class DateUtil{
-	private static final Map<String,String> WEEK_MAP = new HashMap<String,String>();
+	private static final Map<Integer,String> WEEK_MAP = new HashMap<Integer,String>();
 	static{
-		WEEK_MAP.put("1", "周一");
-		WEEK_MAP.put("2", "周二");
-		WEEK_MAP.put("3", "周三");
-		WEEK_MAP.put("4", "周四");
-		WEEK_MAP.put("5", "周五");
-		WEEK_MAP.put("6", "周六");
-		WEEK_MAP.put("7", "周日");
+		WEEK_MAP.put(1, "周一");
+		WEEK_MAP.put(2, "周二");
+		WEEK_MAP.put(3, "周三");
+		WEEK_MAP.put(4, "周四");
+		WEEK_MAP.put(5, "周五");
+		WEEK_MAP.put(6, "周六");
+		WEEK_MAP.put(7, "周日");
 	}
 	/**
 	* 日期转换为周几
@@ -73,13 +73,75 @@ public class DateUtil{
 		return sdf.parse(day);
 	}
 	
+	/**
+	* 根据WEEK_MAP值获取具体周几信息
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年8月6日 上午11:44:42
+	*/
 	public static String getWeek(int weekDay){
 		return WEEK_MAP.get(weekDay);
 	}
 	
+	/**
+	* 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
+	* 
+	* @param nowTime 当前时间
+	* @param startTime 开始时间
+	* @param endTime 结束时间
+	* @return
+	* @author jqlin
+	*/
+	public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+		if (nowTime.getTime() == startTime.getTime() || nowTime.getTime() == endTime.getTime()) {
+			return true;
+		}
+	
+		Calendar date = Calendar.getInstance();
+		date.setTime(nowTime);
+	
+		Calendar begin = Calendar.getInstance();
+		begin.setTime(startTime);
+	
+		Calendar end = Calendar.getInstance();
+		end.setTime(endTime);
+	
+		if (date.after(begin) && date.before(end)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	* 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
+	* 
+	* @param nowTime 当前时间
+	* @param startTime 开始时间
+	* @param endTime 结束时间
+	* @return
+	* @author jqlin
+	*/
+	public static String sayHello(Date nowTime) {
+		int now = Integer.valueOf(dateFormat(nowTime,"hhmmss"));
+		if(now<=55959 && now > 0){
+			return "凌晨好";
+		}else if(now > 55959 && now <= 115959){
+			return "早上好";
+		}else if(now > 115959 && now <= 135959){
+			return "中午好";
+		}else if(now > 135959 && now <= 175959){
+			return "下午好";
+		}else if(now > 175959 && now <= 235959){
+			return "晚上好";
+		}
+		return "中午好";
+	}
+	
 	public static void main(String[] args) throws ParseException {
-		Date d = StringToDate("8:00","hh:mm");
-		Date date = new Date();
-		System.out.println(date.getTime() > d.getTime());
+		int now = Integer.valueOf(dateFormat(new Date(),"hhmmss"));
+		System.out.println(now);
 	}
 }
