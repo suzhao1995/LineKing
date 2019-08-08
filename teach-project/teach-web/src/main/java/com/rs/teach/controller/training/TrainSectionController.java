@@ -192,7 +192,6 @@ public class TrainSectionController {
 
             //查询返回页面信息（pdf图片文件）
 
-
             responseBean.addSuccess(map);
             return responseBean;
         }catch (Exception e){
@@ -204,24 +203,19 @@ public class TrainSectionController {
 
 
     /**
-     * 资源下载
+     * 资源下载（当前小章节）
      */
     @RequestMapping(value = "download", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean download() {
         ResponseBean responseBean = new ResponseBean();
+        try {
+
+        }catch (Exception e){
+            logger.error("当前小章节-下载失败",e);
+            responseBean.addError("下载失败");
+        }
         return responseBean;
     }
-
-    /**
-     * 课件内容资源下载
-     */
-    @RequestMapping(value = "downloadAll", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean downloadAll() {
-        ResponseBean responseBean = new ResponseBean();
-        return responseBean;
-    }
-
 
 }

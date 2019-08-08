@@ -26,4 +26,15 @@ public class SummaryServiceImpl implements SummaryService {
     public void addSummary(Summary summary) {
         summaryMapper.addSummary(summary);
     }
+
+    @Override
+    public boolean isEmpty(Summary summary) {
+        int result = summaryMapper.isEmpty(summary);
+        return result > 0 ? true : false;
+    }
+
+    @Override
+    public Summary querySummary(Summary summary) {
+        return summaryMapper.querySummary(summary);
+    }
 }

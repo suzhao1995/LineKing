@@ -15,4 +15,8 @@ public interface SummaryService {
     void saveSummary(Summary summary);
 
     void addSummary(Summary summary);
+
+    boolean isEmpty(Summary summary);
+
+    Summary querySummary(Summary summary);
 }

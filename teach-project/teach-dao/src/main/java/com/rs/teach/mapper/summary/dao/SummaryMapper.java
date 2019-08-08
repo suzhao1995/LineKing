@@ -12,4 +12,8 @@ public interface SummaryMapper {
     int saveSummary(Summary summary);
 
     void addSummary(Summary summary);
+
+    int isEmpty(Summary summary);
+
+    Summary querySummary(Summary summary);
 }

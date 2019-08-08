@@ -80,15 +80,6 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
         courseNote.setNote("");
         courseNoteService.addAllNote(courseNote);
 
-        //插入课程总结表
-        TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
-        Summary summary = new Summary();
-        summary.setCourseId(courseId);
-        summary.setUserId(userId);
-        summary.setSectionSort(trainSection.getTrainSectionSort());
-        summary.setSummary("");
-        summaryService.addSummary(summary);
-
         //查询笔记信息
         if (!StrUtil.isEmpty(sectionId)) {
             courseNote.setSectionId(sectionId);

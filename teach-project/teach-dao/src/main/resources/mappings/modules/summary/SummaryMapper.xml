@@ -4,15 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.summary.dao.SummaryMapper">
     <insert id="addSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
-        insert
-        when (
-              not exists (
-              select #{sectionSort} from TF_EL_SUMMARY
-                    where user_id = #{userId} and section_sort = #{sectionSort} and course_id = #{summary}
-                    )
-              ) then
-        into TF_EL_SUMMARY(user_id, section_sort, course_id, summary) values(#{userId},#{sectionSort},#{summary},'')
-        select #{userId},#{sectionSort},#{summary} from dual
+        insert into TF_EL_SUMMARY(user_id, section_sort, course_id, summary)
+        values (#{userId},#{sectionSort},#{courseId},#{summary})
     </insert>
 
     <update id="saveSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
@@ -22,4 +15,17 @@
         and course_id = #{courseId}
         and section_sort = #{sectionSort}
     </update>
+
+    <select id="isEmpty" parameterType="com.rs.teach.mapper.summary.entity.Summary" resultType="java.lang.Integer">
+        select count(1) from TF_EL_SUMMARY
+        where USER_ID = #{userId}
+        AND course_id = #{courseId}
+        and section_sort = #{sectionSort}
+    </select>
+    <select id="querySummary" parameterType="com.rs.teach.mapper.summary.entity.Summary" resultType="com.rs.teach.mapper.summary.entity.Summary">
+        select * from TF_EL_SUMMARY
+        where USER_ID = #{userId}
+        AND course_id = #{courseId}
+        and section_sort = #{sectionSort}
+    </select>
 </mapper>

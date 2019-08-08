@@ -241,8 +241,8 @@ public class FileUpDownUtil{
         String sortDir = "/"+ dir1 + "/" + dir2;
         pathMap.put("dir", dir);
         pathMap.put("sortDir", sortDir);
-        
-        File file = new File(dir);
+
+		File file = new File(dir);
         if(!file.exists()){
             //创建目录
             file.mkdirs();

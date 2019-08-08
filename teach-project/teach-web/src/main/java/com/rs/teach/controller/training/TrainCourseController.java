@@ -46,7 +46,22 @@ public class TrainCourseController {
             responseBean.addError("查询失败");
             return responseBean;
         }
+    }
 
+    /**
+     * 课件内容全部下载（当前课程）
+     */
+    @RequestMapping(value = "downloadAll", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean downloadAll(String courseId) {
+        ResponseBean responseBean = new ResponseBean();
+        try {
+
+        }catch (Exception e){
+            logger.error("当前课程-下载失败",e);
+            responseBean.addError("下载失败");
+        }
+        return responseBean;
     }
 
 

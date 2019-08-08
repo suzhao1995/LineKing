@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Section.java
  *
- * @Description:章节实体类
+ * @Description:培训章节实体类
  * @author: suzhao
  * @date: 2019年7月31日 下午1:27:12
  * @version: V1.0
