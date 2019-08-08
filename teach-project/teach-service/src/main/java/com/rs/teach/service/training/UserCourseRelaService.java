@@ -13,7 +13,7 @@ public interface UserCourseRelaService {
 
     Integer studyStatus(String courseId, String userId);
 
-    void join(String userId, String courseId);
+    String join(String sectionId,String courseId , String userId);
 
     void addRoot(String userId, String courseId);
 

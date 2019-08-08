@@ -24,11 +24,11 @@ public class TrainSection implements Serializable {
     private String trainCourseId;    //培训课程资源id
     private String trainSectionSort;    //培训大章节序号
     private String trainSectionName;    //培训大章节名
-    private String train_litter_section_sort;   //培训小章节序号
-    private String train_litter_section_name;   //培训小章节name
-    private String train_litter_section_url;    //培训小章节url
-    private String train_litter_section_type;   //培训小章节type(ppt,pdf,word)
-    private String update_file_name;            //文件上传name
+    private String trainLitterSectionSort;   //培训小章节序号
+    private String trainLitterSectionName;   //培训小章节name
+    private String trainLitterSectionUrl;    //培训小章节文件url
+    private String trainLitterSectionType;   //培训小章节type(ppt,pdf,word)
+    private String updateFileName;            //文件上传name
     private String extend1;    //预留字段
     private String extend2;
     private String extend3;

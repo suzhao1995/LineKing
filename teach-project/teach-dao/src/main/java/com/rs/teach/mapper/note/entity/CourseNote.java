@@ -1,14 +1,14 @@
-package com.rs.teach.mapper.node.entity;
+package com.rs.teach.mapper.note.entity;
 
 import lombok.Data;
 
 /**
  * @author 汪航
- * @Description
+ * @Description 笔记表
  * @create 2019-08-06 12:42
  */
 @Data
-public class CourseNode {
+public class CourseNote {
 
     private String userId; //用户id
     private String sectionId;  //章节id

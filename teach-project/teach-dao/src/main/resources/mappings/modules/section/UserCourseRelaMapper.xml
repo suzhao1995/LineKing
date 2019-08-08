@@ -26,9 +26,9 @@
         select * from user_course_rela  ucr
         where ucr.course_Id = #{courseId}
         and ucr.user_Id = #{userId}
+        and ucr.rela_type = 0
     </select>
 
-    <!--section_id课程和用户根节点，为0代表根节点，其他对应章节表sectionId-->
     <update id="join">
         update user_course_rela ucr
         set ucr.rela_type = #{relaType}
@@ -46,7 +46,6 @@
         (select 1 from user_course_rela  where User_id = #{userId} and course_id = #{courseId} and rela_type= #{relaType})
     </insert>
 
-    <!--section_id课程和用户根节点，为0代表根节点，其他对应章节表sectionId-->
     <update id="cancel">
         update user_course_rela ucr
         set ucr.rela_type = #{relaType}
@@ -57,7 +56,7 @@
     <update id="updateIsFinish">
         update user_course_rela set isFinish = #{isFinish}
         where course_Id = #{trainCourseId}
-        and user_Id = #{userId]}
+        and user_Id = #{userId}
         and section_Id = #{sectionId}
     </update>
 </mapper>

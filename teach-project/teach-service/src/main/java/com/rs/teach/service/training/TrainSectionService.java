@@ -14,6 +14,11 @@ public interface TrainSectionService {
 
     List<TrainSectionVo> selectCourseSection(String courseId);
 
+    /**
+     * 查询返回页面信息（1.当前小章节全部信息)
+     * @param sectionId
+     * @return
+     */
     TrainSection selectTrainSection(String sectionId);
 
     List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort);

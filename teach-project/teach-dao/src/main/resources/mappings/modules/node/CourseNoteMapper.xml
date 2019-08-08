@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.note.dao.CourseNoteMapper">
+
+    <update id="saveNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
+        update tf_el_note set note = #{note}
+        where course_Id =#{courseId}
+        and user_Id =#{userId}
+        and section_Id =#{sectionId}
+    </update>
+
+    <select id="selectNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote" resultType="java.lang.String">
+         select NOTE from tf_el_note
+         <where>
+             and user_Id = #{userId}
+             and course_Id = #{courseId}
+             <if test="sectionId != null and sectionId !=''">
+                 and section_Id = #{sectionId}
+             </if>
+         </where>
+    </select>
+
+    <insert id="addAllNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
+        insert into tf_el_note ucr(course_ID,User_id,section_id,note)
+        select #{courseId},#{userId},train_section_id,#{note}
+        from tf_el_train_section ts
+        where ts.train_course_id = #{courseId}
+        and not exists
+        (select 1 from tf_el_note  where User_id = #{userId} and course_id = #{courseId})
+    </insert>
+
+</mapper>

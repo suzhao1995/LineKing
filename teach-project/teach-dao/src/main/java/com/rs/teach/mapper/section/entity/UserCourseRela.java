@@ -15,10 +15,10 @@ public class UserCourseRela {
     private String courseId;
 
     //用户id
-    private String user_Id;
+    private String userId;
 
     //章节id
-    private String section_Id;
+    private String sectionId;
 
     /**
      *  NO_SIGN(0, "待报名"),
@@ -29,11 +29,11 @@ public class UserCourseRela {
      */
     private String isFinish;
 
-    //关联类型（0：章节，1：课程）
+    //关联类型（0：章节，1：课程 , 2: 课程取消）
     private String relaType;
 
     //班级Id
-    private String class_id;
+    private String classId;
 
     //预留字段
     private String extend1;

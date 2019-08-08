@@ -29,7 +29,7 @@ public class TrainCourseController {
 
     /**
      * 分页查询培训课程
-     * @param trainCourse
+     * @param pageDto
      * @return
      */
     @RequestMapping(value = "/pageInfo",method = RequestMethod.POST)

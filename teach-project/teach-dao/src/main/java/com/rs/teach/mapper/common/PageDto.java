@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 /**
  * @author 汪航
- * @Description
+ * @Description  分页参数表
  * @create 2019-08-02 12:37
  */
 public class PageDto implements Serializable {
     private static final long serialVersionUID = 626251076886681368L;
 
-    private int pageSize;   //每页记录数
+    private int pageSize = 10;   //每页记录数
     private int pageNum;    //第几页
 
     /**

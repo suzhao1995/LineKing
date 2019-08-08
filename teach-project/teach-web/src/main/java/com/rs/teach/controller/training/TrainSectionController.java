@@ -6,11 +6,11 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import com.rs.teach.mapper.common.Enums.RelaTypeEnum;
-import com.rs.teach.mapper.node.entity.CourseNode;
+import com.rs.teach.mapper.note.entity.CourseNote;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.entity.UserCourseRela;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
-import com.rs.teach.service.node.CourseNodeService;
+import com.rs.teach.service.note.CourseNoteService;
 import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
@@ -49,7 +49,8 @@ public class TrainSectionController {
     /**
      * 课程笔记表service
      */
-    private CourseNodeService courseNodeService;
+    @Autowired
+    private CourseNoteService courseNoteService;
 
     /**
      * 查询所有的课程章节
@@ -67,7 +68,6 @@ public class TrainSectionController {
 
         try {
             //参数效验
-            BPUtil.check(StrUtil.isEmpty(sessionKey),"用户未登录");
             BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
@@ -106,13 +106,16 @@ public class TrainSectionController {
         ResponseBean responseBean = new ResponseBean();
         String sessionKey = request.getParameter("sessionKey");
         String courseId = request.getParameter("courseId");
+        String sectionId = request.getParameter("sectionId");
         try {
-            //参数效验
-            BPUtil.check(StrUtil.isEmpty(sessionKey),"用户未登录");
-            BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
+
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
             //加入到我的课程
-            userCourseRelaService.join(userId, courseId);
+            String note =  userCourseRelaService.join(sectionId, courseId,userId);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("note",note);
+
+            responseBean.addSuccess(map);
             return responseBean;
         } catch (Exception e) {
             logger.debug("培训-加入我的课程-失败", e);
@@ -132,7 +135,6 @@ public class TrainSectionController {
         String courseId = request.getParameter("courseId");
         try {
             //参数效验
-            BPUtil.check(StrUtil.isEmpty(sessionKey),"用户未登录");
             BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
 
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
@@ -157,7 +159,7 @@ public class TrainSectionController {
         String sectionId = request.getParameter("sectionId");
         try{
             //参数效验
-            BPUtil.check(StrUtil.isEmpty(sessionKey),"用户未登录");
+            
             BPUtil.check(StrUtil.isEmpty(sectionId),"没有章节Id");
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
@@ -180,8 +182,12 @@ public class TrainSectionController {
 
             //查询返回页面信息（课程笔记）
             if(status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name())){
-                CourseNode courseNode = courseNodeService.selectNode(trainSection.getTrainCourseId(),userId,sectionId);
-                map.put("node",courseNode.getNote());
+                CourseNote courseNote = new CourseNote();
+                courseNote.setSectionId(sectionId);
+                courseNote.setUserId(userId);
+                courseNote.setCourseId(trainSection.getTrainCourseId());
+                String note  = courseNoteService.selectNote(courseNote);
+                map.put("note",note);
             }
 
             //查询返回页面信息（pdf图片文件）
@@ -194,17 +200,6 @@ public class TrainSectionController {
             responseBean.addError(e.getMessage());
             return responseBean;
         }
-    }
-
-    /**
-     * 保存笔记
-     */
-    @RequestMapping(value = "saveNode", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean saveNode(CourseNode courseNode) {
-        ResponseBean responseBean = new ResponseBean();
-        courseNodeService.saveNode(courseNode);
-        return responseBean;
     }
 
 

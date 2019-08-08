@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.summary.dao.SummaryMapper">
+    <insert id="addSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
+        insert
+        when (
+              not exists (
+              select #{sectionSort} from TF_EL_SUMMARY
+                    where user_id = #{userId} and section_sort = #{sectionSort} and course_id = #{summary}
+                    )
+              ) then
+        into TF_EL_SUMMARY(user_id, section_sort, course_id, summary) values(#{userId},#{sectionSort},#{summary},'')
+        select #{userId},#{sectionSort},#{summary} from dual
+    </insert>
+
+    <update id="saveSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
+        update TF_EL_SUMMARY
+        set summary = #{summary}
+        where user_id = #{userId}
+        and course_id = #{courseId}
+        and section_sort = #{sectionSort}
+    </update>
+</mapper>
