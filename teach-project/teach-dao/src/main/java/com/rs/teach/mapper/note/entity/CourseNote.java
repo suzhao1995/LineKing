@@ -19,4 +19,6 @@ public class CourseNote {
     private String extend2;	//
     private String extend3;	//
     private String extend4;	//
+	
+    
 }

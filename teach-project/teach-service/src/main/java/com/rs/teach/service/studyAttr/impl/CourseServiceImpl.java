@@ -68,5 +68,16 @@ public class CourseServiceImpl implements CourseService{
 	public int addSummary(NoteSummary noteSummary) {
 		return mapper.insertSummary(noteSummary);
 	}
+
+	@Override
+	public List<Course> getCourse(String courseType, String schoolId, String courseLev, String likeSearch) {
+		Map<String,String> conMap = new HashMap<String,String>();
+		conMap.put("con_courseType", courseType);
+		conMap.put("con_schoolId", schoolId);
+		conMap.put("con_courseLev", courseLev);
+		conMap.put("con_likeSearch", likeSearch);
+		List<Course> list = mapper.queryCourse(conMap);
+		return list;
+	}
 	
 }

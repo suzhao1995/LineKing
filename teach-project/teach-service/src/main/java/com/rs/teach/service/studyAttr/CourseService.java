@@ -86,4 +86,14 @@ public interface CourseService{
 	* @date 2019年7月31日 上午11:48:37
 	*/
 	public int addSummary(NoteSummary noteSummary);
+	
+	/**
+	* 课程资源初始化页面接口
+	* @param 
+	* @throws
+	* @return List<Course>
+	* @author suzhao
+	* @date 2019年8月9日 下午4:23:15
+	*/
+	public List<Course> getCourse(String courseType, String schoolId, String courseLev,String likeSearch);
 }

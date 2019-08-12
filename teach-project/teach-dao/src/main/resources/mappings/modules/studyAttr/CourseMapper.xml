@@ -122,4 +122,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{summary}
 			)
 	</insert>
+	
+	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Course" id="queryCourseMap">
+		<result property="courseId" column="COURSE_ID" />
+		<result property="courseName" column="COURSE_NAME" />
+		<result property="sectionNumber" column="SECTION_NUMBER" />
+		<result property="coursePicUrl" column="COURSEPIC_URL" /> 
+		<result property="courseWare" column="COURSEWARE" />
+		<result property="schoolWork" column="SCHOOLWORK" />
+		<result property="testPaper" column="TESTPAPER" />
+		<result property="courseType" column="COURSE_TYPE" />
+		<result property="schoolId" column="SCHOOL_ID" />
+		<result property="courseLev" column="COURSE_LEV" />
+	</resultMap>
+	<!-- 分页查询课程信息 -->
+	<select id="queryCourse" parameterType="map" resultMap="queryCourseMap">
+		select * from tf_el_course t 
+			<where>
+				t.COURSE_TYPE = #{con_courseType} 
+				and t.SCHOOL_ID = #{con_schoolId} 
+				and t.COURSE_LEV = #{con_courseLev}
+				<if test="con_likeSearch != null and con_likeSearch != ''">
+					and t.COURSE_NAME like '%'||#{con_likeSearch}||'%'
+				</if>
+			</where> 
+	</select>
 </mapper>

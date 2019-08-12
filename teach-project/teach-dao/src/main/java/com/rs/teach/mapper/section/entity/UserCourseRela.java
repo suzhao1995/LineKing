@@ -40,4 +40,66 @@ public class UserCourseRela {
     private String extend2;
     private String extend3;
     private String extend4;
+	public String getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getSectionId() {
+		return sectionId;
+	}
+	public void setSectionId(String sectionId) {
+		this.sectionId = sectionId;
+	}
+	public String getIsFinish() {
+		return isFinish;
+	}
+	public void setIsFinish(String isFinish) {
+		this.isFinish = isFinish;
+	}
+	public String getRelaType() {
+		return relaType;
+	}
+	public void setRelaType(String relaType) {
+		this.relaType = relaType;
+	}
+	public String getClassId() {
+		return classId;
+	}
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
+	public String getExtend1() {
+		return extend1;
+	}
+	public void setExtend1(String extend1) {
+		this.extend1 = extend1;
+	}
+	public String getExtend2() {
+		return extend2;
+	}
+	public void setExtend2(String extend2) {
+		this.extend2 = extend2;
+	}
+	public String getExtend3() {
+		return extend3;
+	}
+	public void setExtend3(String extend3) {
+		this.extend3 = extend3;
+	}
+	public String getExtend4() {
+		return extend4;
+	}
+	public void setExtend4(String extend4) {
+		this.extend4 = extend4;
+	}
+    
+    
 }

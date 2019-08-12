@@ -90,4 +90,14 @@ public interface CourseMapper{
 	* @date 2019年7月31日 上午11:48:37
 	*/
 	public int insertSummary(NoteSummary noteSummary);
+	
+	/**
+	* 分页查询所有课程
+	* @param 
+	* @throws
+	* @return List<Course>
+	* @author suzhao
+	* @date 2019年8月9日 下午12:21:31
+	*/
+	public List<Course> queryCourse(Map<String,String> conMap);
 }

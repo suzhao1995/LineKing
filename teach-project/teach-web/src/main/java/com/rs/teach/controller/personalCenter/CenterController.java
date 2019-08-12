@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
@@ -195,6 +197,8 @@ public class CenterController{
 		
 		//获取登录的用户id
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		//获取页码值，默认为1
+		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		//查询用户所教班级
 		List<Map<String,Object>> teams = scheduleService.getStudyTeamByUserId(userId);
@@ -203,6 +207,9 @@ public class CenterController{
 		if("all".equals(classId)){
 			classId = null;
 		}
+		
+		//初始化分页信息
+		PageHelper.startPage(Integer.valueOf(pageNum), 9);
 		//查询用户所教各班级课程
 		List<Map<String,Object>> list = courseService.getCourseInfoForUser(userId,classId);
 		for(Map<String,Object> map : list){
@@ -210,10 +217,13 @@ public class CenterController{
 			int number = finishSec == null ? 0 : finishSec.size();	//已学完章节数量
 			map.put("finishNumber", number);
 			int totleNum = Integer.valueOf(map.get("sectionNumber").toString());	//课程章节总数
-			String percentage = getDoubleDigit(number,totleNum);	//进度条 保留两位小数
+			double doubleDigit = Double.valueOf(getDoubleDigit(number,totleNum));	//进度条
+			int percentage = (int)(doubleDigit * 100);	
+			
 			map.put("percentage", percentage);	
 		}
-		ajaxData.put("speedInfo", list);
+		PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list,9);
+		ajaxData.put("speedInfo", pageInfo);
 		bean.addSuccess(ajaxData);
 		return bean;
 	}
@@ -423,6 +433,5 @@ public class CenterController{
 		DecimalFormat df=new DecimalFormat("0.00");
 		return df.format((float)num/totleNum);
     }
-	
 	
 }

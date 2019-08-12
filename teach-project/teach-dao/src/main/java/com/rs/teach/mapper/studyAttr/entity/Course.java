@@ -19,10 +19,14 @@ public class Course implements Serializable{
 	private String courseId;	//课程ID
 	private String courseName;	//课程名称
 	private String sectionNumber;	//章节总数
-	private String coursePicUrl;	//课程资源Url
+	private String coursePicUrl;	//课程封面Url
 	private String courseWare;	//是否含有课件（1：是；0否）
 	private String schoolWork;	//是否含有作业（1：是；0否）
 	private String testPaper;	//是否含有试卷（1：是；0否）
+	private String courseType;	//课程类型
+	private String schoolId;	//校区id
+	private String courseLev;	//课程等级
+	private String isBelongMe;	//是否属于我的课程
 	
 	public Course() {
 		
@@ -83,7 +87,38 @@ public class Course implements Serializable{
 	public void setTestPaper(String testPaper) {
 		this.testPaper = testPaper;
 	}
-	
+
+	public String getCourseType() {
+		return courseType;
+	}
+
+	public void setCourseType(String courseType) {
+		this.courseType = courseType;
+	}
+
+	public String getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public String getCourseLev() {
+		return courseLev;
+	}
+
+	public void setCourseLev(String courseLev) {
+		this.courseLev = courseLev;
+	}
+
+	public String getIsBelongMe() {
+		return isBelongMe;
+	}
+
+	public void setIsBelongMe(String isBelongMe) {
+		this.isBelongMe = isBelongMe;
+	}
 	
 	
 	
