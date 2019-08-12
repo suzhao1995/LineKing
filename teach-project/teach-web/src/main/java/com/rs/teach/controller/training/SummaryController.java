@@ -7,6 +7,7 @@ import com.rs.teach.service.training.SummaryService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,7 +36,7 @@ public class SummaryController {
      */
     @RequestMapping(value = "saveSummary", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean saveSummary(Summary summary, String sessionKey) {
+    public ResponseBean saveSummary(@RequestBody Summary summary, String sessionKey) {
         ResponseBean responseBean = new ResponseBean();
         String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
         summary.setUserId(userId);
@@ -62,7 +63,7 @@ public class SummaryController {
      */
     @RequestMapping(value = "querySummary", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean querySummary(Summary summary, String sessionKey) {
+    public ResponseBean querySummary(@RequestBody Summary summary, String sessionKey) {
         ResponseBean responseBean = new ResponseBean();
         String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
         summary.setUserId(userId);

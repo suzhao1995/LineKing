@@ -42,6 +42,7 @@
         select #{courseId},#{userId},train_section_id,#{isfinish},#{relaType}
         from tf_el_train_section ts
         where ts.train_course_id = #{courseId}
+        and ts.train_litter_section_url is null
         and not exists
         (select 1 from user_course_rela  where User_id = #{userId} and course_id = #{courseId} and rela_type= #{relaType})
     </insert>

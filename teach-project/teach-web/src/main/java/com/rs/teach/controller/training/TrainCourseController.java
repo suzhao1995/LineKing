@@ -9,6 +9,7 @@ import com.rs.teach.service.training.TrainCourseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,7 +35,7 @@ public class TrainCourseController {
      */
     @RequestMapping(value = "/pageInfo",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean pageInfo(PageDto pageDto){
+    public ResponseBean pageInfo(@RequestBody PageDto pageDto){
         ResponseBean responseBean = new ResponseBean();
         try {
             //分页查询
@@ -53,7 +54,7 @@ public class TrainCourseController {
      */
     @RequestMapping(value = "downloadAll", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean downloadAll(String courseId) {
+    public ResponseBean downloadAll(@RequestBody String courseId) {
         ResponseBean responseBean = new ResponseBean();
         try {
 

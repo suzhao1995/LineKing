@@ -1,11 +1,8 @@
 package com.rs.common.utils;
 
-import cn.hutool.core.util.StrUtil;
-
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 /**
 * UserInfoUtil.java
@@ -15,6 +12,7 @@ import javax.servlet.http.HttpSession;
 * @version: V1.0
 */
 public class UserInfoUtil{
+
 	/**
 	* 获取userId
 	* @param sessionKey
@@ -34,5 +32,4 @@ public class UserInfoUtil{
 		}
 		return userInfoMap;
 	}
-	
 }

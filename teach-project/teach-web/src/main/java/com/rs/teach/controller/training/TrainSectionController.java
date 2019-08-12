@@ -16,11 +16,11 @@ import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,17 +55,15 @@ public class TrainSectionController {
     /**
      * 查询所有的课程章节
      *
-     * @param request
+     * @param sessionKey
+     * @param courseId
      * @return
      */
     @RequestMapping(value = "selectSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean selectSection(HttpServletRequest request) {
+    public ResponseBean selectSection(String sessionKey,@RequestBody String courseId) {
         ResponseBean responseBean = new ResponseBean();
         HashMap<String, Object> map = new HashMap<>();
-        String sessionKey = request.getParameter("sessionKey");
-        String courseId = request.getParameter("courseId");
-
         try {
             //参数效验
             BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
@@ -102,11 +100,8 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "join", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean join(HttpServletRequest request) {
+    public ResponseBean join(String sessionKey,@RequestBody String courseId,@RequestBody String sectionId) {
         ResponseBean responseBean = new ResponseBean();
-        String sessionKey = request.getParameter("sessionKey");
-        String courseId = request.getParameter("courseId");
-        String sectionId = request.getParameter("sectionId");
         try {
 
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
@@ -129,10 +124,8 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "cancel", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean cancel(HttpServletRequest request) {
+    public ResponseBean cancel(String sessionKey,@RequestBody String courseId) {
         ResponseBean responseBean = new ResponseBean();
-        String sessionKey = request.getParameter("sessionKey");
-        String courseId = request.getParameter("courseId");
         try {
             //参数效验
             BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
@@ -153,10 +146,8 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "seeOnline", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean seeOnline(HttpServletRequest request) {
+    public ResponseBean seeOnline(String sessionKey,@RequestBody String sectionId) {
         ResponseBean responseBean = new ResponseBean();
-        String sessionKey = request.getParameter("sessionKey");
-        String sectionId = request.getParameter("sectionId");
         try{
             //参数效验
             
@@ -204,6 +195,7 @@ public class TrainSectionController {
 
     /**
      * 资源下载（当前小章节）
+     *  trainSectionId  文件上传保存的唯一id
      */
     @RequestMapping(value = "download", method = RequestMethod.POST)
     @ResponseBody

@@ -2,13 +2,17 @@ package com.rs.teach.mapper.summary.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author 汪航
  * @Description  课后总结表
  * @create 2019-08-07 12:55
  */
 @Data
-public class Summary {
+public class Summary implements Serializable {
+
+    private static final long serialVersionUID = -3727256124304976730L;
 
     private String userId; //用户id
     private String sectionSort;  //大章节序号
