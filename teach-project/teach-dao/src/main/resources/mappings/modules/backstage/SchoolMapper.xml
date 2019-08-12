@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.SchoolMapper">
+
+    <insert id="addSchool" parameterType="com.rs.teach.mapper.backstage.entity.School">
+        insert into TF_EL_SCHOOL(school_id, school_name, school_address)
+        VALUES (SEQ_EL_SCHOOL.nextval,#{schoolName},#{schoolAddress})
+    </insert>
+
+    <update id="updateSchool" parameterType="com.rs.teach.mapper.backstage.entity.School">
+        update TF_EL_SCHOOL set SCHOOL_ADDRESS = #{schoolAddress},SCHOOL_NAME = #{schoolName}
+        where SCHOOL_ID = #{schoolId}
+    </update>
+
+    <delete id="deleteSchool">
+        delete from TF_EL_SCHOOL
+        where SCHOOL_ID = #{schoolId}
+    </delete>
+    <select id="selectSchool" resultType="com.rs.teach.mapper.backstage.entity.School">
+        select * from TF_EL_SCHOOL
+    </select>
+</mapper>
