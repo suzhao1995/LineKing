@@ -147,4 +147,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 			</where> 
 	</select>
+	
+	<!-- 根据课程id查询课程信息 -->
+	<select id="selectCourseByCourseId" parameterType="java.lang.String" resultMap="queryCourseMap">
+		select * from tf_el_course where COURSE_ID = #{courseId}
+	</select>
 </mapper>

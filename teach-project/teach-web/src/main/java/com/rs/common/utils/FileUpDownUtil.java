@@ -149,6 +149,7 @@ public class FileUpDownUtil{
 				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一	上传为章节课件 upLoadId = sectionId， 上传为修改课件， upLoadId = upLoadId
 				resultMap.put("updateFileName", updateFileName);
 				resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
+				resultMap.put("pdfUrl", pdfUrl);	//完整的pdf保存路径
 				resultMap.put("sectionType", sectionType);
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");

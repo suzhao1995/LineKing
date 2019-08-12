@@ -22,4 +22,8 @@ public interface UserCourseRelaService {
     List<UserCourseRela> selectIsFinish(String courseId, String userId);
 
     void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish);
+    
+    int addCourse(String courseId, String userId, String classId);
+    
+    void addAllSection(String courseId, String userId, String classId);
 }

@@ -34,6 +34,11 @@ public class SectionServiceImpl implements SectionService{
 	public Section getUpLoadSection(String upLoadId) {
 		return mapper.queryUpLoadSection(upLoadId);
 	}
+
+	@Override
+	public List<Section> getSectionByCourseId(String courseId) {
+		return mapper.querySectionByCourseId(courseId);
+	}
 	
 	
 }

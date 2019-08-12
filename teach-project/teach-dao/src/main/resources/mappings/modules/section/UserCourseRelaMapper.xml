@@ -60,4 +60,33 @@
         and user_Id = #{userId}
         and section_Id = #{sectionId}
     </update>
+    
+    <!-- 添加课程信息进入我的课程 -->
+    <insert id="insertCourse" parameterType="java.lang.String">
+    	insert into user_course_rela 
+    		(
+    			COURSE_ID,
+    			USER_ID,
+    			RELA_TYPE,
+    			CLASS_ID
+    		)
+    	values
+    		(
+    			#{courseId},
+    			#{userId},
+    			'1',
+    			#{classId}
+    		)
+    </insert>
+    <!-- 添加课程的章节信息信息进入我的课程 -->
+    <insert id="insertAllSection" parameterType="java.lang.String">
+    	insert into user_course_rela (COURSE_ID,USER_ID,SECTION_ID,ISFINISH,RELA_TYPE,CLASS_ID)
+    select COURSE_ID,
+    		#{userId},
+    		SECTION_ID,
+    		'0',
+    		'0',
+    		#{classId}
+    	from tf_el_section where COURSE_ID = #{courseId}
+    </insert>
 </mapper>

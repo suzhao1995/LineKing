@@ -63,4 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.UPLOAD_ID = #{upLoadId}
 	</select>
+	
+	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
+		select * from tf_el_section t where t.COURSE_ID = #{courseId}
+	</select>
 </mapper>

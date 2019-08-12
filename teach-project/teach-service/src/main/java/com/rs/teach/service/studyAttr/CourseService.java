@@ -96,4 +96,14 @@ public interface CourseService{
 	* @date 2019年8月9日 下午4:23:15
 	*/
 	public List<Course> getCourse(String courseType, String schoolId, String courseLev,String likeSearch);
+	
+	/**
+	* 根据课程id查询课程资源信息
+	* @param 
+	* @throws
+	* @return Course
+	* @author suzhao
+	* @date 2019年8月12日 上午11:54:36
+	*/
+	public Course queryCourseByCourseId(String courseId);
 }

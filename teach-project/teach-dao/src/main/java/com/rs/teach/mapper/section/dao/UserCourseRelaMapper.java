@@ -25,4 +25,7 @@ public interface UserCourseRelaMapper {
     void cancel(@Param("userId") String userId, @Param("courseId") String courseId , @Param("relaType")Integer relaType);
 
     void updateIsFinish(@Param("trainCourseId") String trainCourseId, @Param("userId")String userId, @Param("sectionId")String sectionId, @Param("isFinish")Integer isFinish);
+    int insertCourse(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
+    
+    void insertAllSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
 }

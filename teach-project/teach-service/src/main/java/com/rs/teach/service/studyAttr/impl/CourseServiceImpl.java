@@ -79,5 +79,10 @@ public class CourseServiceImpl implements CourseService{
 		List<Course> list = mapper.queryCourse(conMap);
 		return list;
 	}
+
+	@Override
+	public Course queryCourseByCourseId(String courseId) {
+		return mapper.selectCourseByCourseId(courseId);
+	}
 	
 }

@@ -100,4 +100,14 @@ public interface CourseMapper{
 	* @date 2019年8月9日 下午12:21:31
 	*/
 	public List<Course> queryCourse(Map<String,String> conMap);
+	
+	/**
+	* 根据课程id查询课程资源信息
+	* @param 
+	* @throws
+	* @return Course
+	* @author suzhao
+	* @date 2019年8月12日 上午11:54:36
+	*/
+	public Course selectCourseByCourseId(String courseId);
 }

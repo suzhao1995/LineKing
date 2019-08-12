@@ -54,4 +54,14 @@ public interface SectionMapper{
 	*/
 	public Section queryUpLoadSection(String upLoadId);
 	
+	/**
+	* 根据courseId 查询详细章节信息
+	* @param courseId
+	* @throws
+	* @return List<Section>
+	* @author suzhao
+	* @date 2019年8月12日 下午12:59:52
+	*/
+	public List<Section> querySectionByCourseId(String courseId);
+	
 }
