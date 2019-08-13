@@ -6,6 +6,8 @@ import com.rs.teach.service.backstage.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 汪航
  * @Description
@@ -18,7 +20,22 @@ public class ClassServiceImpl implements ClassService {
     private ClassMapper classMapper;
 
     @Override
-    public void addclass(TFClass tfClass) {
-        classMapper.addclass(tfClass);
+    public void addClass(TFClass tfClass) {
+        classMapper.addClass(tfClass);
+    }
+
+    @Override
+    public void deleteClass(String classId) {
+        classMapper.deleteClass(classId);
+    }
+
+    @Override
+    public void updateClass(TFClass tfClass) {
+        classMapper.updateClass(tfClass);
+    }
+
+    @Override
+    public List<TFClass> selectClass() {
+        return classMapper.selectClass();
     }
 }

@@ -21,6 +21,12 @@ public interface TrainSectionService {
      */
     TrainSection selectTrainSection(String sectionId);
 
+    /**
+     * 查询小章节目录
+     * @param trainCourseId
+     * @param trainSectionSort
+     * @return
+     */
     List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort);
 
 }

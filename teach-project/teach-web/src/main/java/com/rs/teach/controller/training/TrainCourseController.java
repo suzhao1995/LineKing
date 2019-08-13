@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.common.PageDto;
+import com.rs.teach.mapper.common.TrainParamDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
 import org.apache.log4j.Logger;
@@ -54,8 +55,9 @@ public class TrainCourseController {
      */
     @RequestMapping(value = "downloadAll", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean downloadAll(@RequestBody String courseId) {
+    public ResponseBean downloadAll(@RequestBody TrainParamDto trainParamDto) {
         ResponseBean responseBean = new ResponseBean();
+        String courseId = trainParamDto.getCourseId();
         try {
 
         }catch (Exception e){

@@ -1,14 +1,10 @@
 package com.rs.teach.controller.backstage;
 
-import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
-import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.common.PageDto;
-import com.rs.teach.mapper.user.dao.UserMapper;
-import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.backstage.SchoolService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,37 +28,16 @@ public class SchoolController {
     @Autowired
     private SchoolService schoolService;
 
-    @Autowired
-    private UserMapper userMapper;
-
-
-    /**
-     *
-     * 判断用户是否为管理员
-     * @param sessionKey
-     * @throws Exception
-     */
-    private void checkPremission(String sessionKey) throws Exception {
-        String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
-        User user = userMapper.getUserById(userId);
-        if (!StrUtil.equals("1", user.getAdminFlag())) {
-            throw new Exception("该用户没有权限");
-        }
-    }
-
     /**
      * 添加学校
-     *
      * @param school
-     * @param sessionKey
      * @return
      */
     @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addSchool(School school, String sessionKey) {
+    public ResponseBean addSchool(@RequestBody School school) {
         ResponseBean bean = new ResponseBean();
         try {
-            checkPremission(sessionKey);
             schoolService.addSchool(school);
             bean.addSuccess();
         } catch (Exception e) {
@@ -73,20 +48,19 @@ public class SchoolController {
     }
 
     /**
-     * @param schoolId
-     * @param sessionKey
+     * @param school
      * @return
      */
     @RequestMapping(value = "/deleteSchool", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean deleteSchool(@RequestBody String schoolId, String sessionKey) {
+    public ResponseBean deleteSchool(@RequestBody School school) {
         ResponseBean bean = new ResponseBean();
+        String schoolId = school.getSchoolId();
         try {
-            checkPremission(sessionKey);
             schoolService.deleteSchool(schoolId);
             bean.addSuccess();
         } catch (Exception e) {
-            logger.error("学校-新增-失败", e);
+            logger.error("学校-刪除-失败", e);
             bean.addError(e.getMessage());
         }
         return bean;
@@ -94,14 +68,13 @@ public class SchoolController {
 
     @RequestMapping(value = "/updateSchool", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateSchool(School school,String sessionKey) {
+    public ResponseBean updateSchool(@RequestBody School school) {
         ResponseBean bean = new ResponseBean();
         try {
-            checkPremission(sessionKey);
             schoolService.updateSchool(school);
             bean.addSuccess();
         } catch (Exception e) {
-            logger.error("学校-新增-失败", e);
+            logger.error("学校-修改-失败", e);
             bean.addError(e.getMessage());
         }
         return bean;
@@ -114,7 +87,7 @@ public class SchoolController {
      */
     @RequestMapping(value = "/selectSchool", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean selectSchool(PageDto pageDto) {
+    public ResponseBean selectSchool(@RequestBody PageDto pageDto) {
         ResponseBean bean = new ResponseBean();
         PageInfo<School> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> schoolService.selectSchool());
         bean.addSuccess(pageInfo);

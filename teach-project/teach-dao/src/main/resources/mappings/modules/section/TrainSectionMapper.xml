@@ -16,13 +16,11 @@
               ts.train_litter_section_sort,
               ts.train_litter_section_url,
               ts.train_litter_section_type
-        FROM
-          tf_el_train_course  tc
-        LEFT JOIN tf_el_train_pic_attr  tpa
-	        ON tpa.association_Id = tc.train_course_Id
-        LEFT JOIN tf_el_train_section  ts
-            ON tc.train_course_Id = ts.train_course_Id
+        FROM tf_el_train_course  tc
+        LEFT JOIN tf_el_train_pic_attr  tpa ON tpa.association_Id = tc.train_course_Id
+        LEFT JOIN tf_el_train_section  ts ON tc.train_course_Id = ts.train_course_Id
         WHERE tc.train_course_Id = #{courseId}
+        and ts.train_litter_section_url is null
 
     </select>
     <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
@@ -33,6 +31,7 @@
         select * from tf_el_train_section
         where train_course_Id = #{trainCourseId}
         and train_section_sort = #{trainSectionSort}
+        and train_litter_section_url is null
     </select>
 
 </mapper>

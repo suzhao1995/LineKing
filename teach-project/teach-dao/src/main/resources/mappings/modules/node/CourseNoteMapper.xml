@@ -4,22 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.note.dao.CourseNoteMapper">
 
-    <update id="saveNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
+    <select id="isEmpty" resultType="java.lang.Integer">
+        select count(1) from TF_EL_NOTE
+        where course_Id =#{courseId}
+        and user_Id =#{userId}
+        and section_Id =#{sectionId}
+    </select>
+
+    <update id="updateNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
         update tf_el_note set note = #{note}
         where course_Id =#{courseId}
         and user_Id =#{userId}
         and section_Id =#{sectionId}
     </update>
 
+    <insert id="addNote">
+        insert into TF_EL_NOTE(user_id, section_id, course_id, class_id, note)
+        values (#{userId},#{sectionId},#{courseId},#{classId},#{note})
+    </insert>
+
     <select id="selectNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote" resultType="java.lang.String">
          select NOTE from tf_el_note
-         <where>
-             and user_Id = #{userId}
-             and course_Id = #{courseId}
-             <if test="sectionId != null and sectionId !=''">
-                 and section_Id = #{sectionId}
-             </if>
-         </where>
+         where  user_Id = #{userId}
+         and course_Id = #{courseId}
+         and section_Id = #{sectionId}
     </select>
 
     <insert id="addAllNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
@@ -31,5 +39,6 @@
         and not exists
         (select 1 from tf_el_note  where User_id = #{userId} and course_id = #{courseId})
     </insert>
+
 
 </mapper>

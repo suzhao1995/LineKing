@@ -9,7 +9,7 @@ import com.rs.teach.mapper.summary.entity.Summary;
  */
 public interface SummaryMapper {
 
-    int saveSummary(Summary summary);
+    int updateSummary(Summary summary);
 
     void addSummary(Summary summary);
 

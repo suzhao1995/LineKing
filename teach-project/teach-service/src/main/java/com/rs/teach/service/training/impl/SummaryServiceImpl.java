@@ -19,18 +19,13 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public void saveSummary(Summary summary) {
-        summaryMapper.saveSummary(summary);
-    }
+        int flag = summaryMapper.isEmpty(summary);
+        if (flag > 1) {
+            summaryMapper.addSummary(summary);
+        }else{
+            summaryMapper.updateSummary(summary);
+        }
 
-    @Override
-    public void addSummary(Summary summary) {
-        summaryMapper.addSummary(summary);
-    }
-
-    @Override
-    public boolean isEmpty(Summary summary) {
-        int result = summaryMapper.isEmpty(summary);
-        return result > 0 ? true : false;
     }
 
     @Override

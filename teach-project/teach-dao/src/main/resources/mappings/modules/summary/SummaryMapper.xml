@@ -8,7 +8,7 @@
         values (#{userId},#{sectionSort},#{courseId},#{summary})
     </insert>
 
-    <update id="saveSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
+    <update id="updateSummary" parameterType="com.rs.teach.mapper.summary.entity.Summary">
         update TF_EL_SUMMARY
         set summary = #{summary}
         where user_id = #{userId}
@@ -22,6 +22,7 @@
         AND course_id = #{courseId}
         and section_sort = #{sectionSort}
     </select>
+
     <select id="querySummary" parameterType="com.rs.teach.mapper.summary.entity.Summary" resultType="com.rs.teach.mapper.summary.entity.Summary">
         select * from TF_EL_SUMMARY
         where USER_ID = #{userId}

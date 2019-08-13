@@ -10,13 +10,17 @@ import com.rs.teach.mapper.note.entity.CourseNote;
 public interface CourseNoteService {
 
     /**
+     * 保存笔记
+     * @param courseNote
+     */
+    void saveNote(CourseNote courseNote);
+
+    /**
      * 查询笔记信息
      * @param courseNote
      * @return
      */
     String selectNote(CourseNote courseNote);
-
-    void saveNote(CourseNote courseNote);
 
     void addAllNote(CourseNote courseNote);
 }

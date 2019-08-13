@@ -9,9 +9,15 @@ import com.rs.teach.mapper.note.entity.CourseNote;
  */
 public interface CourseNoteMapper {
 
+    int isEmpty(CourseNote courseNote);
+
+    void updateNote(CourseNote courseNote);
+
+    void addNote(CourseNote courseNote);
+
     String selectNote(CourseNote courseNote);
 
-    void saveNote(CourseNote courseNote);
-
     void addAllNote(CourseNote courseNote);
+
+
 }

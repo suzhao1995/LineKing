@@ -16,16 +16,27 @@ public interface UserCourseRelaMapper {
 
     void addRoot(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType")Integer relaType);
 
-    List<UserCourseRela> selectIsFinish(@Param("courseId")String courseId, @Param("userId")String userId);
+    List<UserCourseRela> selectIsFinish(@Param("courseId")String courseId, @Param("userId")String userId,@Param("relaType")Integer relaType);
 
     void join(@Param("userId") String userId, @Param("courseId") String courseId ,@Param("relaType")Integer relaType);
-
-    void addAll(@Param("userId") String userId, @Param("courseId") String courseId,@Param("isfinish")Integer isfinish,@Param("relaType")Integer relaType);
 
     void cancel(@Param("userId") String userId, @Param("courseId") String courseId , @Param("relaType")Integer relaType);
 
     void updateIsFinish(@Param("trainCourseId") String trainCourseId, @Param("userId")String userId, @Param("sectionId")String sectionId, @Param("isFinish")Integer isFinish);
+
     int insertCourse(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
-    
+
     void insertAllSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
+
+    /**
+     * 查看是否已添加
+     * @param userId
+     * @param courseId
+     * @return
+     */
+    int isEmptyJoin(@Param("userId") String userId, @Param("courseId") String courseId);
+
+    void updateRelaType(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") Integer relaType);
+
+    void addAll(@Param("userId") String userId, @Param("courseId") String courseId,@Param("isfinish")Integer isfinish,@Param("relaType")Integer relaType);
 }

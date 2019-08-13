@@ -36,15 +36,11 @@ public class SummaryController {
      */
     @RequestMapping(value = "saveSummary", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean saveSummary(@RequestBody Summary summary, String sessionKey) {
+    public ResponseBean saveSummary(String sessionKey, @RequestBody Summary summary) {
         ResponseBean responseBean = new ResponseBean();
         String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
         summary.setUserId(userId);
         try {
-            boolean flag = summaryService.isEmpty(summary);
-            if (!flag) {
-                summaryService.addSummary(summary);
-            }
             summaryService.saveSummary(summary);
             responseBean.addSuccess();
         } catch (Exception e) {
@@ -63,7 +59,7 @@ public class SummaryController {
      */
     @RequestMapping(value = "querySummary", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean querySummary(@RequestBody Summary summary, String sessionKey) {
+    public ResponseBean querySummary(String sessionKey,@RequestBody Summary summary) {
         ResponseBean responseBean = new ResponseBean();
         String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
         summary.setUserId(userId);

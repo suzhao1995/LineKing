@@ -1,7 +1,9 @@
 package com.rs.teach.service.note.impl;
 
+import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import com.rs.teach.mapper.note.dao.CourseNoteMapper;
 import com.rs.teach.mapper.note.entity.CourseNote;
+import com.rs.teach.mapper.section.dao.UserCourseRelaMapper;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.service.note.CourseNoteService;
 import com.rs.teach.service.training.TrainSectionService;
@@ -22,18 +24,29 @@ public class CourseNoteServiceImpl implements CourseNoteService {
     @Autowired
     private TrainSectionService trainSectionService;
 
-    @Override
-    public String selectNote(CourseNote courseNote) {
-
-        String note = noteMapper.selectNote(courseNote);
-        return note;
-    }
+    @Autowired
+    private UserCourseRelaMapper userCourseRelaMapper;
 
     @Override
     public void saveNote(CourseNote courseNote) {
         TrainSection trainSection = trainSectionService.selectTrainSection(courseNote.getSectionId());
         courseNote.setCourseId(trainSection.getTrainCourseId());
-        noteMapper.saveNote(courseNote);
+
+        /**判断此记录是否存在*/
+        int flag = noteMapper.isEmpty(courseNote);
+        if (flag > 1) {
+            noteMapper.addNote(courseNote);
+        }else{
+            noteMapper.updateNote(courseNote);
+        }
+        userCourseRelaMapper.updateIsFinish(courseNote.getCourseId(),courseNote.getUserId(),courseNote.getSectionId(), CourseStatusEnum.convent2TableNum(CourseStatusEnum.END.name()));
+    }
+
+    @Override
+    public String selectNote(CourseNote courseNote) {
+
+        String note = noteMapper.selectNote(courseNote);
+        return note;
     }
 
     @Override

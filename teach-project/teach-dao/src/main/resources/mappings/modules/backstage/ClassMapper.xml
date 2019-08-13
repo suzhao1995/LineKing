@@ -4,8 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.backstage.dao.ClassMapper">
 
-    <insert id="addclass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
+    <insert id="addClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
         insert into TF_EL_CLASS(CLASS_ID, SCHOOL_ID, CLASS_NAME, CLSSNO)
         VALUES(#{classId},#{schoolId},#{className},#{clssno})
     </insert>
+
+    <update id="updateClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
+        update TF_EL_CLASS SET SCHOOL_ID=#{schoolId},CLASS_NAME=#{className},CLSSNO=#{clssno}
+        WHERE CLASS_ID = #{classId}
+    </update>
+
+    <delete id="deleteClass">
+        DELETE FROM TF_EL_CLASS
+        WHERE CLASS_ID = #{classId}
+    </delete>
+
+    <select id="selectClass" resultType="com.rs.teach.mapper.backstage.entity.TFClass">
+        select * FROM TF_EL_CLASS
+    </select>
 </mapper>

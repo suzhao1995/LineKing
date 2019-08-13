@@ -10,13 +10,10 @@ import com.rs.teach.mapper.summary.entity.Summary;
 public interface SummaryService {
     /**
      * 课后总结保存
+     * 存在笔记则修改，不存在则新增
      * @param summary
      */
     void saveSummary(Summary summary);
-
-    void addSummary(Summary summary);
-
-    boolean isEmpty(Summary summary);
 
     Summary querySummary(Summary summary);
 }

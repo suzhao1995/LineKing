@@ -6,11 +6,9 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import com.rs.teach.mapper.common.Enums.RelaTypeEnum;
-import com.rs.teach.mapper.note.entity.CourseNote;
+import com.rs.teach.mapper.common.TrainParamDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
-import com.rs.teach.mapper.section.entity.UserCourseRela;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
-import com.rs.teach.service.note.CourseNoteService;
 import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
@@ -47,44 +45,29 @@ public class TrainSectionController {
     private UserCourseRelaService userCourseRelaService;
 
     /**
-     * 课程笔记表service
-     */
-    @Autowired
-    private CourseNoteService courseNoteService;
-
-    /**
      * 查询所有的课程章节
      *
-     * @param sessionKey
-     * @param courseId
+     * @param trainParamDto
      * @return
      */
     @RequestMapping(value = "selectSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean selectSection(String sessionKey,@RequestBody String courseId) {
+    public ResponseBean selectSection(String sessionKey, @RequestBody TrainParamDto trainParamDto) {
         ResponseBean responseBean = new ResponseBean();
         HashMap<String, Object> map = new HashMap<>();
+        String courseId = trainParamDto.getCourseId();
         try {
             //参数效验
-            BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
+            BPUtil.check(StrUtil.isEmpty(courseId), "没有课程ID");
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
             //查询课程章节信息
             List<TrainSectionVo> sections = trainSectionService.selectCourseSection(courseId);
             map.put("sections", sections);
 
-            //加入用户课程关联表的跟节点
-            userCourseRelaService.addRoot(userId,courseId);
-
-            //判断标识符
-            Integer status = userCourseRelaService.studyStatus(userId,courseId);
-            map.put("status",status);
-
-            if(status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name()) || status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.NO_JOIN.name())){
-                //查询章节学习状态
-                List<UserCourseRela> selectIsFinish = userCourseRelaService.selectIsFinish(courseId, userId);
-                map.put("selectIsFinish", selectIsFinish);
-            }
+            //判断是否加入我的课程
+            Integer status = userCourseRelaService.studyStatus(userId, courseId);
+            map.put("status", status);
 
             responseBean.addSuccess(map);
             return responseBean;
@@ -100,17 +83,14 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "join", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean join(String sessionKey,@RequestBody String courseId,@RequestBody String sectionId) {
+    public ResponseBean join(String sessionKey, @RequestBody TrainParamDto trainParamDto) {
         ResponseBean responseBean = new ResponseBean();
+        String courseId = trainParamDto.getCourseId();
         try {
 
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
             //加入到我的课程
-            String note =  userCourseRelaService.join(sectionId, courseId,userId);
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("note",note);
-
-            responseBean.addSuccess(map);
+            userCourseRelaService.join(courseId, userId);
             return responseBean;
         } catch (Exception e) {
             logger.debug("培训-加入我的课程-失败", e);
@@ -124,11 +104,12 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "cancel", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean cancel(String sessionKey,@RequestBody String courseId) {
+    public ResponseBean cancel(String sessionKey, @RequestBody TrainParamDto trainParamDto) {
         ResponseBean responseBean = new ResponseBean();
+        String courseId = trainParamDto.getCourseId();
         try {
             //参数效验
-            BPUtil.check(StrUtil.isEmpty(courseId),"没有课程ID");
+            BPUtil.check(StrUtil.isEmpty(courseId), "没有课程ID");
 
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
             //取消到我的课程
@@ -146,47 +127,41 @@ public class TrainSectionController {
      */
     @RequestMapping(value = "seeOnline", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean seeOnline(String sessionKey,@RequestBody String sectionId) {
+    public ResponseBean seeOnline(String sessionKey, @RequestBody TrainParamDto trainParamDto) {
         ResponseBean responseBean = new ResponseBean();
-        try{
+        String sectionId = trainParamDto.getSectionId();
+        try {
             //参数效验
-            
-            BPUtil.check(StrUtil.isEmpty(sectionId),"没有章节Id");
+
+            BPUtil.check(StrUtil.isEmpty(sectionId), "没有章节Id");
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
             HashMap<String, Object> map = new HashMap<>();
 
             //查询返回页面信息（1.当前小章节全部信息)
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
-            map.put("trainSection",trainSection);
+            map.put("trainSection", trainSection);
 
             //查询小章节目录
-            List<TrainSection> sectionList = trainSectionService.selectSectionList(trainSection.getTrainCourseId(),trainSection.getTrainSectionSort());
-            map.put("sectionList",sectionList);
-
-            //修改状态为学习中
-            userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()));
+            List<TrainSection> sectionList = trainSectionService.selectSectionList(trainSection.getTrainCourseId(), trainSection.getTrainSectionSort());
+            map.put("sectionList", sectionList);
 
             //判断标识符
-            Integer status = userCourseRelaService.studyStatus(userId,trainSection.getTrainCourseId());
-            map.put("status",status);
+            Integer status = userCourseRelaService.studyStatus(userId, trainSection.getTrainCourseId());
+            map.put("status", status);
 
-            //查询返回页面信息（课程笔记）
-            if(status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name())){
-                CourseNote courseNote = new CourseNote();
-                courseNote.setSectionId(sectionId);
-                courseNote.setUserId(userId);
-                courseNote.setCourseId(trainSection.getTrainCourseId());
-                String note  = courseNoteService.selectNote(courseNote);
-                map.put("note",note);
+            //加入到我的课程就修改学习状态
+            if (status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name())) {
+                userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()));
             }
 
             //查询返回页面信息（pdf图片文件）
 
+
             responseBean.addSuccess(map);
             return responseBean;
-        }catch (Exception e){
-            logger.debug("培训-在线查看-失败",e);
+        } catch (Exception e) {
+            logger.debug("培训-在线查看-失败", e);
             responseBean.addError(e.getMessage());
             return responseBean;
         }
@@ -195,7 +170,7 @@ public class TrainSectionController {
 
     /**
      * 资源下载（当前小章节）
-     *  trainSectionId  文件上传保存的唯一id
+     * trainSectionId  文件上传保存的唯一id
      */
     @RequestMapping(value = "download", method = RequestMethod.POST)
     @ResponseBody
@@ -203,8 +178,8 @@ public class TrainSectionController {
         ResponseBean responseBean = new ResponseBean();
         try {
 
-        }catch (Exception e){
-            logger.error("当前小章节-下载失败",e);
+        } catch (Exception e) {
+            logger.error("当前小章节-下载失败", e);
             responseBean.addError("下载失败");
         }
         return responseBean;
