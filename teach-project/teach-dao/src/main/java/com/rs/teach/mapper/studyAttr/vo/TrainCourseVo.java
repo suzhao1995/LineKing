@@ -1,9 +1,11 @@
 package com.rs.teach.mapper.studyAttr.vo;
 
+import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
 * Course.java
@@ -23,4 +25,5 @@ public class TrainCourseVo implements Serializable {
 	private String trainSectionNumber;	//培训章节总数
 	private String trainCoursePicUrl;	//培训课程文件Url
 	private String picUrl;         //培训课程封面URL
+	private List<TrainSectionVo> trainSectionVoList;    //课程下的大章节集合
 }

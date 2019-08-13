@@ -2,6 +2,7 @@ package com.rs.teach.service.training;
 
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface TrainSectionService {
 
-    List<TrainSectionVo> selectCourseSection(String courseId);
+    TrainCourseVo selectCourseSection(String courseId);
 
     /**
      * 查询返回页面信息（1.当前小章节全部信息)

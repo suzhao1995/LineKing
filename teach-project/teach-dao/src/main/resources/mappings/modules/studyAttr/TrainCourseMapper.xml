@@ -16,4 +16,15 @@
 
     </select>
 
+    <select id="selectTrainCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
+        select TC.train_course_Id,
+              TC.train_course_Name,
+              PA.pic_url,
+              tc.train_section_number
+        from tf_el_train_course  TC
+        left join tf_el_train_pic_attr  PA
+        on tc.train_course_Id = pa.association_Id
+        where tc.train_course_Id = #{courseId}
+    </select>
+
 </mapper>

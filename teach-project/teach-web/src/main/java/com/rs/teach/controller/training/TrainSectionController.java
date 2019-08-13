@@ -9,6 +9,7 @@ import com.rs.teach.mapper.common.Enums.RelaTypeEnum;
 import com.rs.teach.mapper.common.TrainParamDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
@@ -62,8 +63,8 @@ public class TrainSectionController {
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
             //查询课程章节信息
-            List<TrainSectionVo> sections = trainSectionService.selectCourseSection(courseId);
-            map.put("sections", sections);
+            TrainCourseVo trainCourseVo = trainSectionService.selectCourseSection(courseId);
+            map.put("trainCourseVo", trainCourseVo);
 
             //判断是否加入我的课程
             Integer status = userCourseRelaService.studyStatus(userId, courseId);
