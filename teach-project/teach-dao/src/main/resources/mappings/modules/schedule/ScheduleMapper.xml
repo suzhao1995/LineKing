@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where sd.CURRICULUMID = ce.course_Id
 				and sd.CLASSID = ca.Class_Id
 				and sd.TEACHUSER_ID = tu.user_Id
-				and sd.TEACHUSER_ID = #{userId} order by sd.WEEK_DAY
+				and sd.TEACHUSER_ID = #{userId} order by sd.WEEK_DAY,to_date(sd.start_date,'hh24:mi')
 	</select>
 	
 	<insert id="insertSchedule" parameterType="com.rs.teach.mapper.timeTable.entity.Schedule">

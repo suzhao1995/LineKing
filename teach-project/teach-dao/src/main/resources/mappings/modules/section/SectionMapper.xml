@@ -67,6 +67,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
-		select * from tf_el_section t where t.COURSE_ID = #{courseId} order by t.SECTION_SORT
+		select * from tf_el_section t where t.COURSE_ID = #{courseId} order by t.totlesection_sort,t.section_sort
+	</select>
+	
+	
+	<resultMap type="java.util.HashMap" id="sMap">
+		<result property="sectionId" column="section_id"/>
+		<result property="totleSectionSort" column="totlesection_sort"/>
+		<result property="totleSectionName" column="totlesection_name"/>
+		<result property="sectionSort" column="section_sort"/>
+		<result property="sectionName" column="section_name"/>
+		<result property="courseId" column="course_id"/>
+		<result property="studyStatus" column="isfinish"/>
+		<result property="classId" column="class_id"/>
+	</resultMap>
+	<!-- 查询章节学习状态 -->
+	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
+		select se.section_id,se.totlesection_sort,se.totlesection_name,se.section_sort,se.section_name,
+       se.course_id,ucr.isfinish,ucr.class_id
+     from tf_el_section se, user_course_rela ucr
+       where se.section_id = ucr.section_id 
+             and se.course_id = #{courseId}
+             and ucr.user_id = #{userId}
+             and ucr.class_id = #{classId}
 	</select>
 </mapper>

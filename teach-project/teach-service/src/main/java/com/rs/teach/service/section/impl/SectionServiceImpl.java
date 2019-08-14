@@ -1,6 +1,7 @@
 package com.rs.teach.service.section.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class SectionServiceImpl implements SectionService{
 	@Override
 	public List<Section> getSectionByCourseId(String courseId) {
 		return mapper.querySectionByCourseId(courseId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getSectionStatus(String courseId, String userId, String classId) {
+		return mapper.querySectionStatus(courseId, userId, classId);
 	}
 	
 	

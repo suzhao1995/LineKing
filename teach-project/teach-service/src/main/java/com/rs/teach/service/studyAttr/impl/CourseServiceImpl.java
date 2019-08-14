@@ -84,5 +84,24 @@ public class CourseServiceImpl implements CourseService{
 	public Course queryCourseByCourseId(String courseId) {
 		return mapper.selectCourseByCourseId(courseId);
 	}
+
+	@Override
+	public boolean isExsitNote(String userId, String sectionId, String classId) {
+		int count = mapper.isExsitNote(userId, sectionId, classId);
+		if(count == 1){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int updateNote(NoteSummary noteSummary) {
+		return mapper.updateNote(noteSummary);
+	}
+
+	@Override
+	public int insertNote(NoteSummary noteSummary) {
+		return mapper.insertNote(noteSummary);
+	}
 	
 }

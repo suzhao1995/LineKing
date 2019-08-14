@@ -96,7 +96,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where t.USER_ID = #{userId} 
 			and t.SECTION_ID = #{sectionId} 
 			and t.class_id = #{classId}
-			and t.SUMMARY is not null
 	</select>
 	
 	<update id="updateSummary" parameterType="com.rs.teach.mapper.studyAttr.entity.NoteSummary">
@@ -152,4 +151,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectCourseByCourseId" parameterType="java.lang.String" resultMap="queryCourseMap">
 		select * from tf_el_course where COURSE_ID = #{courseId}
 	</select>
+	
+	<!-- 课程笔记 -->
+	<select id="isExsitNote" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from tf_el_note t 
+		where t.USER_ID = #{userId} 
+			and t.SECTION_ID = #{sectionId} 
+			and t.class_id = #{classId}
+	</select>
+	
+	<insert id="insertNote" parameterType="com.rs.teach.mapper.studyAttr.entity.NoteSummary">
+		insert into tf_el_note
+			(
+				USER_ID,
+				SECTION_ID,
+				COURSE_ID,
+				CLASS_ID,
+				NOTE
+			)
+		values
+			(
+				#{userId},
+				#{sectionId},
+				#{courseId},
+				#{classId},
+				#{note}
+			)
+	</insert>
+	
+	<update id="updateNote" parameterType="com.rs.teach.mapper.studyAttr.entity.NoteSummary">
+		update tf_el_note t set t.NOTE = #{note}
+			where t.USER_ID = #{userId} and t.SECTION_ID = #{sectionId} and t.CLASS_ID = #{classId}
+	</update>
 </mapper>

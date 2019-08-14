@@ -110,4 +110,8 @@ public interface CourseMapper{
 	* @date 2019年8月12日 上午11:54:36
 	*/
 	public Course selectCourseByCourseId(String courseId);
+	
+	public int isExsitNote(@Param("userId") String userId, @Param("sectionId") String sectionId, @Param("classId") String classId);
+	public int updateNote(NoteSummary noteSummary);
+	public int insertNote(NoteSummary noteSummary);
 }

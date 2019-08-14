@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,7 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
@@ -130,7 +134,32 @@ public class CourseController{
 		ajaxData.put("course", course);	//课程资源信息
 		
 		List<Section> list = sectionService.getSectionByCourseId(courseId);
-		ajaxData.put("sectionList", list);
+
+		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
+		//按大章节目录进行分组
+		Map<String,List<Section>> map = new HashMap<String,List<Section>>();
+		for(Section section : list){
+			List<Section> tmpList = map.get(section.getTotleSectionSort());
+			if(tmpList == null){
+				tmpList = new ArrayList<Section>();
+				tmpList.add(section);
+				map.put(section.getTotleSectionSort(), tmpList);
+			}else{
+				tmpList.add(section);
+			}
+		}
+		Set set = map.entrySet();
+		Iterator<Set> iterator = set.iterator();
+		while(iterator.hasNext()){
+			Map.Entry<String, List<Section>> entry = (Entry<String, List<Section>>) iterator.next();
+			TrainSectionVo sectionVo = new TrainSectionVo();
+			sectionVo.setTrainSectionSort(entry.getKey());
+			sectionVo.setTrainSectionName(entry.getValue().get(0).getTotleSectionName());
+			sectionVo.setSectionList(entry.getValue());
+			sectionList.add(sectionVo);
+		}
+		
+		ajaxData.put("sectionList", sectionList);
 		//查询用户所在校区班级
 		List<StudyTeam> teams = studyTeamService.getClassById(userId);
 		ajaxData.put("teams", teams);
@@ -189,14 +218,28 @@ public class CourseController{
 		String courseId = request.getParameter("courseId");
 		//查询章节目录
 		List<Section> list = sectionService.getSectionByCourseId(courseId);
-		List<String> sectionDir = new ArrayList<String>();
-		for(Section section : list){
-			sectionDir.add(section.getSectionName());
+		List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
+		for(int i = 0; i < list.size(); i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("dirSectionId", list.get(i).getSectionId());
+			map.put("dirSectionName", list.get(i).getSectionName());
+			sectionDir.add(map);
+			//返回下一课的章节id
+			if(sectionId.equals(list.get(i).getSectionId())){
+				if(i+1 < list.size()){
+					ajaxData.put("nextSectionId", list.get(i+1).getSectionId());
+				}else{
+					ajaxData.put("nextSectionId", "0");	//课程已上完
+				}
+			}
 		}
 		ajaxData.put("sectionDir", sectionDir);	//章节目录
 		
 		//查询章节详情
 		Section section = sectionService.getSectionById(sectionId);
+		
+		ajaxData.put("section", section);	//本章详情
+
 		String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
 		Map<String, Object> returnMap = null;
 		try {
@@ -236,7 +279,7 @@ public class CourseController{
 	
 	/**
 	* 查看练习信息
-	* @param 
+	* @param  
 	* @throws
 	* @return ResponseBean
 	* @author suzhao

@@ -106,4 +106,8 @@ public interface CourseService{
 	* @date 2019年8月12日 上午11:54:36
 	*/
 	public Course queryCourseByCourseId(String courseId);
+	
+	public boolean isExsitNote(String userId, String sectionId, String classId);
+	public int updateNote(NoteSummary noteSummary);
+	public int insertNote(NoteSummary noteSummary);
 }

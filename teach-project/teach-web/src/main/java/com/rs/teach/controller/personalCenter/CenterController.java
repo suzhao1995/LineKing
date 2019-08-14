@@ -2,9 +2,13 @@ package com.rs.teach.controller.personalCenter;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +27,7 @@ import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
@@ -252,7 +257,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 初始化我的课程信息
+	* 初始化我的课程详情
 	* @param request
 	* @param response
 	* @throws
@@ -271,6 +276,36 @@ public class CenterController{
 		String classId = request.getParameter("classId");
 		String courseId = request.getParameter("courseId");
 		
+		Course course = courseService.queryCourseByCourseId(courseId);
+		ajaxData.put("course", course);	//课程资源信息
+		
+		List<Map<String,Object>> list = sectionService.getSectionStatus(courseId, userId, classId);
+		
+		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
+		//按大章节目录进行分组
+		Map<String,List<Map<String,Object>>> map = new HashMap<String,List<Map<String,Object>>>();
+		for(Map smap : list){
+			List<Map<String,Object>> tmpList = map.get(smap.get("totleSectionSort"));
+			if(tmpList == null){
+				tmpList = new ArrayList<Map<String,Object>>();
+				tmpList.add(smap);
+				map.put(smap.get("totleSectionSort").toString(), tmpList);
+			}else{
+				tmpList.add(smap);
+			}
+		}
+		Set set = map.entrySet();
+		Iterator<Set> iterator = set.iterator();
+		while(iterator.hasNext()){
+			Map.Entry<String, List<Map<String,Object>>> entry = (Entry<String, List<Map<String,Object>>>) iterator.next();
+			TrainSectionVo sectionVo = new TrainSectionVo();
+			sectionVo.setTrainSectionSort(entry.getKey());
+			sectionVo.setTrainSectionName(String.valueOf(entry.getValue().get(0).get("totleSectionName")));
+			sectionVo.setSectionStatusList(entry.getValue());
+			sectionList.add(sectionVo);
+		}
+		ajaxData.put("sectionList", sectionList);
+		
 		List<Map<String,Object>> finishSec = courseService.getFinishStudy(userId, classId, courseId);
 		ajaxData.put("finishSec", finishSec);
 		bean.addSuccess(ajaxData);
@@ -278,7 +313,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 课后笔记，课后总结
+	* 我修改的课程信息
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -295,47 +330,168 @@ public class CenterController{
 		//获取登录的用户id
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
+		String sectionId = request.getParameter("sectionId");
+		
+		//查看我修改的课件信息
+		List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
+		if(sections.size() >= 0){
+			bean.addSuccess(sections);
+		}else{
+			bean.addError("本章节，您未上传过课件");
+			return bean;
+		}
+		
+		return bean;
+	}
+	
+	/**
+	* 我的课程---查看章节详情
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月14日 下午3:24:32
+	*/
+	@RequestMapping("/sectionDetail")
+	@ResponseBody
+	public ResponseBean sectionDetail(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		
 		String classId = request.getParameter("classId");
 		String sectionId = request.getParameter("sectionId");
 		String courseId = request.getParameter("courseId");
-		String code = request.getParameter("code");	//课后笔记：0， 课后总结：1, 我的资源：2
-		if("2".equals(code)){
-			//查看我修改的课件信息
-			List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
-			if(sections.size() >= 0){
-				bean.addSuccess(sections);
-			}else{
-				bean.addError("本章节，您未上传过课件");
-				return bean;
-			}
+		
+		ajaxData.put("classId", classId);
+		ajaxData.put("sectionId", sectionId);
+		ajaxData.put("courseId", courseId);
+		//查询课程笔记
+		List<Map<String,Object>> noteList = courseService.getNoteSummary(userId, classId, courseId, "0", sectionId);
+		if(noteList.size() > 0){
+			Map<String,Object> resultMap = noteList.get(0);
+			ajaxData.put("note", resultMap.get("classNote"));
 		}else{
-			List<Map<String,Object>> list = courseService.getNoteSummary(userId, classId, courseId, code, sectionId);
-			
-			if(list.size() > 0){
-				
-				Map<String,Object> resultMap = list.get(0);
-				ajaxData.putAll(resultMap);
-			}
-			if("0".equals(code)){
-				//转换章节信息为图片流 传给前端
-				Section section = sectionService.getSectionById(sectionId);
-				String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
-				Map<String, Object> returnMap = null;
-				try {
-					returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
-					if("0".equals(returnMap.get("code"))){
-						ajaxData.put("imgList", returnMap.get("imgList"));
-						ajaxData.put("pageCount", returnMap.get("pageCount"));
-						bean.addSuccess(ajaxData);
-					}else{
-						bean.addError(returnMap.get("message").toString());
-					}
-				} catch (Exception e) {
-					logger.error("------"+fileName+"文件转换异常------", e);
-					bean.addError("系统异常");
+			ajaxData.put("note", "0");	//无课程笔记
+		}
+		//查询章节目录
+		List<Section> list = sectionService.getSectionByCourseId(courseId);
+		List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
+		for(int i = 0; i < list.size(); i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("dirSectionId", list.get(i).getSectionId());
+			map.put("dirSectionName", list.get(i).getSectionName());
+			sectionDir.add(map);
+			//返回下一课的章节id
+			if(sectionId.equals(list.get(i).getSectionId())){
+				if(i+1 < list.size()){
+					ajaxData.put("nextSectionId", list.get(i+1).getSectionId());
+				}else{
+					ajaxData.put("nextSectionId", "0");	//课程已上完
 				}
 			}
-			
+		}
+		ajaxData.put("sectionDir", sectionDir);	//章节目录
+		
+		//查询章节详情
+		Section section = sectionService.getSectionById(sectionId);
+		
+		ajaxData.put("section", section);	//本章详情
+		
+		String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
+		Map<String, Object> returnMap = null;
+		try {
+			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
+			if("0".equals(returnMap.get("code"))){
+				ajaxData.put("imgList", returnMap.get("imgList"));
+				ajaxData.put("pageCount", returnMap.get("pageCount"));
+				bean.addSuccess(ajaxData);
+			}else{
+				bean.addError(returnMap.get("message").toString());
+			}
+		} catch (Exception e) {
+			logger.error("------"+fileName+"文件转换异常------", e);
+			bean.addError("系统异常");
+		}
+		return bean;
+	}
+	
+	/**
+	* 查看课程总结
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月14日 下午4:20:21
+	*/
+	@RequestMapping("/querySummary")
+	@ResponseBody
+	public ResponseBean querySummary(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		//获取登录的用户id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String classId = request.getParameter("classId");
+		String sectionId = request.getParameter("sectionId");
+		String courseId = request.getParameter("courseId");
+		
+		ajaxData.put("classId", classId);
+		ajaxData.put("sectionId", sectionId);
+		ajaxData.put("courseId", courseId);
+		//查询课程总结
+		List<Map<String,Object>> summaryList = courseService.getNoteSummary(userId, classId, courseId, "1", sectionId);
+		if(summaryList.size() > 0){
+			Map<String,Object> resultMap = summaryList.get(0);
+			ajaxData.put("summary", resultMap.get("classSummary"));
+		}else{
+			ajaxData.put("summary", "0");	//无课程总结
+		}
+		//查询章节详情
+		Section section = sectionService.getSectionById(sectionId);
+		ajaxData.put("section", section);	//本章详情
+		bean.addSuccess(ajaxData);
+		return bean;
+	}
+	
+	/**
+	* 保存笔记
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月14日 下午4:55:41
+	*/
+	@RequestMapping("/saveNote")
+	@ResponseBody
+	public ResponseBean saveNote(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//获取登录的用户id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String note = request.getParameter("note");
+		String sectionId = request.getParameter("sectionId");
+		String classId = request.getParameter("classId");
+		String courseId = request.getParameter("courseId");
+		NoteSummary noteSummary = new NoteSummary();
+		noteSummary.setClassId(classId);
+		noteSummary.setSectionId(sectionId);
+		noteSummary.setNote(note);
+		noteSummary.setUserId(userId);
+		noteSummary.setCourseId(courseId);
+		//判断该章节是否已记录课后笔记
+		boolean flag = courseService.isExsitNote(userId, sectionId, classId);
+		try {
+			if(flag){
+				//修改该章节课后笔记
+				courseService.updateNote(noteSummary);
+			}else{
+				//保存新增课后笔记
+				courseService.insertNote(noteSummary);
+			}
+			bean.addSuccess();
+		} catch (Exception e) {
+			logger.error("--------保存异常-------", e);
+			bean.addError("保存失败,系统异常");
 		}
 		return bean;
 	}
@@ -384,7 +540,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 个人中心-上传新资料
+	* 上传新资料
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -421,7 +577,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 个人中心-下载个人课件
+	* 下载个人课件
 	* @param 
 	* @throws
 	* @return ResponseBean

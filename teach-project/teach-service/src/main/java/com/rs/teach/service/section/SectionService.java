@@ -1,6 +1,8 @@
 package com.rs.teach.service.section;
 
 import java.util.List;
+import java.util.Map;
+
 
 import com.rs.teach.mapper.section.entity.Section;
 
@@ -62,4 +64,15 @@ public interface SectionService{
 	* @date 2019年8月12日 下午12:59:52
 	*/
 	public List<Section> getSectionByCourseId(String courseId);
+	
+	/**
+	* 查看章节学习状态
+	* @param 
+	* @throws
+	* @return List<Map<String,Object>>
+	* @author suzhao
+	* @date 2019年8月14日 下午1:10:49
+	*/
+	public List<Map<String,Object>> getSectionStatus(String courseId, String userId, String classId);
+	
 }
