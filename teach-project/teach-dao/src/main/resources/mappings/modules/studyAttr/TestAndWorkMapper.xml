@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.studyAttr.dao.TestAndWorkMapper">
+	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Testpaper" id="testPaper">
+		<result property="testpaperId" column="TESTPAPER_ID"/>
+		<result property="testpaperName" column="TESTPAPER_NAME"/>
+		<result property="testpaperUrl" column="TESTPAPER_URL"/>
+	</resultMap>
+	
+	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Practice" id="work">
+		<result property="practiceId" column="PRACTICE_ID"/>
+		<result property="practiceFileName" column="PRACTICE_FILE_NAME"/>
+		<result property="practiceUrl" column="PRACTICE_URL"/>
+	</resultMap>
+	
+	<select id="queryPracticeById" parameterType="java.lang.String" resultMap="work">
+		select * from TF_EL_PRACTICE where PRACTICE_ID = #{workId}
+	</select>
+	
+	<select id="queryTestpaper" parameterType="java.lang.String" resultMap="testPaper">
+		select * from TF_EL_TESTPAPER where TESTPAPER_ID = #{testId}
+	</select>
+</mapper>

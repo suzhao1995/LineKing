@@ -37,4 +37,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return dao.queryStudyTeamById(userId);
 	}
 
+	@Override
+	public void delSchedule(String scheduleId) {
+		dao.deleteSchedule(scheduleId);
+	}
+
 }

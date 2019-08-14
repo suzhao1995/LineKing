@@ -39,4 +39,5 @@ public interface UserCourseRelaMapper {
     void updateRelaType(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") Integer relaType);
 
     void addAll(@Param("userId") String userId, @Param("courseId") String courseId,@Param("isfinish")Integer isfinish,@Param("relaType")Integer relaType);
+    
 }

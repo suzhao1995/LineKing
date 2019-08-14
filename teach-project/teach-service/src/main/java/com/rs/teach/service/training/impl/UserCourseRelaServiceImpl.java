@@ -68,4 +68,14 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
         userCourseRelaMapper.cancel(userId, courseId, RelaTypeEnum.convent2TableNum(RelaTypeEnum.NO_JOIN.name()));
     }
 
+	@Override
+	public int addCourse(String courseId, String userId, String classId) {
+		return userCourseRelaMapper.insertCourse(courseId, userId, classId);
+	}
+
+	@Override
+	public void addAllSection(String courseId, String userId, String classId) {
+		userCourseRelaMapper.insertAllSection(courseId, userId, classId);
+	}
+
 }

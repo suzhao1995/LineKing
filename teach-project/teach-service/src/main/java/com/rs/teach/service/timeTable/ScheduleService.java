@@ -54,4 +54,14 @@ public interface ScheduleService{
 	* @date 2019年7月30日 上午11:43:34
 	*/
 	public List<Map<String,Object>> getStudyTeamByUserId(String userId);
+	
+	/**
+	* 删除课表
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年8月13日 上午11:16:53
+	*/
+	public void delSchedule(String scheduleId);
 }

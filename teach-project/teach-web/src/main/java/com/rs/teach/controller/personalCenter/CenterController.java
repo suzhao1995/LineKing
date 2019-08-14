@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.rs.common.utils.DateUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
@@ -177,6 +178,28 @@ public class CenterController{
 			bean.addSuccess();
 		}
 		
+		return bean;
+	}
+	
+	/**
+	* 删除课表
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月13日 上午11:16:16
+	*/
+	@RequestMapping("/delSchedule")
+	@ResponseBody
+	public ResponseBean delSchedule(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		String scheduleId = request.getParameter("scheduleId");
+		try {
+			scheduleService.delSchedule(scheduleId);
+		} catch (Exception e) {
+			logger.error("--------系统异常-------", e);
+			bean.addDefaultError();
+		}
 		return bean;
 	}
 	

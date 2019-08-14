@@ -26,6 +26,8 @@ public class Section implements Serializable{
 	private String updateUser;	//修改章节的用户id
 	private String updateFileName;	//用户上传的文件名称
 	private String sectionType;	//文档类型
+	private String workId;	//练习id
+	private String testPaperId;	//考试id
 	private String extend1;	//预留字段
 	private String extend2;
 	private String extend3;
@@ -121,6 +123,22 @@ public class Section implements Serializable{
 
 	public void setSectionType(String sectionType) {
 		this.sectionType = sectionType;
+	}
+	
+	public String getWorkId() {
+		return workId;
+	}
+
+	public void setWorkId(String workId) {
+		this.workId = workId;
+	}
+	
+	public String getTestPaperId() {
+		return testPaperId;
+	}
+
+	public void setTestPaperId(String testPaperId) {
+		this.testPaperId = testPaperId;
 	}
 
 	public String getExtend1() {

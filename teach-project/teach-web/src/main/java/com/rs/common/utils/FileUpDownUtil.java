@@ -71,9 +71,9 @@ public class FileUpDownUtil{
 				String dirPath = dirPathMap.get("dir");
 				String saveRealName = upLoadId+sectionType;
 				
-				file.transferTo(new File(dirPath + "/" + saveRealName));
+				file.transferTo(new File(dirPath + "\\" + saveRealName));
 				
-				resultMap.put("picUrl", dirPath + "/" + saveRealName);	
+				resultMap.put("picUrl", dirPath + "\\" + saveRealName);	
 				resultMap.put("picId", upLoadId);	//生成的随机章节ID，唯一
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
@@ -108,7 +108,8 @@ public class FileUpDownUtil{
 		//String courseId = request.getParameter("courseId");	//课程资源ID
 		//文件保存路径
 		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
-		
+		//发生异常删除文件的路径
+		String catchFilePath = null;
 		if(!file.isEmpty()){
 			try {
 				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
@@ -125,10 +126,12 @@ public class FileUpDownUtil{
 				String dirPath = dirPathMap.get("dir");
 				String saveRealName = upLoadId+"_"+file.getOriginalFilename();
 				
-				file.transferTo(new File(dirPath + "/" + saveRealName));
+				catchFilePath = dirPath + "\\" + saveRealName;
 				
-				String officeUrl = dirPath + "/" + saveRealName;
-				String pdfUrl = dirPath + "/" + upLoadId+"_"+updateFileName+".pdf";
+				file.transferTo(new File(dirPath + "\\" + saveRealName));
+				
+				String officeUrl = dirPath + "\\" + saveRealName;
+				String pdfUrl = dirPath + "\\" + upLoadId+"_"+updateFileName+".pdf";
 				//调用pdf转换类
 				if(!".pdf".equals(sectionType)){
 					
@@ -137,7 +140,7 @@ public class FileUpDownUtil{
 						resultMap.put("code", "-1");
 						resultMap.put("message", "文件上传异常");
 						//删除原始文件
-						File officeFile = new File(dirPath + "/" + saveRealName);
+						File officeFile = new File(catchFilePath);
 						if(officeFile.exists()){
 							//删除
 							officeFile.delete();
@@ -154,14 +157,16 @@ public class FileUpDownUtil{
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
 				
-			} catch (IllegalStateException e) {
+			}  catch (Exception e) {
 				resultMap.put("code", "-1");
 				resultMap.put("message", "文件上传异常");
 				logger.error("---------文件上传异常---------", e);
-			} catch (Exception e) {
-				resultMap.put("code", "-1");
-				resultMap.put("message", "文件上传异常");
-				logger.error("---------文件上传异常---------", e);
+				//删除原始文件
+				File officeFile = new File(catchFilePath);
+				if(officeFile.exists()){
+					//删除
+					officeFile.delete();
+				}
 			}
 			
 		}else{
@@ -238,7 +243,7 @@ public class FileUpDownUtil{
         int hashcode = filename.hashCode();
         int dir1 = hashcode&0xf;  //0--15
         int dir2 = (hashcode&0xf0)>>4;  //0-15
-        String dir = saveRootPath + "/" + dir1 + "/" + dir2;
+        String dir = saveRootPath + "\\" + dir1 + "\\" + dir2;
         String sortDir = "/"+ dir1 + "/" + dir2;
         pathMap.put("dir", dir);
         pathMap.put("sortDir", sortDir);

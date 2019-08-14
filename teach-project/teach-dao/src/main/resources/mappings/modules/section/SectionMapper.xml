@@ -13,6 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateUser" column="UPDATE_USER" />
 		<result property="updateFileName" column="UPDATE_FILENAME" />
 		<result property="sectionType" column="section_type"/>
+		<result property="workId" column="SCHOOLWORKID" />
+		<result property="testPaperId" column="PAPERID"/>
 		<result property="extend1" column="EXTEND1" />
 		<result property="extend2" column="EXTEND2" />
 		<result property="extend3" column="EXTEND3" />
@@ -65,6 +67,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
-		select * from tf_el_section t where t.COURSE_ID = #{courseId}
+		select * from tf_el_section t where t.COURSE_ID = #{courseId} order by t.SECTION_SORT
 	</select>
 </mapper>

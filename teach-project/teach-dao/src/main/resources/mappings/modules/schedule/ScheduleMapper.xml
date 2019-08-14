@@ -73,4 +73,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select t.classid,tc.class_name from TF_EL_SCHEDULE t,tf_el_class tc 
 		where t.classid = tc.class_id and t.teachuser_id = #{userId} group by t.classid, tc.class_name
 	</select>
+	
+	<delete id="deleteSchedule">
+		delete from TF_EL_SCHEDULE where SCHEDULE_ID = #{scheduleId}
+	</delete>
 </mapper>
