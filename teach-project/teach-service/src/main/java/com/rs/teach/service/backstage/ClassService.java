@@ -29,7 +29,6 @@ public interface ClassService {
     void updateClass(TFClass tfClass);
 
     /**
-     *
      * @return 分页查询数据
      */
     List<TFClass> selectClass();

@@ -4,26 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.TrainSectionMapper">
 
-    <select id="selectCourseSection" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
-        SELECT  ts.train_section_Id,
-              TC.train_course_Id,
-              tc.train_course_Name,
-              tc.train_section_number,
-              tpa.pic_url,
-              ts.train_section_sort,
-              ts.train_section_Name,
-              ts.train_litter_section_name,
-              ts.train_litter_section_sort,
-              ts.train_litter_section_url,
-              ts.train_litter_section_type
-        FROM tf_el_train_course  tc
-        LEFT JOIN tf_el_train_pic_attr  tpa ON tpa.association_Id = tc.train_course_Id
-        LEFT JOIN tf_el_train_section  ts ON tc.train_course_Id = ts.train_course_Id
-        WHERE tc.train_course_Id = #{courseId}
-        and ts.train_litter_section_url is null
-
-    </select>
-
     <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
         select * from tf_el_train_section
         where train_section_Id = #{sectionId}
@@ -52,6 +32,12 @@
         and TRAIN_SECTION_SORT = #{trainSectionSort}
          and train_litter_section_url is null
          order by TRAIN_LITTER_SECTION_SORT
+    </select>
+
+    <select id="selectSectionNum" resultType="java.lang.Integer">
+        select count(1) from TF_EL_TRAIN_SECTION
+        where TRAIN_COURSE_ID=#{courseId}
+        and train_litter_section_url is null
     </select>
 
 </mapper>

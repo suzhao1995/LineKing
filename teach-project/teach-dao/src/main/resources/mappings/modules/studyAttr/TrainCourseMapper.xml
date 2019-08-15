@@ -4,26 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper">
 
+    <insert id="addTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
+        insert into TF_EL_TRAIN_COURSE(train_course_id, train_course_name, train_coursepic_url)
+        values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl})
+    </insert>
+    <update id="updateTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
+        update TF_EL_TRAIN_COURSE set TRAIN_COURSE_NAME = #{courseName},TRAIN_COURSEPIC_URL = #{coursePicUrl}
+        WHERE TRAIN_COURSE_ID = #{courseId}
+    </update>
+
+    <delete id="deleteTrainCourse">
+        delete from TF_EL_TRAIN_COURSE
+        where TRAIN_COURSE_ID=#{courseId}
+    </delete>
+
     <select id="selectTrainCourse" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
         select TC.train_course_Id,
               TC.train_course_Name,
-              PA.pic_url AS picUrl,
-              TC.train_coursePic_url,
-              tc.train_section_number
+              TC.train_coursePic_url
         from tf_el_train_course  TC
-        left join tf_el_train_pic_attr  PA
-        on tc.train_course_Id = pa.association_Id
+
 
     </select>
 
     <select id="selectTrainCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
         select TC.train_course_Id,
               TC.train_course_Name,
-              PA.pic_url,
-              tc.train_section_number
+              tc.TRAIN_COURSEPIC_URL
         from tf_el_train_course  TC
-        left join tf_el_train_pic_attr  PA
-        on tc.train_course_Id = pa.association_Id
         where tc.train_course_Id = #{courseId}
     </select>
 

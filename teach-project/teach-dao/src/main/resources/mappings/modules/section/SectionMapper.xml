@@ -91,4 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              and ucr.user_id = #{userId}
              and ucr.class_id = #{classId}
 	</select>
+
+    <select id="selectSectionNum" resultType="java.lang.String">
+		select count(1) from TF_EL_SECTION
+        where COURSE_ID=#{courseId}
+	</select>
 </mapper>

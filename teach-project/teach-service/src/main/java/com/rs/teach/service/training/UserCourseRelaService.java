@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @author 汪航
- * @Description
+ * @Description 课程用户关联service
  * @create 2019-08-03 11:10
  */
 public interface UserCourseRelaService {
@@ -16,10 +16,19 @@ public interface UserCourseRelaService {
      * @param userId
      * @return
      */
-    Integer studyStatus(String courseId, String userId);
+    Integer studyStatus(String userId, String courseId);
 
+    /**
+     * 加入我的课程
+     * @param courseId
+     * @param userId
+     */
     void join(String courseId,String userId);
-
+    /**
+     * 取消我的课程
+     * @param courseId
+     * @param userId
+     */
     void cancel(String userId, String courseId);
 
     /**
@@ -30,6 +39,13 @@ public interface UserCourseRelaService {
      */
     List<UserCourseRela> selectIsFinish(String courseId, String userId);
 
+    /**
+     * 修改学习状态
+     * @param trainCourseId
+     * @param userId
+     * @param sectionId
+     * @param isFinish
+     */
     void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish);
     
     int addCourse(String courseId, String userId, String classId);

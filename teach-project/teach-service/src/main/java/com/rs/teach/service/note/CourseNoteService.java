@@ -22,5 +22,9 @@ public interface CourseNoteService {
      */
     String selectNote(CourseNote courseNote);
 
+    /**
+     * 批量插入笔记表
+     * @param courseNote
+     */
     void addAllNote(CourseNote courseNote);
 }

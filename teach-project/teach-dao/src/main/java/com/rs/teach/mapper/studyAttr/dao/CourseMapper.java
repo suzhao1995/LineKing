@@ -3,6 +3,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import org.apache.ibatis.annotations.Param;
 
 import com.rs.teach.mapper.studyAttr.entity.Course;
@@ -110,11 +111,36 @@ public interface CourseMapper{
 	* @date 2019年8月12日 上午11:54:36
 	*/
 	public Course selectCourseByCourseId(String courseId);
-	
+
+	/**
+	 * 添加课程
+	 * @param courseDto
+	 */
+    void addCourse(CourseDto courseDto);
+
+	/**
+	 * 删除课程
+	 * @param courseId
+	 */
+	void deleteCourse(@Param("courseId") String courseId);
+
+	/**
+	 * 修改课程
+	 * @param courseDto
+	 */
+	void updateCourse(CourseDto courseDto);
+
+	/**
+	 * 查询所有课程
+	 * @return
+	 */
+	List<Course> selectCourse();
+
+
 	public int isExsitNote(@Param("userId") String userId, @Param("sectionId") String sectionId, @Param("classId") String classId);
 	public int updateNote(NoteSummary noteSummary);
 	public int insertNote(NoteSummary noteSummary);
-	
+
 	//分组查询课程类型和课程等级
 	public List<String> groupCourseType();
 	public List<String> groupCourseLev();

@@ -88,10 +88,10 @@ public class ComponantController{
 	*/
 	@RequestMapping("/upLoadFile")
 	@ResponseBody
-	public ResponseBean upLoadFile(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file){
+	public ResponseBean upLoadFile(HttpServletRequest request,  @RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		//上传文件
-		Map<String,Object> resultMap = FileUpDownUtil.fileUpLoad(request, response, file);
+		Map<String,Object> resultMap = FileUpDownUtil.fileUpLoad(request, file);
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
 			bean.addSuccess(resultMap);
 		}else{
@@ -101,7 +101,7 @@ public class ComponantController{
 	}
 	
 	/**
-	* 图像上传
+	* 用户图像上传
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -110,13 +110,13 @@ public class ComponantController{
 	*/
 	@RequestMapping("/upLoadPic")
 	@ResponseBody
-	public ResponseBean upLoadPic(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file){
+	public ResponseBean upLoadPic(HttpServletRequest request, @RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		//获取登录的用户id
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 
 		//上传文件
-		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, response, file);
+		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
 
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
 			//判断用户是否上传过图片
@@ -144,5 +144,5 @@ public class ComponantController{
 		}
 		return bean;
 	}
-	
+
 }

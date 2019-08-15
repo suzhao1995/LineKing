@@ -15,10 +15,19 @@ import java.util.List;
  */
 public interface TrainSectionMapper {
 
-    List<TrainCourseVo> selectCourseSection(@Param("courseId")String courseId);
-
+    /**
+     * 查询返回页面信息（1.当前小章节全部信息)
+     * @param sectionId
+     * @return
+     */
     TrainSection selectTrainSection(@Param("sectionId") String sectionId);
 
+    /**
+     * 查询小章节目录
+     * @param trainCourseId
+     * @param trainSectionSort
+     * @return
+     */
     List<TrainSection> selectSectionList(@Param("trainCourseId") String trainCourseId, @Param("trainSectionSort") String trainSectionSort);
 
     /**
@@ -35,4 +44,11 @@ public interface TrainSectionMapper {
      * @return
      */
     List<TrainLitterSectionVo> selectTrainLitterSection(@Param("courseId") String courseId, @Param("trainSectionSort") String trainSectionSort);
+
+    /**
+     * 根据课程ID获取当前课程的章节总数
+     * @param courseId
+     * @return
+     */
+    Integer selectSectionNum(@Param("courseId") String courseId);
 }

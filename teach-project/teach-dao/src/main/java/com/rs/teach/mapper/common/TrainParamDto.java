@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author 汪航
- * @Description
+ * @Description 入参Dto
  * @create 2019-08-13 15:09
  */
 @Data

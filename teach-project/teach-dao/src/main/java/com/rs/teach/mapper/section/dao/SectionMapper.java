@@ -64,15 +64,21 @@ public interface SectionMapper{
 	* @date 2019年8月12日 下午12:59:52
 	*/
 	public List<Section> querySectionByCourseId(String courseId);
-	
+
+	/**
+	 * 根据课程ID获取当前课程的章节总数
+	 * @param courseId
+	 * @return
+	 */
+	String selectSectionNum(String courseId);
 	/**
 	* 查看章节学习状态
-	* @param 
+	* @param
 	* @throws
 	* @return List<Map<String,Object>>
 	* @author suzhao
 	* @date 2019年8月14日 下午1:10:49
 	*/
 	public List<Map<String,Object>> querySectionStatus(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
-	
+
 }

@@ -1,5 +1,6 @@
 package com.rs.teach.mapper.studyAttr.dao;
 
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +13,10 @@ import java.util.List;
  */
 public interface TrainCourseMapper {
 
+    /**
+     * 查询培训课程
+     * @return
+     */
     List<TrainCourseVo> selectTrainCourse();
 
     /**
@@ -20,4 +25,22 @@ public interface TrainCourseMapper {
      * @return
      */
     TrainCourseVo selectTrainCourseById(@Param("courseId") String courseId);
+
+    /**
+     * 添加培训课程
+     * @param courseDto
+     */
+    void addTrainCourse(CourseDto courseDto);
+
+    /**
+     * 删除培训课程
+     * @param courseId
+     */
+    void deleteTrainCourse(@Param("courseId") String courseId);
+
+    /**
+     * 修改培训课程
+     * @param courseDto
+     */
+    void updateTrainCourse(CourseDto courseDto);
 }

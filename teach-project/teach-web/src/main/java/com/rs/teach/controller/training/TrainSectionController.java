@@ -8,7 +8,6 @@ import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import com.rs.teach.mapper.common.Enums.RelaTypeEnum;
 import com.rs.teach.mapper.common.TrainParamDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
-import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;

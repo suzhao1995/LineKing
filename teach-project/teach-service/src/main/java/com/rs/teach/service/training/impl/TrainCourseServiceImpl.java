@@ -1,6 +1,8 @@
 package com.rs.teach.service.training.impl;
 
+import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,32 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     @Autowired
     private TrainCourseMapper trainCourseMapper;
 
+    @Autowired
+    private TrainSectionMapper trainSectionMapper;
+
     @Override
-    public List<TrainCourseVo>  selectTrainCourse() {
-        return trainCourseMapper.selectTrainCourse();
+    public List<TrainCourseVo> selectTrainCourse() {
+
+        List<TrainCourseVo> trainCourseVos = trainCourseMapper.selectTrainCourse();
+        for (TrainCourseVo vo : trainCourseVos) {
+            vo.setTrainSectionNumber(trainSectionMapper.selectSectionNum(vo.getTrainCourseId()));
+        }
+        return trainCourseVos;
+    }
+
+    @Override
+    public void addTrainCourse(CourseDto courseDto) {
+        trainCourseMapper.addTrainCourse(courseDto);
+    }
+
+    @Override
+    public void deleteTrainCourse(String courseId) {
+        trainCourseMapper.deleteTrainCourse(courseId);
+    }
+
+    @Override
+    public void updateTrainCourse(CourseDto courseDto) {
+        trainCourseMapper.updateTrainCourse(courseDto);
     }
 
 }

@@ -8,11 +8,15 @@ import java.util.List;
 
 /**
  * @author 汪航
- * @Description
+ * @Description 章节service
  * @create 2019-08-03 11:10
  */
 public interface TrainSectionService {
-
+    /**
+     * 查询课程章节信息
+     * @param courseId
+     * @return
+     */
     TrainCourseVo selectCourseSection(String courseId);
 
     /**

@@ -50,7 +50,7 @@ public class FileUpDownUtil{
 	* @author suzhao
 	* @date 2019年8月1日 下午4:17:25
 	*/
-	public static Map<String,Object> picUpLoad(HttpServletRequest request, HttpServletResponse response, MultipartFile file){
+	public static Map<String,Object> picUpLoad(HttpServletRequest request, MultipartFile file){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//文件保存路径
 		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
@@ -103,7 +103,7 @@ public class FileUpDownUtil{
 	* @author suzhao
 	* @date 2019年8月1日 下午4:17:25
 	*/
-	public static Map<String,Object> fileUpLoad(HttpServletRequest request, HttpServletResponse response, MultipartFile file){
+	public static Map<String,Object> fileUpLoad(HttpServletRequest request, MultipartFile file){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//String courseId = request.getParameter("courseId");	//课程资源ID
 		//文件保存路径

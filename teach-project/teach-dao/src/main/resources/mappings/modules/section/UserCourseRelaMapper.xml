@@ -36,14 +36,6 @@
         and ucr.user_id = #{userId}
     </select>
 
-    <update id="join">
-        update user_course_rela ucr
-        set ucr.rela_type = #{relaType}
-        where ucr.course_id =#{courseId}
-        and ucr.user_id = #{userId}
-        and ucr.section_id = '0'
-    </update>
-
     <insert id="addAll">
         insert into user_course_rela ucr(course_ID,User_id,section_id,isfinish,rela_type)
         select #{courseId},#{userId},train_section_id,#{isfinish},#{relaType}

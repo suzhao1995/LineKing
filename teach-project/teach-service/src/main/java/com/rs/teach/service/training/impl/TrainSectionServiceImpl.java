@@ -30,8 +30,8 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     public TrainCourseVo selectCourseSection(String courseId) {
 
         TrainCourseVo trainCourseVo = trainCourseMapper.selectTrainCourseById(courseId);
+        trainCourseVo.setTrainSectionNumber(trainSectionMapper.selectSectionNum(courseId));
 
-//        List<TrainCourseVo> list = trainSectionMapper.selectCourseSection(courseId);
         //查询此课程的大章节
         List<TrainSectionVo> trainSectionVoList = trainSectionMapper.selectTrainSectionById(courseId);
         for (TrainSectionVo vo : trainSectionVoList) {

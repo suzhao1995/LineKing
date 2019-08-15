@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.section.dao.SectionMapper;
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,10 @@ public class CourseServiceImpl implements CourseService{
 	
 	@Autowired
 	private CourseMapper mapper;
-	
+
+	@Autowired
+	private SectionMapper sectionMapper;
+
 	@Override
 	public List<Course> getCourseByUserId(String userId) {
 		return mapper.queryCourseById(userId);
@@ -85,6 +90,30 @@ public class CourseServiceImpl implements CourseService{
 		return mapper.selectCourseByCourseId(courseId);
 	}
 
+    @Override
+    public void addCourse(CourseDto courseDto) {
+		mapper.addCourse(courseDto);
+    }
+
+    @Override
+    public void deleteCourse(String courseId) {
+        mapper.deleteCourse(courseId);
+    }
+
+	@Override
+	public void updateCourse(CourseDto courseDto) {
+		mapper.updateCourse(courseDto);
+	}
+
+	@Override
+	public List<Course> selectCourse() {
+		List<Course> courseVos = mapper.selectCourse();
+		for (Course vo : courseVos) {
+			vo.setSectionNumber(sectionMapper.selectSectionNum(vo.getCourseId()));
+		}
+		return courseVos;
+	}
+
 	@Override
 	public boolean isExsitNote(String userId, String sectionId, String classId) {
 		int count = mapper.isExsitNote(userId, sectionId, classId);
@@ -113,5 +142,5 @@ public class CourseServiceImpl implements CourseService{
 	public List<String> groupCourseLev() {
 		return mapper.groupCourseLev();
 	}
-	
+
 }

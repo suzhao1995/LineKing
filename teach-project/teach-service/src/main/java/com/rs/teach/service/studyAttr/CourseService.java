@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 
 /**
 * CourseService.java
@@ -22,7 +23,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月29日 上午11:16:41
 	*/
-	public List<Course> getCourseByUserId(String userId);
+	 List<Course> getCourseByUserId(String userId);
 	
 	/**
 	* 查询用户所教各班级课程
@@ -33,7 +34,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月30日 下午12:53:03
 	*/
-	public List<Map<String,Object>> getCourseInfoForUser(String userId, String classId);
+	 List<Map<String,Object>> getCourseInfoForUser(String userId, String classId);
 	
 	/**
 	* 已学完课程章节数
@@ -45,7 +46,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月30日 下午1:10:04
 	*/
-	public List<Map<String,Object>> getFinishStudy(String userId, String classId, String courseId);
+	 List<Map<String,Object>> getFinishStudy(String userId, String classId, String courseId);
 	
 	/**
 	* 查询各班级课程 课后笔记
@@ -55,7 +56,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月30日 下午4:41:16
 	*/
-	public List<Map<String,Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId);
+	 List<Map<String,Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId);
 	
 	/**
 	* 查询该章节是否已做课后总结
@@ -65,7 +66,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月30日 下午5:45:38
 	*/
-	public boolean isExsitSummary(String userId, String sectionId,String classId);
+	 boolean isExsitSummary(String userId, String sectionId,String classId);
 	
 	/**
 	* 修改课后总结
@@ -75,7 +76,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月31日 上午11:40:36
 	*/
-	public int modifySummary(NoteSummary noteSummary);
+	int modifySummary(NoteSummary noteSummary);
 	
 	/**
 	* 插入课后总结
@@ -85,7 +86,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月31日 上午11:48:37
 	*/
-	public int addSummary(NoteSummary noteSummary);
+	int addSummary(NoteSummary noteSummary);
 	
 	/**
 	* 课程资源初始化页面接口
@@ -95,7 +96,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年8月9日 下午4:23:15
 	*/
-	public List<Course> getCourse(String courseType, String schoolId, String courseLev,String likeSearch);
+	 List<Course> getCourse(String courseType, String schoolId, String courseLev,String likeSearch);
 	
 	/**
 	* 根据课程id查询课程资源信息
@@ -105,12 +106,35 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年8月12日 上午11:54:36
 	*/
-	public Course queryCourseByCourseId(String courseId);
-	
+	Course queryCourseByCourseId(String courseId);
+
+	/**
+	 * 添加课程
+	 * @param courseDto
+	 */
+    void addCourse(CourseDto courseDto);
+
+	/**
+	 * 删除课程
+	 * @param courseId
+	 */
+	void deleteCourse(String courseId);
+
+	/**
+	 * 修改课程
+	 * @param courseDto
+	 */
+	void updateCourse(CourseDto courseDto);
+
+	/**
+	 * 查询全部课程
+	 */
+	List<Course> selectCourse();
+
 	public boolean isExsitNote(String userId, String sectionId, String classId);
 	public int updateNote(NoteSummary noteSummary);
 	public int insertNote(NoteSummary noteSummary);
-	
+
 	//分组查询课程类型和课程等级
 	public List<String> groupCourseType();
 	public List<String> groupCourseLev();

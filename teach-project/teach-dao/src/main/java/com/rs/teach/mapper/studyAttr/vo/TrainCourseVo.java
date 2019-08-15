@@ -22,8 +22,7 @@ public class TrainCourseVo implements Serializable {
 
 	private String trainCourseId;	//培训课程ID
 	private String trainCourseName;	//培训课程名称
-	private String trainSectionNumber;	//培训章节总数
-	private String trainCoursePicUrl;	//培训课程文件Url
-	private String picUrl;         //培训课程封面URL
+	private Integer trainSectionNumber;	//培训章节总数
+	private String trainCoursePicUrl;	//培训课程封面URL
 	private List<TrainSectionVo> trainSectionVoList;    //课程下的大章节集合
 }

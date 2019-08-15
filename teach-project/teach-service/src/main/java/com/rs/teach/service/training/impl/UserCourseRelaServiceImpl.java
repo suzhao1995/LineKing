@@ -22,7 +22,7 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
     private UserCourseRelaMapper userCourseRelaMapper;
 
     @Override
-    public Integer studyStatus(String courseId, String userId) {
+    public Integer studyStatus(String userId, String courseId) {
 
         //判断是否为JOIN
         Integer resultJOIN = userCourseRelaMapper.studyStatus(courseId, userId, RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name()));
@@ -64,7 +64,7 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
 
     @Override
     public void cancel(String userId, String courseId) {
-        //修改状态标识为2，//section_id课程和用户根节点，为0代表根节点，其他对应章节表sectionId
+        //修改状态标识为2
         userCourseRelaMapper.cancel(userId, courseId, RelaTypeEnum.convent2TableNum(RelaTypeEnum.NO_JOIN.name()));
     }
 
