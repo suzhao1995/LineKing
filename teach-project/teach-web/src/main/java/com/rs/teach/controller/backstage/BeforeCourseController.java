@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -29,10 +28,10 @@ import java.util.Map;
  * @create 2019-08-14 10:32
  */
 @Controller
-@RequestMapping("/course")
-public class CourseController {
+@RequestMapping("/beforeCourse")
+public class BeforeCourseController {
 
-    private static final Logger logger = Logger.getLogger(CourseController.class);
+    private static final Logger logger = Logger.getLogger(BeforeCourseController.class);
 
     @Autowired
     private CourseService courseService;
