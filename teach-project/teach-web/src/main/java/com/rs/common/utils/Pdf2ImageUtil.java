@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import sun.misc.BASE64Encoder;
 
@@ -25,8 +27,17 @@ import sun.misc.BASE64Encoder;
 * @date: 2019年8月5日 下午10:12:26
 * @version: V1.0
 */
+@Component
 public class Pdf2ImageUtil{
 	private static final Logger logger = Logger.getLogger(Pdf2ImageUtil.class);
+	
+	private static String filePath;	//文件路径
+	
+	@Value("${filePath}")	//静态属性使用setter方法注入properties文件的属性
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
 	 /**
      * 转换全部的pdf
      * @param fileAddress 文件地址
@@ -36,8 +47,9 @@ public class Pdf2ImageUtil{
      */
     public static Map<String,Object> pdf2png(HttpServletRequest request,String fileAddress,String filename,String type) throws Exception {
     	//文件保存路径
-    	String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
-        // 将pdf装图片 并且自定义图片得格式大小
+    	//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
+    	String savePath = filePath;
+    	// 将pdf装图片 并且自定义图片得格式大小
         File file = new File(savePath +"\\"+fileAddress+"\\"+filename+".pdf");
         Map<String,Object> resultMap = new HashMap<String,Object>();
         List<String> list = new ArrayList<String>();

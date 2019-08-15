@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,6 +77,9 @@ public class CourseController{
 	
 	@Autowired
 	private SchoolService schoolService;
+	
+	@Value("${filePath}")
+	private String filePath;	//文件存放根目录
 	/**
 	* 课程目录资源初始化
 	* @param 
@@ -340,12 +344,14 @@ public class CourseController{
 	@ResponseBody
 	public ResponseBean allDownLoadFile(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
+		
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		String courseId = request.getParameter("courseId");
 		Course course = courseService.queryCourseByCourseId(courseId);
 		//存储文件的根目录
-		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+		String savePath = filePath;
 		//服务器端创建文件临时储存总目录
 		String temporaryPath = request.getSession().getServletContext().getRealPath("/WEB-INF/allDownLoad/" + userId + courseId);
 		List<Section> sections = sectionService.getSectionByCourseId(courseId);
@@ -446,8 +452,8 @@ public class CourseController{
 			bean.addError("没有课件信息");
 			return bean;
 		}
-		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
-		
+		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
+		String savePath = filePath;
 		String filePath = savePath + section.getSectionUrl().replace("/", "\\");
 		String fileRealPath = filePath + "\\" + section.getSectionId() +"_"+section.getUpdateFileName() + section.getSectionType(); 
 		fileUrl.add(fileRealPath);

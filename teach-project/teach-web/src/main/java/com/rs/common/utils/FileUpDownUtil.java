@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -27,11 +29,23 @@ import com.rs.teach.mapper.section.entity.Section;
 * @date: 2019年8月1日 上午11:40:20
 * @version: V1.0
 */
+@Component
 public class FileUpDownUtil{
 	
 	private static final List<String> upLoadType = new ArrayList<String>();	//指定上传文件格式
 	private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 	
+	private static String filePath;	//文件路径
+	private static String imgPath;	//图片路径
+	
+	@Value("${filePath}")	//静态属性使用setter方法注入properties文件的属性
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	@Value("${picPath}")
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
 	static{
 		upLoadType.add(".txt");
 		upLoadType.add(".jpg");
@@ -53,8 +67,8 @@ public class FileUpDownUtil{
 	public static Map<String,Object> picUpLoad(HttpServletRequest request, MultipartFile file){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//文件保存路径
-		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
-		
+		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
+		String savePath = imgPath;
 		if(!file.isEmpty()){
 			try {
 				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
@@ -107,7 +121,8 @@ public class FileUpDownUtil{
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//String courseId = request.getParameter("courseId");	//课程资源ID
 		//文件保存路径
-		String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
+		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
+		String savePath = filePath;
 		//发生异常删除文件的路径
 		String catchFilePath = null;
 		if(!file.isEmpty()){
@@ -194,10 +209,11 @@ public class FileUpDownUtil{
 		
 		String fileName = sectionId +"_"+ upLoadName;	//保存在服务器文件的名称
 		//保存文件的地址
-		String filePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-		filePath = filePath + sectionUrl.replace("/", "\\");
+		//String filePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+		String savePath = filePath;
+		savePath = savePath + sectionUrl.replace("/", "\\");
 		
-		String fileRealPath = filePath + "\\" + fileName + sectionType; 
+		String fileRealPath = savePath + "\\" + fileName + sectionType; 
 		File file = new File(fileRealPath);
 		if(!file.exists()){
 			resultMap.put("code", "-1");
@@ -206,7 +222,7 @@ public class FileUpDownUtil{
 		}
 		//设置响应头，控制浏览器下载该文件
 		response.setContentType("multipart/form-data");
-		response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downLoadName, "UTF-8"));
+		response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downLoadName+sectionType, "UTF-8"));
 		//读取文件，保存文件到输入流
 		FileInputStream inputStream = new FileInputStream(file);
 		//创建输出流

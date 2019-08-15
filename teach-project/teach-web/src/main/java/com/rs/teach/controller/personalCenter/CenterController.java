@@ -294,7 +294,7 @@ public class CenterController{
 			if(tmpList == null){
 				tmpList = new ArrayList<Map<String,Object>>();
 				tmpList.add(smap);
-				map.put(smap.get("totleSectionSort").toString(), tmpList);
+				map.put(String.valueOf(smap.get("totleSectionSort")), tmpList);
 			}else{
 				tmpList.add(smap);
 			}
