@@ -125,7 +125,7 @@ public class DateUtil{
 	* @author jqlin
 	*/
 	public static String sayHello(Date nowTime) {
-		int now = Integer.valueOf(dateFormat(nowTime,"hhmmss"));
+		int now = Integer.valueOf(dateFormat(nowTime,"HHmmss"));
 		if(now<=55959 && now > 0){
 			return "凌晨好";
 		}else if(now > 55959 && now <= 115959){
@@ -141,7 +141,7 @@ public class DateUtil{
 	}
 	
 	public static void main(String[] args) throws ParseException {
-		int now = Integer.valueOf(dateFormat(new Date(),"hhmmss"));
+		int now = Integer.valueOf(dateFormat(new Date(),"HHmmss"));
 		System.out.println(now);
 	}
 }

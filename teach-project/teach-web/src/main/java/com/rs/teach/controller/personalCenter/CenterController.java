@@ -37,6 +37,7 @@ import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.studyAttr.StudyTeamService;
 import com.rs.teach.service.timeTable.ScheduleService;
+import com.rs.teach.service.training.UserCourseRelaService;
 
 /**
 * CenterController.java
@@ -79,6 +80,9 @@ public class CenterController{
 	 * */
 	@Autowired
 	private SectionService sectionService;
+	
+	@Autowired
+	private UserCourseRelaService userCourseRelaService;
 	
 	
 	
@@ -277,9 +281,10 @@ public class CenterController{
 		String courseId = request.getParameter("courseId");
 		
 		Course course = courseService.queryCourseByCourseId(courseId);
-		ajaxData.put("course", course);	//课程资源信息
 		
 		List<Map<String,Object>> list = sectionService.getSectionStatus(courseId, userId, classId);
+		course.setSectionNumber(String.valueOf(list.size()));
+		ajaxData.put("course", course);	//课程资源信息
 		
 		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
 		//按大章节目录进行分组
@@ -306,8 +311,6 @@ public class CenterController{
 		}
 		ajaxData.put("sectionList", sectionList);
 		
-		List<Map<String,Object>> finishSec = courseService.getFinishStudy(userId, classId, courseId);
-		ajaxData.put("finishSec", finishSec);
 		bean.addSuccess(ajaxData);
 		return bean;
 	}
@@ -321,7 +324,7 @@ public class CenterController{
 	 * @throws IOException 
 	* @date 2019年7月30日 下午3:43:12
 	*/
-	@RequestMapping("/queryNoteSummary")
+	@RequestMapping("/queryModifyCourse")
 	@ResponseBody
 	public ResponseBean queryNote(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
@@ -334,7 +337,7 @@ public class CenterController{
 		
 		//查看我修改的课件信息
 		List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
-		if(sections.size() >= 0){
+		if(sections.size() > 0){
 			bean.addSuccess(sections);
 		}else{
 			bean.addError("本章节，您未上传过课件");
@@ -363,10 +366,16 @@ public class CenterController{
 		String classId = request.getParameter("classId");
 		String sectionId = request.getParameter("sectionId");
 		String courseId = request.getParameter("courseId");
+		String sectionStatus = request.getParameter("status");	//课程学习状态
 		
 		ajaxData.put("classId", classId);
 		ajaxData.put("sectionId", sectionId);
 		ajaxData.put("courseId", courseId);
+		
+		if("0".equals(sectionStatus)){
+			//修改课程状态
+			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 1);
+		}
 		//查询课程笔记
 		List<Map<String,Object>> noteList = courseService.getNoteSummary(userId, classId, courseId, "0", sectionId);
 		if(noteList.size() > 0){
@@ -531,6 +540,8 @@ public class CenterController{
 				//保存新增课后总结
 				courseService.addSummary(noteSummary);
 			}
+			//修改课程状态
+			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 2);
 			bean.addSuccess();
 		} catch (Exception e) {
 			logger.error("--------保存异常-------", e);

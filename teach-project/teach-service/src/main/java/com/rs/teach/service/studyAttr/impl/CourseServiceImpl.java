@@ -103,5 +103,15 @@ public class CourseServiceImpl implements CourseService{
 	public int insertNote(NoteSummary noteSummary) {
 		return mapper.insertNote(noteSummary);
 	}
+
+	@Override
+	public List<String> groupCourseType() {
+		return mapper.groupCourseType();
+	}
+
+	@Override
+	public List<String> groupCourseLev() {
+		return mapper.groupCourseLev();
+	}
 	
 }

@@ -110,4 +110,8 @@ public interface CourseService{
 	public boolean isExsitNote(String userId, String sectionId, String classId);
 	public int updateNote(NoteSummary noteSummary);
 	public int insertNote(NoteSummary noteSummary);
+	
+	//分组查询课程类型和课程等级
+	public List<String> groupCourseType();
+	public List<String> groupCourseLev();
 }

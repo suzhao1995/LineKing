@@ -29,6 +29,7 @@ import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
+import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.entity.Course;
@@ -36,6 +37,7 @@ import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.service.User.UserService;
+import com.rs.teach.service.backstage.SchoolService;
 import com.rs.teach.service.resourcesAttr.PicAttrService;
 import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
@@ -71,6 +73,9 @@ public class CourseController{
 	
 	@Autowired
 	private TestAndWorkService testAndWorkService;
+	
+	@Autowired
+	private SchoolService schoolService;
 	/**
 	* 课程目录资源初始化
 	* @param 
@@ -98,16 +103,45 @@ public class CourseController{
 		
 		//初始化课程信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
-		//分页查询消息
+		//分页查询课程
 		List<Course> list = courseService.getCourse(courseType, schoolId, courseLev,likeSearch);
 		//查询我的课程
 		List<Course> myCourse = courseService.getCourseByUserId(userId);
 		
 		for(Course course:list){
+			//查询每个课程的总章节数
+			List<Section> sections = sectionService.getSectionByCourseId(course.getCourseId());
+			course.setSectionNumber(String.valueOf(sections.size()));
 			MyCourseToList(course,myCourse);
 		}
 		PageInfo<Course> pageInfo = new PageInfo<Course>(list,9);
 		bean.addSuccess(pageInfo);
+		return bean;
+	}
+	
+	/**
+	* 课程资源模块 查询条件信息
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月15日 上午11:38:49
+	*/
+	@RequestMapping("/getQueryCondition")
+	@ResponseBody
+	public ResponseBean getQueryCondition(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		
+		List<School> schoolList = schoolService.selectSchool();
+		ajaxData.put("schoolList", schoolList);
+		
+		List<String> courseTypeList = courseService.groupCourseType();
+		ajaxData.put("courseTypeList", courseTypeList);
+		List<String> courseLevList = courseService.groupCourseLev();
+		ajaxData.put("courseLevList", courseLevList);
+		
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -131,10 +165,11 @@ public class CourseController{
 		String courseId = request.getParameter("courseId");
 		
 		Course course = courseService.queryCourseByCourseId(courseId);
-		ajaxData.put("course", course);	//课程资源信息
 		
 		List<Section> list = sectionService.getSectionByCourseId(courseId);
-
+		course.setSectionNumber(String.valueOf(list.size()));
+		ajaxData.put("course", course);	//课程资源信息
+		
 		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
 		//按大章节目录进行分组
 		Map<String,List<Section>> map = new HashMap<String,List<Section>>();
@@ -160,9 +195,6 @@ public class CourseController{
 		}
 		
 		ajaxData.put("sectionList", sectionList);
-		//查询用户所在校区班级
-		List<StudyTeam> teams = studyTeamService.getClassById(userId);
-		ajaxData.put("teams", teams);
 		
 		bean.addSuccess(ajaxData);
 		return bean;
@@ -308,8 +340,8 @@ public class CourseController{
 	@ResponseBody
 	public ResponseBean allDownLoadFile(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
-		//String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-		String userId = "0001";
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
 		String courseId = request.getParameter("courseId");
 		Course course = courseService.queryCourseByCourseId(courseId);
 		//存储文件的根目录
@@ -376,12 +408,19 @@ public class CourseController{
 			}
 			
 		}
-		//压缩总目录
-		File zipFile = cn.hutool.core.util.ZipUtil.zip(temporaryPath, temporaryPath + ".zip", true);
-		ZipUtil.downloadZip(zipFile, response, course.getCourseName());
-		//删除临时文件根目录
-		File temporaryFile = new File(temporaryPath);
-		deleteDir(temporaryFile);
+		try {
+			
+			//压缩总目录
+			File zipFile = cn.hutool.core.util.ZipUtil.zip(temporaryPath, temporaryPath + ".zip", true);
+			ZipUtil.downloadZip(zipFile, response, course.getCourseName());
+			//删除临时文件根目录
+			File temporaryFile = new File(temporaryPath);
+			deleteDir(temporaryFile);
+			bean.addSuccess();
+		} catch (Exception e) {
+			logger.error("------下载文件异常------", e);
+			bean.addError("系统异常");
+		}
 		return bean;
 	}
 	

@@ -138,9 +138,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="queryCourse" parameterType="map" resultMap="queryCourseMap">
 		select * from tf_el_course t 
 			<where>
-				t.COURSE_TYPE = #{con_courseType} 
-				and t.SCHOOL_ID = #{con_schoolId} 
-				and t.COURSE_LEV = #{con_courseLev}
+				1 = 1
+				<if test="con_courseType != null and con_courseType != ''">
+					and t.COURSE_TYPE = #{con_courseType} 
+				</if>
+				<if test="con_schoolId != null and con_schoolId != ''">
+					and t.SCHOOL_ID = #{con_schoolId} 
+				</if>
+				<if test="con_courseLev != null and con_courseLev != ''">
+					and t.COURSE_LEV = #{con_courseLev}
+				</if>
 				<if test="con_likeSearch != null and con_likeSearch != ''">
 					and t.COURSE_NAME like '%'||#{con_likeSearch}||'%'
 				</if>
@@ -183,4 +190,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update tf_el_note t set t.NOTE = #{note}
 			where t.USER_ID = #{userId} and t.SECTION_ID = #{sectionId} and t.CLASS_ID = #{classId}
 	</update>
+	
+	<!-- 分组查询课程类型和等级 -->
+	<select id="groupCourseType" resultType="java.lang.String">
+		select t.course_type from tf_el_course t group by t.course_type
+	</select>
+	<select id="groupCourseLev" resultType="java.lang.String">
+		select t.course_lev from tf_el_course t group by t.course_lev
+	</select>
 </mapper>
