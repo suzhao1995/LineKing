@@ -30,4 +30,27 @@ public interface TestAndWorkMapper{
 	* @date 2019年8月12日 下午5:21:23
 	*/
 	public Testpaper queryTestpaper(String testId);
+
+	/**
+	 * 添加练习表
+	 * @param practice
+	 */
+	void insertPractice(Practice practice);
+	/**
+	 * 添加考试表
+	 * @param testpaper
+	 */
+	void insertTestpaper(Testpaper testpaper);
+
+	/**
+	 * 修改练习表
+	 * @param practice
+	 */
+    void updatePractice(Practice practice);
+
+	/**
+	 * 修改试卷表
+	 * @param testpaper
+	 */
+	void updateTestpaper(Testpaper testpaper);
 }

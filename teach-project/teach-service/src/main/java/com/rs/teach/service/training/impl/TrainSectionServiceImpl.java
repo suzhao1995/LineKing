@@ -1,10 +1,15 @@
 package com.rs.teach.service.training.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
+import com.rs.teach.mapper.studyAttr.dao.TestAndWorkMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainSectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,10 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Autowired
     private TrainCourseMapper trainCourseMapper;
 
+    @Autowired
+    private TestAndWorkMapper testAndWorkMapper;
+
+
     @Override
     public TrainCourseVo selectCourseSection(String courseId) {
 
@@ -36,7 +45,21 @@ public class TrainSectionServiceImpl implements TrainSectionService {
         List<TrainSectionVo> trainSectionVoList = trainSectionMapper.selectTrainSectionById(courseId);
         for (TrainSectionVo vo : trainSectionVoList) {
             //查询小章节
-            List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId,vo.getTrainSectionSort());
+            List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId, vo.getTrainSectionSort());
+
+            for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
+
+                if (StrUtil.isNotEmpty(trainLitterSectionVo.getPracticeId())) {
+                    Practice practice = testAndWorkMapper.queryPracticeById(trainLitterSectionVo.getPracticeId());
+                    trainLitterSectionVo.setPracticeFileName(practice.getPracticeFileName());
+                    trainLitterSectionVo.setPracticeUrl(practice.getPracticeUrl());
+                }
+                if (StrUtil.isNotEmpty(trainLitterSectionVo.getTestpaperId())) {
+                    Testpaper testpaper = testAndWorkMapper.queryTestpaper(trainLitterSectionVo.getTestpaperId());
+                    trainLitterSectionVo.setTestpaperName(testpaper.getTestpaperName());
+                    trainLitterSectionVo.setTestpaperUrl(testpaper.getTestpaperUrl());
+                }
+            }
             vo.setTrainLitterSectionVoList(trainLitterSectionVoList);
         }
         trainCourseVo.setTrainSectionVoList(trainSectionVoList);
@@ -52,6 +75,16 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Override
     public List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort) {
         return trainSectionMapper.selectSectionList(trainCourseId, trainSectionSort);
+    }
+
+    @Override
+    public void addTrainSection(SectionDto sectionDto) {
+        trainSectionMapper.addTrainSection(sectionDto);
+    }
+
+    @Override
+    public void updateTrainSection(SectionDto sectionDto) {
+        trainSectionMapper.updateTrainSection(sectionDto);
     }
 
 }

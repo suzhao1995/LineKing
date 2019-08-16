@@ -3,6 +3,9 @@ package com.rs.teach.mapper.section.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
+import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import org.apache.ibatis.annotations.Param;
 
 import com.rs.teach.mapper.section.entity.Section;
@@ -81,4 +84,30 @@ public interface SectionMapper{
 	*/
 	public List<Map<String,Object>> querySectionStatus(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
 
+	/**
+	 * 新增章节
+	 * @param sectionDto
+	 */
+    void addSection(SectionDto sectionDto);
+
+	/**
+	 * 根据id查询大章节信息
+	 * @param courseId
+	 * @return
+	 */
+	List<TrainSectionVo> selectSectionById(@Param("courseId") String courseId);
+
+	/**
+	 * 查询小章节信息
+	 * @param courseId
+	 * @param trainSectionSort
+	 * @return
+	 */
+	List<TrainLitterSectionVo> selectLitterSection(@Param("courseId") String courseId, @Param("trainSectionSort") String trainSectionSort);
+
+	/**
+	 * 修改课程章节信息
+	 * @param sectionDto
+	 */
+	void updateSection(SectionDto sectionDto);
 }

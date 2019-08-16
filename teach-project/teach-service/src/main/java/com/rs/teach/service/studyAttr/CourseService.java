@@ -6,6 +6,7 @@ import java.util.Map;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 /**
 * CourseService.java
@@ -138,4 +139,8 @@ public interface CourseService{
 	//分组查询课程类型和课程等级
 	public List<String> groupCourseType();
 	public List<String> groupCourseLev();
+
+	//管理员查询全部课程的id
+    List<TrainCourseVo> selectTrainCourse();
+
 }

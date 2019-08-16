@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 /**
 * SectionService.java
@@ -23,7 +25,7 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年7月31日 下午2:17:25
 	*/
-	public List<Section> getSectionByUser(String userId, String sectionId);
+	 List<Section> getSectionByUser(String userId, String sectionId);
 	
 	/**
 	* 根据sectionId查询章节信息
@@ -33,7 +35,7 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年8月1日 下午1:45:52
 	*/
-	public Section getSectionById(String sectionId);
+	 Section getSectionById(String sectionId);
 	
 	/**
 	* 插入老师上传的课件信息
@@ -43,7 +45,7 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年8月2日 上午10:38:33
 	*/
-	public int addTeachUpSection(Section section);
+	 int addTeachUpSection(Section section);
 	
 	/**
 	* 根据upLoadId查询教师上传的文档信息
@@ -53,7 +55,7 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年8月2日 上午11:41:15
 	*/
-	public Section getUpLoadSection(String upLoadId);
+	 Section getUpLoadSection(String upLoadId);
 	
 	/**
 	* 根据courseId 查询详细章节信息
@@ -63,7 +65,7 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年8月12日 下午12:59:52
 	*/
-	public List<Section> getSectionByCourseId(String courseId);
+	 List<Section> getSectionByCourseId(String courseId);
 	
 	/**
 	* 查看章节学习状态
@@ -73,6 +75,24 @@ public interface SectionService{
 	* @author suzhao
 	* @date 2019年8月14日 下午1:10:49
 	*/
-	public List<Map<String,Object>> getSectionStatus(String courseId, String userId, String classId);
-	
+	 List<Map<String,Object>> getSectionStatus(String courseId, String userId, String classId);
+
+	/**
+	 * 添加章节
+	 * @param sectionDto
+	 *
+	 */
+    void addSection(SectionDto sectionDto);
+	/**
+	 * 查询课程章节信息
+	 * @param courseId
+	 * @return
+	 */
+	TrainCourseVo selectCourseSection(String courseId);
+
+	/**
+	 * 修改课程章节信息
+	 * @param sectionDto
+	 */
+	void updateSection(SectionDto sectionDto);
 }

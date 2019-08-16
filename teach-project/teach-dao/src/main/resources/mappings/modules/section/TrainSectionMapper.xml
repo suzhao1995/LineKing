@@ -3,6 +3,60 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.TrainSectionMapper">
+    <insert id="addTrainSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
+        insert into TF_EL_TRAIN_SECTION
+        (
+            train_section_id, COURSE_WARE,train_course_id, train_section_sort,
+            train_section_name, train_litter_section_sort, train_litter_section_name,
+            train_litter_section_url, train_litter_section_type, update_file_name,
+            practice_id, testpaper_id,COURSEWARE_ID
+        )
+        values (
+            SEQ_EL_TRAIN_SECTION.nextval, #{courseWare},#{courseId},#{sectionSort},#{sectionName},
+            #{litterSectionSort},#{litterSectionName},#{litterSectionUrl},
+            #{litterSectionType},#{updateFileName},#{practiceId},#{testpaperId},#{coursewareId}
+        )
+
+    </insert>
+    <update id="updateTrainSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
+        update TF_EL_TRAIN_SECTION
+        <set>
+            <if test="coursewareId != null and coursewareId != ''">
+                COURSEWARE_ID = #{coursewareId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                TRAIN_COURSE_ID = #{courseId}
+            </if>
+            <if test="sectionSort != null and sectionSort != ''">
+                TRAIN_SECTION_SORT = #{sectionSort}
+            </if>
+            <if test="sectionName != null and sectionName != ''">
+                TRAIN_SECTION_NAME = #{sectionName}
+            </if>
+            <if test="litterSectionSort != null and litterSectionSort != ''">
+                TRAIN_LITTER_SECTION_SORT = #{litterSectionSort}
+            </if>
+            <if test="litterSectionName != null and litterSectionName != ''">
+                TRAIN_LITTER_SECTION_NAME = #{litterSectionName}
+            </if>
+            <if test="litterSectionUrl != null and litterSectionUrl != ''">
+                TRAIN_LITTER_SECTION_URL = #{litterSectionUrl}
+            </if>
+            <if test="litterSectionType != null and litterSectionType != ''">
+                TRAIN_LITTER_SECTION_TYPE = #{litterSectionType}
+            </if>
+            <if test="updateFileName != null and updateFileName != ''">
+                UPDATE_FILE_NAME = #{updateFileName}
+            </if>
+            <if test="practiceId != null and practiceId != ''">
+                PRACTICE_ID = #{practiceId}
+            </if>
+            <if test="testpaperId != null and testpaperId != ''">
+                TESTPAPER_ID = #{testpaperId}
+            </if>
+        </set>
+        where TRAIN_SECTION_ID = #{sectionId}
+    </update>
 
     <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
         select * from tf_el_train_section
@@ -26,7 +80,7 @@
 
     <select id="selectTrainLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
         select TRAIN_SECTION_ID,TRAIN_LITTER_SECTION_SORT,TRAIN_LITTER_SECTION_NAME
-               ,TRAIN_LITTER_SECTION_URL,TRAIN_LITTER_SECTION_TYPE
+               ,TRAIN_LITTER_SECTION_URL,TRAIN_LITTER_SECTION_TYPE,PRACTICE_ID ,TESTPAPER_ID
         FROM TF_EL_TRAIN_SECTION
         WHERE TRAIN_COURSE_ID = #{courseId}
         and TRAIN_SECTION_SORT = #{trainSectionSort}

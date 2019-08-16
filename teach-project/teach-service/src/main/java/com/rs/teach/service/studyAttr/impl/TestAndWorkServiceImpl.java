@@ -9,19 +9,39 @@ import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.service.studyAttr.TestAndWorkService;
 
 @Service
-public class TestAndWorkServiceImpl implements TestAndWorkService{
-	
-	@Autowired
-	private TestAndWorkMapper mapper;
-	
-	@Override
-	public Practice getPracticeById(String workId) {
-		return mapper.queryPracticeById(workId);
-	}
+public class TestAndWorkServiceImpl implements TestAndWorkService {
 
-	@Override
-	public Testpaper getTestpaper(String testId) {
-		return mapper.queryTestpaper(testId);
-	}
-	
+    @Autowired
+    private TestAndWorkMapper mapper;
+
+    @Override
+    public Practice getPracticeById(String workId) {
+        return mapper.queryPracticeById(workId);
+    }
+
+    @Override
+    public Testpaper getTestpaper(String testId) {
+        return mapper.queryTestpaper(testId);
+    }
+
+    @Override
+    public void insertPractice(Practice practice) {
+        mapper.insertPractice(practice);
+    }
+
+    @Override
+    public void insertTestpaper(Testpaper testpaper) {
+        mapper.insertTestpaper(testpaper);
+    }
+
+    @Override
+    public void updatePractice(Practice practice) {
+        mapper.updatePractice(practice);
+    }
+
+    @Override
+    public void updateTestpaper(Testpaper testpaper) {
+        mapper.updateTestpaper(testpaper);
+    }
+
 }

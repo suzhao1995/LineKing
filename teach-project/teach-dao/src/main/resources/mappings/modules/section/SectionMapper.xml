@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="extend3" column="EXTEND3" />
 		<result property="extend4" column="EXTEND4" />
 	</resultMap>
-	
+
 	<select id="querySectionByUser" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.SECTION_ID = #{sectionId} and t.UPDATE_USER = #{userId}
 	</select>
@@ -61,8 +61,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{extend4}
 			)
 	</insert>
-	
-	<select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
+    <insert id="addSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
+		insert into TF_EL_SECTION
+		(
+		section_id, course_id,section_name,  section_url,
+		section_type, section_sort, update_filename, totlesection_sort,
+		totlesection_name, paperid, schoolworkid,COURSEWARE_ID
+		)
+		values (SEQ_EL_SECTION.nextval,#{courseId},#{litterSectionName},#{litterSectionUrl},
+            #{litterSectionType},#{litterSectionSort},#{updateFileName},#{sectionSort},
+            #{sectionName},#{practiceId},#{testpaperId},#{coursewareId}
+        )
+	</insert>
+
+	<update id="updateSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
+		update TF_EL_SECTION
+		<set>
+			<if test="courseId != null and courseId != ''">
+				course_id = #{courseId}
+			</if>
+			<if test="litterSectionName != null and litterSectionName != ''">
+				section_name = #{litterSectionName}
+			</if>
+			<if test="litterSectionUrl != null and litterSectionUrl != ''">
+				section_url = #{litterSectionUrl}
+			</if>
+			<if test="litterSectionType != null and litterSectionType != ''">
+				section_type = #{litterSectionType}
+			</if>
+			<if test="litterSectionSort != null and litterSectionSort != ''">
+				section_sort = #{litterSectionSort}
+			</if>
+			<if test="updateFileName != null and updateFileName != ''">
+				update_filename = #{updateFileName}
+			</if>
+			<if test="sectionSort != null and sectionSort != ''">
+				totlesection_sort = #{sectionSort}
+			</if>
+			<if test="sectionName != null and sectionName != ''">
+				totlesection_name = #{sectionName}
+			</if>
+			<if test="practiceId != null and practiceId != ''">
+				paperid = #{practiceId}
+			</if>
+			<if test="testpaperId != null and testpaperId != ''">
+				schoolworkid = #{testpaperId}
+			</if>
+			<if test="coursewareId != null and coursewareId != ''">
+				COURSEWARE_ID = #{coursewareId}
+			</if>
+		</set>
+		where  SECTION_ID = #{sectionId}
+	</update>
+
+
+    <select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.UPLOAD_ID = #{upLoadId}
 	</select>
 	
@@ -95,5 +148,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSectionNum" resultType="java.lang.String">
 		select count(1) from TF_EL_SECTION
         where COURSE_ID=#{courseId}
+	</select>
+
+	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
+	select distinct TOTLESECTION_SORT as TRAIN_SECTION_SORT,
+	TOTLESECTION_NAME as TRAIN_SECTION_NAME
+        FROM TF_EL_SECTION
+        WHERE COURSE_ID = #{courseId}
+        order by TOTLESECTION_SORT
+	</select>
+	<select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
+		select SECTION_ID AS TRAIN_SECTION_ID,
+				SECTION_SORT AS TRAIN_LITTER_SECTION_SORT,
+				SECTION_NAME AS TRAIN_LITTER_SECTION_NAME,
+                SECTION_URL AS TRAIN_LITTER_SECTION_URL,
+                SECTION_TYPE AS TRAIN_LITTER_SECTION_TYPE,
+                SCHOOLWORKID AS PRACTICE_ID ,
+                PAPERID AS TESTPAPER_ID
+        FROM TF_EL_SECTION
+        WHERE COURSE_ID = #{courseId}
+        and TOTLESECTION_SORT = #{trainSectionSort}
+         order by SECTION_SORT
+
 	</select>
 </mapper>

@@ -28,6 +28,7 @@ public class Section implements Serializable{
 	private String sectionType;	//文档类型
 	private String workId;	//练习id
 	private String testPaperId;	//考试id
+	private String coursewareId; //课件Id
 	private String extend1;	//预留字段
 	private String extend2;
 	private String extend3;
@@ -37,6 +38,13 @@ public class Section implements Serializable{
 		
 	}
 
+	public String getCoursewareId() {
+		return coursewareId;
+	}
+
+	public void setCoursewareId(String coursewareId) {
+		this.coursewareId = coursewareId;
+	}
 	public String getUpLoadId() {
 		return upLoadId;
 	}

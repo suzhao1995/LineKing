@@ -17,9 +17,6 @@ public class SectionDto implements Serializable {
     //判断是否是培训课程(1为培训课程，0为课程)
     private String isTrain;
 
-    //章节id（数据库序列生成）
-    private String sectionId;
-
     //课程id
     private String courseId;
 
@@ -45,8 +42,11 @@ public class SectionDto implements Serializable {
     //小章节type(ppt,pdf,word)
     private String litterSectionType;
 
-    //课件id
-    private String courseWareId;
+    //章节id（即为课件文件的唯一标识）
+    private String sectionId;
+
+    //课件ID
+    private String coursewareId;
 
     //作业ID
     private String practiceId;

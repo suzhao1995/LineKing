@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
 
 import com.rs.teach.mapper.studyAttr.entity.Course;
@@ -144,4 +145,14 @@ public interface CourseMapper{
 	//分组查询课程类型和课程等级
 	public List<String> groupCourseType();
 	public List<String> groupCourseLev();
+
+	//管理员查询全部课程的id
+    List<TrainCourseVo> selectTrainCourse();
+
+	/**
+	 * 根据id查询大章节信息
+	 * @param courseId
+	 * @return
+	 */
+	TrainCourseVo selectCourseById(@Param("courseId") String courseId);
 }

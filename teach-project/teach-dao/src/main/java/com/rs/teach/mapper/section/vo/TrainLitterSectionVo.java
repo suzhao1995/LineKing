@@ -1,5 +1,7 @@
 package com.rs.teach.mapper.section.vo;
 
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -28,4 +30,12 @@ public class TrainLitterSectionVo implements Serializable {
 
     //培训小章节type
     private String trainLitterSectionType;
+
+    private String practiceId;     //作业ID
+    private String practiceFileName;   //作业文件上传name
+    private String practiceUrl;    //作业文件url
+
+    private String testpaperId;     //考试ID
+    private String testpaperName;   //考试文件上传name
+    private String testpaperUrl;    //考试文件url
 }

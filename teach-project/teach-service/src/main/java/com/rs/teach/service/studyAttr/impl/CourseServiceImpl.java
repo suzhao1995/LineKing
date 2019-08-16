@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -142,5 +143,11 @@ public class CourseServiceImpl implements CourseService{
 	public List<String> groupCourseLev() {
 		return mapper.groupCourseLev();
 	}
+
+    @Override
+    public List<TrainCourseVo> selectTrainCourse() {
+        return mapper.selectTrainCourse();
+
+    }
 
 }

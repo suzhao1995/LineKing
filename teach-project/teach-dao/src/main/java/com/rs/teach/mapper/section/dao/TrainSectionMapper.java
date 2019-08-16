@@ -1,9 +1,9 @@
 package com.rs.teach.mapper.section.dao;
 
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
-import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -51,4 +51,17 @@ public interface TrainSectionMapper {
      * @return
      */
     Integer selectSectionNum(@Param("courseId") String courseId);
+
+    /**
+     * 添加培训章节
+     * @param sectionDto
+     *
+     */
+    void addTrainSection(SectionDto sectionDto);
+
+    /**
+     * 修改培训章节
+     * @param sectionDto
+     */
+    void updateTrainSection(SectionDto sectionDto);
 }

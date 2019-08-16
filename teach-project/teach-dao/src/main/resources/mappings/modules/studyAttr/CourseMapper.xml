@@ -247,4 +247,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="groupCourseLev" resultType="java.lang.String">
 		select t.course_lev from tf_el_course t group by t.course_lev
 	</select>
+
+    <select id="selectTrainCourse" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
+		select COURSE_ID
+		from TF_EL_COURSE
+	</select>
+
+    <select id="selectCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
+		select COURSE_ID AS train_course_Id,
+              COURSE_NAME AS train_course_Name,
+              COURSEPIC_URL AS TRAIN_COURSEPIC_URL
+        from tf_el_course
+        where course_Id = #{courseId}
+	</select>
 </mapper>

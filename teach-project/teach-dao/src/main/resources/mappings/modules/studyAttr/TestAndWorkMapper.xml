@@ -14,7 +14,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="practiceFileName" column="PRACTICE_FILE_NAME"/>
 		<result property="practiceUrl" column="PRACTICE_URL"/>
 	</resultMap>
-	
+	<insert id="insertPractice" parameterType="com.rs.teach.mapper.studyAttr.entity.Testpaper">
+		insert into TF_EL_PRACTICE(PRACTICE_ID, PRACTICE_FILE_NAME, PRACTICE_URL)
+		VALUES(#{practiceId},#{testpaperName},#{testpaperUrl})
+	</insert>
+	<insert id="insertTestpaper" parameterType="com.rs.teach.mapper.studyAttr.entity.Testpaper">
+		insert into TF_EL_TESTPAPER(testpaper_id, testpaper_name, testpaper_url)
+		values (#{testpaperId},#{testpaperName},#{testpaperUrl})
+	</insert>
+    <update id="updatePractice" parameterType="com.rs.teach.mapper.studyAttr.entity.Practice">
+		update TF_EL_PRACTICE
+		<set>
+			<if test="practice != null and practice !=''">
+				PRACTICE_FILE_NAME = #{practiceFileName}
+			</if>
+			<if test="practice != null and practice !=''">
+				PRACTICE_URL = #{practiceUrl}
+			</if>
+		</set>
+		where PRACTICE_ID = #{practiceId}
+	</update>
+	<update id="updateTestpaper" parameterType="com.rs.teach.mapper.studyAttr.entity.Testpaper">
+		update TF_EL_TESTPAPER
+		<set>
+			<if test="practice != null and practice !=''">
+				TESTPAPER_NAME = #{testpaperName}
+			</if>
+			<if test="practice != null and practice !=''">
+				TESTPAPER_URL = #{testpaperUrl}
+			</if>
+		</set>
+		where TESTPAPER_ID = #{testpaperId}
+	</update>
+
 	<select id="queryPracticeById" parameterType="java.lang.String" resultMap="work">
 		select * from TF_EL_PRACTICE where PRACTICE_ID = #{workId}
 	</select>

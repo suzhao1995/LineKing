@@ -1,7 +1,7 @@
 package com.rs.teach.service.training;
 
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
-import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 import java.util.List;
@@ -34,4 +34,16 @@ public interface TrainSectionService {
      */
     List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort);
 
+    /**
+     * 添加章节
+     * @param sectionDto
+     *
+     */
+    void addTrainSection(SectionDto sectionDto);
+
+    /**
+     * 修改章节
+     * @param sectionDto
+     */
+    void updateTrainSection(SectionDto sectionDto);
 }
