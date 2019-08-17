@@ -65,7 +65,7 @@ public class ComponantController{
 		Section section = sectionService.getSectionById(sectionId);
 		
 		try {
-			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getSectionId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getSectionName());
+			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getCoursewareId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getSectionName());
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
 				bean.addSuccess();
 			}else{

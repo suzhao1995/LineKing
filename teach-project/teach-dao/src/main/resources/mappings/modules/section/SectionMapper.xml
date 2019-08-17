@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="sectionType" column="section_type"/>
 		<result property="workId" column="SCHOOLWORKID" />
 		<result property="testPaperId" column="PAPERID"/>
+		<result property="coursewareId" column="COURSEWARE_ID"/>
 		<result property="extend1" column="EXTEND1" />
 		<result property="extend2" column="EXTEND2" />
 		<result property="extend3" column="EXTEND3" />
@@ -133,11 +134,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="courseId" column="course_id"/>
 		<result property="studyStatus" column="isfinish"/>
 		<result property="classId" column="class_id"/>
+		<result property="coursewareId" column="courseware_id"/>
 	</resultMap>
 	<!-- 查询章节学习状态 -->
 	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
 		select se.section_id,se.totlesection_sort,se.totlesection_name,se.section_sort,se.section_name,
-       se.course_id,ucr.isfinish,ucr.class_id
+       se.course_id,ucr.isfinish,ucr.class_id,se.courseware_id
      from tf_el_section se, user_course_rela ucr
        where se.section_id = ucr.section_id 
              and se.course_id = #{courseId}

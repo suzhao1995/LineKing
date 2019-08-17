@@ -259,6 +259,8 @@ public class CourseController{
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("dirSectionId", list.get(i).getSectionId());
 			map.put("dirSectionName", list.get(i).getSectionName());
+			map.put("dirSectionSort", list.get(i).getSectionSort());
+			map.put("dirTotleSectionSort", list.get(i).getTotleSectionSort());
 			sectionDir.add(map);
 			//返回下一课的章节id
 			if(sectionId.equals(list.get(i).getSectionId())){
@@ -276,7 +278,7 @@ public class CourseController{
 		
 		ajaxData.put("section", section);	//本章详情
 
-		String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
+		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
 		Map<String, Object> returnMap = null;
 		try {
 			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
@@ -362,7 +364,7 @@ public class CourseController{
 			}
 			
 			String filePath = savePath + section.getSectionUrl().replace("/", "\\");
-			String fileRealPath = filePath + "\\" + section.getSectionId() +"_"+section.getUpdateFileName() + section.getSectionType(); 
+			String fileRealPath = filePath + "\\" + section.getCoursewareId() +"_"+section.getUpdateFileName() + section.getSectionType(); 
 			File file = new File(fileRealPath);
 			if(file.exists()){
 				//服务器端创建文件临时储存二级目录
@@ -372,7 +374,7 @@ public class CourseController{
 					secondTemPathFile.mkdirs();
 				}
 				//复制文件到指定二级目录
-				String toFilePath = secondTemPath + "\\" + section.getSectionId() +"_"+section.getUpdateFileName() + section.getSectionType();
+				String toFilePath = secondTemPath + "\\" + section.getCoursewareId() +"_"+section.getUpdateFileName() + section.getSectionType();
 				File toFile = new File(toFilePath);	
 				try {
 					Files.copy(file.toPath(), toFile.toPath());
@@ -455,7 +457,7 @@ public class CourseController{
 		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");	//保存的文件根目录
 		String savePath = filePath;
 		String filePath = savePath + section.getSectionUrl().replace("/", "\\");
-		String fileRealPath = filePath + "\\" + section.getSectionId() +"_"+section.getUpdateFileName() + section.getSectionType(); 
+		String fileRealPath = filePath + "\\" + section.getCoursewareId() +"_"+section.getUpdateFileName() + section.getSectionType(); 
 		fileUrl.add(fileRealPath);
 		//查询练习信息
 		if(StringUtils.isNotEmpty(section.getWorkId())){

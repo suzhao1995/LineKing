@@ -390,6 +390,8 @@ public class CenterController{
 		for(int i = 0; i < list.size(); i++){
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("dirSectionId", list.get(i).getSectionId());
+			map.put("dirSectionSort", list.get(i).getSectionSort());
+			map.put("dirTotleSectionSort", list.get(i).getTotleSectionSort());
 			map.put("dirSectionName", list.get(i).getSectionName());
 			sectionDir.add(map);
 			//返回下一课的章节id
@@ -408,7 +410,7 @@ public class CenterController{
 		
 		ajaxData.put("section", section);	//本章详情
 		
-		String fileName = section.getSectionId()+"_"+section.getUpdateFileName();
+		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
 		Map<String, Object> returnMap = null;
 		try {
 			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
