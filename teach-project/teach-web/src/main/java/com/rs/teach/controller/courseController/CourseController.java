@@ -279,20 +279,24 @@ public class CourseController{
 		ajaxData.put("section", section);	//本章详情
 
 		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
-		Map<String, Object> returnMap = null;
-		try {
-			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
-			if("0".equals(returnMap.get("code"))){
-				ajaxData.put("imgList", returnMap.get("imgList"));
-				ajaxData.put("pageCount", returnMap.get("pageCount"));
-				bean.addSuccess(ajaxData);
-			}else{
-				bean.addError(returnMap.get("message").toString());
-			}
-		} catch (Exception e) {
-			logger.error("------"+fileName+"文件转换异常------", e);
-			bean.addError("系统异常");
-		}
+		String savePath = filePath;
+		String fileUrl = savePath +section.getSectionUrl().replace("/", "\\")+"\\"+fileName+".pdf";
+		ajaxData.put("fileUrl", fileUrl);
+		bean.addSuccess(ajaxData);
+//		Map<String, Object> returnMap = null;
+//		try {
+//			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
+//			if("0".equals(returnMap.get("code"))){
+//				ajaxData.put("imgList", returnMap.get("imgList"));
+//				ajaxData.put("pageCount", returnMap.get("pageCount"));
+//				bean.addSuccess(ajaxData);
+//			}else{
+//				bean.addError(returnMap.get("message").toString());
+//			}
+//		} catch (Exception e) {
+//			logger.error("------"+fileName+"文件转换异常------", e);
+//			bean.addError("系统异常");
+//		}
 		return bean;
 	}
 	
