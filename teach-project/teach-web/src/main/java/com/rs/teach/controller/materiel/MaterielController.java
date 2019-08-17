@@ -100,6 +100,27 @@ public class MaterielController {
 	}
 	
 	/**
+	* 物料查看
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月17日 下午2:02:56
+	*/
+	@RequestMapping("/materielDetail")
+	@ResponseBody
+	public ResponseBean materielDetail(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		
+		String materielId = request.getParameter("materielId");
+		
+		Materiel materiel = materielService.getMaterielById(materielId);
+		//
+		bean.addSuccess(materiel);
+		return bean;
+	}
+	
+	/**
 	* 管理员--上传物料
 	* @param 
 	* @throws
@@ -112,6 +133,7 @@ public class MaterielController {
 	public ResponseBean upLoadMateriel(HttpServletRequest request, HttpServletResponse response,@RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		String materielName = request.getParameter("materielName");
+		String materielDetail = request.getParameter("materielDetail");
 		Map<String,Object> resultMap = FileUpDownUtil.materielUpLoad(request, file);
 		
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
@@ -123,6 +145,7 @@ public class MaterielController {
 			materiel.setMaterielName(materielName);
 			materiel.setMaterielUrl(materielUrl);
 			materiel.setMaterielStatus("0");
+			materiel.setMaterielDetail(materielDetail);
 			
 			int result = materielService.addMateriel(materiel);
 			if(result == 0){

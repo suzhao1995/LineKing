@@ -17,6 +17,8 @@ public class Materiel implements Serializable{
 	
 	private String materielStatus;		//物料上下架状态	0:下架；1上架
 	
+	private String materielDetail;		//物料说明
+	
 	public Materiel (){
 		
 	}
@@ -51,6 +53,14 @@ public class Materiel implements Serializable{
 
 	public void setMaterielStatus(String materielStatus) {
 		this.materielStatus = materielStatus;
+	}
+
+	public String getMaterielDetail() {
+		return materielDetail;
+	}
+
+	public void setMaterielDetail(String materielDetail) {
+		this.materielDetail = materielDetail;
 	}
 	
 	

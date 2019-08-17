@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="materielName" column="materiel_Name" />
 		<result property="materielUrl" column="materiel_Url" />
 		<result property="materielStatus" column="materiel_Status" />
+		<result property="materielDetail" column="MATERIEL_DETAIL" />
 	</resultMap>
 	
 	<select id="queryMateriel" resultMap="materMap" parameterType="java.lang.String">
@@ -36,13 +37,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				materiel_Name,
 				materiel_Url,
 				materiel_Status
+				MATERIEL_DETAIL
 			)
 		values
 			(
 				#{materielId},
 				#{materielName},
 				#{materielUrl},
-				${materielStatus}
+				#{materielStatus},
+				#{materielDetail}
 			)
 	</insert>
 </mapper>
