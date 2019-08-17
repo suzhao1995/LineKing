@@ -33,6 +33,7 @@ import com.rs.teach.mapper.section.entity.Section;
 public class FileUpDownUtil{
 	
 	private static final List<String> upLoadType = new ArrayList<String>();	//指定上传文件格式
+	private static final List<String> upLoadPicType = new ArrayList<String>();	//指定上传文件格式
 	private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 	
 	private static String filePath;	//文件路径
@@ -47,11 +48,10 @@ public class FileUpDownUtil{
 		this.imgPath = imgPath;
 	}
 	static{
-		upLoadType.add(".txt");
-		upLoadType.add(".jpg");
-		upLoadType.add(".png");
-		upLoadType.add(".doc");
-		upLoadType.add(".docx");
+		
+		upLoadPicType.add(".jpg");
+		upLoadPicType.add(".png");
+		upLoadType.add(".pptx");
 		upLoadType.add(".ppt");
 		upLoadType.add(".pdf");
 	}
@@ -75,7 +75,7 @@ public class FileUpDownUtil{
 				
 				String updateFileName = file.getOriginalFilename().split("[.]")[0];
 				String sectionType = "."+file.getOriginalFilename().split("[.]")[1];
-				if(!upLoadType.contains(sectionType)){
+				if(!upLoadPicType.contains(sectionType)){
 					resultMap.put("code", "-1");
 					resultMap.put("message", "上传文件格式错误！");
 					return resultMap;
