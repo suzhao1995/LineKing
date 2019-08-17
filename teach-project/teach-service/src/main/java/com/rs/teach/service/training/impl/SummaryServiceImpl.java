@@ -20,10 +20,10 @@ public class SummaryServiceImpl implements SummaryService {
     @Override
     public void saveSummary(Summary summary) {
         int flag = summaryMapper.isEmpty(summary);
-        if (flag > 1) {
-            summaryMapper.addSummary(summary);
-        }else{
+        if (flag > 0) {
             summaryMapper.updateSummary(summary);
+        }else{
+            summaryMapper.addSummary(summary);
         }
 
     }

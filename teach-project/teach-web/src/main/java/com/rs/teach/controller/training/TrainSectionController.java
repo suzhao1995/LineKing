@@ -61,7 +61,7 @@ public class TrainSectionController {
             BPUtil.check(StrUtil.isEmpty(courseId), "没有课程ID");
             String userId = UserInfoUtil.getUserInfo(sessionKey).get("userId").toString();
 
-            //查询课程章节信息
+            //根据课程ID查询章节信息
             TrainCourseVo trainCourseVo = trainSectionService.selectCourseSection(courseId);
             map.put("trainCourseVo", trainCourseVo);
 

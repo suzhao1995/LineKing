@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface TrainSectionService {
     /**
-     * 查询课程章节信息
+     * 根据课程ID查询章节信息
      * @param courseId
      * @return
      */

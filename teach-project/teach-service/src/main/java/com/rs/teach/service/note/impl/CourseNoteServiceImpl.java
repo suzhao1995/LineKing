@@ -34,10 +34,10 @@ public class CourseNoteServiceImpl implements CourseNoteService {
 
         /**判断此记录是否存在*/
         int flag = noteMapper.isEmpty(courseNote);
-        if (flag > 1) {
-            noteMapper.addNote(courseNote);
-        }else{
+        if (flag > 0) {
             noteMapper.updateNote(courseNote);
+        }else{
+            noteMapper.addNote(courseNote);
         }
         userCourseRelaMapper.updateIsFinish(courseNote.getCourseId(),courseNote.getUserId(),courseNote.getSectionId(), CourseStatusEnum.convent2TableNum(CourseStatusEnum.END.name()));
     }

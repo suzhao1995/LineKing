@@ -3,7 +3,6 @@ package com.rs.teach.controller.training;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.note.entity.CourseNote;
-import com.rs.teach.mapper.summary.entity.Summary;
 import com.rs.teach.service.note.CourseNoteService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

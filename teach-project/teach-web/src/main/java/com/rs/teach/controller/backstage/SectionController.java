@@ -5,11 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.section.dto.SectionDto;
-import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
-import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
-import com.rs.teach.mapper.studyAttr.entity.TrainCourse;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
@@ -229,12 +226,16 @@ public class SectionController {
         }
         try {
             if (ObjectUtil.isNotNull(practice)) {
+                //获取之前文件路径
 
                 testAndWorkService.updatePractice(practice);
+                //删除之前保留的文件
+
             }
             if (ObjectUtil.isNotNull(testpaper)) {
-
                 testAndWorkService.updateTestpaper(testpaper);
+                //删除之前保留的文件
+
             }
             if (StrUtil.equals("1", sectionDto.getIsTrain())) {
                 trainSectionService.updateTrainSection(sectionDto);

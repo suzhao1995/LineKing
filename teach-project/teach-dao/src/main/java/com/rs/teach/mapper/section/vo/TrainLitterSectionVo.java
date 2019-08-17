@@ -31,6 +31,9 @@ public class TrainLitterSectionVo implements Serializable {
     //培训小章节type
     private String trainLitterSectionType;
 
+    //课件ID
+    private String coursewareId;
+
     private String practiceId;     //作业ID
     private String practiceFileName;   //作业文件上传name
     private String practiceUrl;    //作业文件url

@@ -153,20 +153,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
-	select distinct TOTLESECTION_SORT as TRAIN_SECTION_SORT,
-	TOTLESECTION_NAME as TRAIN_SECTION_NAME
+	select distinct TOTLESECTION_SORT as trainSectionSort,
+	TOTLESECTION_NAME as trainSectionName
         FROM TF_EL_SECTION
         WHERE COURSE_ID = #{courseId}
         order by TOTLESECTION_SORT
 	</select>
 	<select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
-		select SECTION_ID AS TRAIN_SECTION_ID,
-				SECTION_SORT AS TRAIN_LITTER_SECTION_SORT,
-				SECTION_NAME AS TRAIN_LITTER_SECTION_NAME,
-                SECTION_URL AS TRAIN_LITTER_SECTION_URL,
-                SECTION_TYPE AS TRAIN_LITTER_SECTION_TYPE,
-                SCHOOLWORKID AS PRACTICE_ID ,
-                PAPERID AS TESTPAPER_ID
+		select SECTION_ID AS trainSectionId,
+				SECTION_SORT AS trainLitterSectionSort,
+				SECTION_NAME AS trainLitterSectionName,
+                SECTION_URL AS trainLitterSectionUrl,
+                SECTION_TYPE AS trainLitterSectionType,
+                SCHOOLWORKID AS practiceId ,
+                PAPERID AS testpaperId,
+                COURSEWARE_ID AS coursewareId
         FROM TF_EL_SECTION
         WHERE COURSE_ID = #{courseId}
         and TOTLESECTION_SORT = #{trainSectionSort}

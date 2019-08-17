@@ -18,7 +18,7 @@
         and section_Id =#{sectionId}
     </update>
 
-    <insert id="addNote">
+    <insert id="addNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">
         insert into TF_EL_NOTE(user_id, section_id, course_id, class_id, note)
         values (#{userId},#{sectionId},#{courseId},#{classId},#{note})
     </insert>
