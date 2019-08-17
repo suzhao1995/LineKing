@@ -34,10 +34,12 @@ public class FileUpDownUtil{
 	
 	private static final List<String> upLoadType = new ArrayList<String>();	//指定上传文件格式
 	private static final List<String> upLoadPicType = new ArrayList<String>();	//指定上传文件格式
+	private static final List<String> uploadMaterielType = new ArrayList<String>();	//指定物料上传格式
 	private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 	
 	private static String filePath;	//文件路径
 	private static String imgPath;	//图片路径
+	private static String materielPath;	//物料路径
 	
 	@Value("${filePath}")	//静态属性使用setter方法注入properties文件的属性
 	public void setFilePath(String filePath) {
@@ -47,13 +49,78 @@ public class FileUpDownUtil{
 	public void setImgPath(String imgPath) {
 		this.imgPath = imgPath;
 	}
+	@Value("${materielPath}")
+	public void setMaterielPath(String materielPath) {
+		this.materielPath = materielPath;
+	}
 	static{
-		
 		upLoadPicType.add(".jpg");
 		upLoadPicType.add(".png");
+		
 		upLoadType.add(".pptx");
 		upLoadType.add(".ppt");
 		upLoadType.add(".pdf");
+		
+		uploadMaterielType.add(".jpg");
+		uploadMaterielType.add(".png");
+		uploadMaterielType.add(".docx");
+		uploadMaterielType.add(".dox");
+		uploadMaterielType.add(".ppt");
+		uploadMaterielType.add(".pptx");
+		uploadMaterielType.add(".pdf");
+	}
+	
+	/**
+	* 物料上传 表单指定enctype="multipart/form-data"
+	* @param 
+	* @throws
+	* @return Map<String,Object>
+	* @author suzhao
+	* @date 2019年8月1日 下午4:17:25
+	*/
+	public static Map<String,Object> materielUpLoad(HttpServletRequest request, MultipartFile file){
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		//文件保存路径
+		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
+		String savePath = materielPath;
+		if(!file.isEmpty()){
+			try {
+				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
+				
+				String updateFileName = file.getOriginalFilename().split("[.]")[0];
+				String sectionType = "."+file.getOriginalFilename().split("[.]")[1];
+				if(!uploadMaterielType.contains(sectionType)){
+					resultMap.put("code", "-1");
+					resultMap.put("message", "上传文件格式错误！");
+					return resultMap;
+				}
+				//使用hash算法散列存储文件位置
+				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
+				String dirPath = dirPathMap.get("dir");
+				String saveRealName = upLoadId+sectionType;
+				
+				file.transferTo(new File(dirPath + "\\" + saveRealName));
+				
+				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	
+				resultMap.put("materielId", upLoadId);	//生成的随机ID，唯一
+				resultMap.put("code", "0");
+				resultMap.put("message", "文件上传成功");
+				
+			} catch (IllegalStateException e) {
+				resultMap.put("code", "-1");
+				resultMap.put("message", "文件上传异常");
+				logger.error("---------文件上传异常---------", e);
+			} catch (Exception e) {
+				resultMap.put("code", "-1");
+				resultMap.put("message", "文件上传异常");
+				logger.error("---------文件上传异常---------", e);
+			}
+			
+		}else{
+			resultMap.put("code", "-1");
+			resultMap.put("message", "上传文件为空");
+		}
+		return resultMap;
 	}
 	
 	/**
@@ -192,8 +259,7 @@ public class FileUpDownUtil{
 	}
 	/**
 	* 文件下载方法
-	* @param sectionId 文件的唯一id，上传文档的uploadId
-	* @param upLoadName 文件名，保存在服务器的文件名 
+	* @param filePath 文件全路径
 	* @param sectionUrl 保存文件的路径 根目录为/WEB-INF/upload，取上传方法 sectionUrl
 	* @param sectionType 保存文件的文档类型
 	* @param downLoadName 下载的文件名称
@@ -203,18 +269,18 @@ public class FileUpDownUtil{
 	* @throws IOException 
 	* @date 2019年8月1日 上午11:46:24
 	*/
-	public static Map<String,Object> fileDownLoad(HttpServletRequest request, HttpServletResponse response, String sectionId, String upLoadName, String sectionUrl, String sectionType, String downLoadName) throws IOException{
+	public static Map<String,Object> fileDownLoad(HttpServletRequest request, HttpServletResponse response, String filePath, String sectionType, String downLoadName) throws IOException{
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		//上传文件时，设置文件的随机id为文件名
 		
-		String fileName = sectionId +"_"+ upLoadName;	//保存在服务器文件的名称
+//		String fileName = sectionId +"_"+ upLoadName;	//保存在服务器文件的名称
 		//保存文件的地址
 		//String filePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-		String savePath = filePath;
-		savePath = savePath + sectionUrl.replace("/", "\\");
+//		String savePath = filePath;
+//		savePath = savePath + sectionUrl.replace("/", "\\");
 		
-		String fileRealPath = savePath + "\\" + fileName + sectionType; 
-		File file = new File(fileRealPath);
+//		String fileRealPath = savePath + "\\" + fileName + sectionType; 
+		File file = new File(filePath);
 		if(!file.exists()){
 			resultMap.put("code", "-1");
 			resultMap.put("message", "您想要下载的资源不存在或已被删除！");

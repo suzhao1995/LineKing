@@ -11,6 +11,7 @@ import com.rs.teach.service.resourcesAttr.PicAttrService;
 import com.rs.teach.service.section.SectionService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,9 @@ public class ComponantController{
 	@Autowired
 	private UserService userService;
 	
+	@Value("${filePath}")
+	private String filePath;	//文件存放根目录
+	
 	/**
 	* 课件资源下载
 	* @param 
@@ -63,9 +67,9 @@ public class ComponantController{
 		//获取文件
 		String sectionId = request.getParameter("sectionId");
 		Section section = sectionService.getSectionById(sectionId);
-		
 		try {
-			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getCoursewareId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getSectionName());
+			String fileRealPath = filePath + section.getSectionUrl().replace("/", "\\")+"\\" + section.getCoursewareId() +"_"+ section.getUpdateFileName() + section.getSectionType();
+			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, fileRealPath, section.getSectionType(), section.getSectionName());
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
 				bean.addSuccess();
 			}else{

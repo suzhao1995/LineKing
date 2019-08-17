@@ -615,9 +615,10 @@ public class CenterController{
 		Section section = sectionService.getUpLoadSection(upLoadId);
 		
 		try {
-			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, section.getUpLoadId(), section.getUpdateFileName(), section.getSectionUrl(), section.getSectionType(), section.getUpdateFileName());
+			String fileRealPath = filePath + section.getSectionUrl().replace("/", "\\")+"\\" + section.getUpLoadId()+"_" + section.getUpdateFileName() + section.getSectionType();
+			Map<String,Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, fileRealPath, section.getSectionType(), section.getUpdateFileName());
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
-				bean.addSuccess();
+				bean.addSuccess(); 
 			}else{
 				bean.addError(resultMap.get("message").toString());
 			}

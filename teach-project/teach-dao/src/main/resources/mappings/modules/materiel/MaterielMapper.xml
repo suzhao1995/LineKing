@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.materiel.dao.MaterielMapper">
+
+	<resultMap type="com.rs.teach.mapper.materiel.entity.Materiel" id="materMap">
+		<result property="materielId" column="materiel_Id" />
+		<result property="materielName" column="materiel_Name" />
+		<result property="materielUrl" column="materiel_Url" />
+		<result property="materielStatus" column="materiel_Status" />
+	</resultMap>
+	
+	<select id="queryMateriel" resultMap="materMap" parameterType="java.lang.String">
+		select * from tf_el_materiel t 
+		<where>
+			1=1
+			<if test="adminOperation == 1">
+				and t.MATERIEL_STATUS = '1'
+			</if>
+		</where> 
+	</select>
+	
+	<update id="updateStatus" parameterType="java.lang.String">
+		update tf_el_materiel t set t.MATERIEL_STATUS = #{status} where t.materiel_Id = #{materielId}
+	</update>
+	
+	<select id="queryMaterielById" parameterType="java.lang.String" resultMap="materMap">
+		select * from tf_el_materiel t where t.materiel_Id = #{materielId}
+	</select>
+	
+	<insert id="insertMateriel" parameterType="com.rs.teach.mapper.materiel.entity.Materiel">
+		insert into tf_el_materiel 
+			(
+				materiel_Id,
+				materiel_Name,
+				materiel_Url,
+				materiel_Status
+			)
+		values
+			(
+				#{materielId},
+				#{materielName},
+				#{materielUrl},
+				${materielStatus}
+			)
+	</insert>
+</mapper>
