@@ -140,9 +140,10 @@ public class CourseController{
 		List<School> schoolList = schoolService.selectSchool();
 		ajaxData.put("schoolList", schoolList);
 		
-		List<String> courseTypeList = courseService.groupCourseType();
+		List<Map<String,Object>> courseTypeList = courseService.groupCourseType();
 		ajaxData.put("courseTypeList", courseTypeList);
-		List<String> courseLevList = courseService.groupCourseLev();
+		
+		List<Map<String,Object>> courseLevList = courseService.groupCourseLev();
 		ajaxData.put("courseLevList", courseLevList);
 		
 		bean.addSuccess(ajaxData);

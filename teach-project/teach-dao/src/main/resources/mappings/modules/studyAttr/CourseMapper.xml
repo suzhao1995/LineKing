@@ -239,12 +239,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update tf_el_note t set t.NOTE = #{note}
 			where t.USER_ID = #{userId} and t.SECTION_ID = #{sectionId} and t.CLASS_ID = #{classId}
 	</update>
-
+	
+	<resultMap type="java.util.HashMap" id="CourseTypeMap">
+		<result property="courseType" column="course_type"/>
+	</resultMap>
 	<!-- 分组查询课程类型和等级 -->
-	<select id="groupCourseType" resultType="java.lang.String">
+	<select id="groupCourseType" resultMap="CourseTypeMap">
 		select t.course_type from tf_el_course t group by t.course_type
 	</select>
-	<select id="groupCourseLev" resultType="java.lang.String">
+	<resultMap type="java.util.HashMap" id="CourseLevMap">
+		<result property="courseLev" column="course_lev"/>
+	</resultMap>
+	<select id="groupCourseLev" resultMap="CourseLevMap">
 		select t.course_lev from tf_el_course t group by t.course_lev
 	</select>
 

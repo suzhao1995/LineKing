@@ -135,12 +135,12 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public List<String> groupCourseType() {
+	public List<Map<String,Object>> groupCourseType() {
 		return mapper.groupCourseType();
 	}
 
 	@Override
-	public List<String> groupCourseLev() {
+	public List<Map<String,Object>> groupCourseLev() {
 		return mapper.groupCourseLev();
 	}
 

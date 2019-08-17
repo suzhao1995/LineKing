@@ -137,8 +137,8 @@ public interface CourseService{
 	public int insertNote(NoteSummary noteSummary);
 
 	//分组查询课程类型和课程等级
-	public List<String> groupCourseType();
-	public List<String> groupCourseLev();
+	public List<Map<String,Object>> groupCourseType();
+	public List<Map<String,Object>> groupCourseLev();
 
 	//管理员查询全部课程的id
     List<TrainCourseVo> selectTrainCourse();
