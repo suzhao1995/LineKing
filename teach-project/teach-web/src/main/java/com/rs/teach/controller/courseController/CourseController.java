@@ -275,8 +275,13 @@ public class CourseController{
 		String courseId = request.getParameter("courseId"); 
 		String classId = request.getParameter("classId");
 		try {
-			 userCourseRelaService.cancelCourse(courseId, userId, classId);
-			 bean.addSuccess(); 
+			if(courseId != null && classId != null){
+				
+				userCourseRelaService.cancelCourse(courseId, userId, classId);
+				bean.addSuccess(); 
+			}else{
+				bean.addDefaultError();
+			}
 		} catch (Exception e) {
 			logger.error("--------系统异常--------", e);
 			bean.addDefaultError();
