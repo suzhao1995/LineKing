@@ -248,6 +248,32 @@ public class CourseController{
 	}
 	
 	/**
+	* 取消我的课程
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月12日 下午2:41:28
+	*/
+	@RequestMapping("/cancleCourse")
+	@ResponseBody
+	public ResponseBean cancleCourse(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//获取用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		//获取请求参数
+		String courseId = request.getParameter("courseId");
+		try {
+			 userCourseRelaService.cancel(userId, courseId);
+			 bean.addSuccess();
+		} catch (Exception e) {
+			logger.error("--------系统异常--------", e);
+			bean.addDefaultError();
+		}
+		return bean;
+	}
+	/**
 	* 查看课程详情
 	* @param 
 	* @throws
