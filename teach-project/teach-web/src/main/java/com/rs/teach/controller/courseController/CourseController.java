@@ -200,7 +200,13 @@ public class CourseController{
 		}
 		
 		ajaxData.put("sectionList", sectionList);
-		
+		//查询我的课程
+		List<Course> myCourse = courseService.getCourseByUserId(userId);
+		for(Course course1 : myCourse){
+			if(course1.getCourseId().equals(course.getCourseId())){
+				ajaxData.put("courseStatus", "1");	//1：已添加到我的课程
+			}
+		}
 		bean.addSuccess(ajaxData);
 		return bean;
 	}
