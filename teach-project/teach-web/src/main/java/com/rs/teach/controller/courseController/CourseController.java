@@ -210,6 +210,7 @@ public class CourseController{
 		//查询用户所属校区班级
 		List<StudyTeam> teams = studyTeamService.getClassById(userId);
 		ajaxData.put("teams", teams);
+		
 		bean.addSuccess(ajaxData);
 		return bean;
 	}
