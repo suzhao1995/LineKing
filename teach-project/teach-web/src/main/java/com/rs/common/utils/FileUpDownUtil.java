@@ -57,7 +57,6 @@ public class FileUpDownUtil{
 		upLoadPicType.add(".jpg");
 		upLoadPicType.add(".png");
 		
-		upLoadType.add(".pptx");
 		upLoadType.add(".ppt");
 		upLoadType.add(".pdf");
 		
