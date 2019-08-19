@@ -78,4 +78,25 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
 		userCourseRelaMapper.insertAllSection(courseId, userId, classId);
 	}
 
+	@Override
+	public int getRelaType(String courseId, String userId) {
+		int count = userCourseRelaMapper.studyStatus(courseId, userId, 2);
+		return count;
+	}
+
+	@Override
+	public void modifyRelaType(String courseId, String userId, String classId) {
+		//修改课程资源relaType = 1； 章节relaType = 0
+		int result1 = userCourseRelaMapper.updateCourseRela(userId, courseId, "1", classId);
+		if(result1 > 0 ){
+			userCourseRelaMapper.updateSectionRela(userId, courseId, "0", classId);
+		}
+	}
+
+	@Override
+	public void cancelCourse(String courseId, String userId, String classId) {
+		//relaType = 2 为课程取消状态
+		userCourseRelaMapper.updateRela(userId, courseId, "2", classId);
+	}
+
 }

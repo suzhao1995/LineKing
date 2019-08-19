@@ -51,4 +51,10 @@ public interface UserCourseRelaService {
     int addCourse(String courseId, String userId, String classId);
     
     void addAllSection(String courseId, String userId, String classId);
+    
+    int getRelaType(String courseId, String userId);
+    
+    void modifyRelaType(String courseId, String userId, String classId);
+    
+    void cancelCourse(String courseId, String userId, String classId);
 }

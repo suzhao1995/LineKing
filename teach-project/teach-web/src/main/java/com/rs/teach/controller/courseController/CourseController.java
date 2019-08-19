@@ -233,7 +233,16 @@ public class CourseController{
 		//获取请求参数
 		String courseId = request.getParameter("courseId");
 		String classId = request.getParameter("classId");
+		
 		try {
+			//判断课程是否添加过我的课程
+			int count = userCourseRelaService.getRelaType(courseId, userId);
+			if(count > 0){
+				//修改relaType
+				userCourseRelaService.modifyRelaType(courseId, userId, classId);
+				bean.addSuccess();
+				return bean;
+			}
 			//添加课程信息
 			int result = userCourseRelaService.addCourse(courseId, userId, classId);
 			if(result == 1){
@@ -263,9 +272,10 @@ public class CourseController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		//获取请求参数
-		String courseId = request.getParameter("courseId");
+		String courseId = request.getParameter("courseId"); 
+		String classId = request.getParameter("classId");
 		try {
-			 userCourseRelaService.cancel(userId, courseId);
+			 userCourseRelaService.cancelCourse(courseId, userId, classId);
 			 bean.addSuccess();
 		} catch (Exception e) {
 			logger.error("--------系统异常--------", e);
