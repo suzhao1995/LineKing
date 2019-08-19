@@ -93,6 +93,6 @@ public interface UserCourseRelaMapper {
     int updateCourseRela(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
     
     int updateSectionRela(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
-    
+     
     void updateRela(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
 }

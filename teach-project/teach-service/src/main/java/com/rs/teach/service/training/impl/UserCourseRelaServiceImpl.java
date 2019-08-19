@@ -95,7 +95,7 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
 
 	@Override
 	public void cancelCourse(String courseId, String userId, String classId) {
-		//relaType = 2 为课程取消状态
+		//relaType = 2 为课程取消状态 
 		userCourseRelaMapper.updateRela(userId, courseId, "2", classId);
 	}
 

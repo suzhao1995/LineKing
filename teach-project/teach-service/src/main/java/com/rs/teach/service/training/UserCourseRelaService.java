@@ -56,5 +56,5 @@ public interface UserCourseRelaService {
     
     void modifyRelaType(String courseId, String userId, String classId);
     
-    void cancelCourse(String courseId, String userId, String classId);
+    void cancelCourse(String courseId, String userId, String classId); 
 }

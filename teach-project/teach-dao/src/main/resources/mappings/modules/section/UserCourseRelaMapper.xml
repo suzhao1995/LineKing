@@ -107,7 +107,7 @@
         and user_id = #{userId} and CLASS_ID = #{classId}
         and SECTION_ID is not null
     </update>
-    
+     
     <update id="updateRela" parameterType="java.lang.String">
     	update USER_COURSE_RELA set RELA_TYPE = #{relaType} 
     	where course_Id = #{courseId}
