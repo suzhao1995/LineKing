@@ -174,7 +174,6 @@ public class CenterController{
 		int resultCode = 0;
 		Schedule schedule = new Schedule();
 		schedule.setTeachUserId(userInfo.get("userId").toString());
-		schedule.setTeachUserName(userInfo.get("userName").toString());
 		schedule.setWeekDay(Integer.valueOf(request.getParameter("weekDay")));
 		schedule.setStartDate(request.getParameter("startDate"));
 		schedule.setEndDate(request.getParameter("endDate"));

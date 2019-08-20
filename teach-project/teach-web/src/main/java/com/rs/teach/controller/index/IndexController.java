@@ -130,7 +130,7 @@ public class IndexController {
 					messageService.addMessage(message);
 				}
 				//登录成功，保存用户信息到session
-				String sessionInfo = loginUser.getUserId() +","+loginUser.getUserName();
+				String sessionInfo = loginUser.getUserId();
 				SessionUtil.cleanOldSession(sessionInfo);	//如果用户再次登录清除已存在的session，确保每个用户只有一个session
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userInfo", sessionInfo);
@@ -143,7 +143,7 @@ public class IndexController {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("=======用户登录异常====="+e);
+			logger.error("-----用户登录异常----", e);
 			bean.addError(ResponseBean.CODE_SYS_ERROR, "系统异常");
 		}
 		return bean;
@@ -167,7 +167,8 @@ public class IndexController {
 		
 		//获取用户信息
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
-		ajaxData.put("userName", userInfo.get("userName"));
+		User user = userService.getUserById(userInfo.get("userId").toString());
+		ajaxData.put("userName", user.getUserName());
 		//获取用户未读消息
 		List<Message> list = messageService.queryNotRead(userInfo.get("userId").toString());
 		int messageSize = list.isEmpty() ? 0 : list.size();

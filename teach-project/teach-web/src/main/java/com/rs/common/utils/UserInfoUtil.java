@@ -26,9 +26,7 @@ public class UserInfoUtil{
 		HttpSession session = SessionUtil.getSessionMap().get(sessionKey);
 		String userInfo = String.valueOf(session.getAttribute("userInfo"));
 		if(userInfo != null){
-			String[] userInfos = userInfo.split(",");
-			userInfoMap.put("userId", userInfos[0]);
-			userInfoMap.put("userName", userInfos[1]);
+			userInfoMap.put("userId", userInfo);
 		}
 		return userInfoMap;
 	}
