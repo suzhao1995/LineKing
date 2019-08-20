@@ -220,7 +220,7 @@ public class IndexController {
 						if(DateUtil.StringToDate(schedules.get(i).getStartDate(), "hh:mm").getTime() > loginTime){
 							return schedules.get(i);
 						}else{
-							return schedules.get(i+1);
+							continue;
 						}
 					}else{
 						if(i < schedules.size() && schedules.get(i).getWeekDay() > weekDay){
