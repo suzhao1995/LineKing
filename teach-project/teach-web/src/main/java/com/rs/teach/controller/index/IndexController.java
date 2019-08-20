@@ -124,7 +124,7 @@ public class IndexController {
 				if(Integer.valueOf(today)+7 > Integer.valueOf(endDate)){
 					Message message = new Message();
 					message.setMessageContent("您的系统使用权限即将到期！");
-					message.setMessageTime(DateUtil.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"));
+					message.setMessageTime(DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					message.setMessageType("2");
 					message.setUserId(loginUser.getUserId());
 					messageService.addMessage(message);
