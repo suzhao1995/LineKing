@@ -10,7 +10,15 @@
     </insert>
 
     <update id="updateSchool" parameterType="com.rs.teach.mapper.backstage.entity.School">
-        update TF_EL_SCHOOL set SCHOOL_ADDRESS = #{schoolAddress},SCHOOL_NAME = #{schoolName}
+        update TF_EL_SCHOOL
+         <set>
+             <if test="schoolAddress != null and schoolAddress !=''">
+                 SCHOOL_ADDRESS = #{schoolAddress},
+             </if>
+             <if test="schoolName != null and schoolName !=''">
+                 SCHOOL_NAME = #{schoolName},
+             </if>
+         </set>
         where SCHOOL_ID = #{schoolId}
     </update>
 

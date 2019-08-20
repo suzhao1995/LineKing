@@ -35,4 +35,11 @@ public interface TrainCourseService {
      * @param courseDto
      */
     void updateTrainCourse(CourseDto courseDto);
+
+    /**
+     * 通过课程ID查询课程信息
+     * @param courseId
+     * @return
+     */
+    TrainCourseVo selectTrainCourseById(String courseId);
 }

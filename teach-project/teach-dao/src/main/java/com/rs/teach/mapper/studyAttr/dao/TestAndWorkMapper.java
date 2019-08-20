@@ -2,6 +2,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * TestAndWorkMapper.java
@@ -53,4 +54,18 @@ public interface TestAndWorkMapper{
 	 * @param testpaper
 	 */
 	void updateTestpaper(Testpaper testpaper);
+
+	/**
+	 * 获取未修改之前的url
+	 * @param pid
+	 * @return
+	 */
+	String queryUrlByPid(@Param("pid") String pid);
+
+	/**
+	 * 获取未修改之前的url
+	 * @param tid
+	 * @return
+	 */
+	String queryUrlByTid(@Param("tid") String tid);
 }

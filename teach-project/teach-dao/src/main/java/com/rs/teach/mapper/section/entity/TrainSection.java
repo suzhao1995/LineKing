@@ -29,8 +29,10 @@ public class TrainSection implements Serializable {
     private String trainLitterSectionUrl;    //培训小章节文件url
     private String trainLitterSectionType;   //培训小章节type(ppt,pdf,word)
     private String updateFileName;            //文件上传name
-    private String practiceId;	//作业id
-    private String testpaperId;	//试卷ID
+    private String practiceId;	//作业url
+    private String testpaperId;	//试卷url
+    private String coursewareId; //课件url
+    private String coursewareUrl;//课件文件全部路径
     private String extend1;    //预留字段
     private String extend2;
     private String extend3;

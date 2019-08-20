@@ -1,32 +1,7 @@
 package com.rs.teach.controller.courseController;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.zip.ZipOutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.rs.common.utils.Pdf2ImageUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
@@ -45,6 +20,28 @@ import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.studyAttr.StudyTeamService;
 import com.rs.teach.service.studyAttr.TestAndWorkService;
 import com.rs.teach.service.training.UserCourseRelaService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 @RequestMapping(value = "/course")
@@ -398,7 +395,7 @@ public class CourseController{
 	* @author suzhao
 	* @date 2019年8月12日 下午5:50:51
 	*/
-	@RequestMapping("/allDownLoad")
+	/*@RequestMapping("/allDownLoad")
 	@ResponseBody
 	public ResponseBean allDownLoadFile(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
@@ -406,7 +403,7 @@ public class CourseController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		String courseId = request.getParameter("courseId");
-		Course course = courseService.queryCourseByCourseId(courseId);
+		Course course = courseService.getSectionByCourseId(courseId);
 		//存储文件的根目录
 		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
 		String savePath = filePath;
@@ -486,7 +483,7 @@ public class CourseController{
 			bean.addError("系统异常");
 		}
 		return bean;
-	}
+	}*/
 	
 	/**
 	* 本课资源下载
@@ -496,7 +493,7 @@ public class CourseController{
 	* @author suzhao
 	* @date 2019年8月13日 上午10:12:12
 	*/
-	@RequestMapping("/resourceDownload")
+	/*@RequestMapping("/resourceDownload")
 	@ResponseBody
 	public ResponseBean resourceDownload(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
@@ -564,7 +561,7 @@ public class CourseController{
 		}
         
 		return bean;
-	}
+	}*/
 	
 	/**
 	* 将属于我的课程添加到课程列表
@@ -592,7 +589,7 @@ public class CourseController{
 	* @author suzhao
 	* @date 2019年8月13日 下午6:23:18
 	*/
-	public void deleteDir(File file){
+	/*public void deleteDir(File file){
 		if(file.isDirectory()){
 			File[] files = file.listFiles();
 			for(File file1 : files){
@@ -602,5 +599,5 @@ public class CourseController{
 		}else{
 			file.delete();
 		}
-	}
+	}*/
 }

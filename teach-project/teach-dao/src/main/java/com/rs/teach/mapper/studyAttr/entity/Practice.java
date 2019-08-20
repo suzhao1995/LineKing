@@ -14,6 +14,7 @@ public class Practice implements Serializable {
 
     private static final long serialVersionUID = 2763174998668130557L;
 
+    private String pid;              //主键ID
     private String practiceId;     //作业ID
     private String practiceFileName;   //作业文件上传name
     private String practiceUrl;    //作业文件url

@@ -32,6 +32,12 @@ public class SectionDto implements Serializable {
     //小章节name
     private String litterSectionName;
 
+    //作业表主键
+    private String pid;
+
+    //考试表主键
+    private String tid;
+
     /**      下面字段系统生成        */
     //小章节url
     private String litterSectionUrl;

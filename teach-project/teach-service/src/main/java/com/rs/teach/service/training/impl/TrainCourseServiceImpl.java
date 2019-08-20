@@ -49,4 +49,9 @@ public class TrainCourseServiceImpl implements TrainCourseService {
         trainCourseMapper.updateTrainCourse(courseDto);
     }
 
+    @Override
+    public TrainCourseVo selectTrainCourseById(String courseId) {
+        return trainCourseMapper.selectTrainCourseById(courseId);
+    }
+
 }

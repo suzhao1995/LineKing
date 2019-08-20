@@ -36,15 +36,15 @@ public class TeachAspect {
 	    String methodName = signature.getName();
 
 		//前后端联调后打开注释  方法名已verify开头的方法不需要进行登录验证
-//		if(!methodName.toUpperCase().startsWith("VERIFY")){
-//			if(!isLogin(request)){
-//				//返回登录页面
-//				ResponseBean bean = new ResponseBean();
-//				bean.addError("-1", "用户未登录");
-//				returnObject = bean;
-//				return returnObject;
-//			}
-//		}
+		if(!methodName.toUpperCase().startsWith("VERIFY")){
+			if(!isLogin(request)){
+				//返回登录页面
+				ResponseBean bean = new ResponseBean();
+				bean.addError("-1", "用户未登录");
+				returnObject = bean;
+				return returnObject;
+			}
+		}
 	    try {
 			returnObject = joinPoint.proceed();
 		} catch (Throwable e) {

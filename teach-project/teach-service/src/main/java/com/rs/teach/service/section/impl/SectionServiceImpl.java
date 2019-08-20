@@ -13,6 +13,7 @@ import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.rs.teach.mapper.section.dao.SectionMapper;
@@ -30,6 +31,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private TestAndWorkMapper testAndWorkMapper;
+
+    @Value("${filePath}")
+    private String filePath;	//文件存放根目录
 
     @Override
     public List<Section> getSectionByUser(String userId, String sectionId) {
@@ -78,14 +82,21 @@ public class SectionServiceImpl implements SectionService {
             List<TrainLitterSectionVo> litterSectionVoList = mapper.selectLitterSection(courseId, vo.getTrainSectionSort());
 
             for (TrainLitterSectionVo litterSectionVo : litterSectionVoList) {
+                //课件文件全部路径
+                String coursewareUrl = filePath + litterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                        + "\\" + litterSectionVo.getCoursewareId() + "_" + litterSectionVo.getUpdateFileName()
+                        + litterSectionVo.getTrainLitterSectionType();
+                litterSectionVo.setCoursewareUrl(coursewareUrl);
 
                 if (StrUtil.isNotEmpty(litterSectionVo.getPracticeId())) {
                     Practice practice = testAndWorkMapper.queryPracticeById(litterSectionVo.getPracticeId());
+                    litterSectionVo.setPid(practice.getPid());
                     litterSectionVo.setPracticeFileName(practice.getPracticeFileName());
                     litterSectionVo.setPracticeUrl(practice.getPracticeUrl());
                 }
                 if (StrUtil.isNotEmpty(litterSectionVo.getTestpaperId())) {
                     Testpaper testpaper = testAndWorkMapper.queryTestpaper(litterSectionVo.getTestpaperId());
+                    litterSectionVo.setTid(testpaper.getTid());
                     litterSectionVo.setTestpaperName(testpaper.getTestpaperName());
                     litterSectionVo.setTestpaperUrl(testpaper.getTestpaperUrl());
                 }

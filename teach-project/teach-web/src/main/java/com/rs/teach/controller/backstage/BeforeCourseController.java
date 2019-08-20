@@ -52,7 +52,7 @@ public class BeforeCourseController {
     public ResponseBean addCourse(@RequestParam("file") MultipartFile file, CourseDto courseDto,
                                   HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
-        //上传文件
+        //上传图片
         Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
         //文件上传是否成功
         if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
@@ -108,20 +108,22 @@ public class BeforeCourseController {
      * @param request
      * @return
      */
-    @RequestMapping()
+    @RequestMapping(value = "/updateCourse",method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean updateCourse(@RequestParam("file") MultipartFile file, CourseDto courseDto,
                                      HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
 
-        //上传文件
-        Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-        //文件上传是否成功
-        if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-            bean.addError(resultMap.get("message").toString());
-            return bean;
+        if(!file.isEmpty()){
+            //上传文件
+            Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+            //文件上传是否成功
+            if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
+                bean.addError(resultMap.get("message").toString());
+                return bean;
+            }
+            courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
         }
-        courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
                 trainCourseService.updateTrainCourse(courseDto);

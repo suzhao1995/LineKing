@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.section.dao;
 
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
@@ -64,4 +65,11 @@ public interface TrainSectionMapper {
      * @param sectionDto
      */
     void updateTrainSection(SectionDto sectionDto);
+
+    /**
+     * 通过课程id查询所有章节信息
+     * @param courseId
+     * @return
+     */
+    List<Section> getSectionByCourseId(@Param("courseId") String courseId);
 }

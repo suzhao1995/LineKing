@@ -9,7 +9,15 @@
         values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl})
     </insert>
     <update id="updateTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
-        update TF_EL_TRAIN_COURSE set TRAIN_COURSE_NAME = #{courseName},TRAIN_COURSEPIC_URL = #{coursePicUrl}
+        update TF_EL_TRAIN_COURSE
+        <set>
+        <if test="courseName != null and courseName != ''">
+            TRAIN_COURSE_NAME = #{courseName},
+        </if>
+        <if test="coursePicUrl != null and coursePicUrl != ''">
+            TRAIN_COURSEPIC_URL = #{coursePicUrl},
+        </if>
+        </set>
         WHERE TRAIN_COURSE_ID = #{courseId}
     </update>
 

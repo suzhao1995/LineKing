@@ -5,16 +5,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
+import com.rs.teach.service.studyAttr.TestAndWorkService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +47,19 @@ public class FileUpDownUtil{
 	private static String filePath;	//文件路径
 	private static String imgPath;	//图片路径
 	private static String materielPath;	//物料路径
-	
+
+	@Autowired
+	private TestAndWorkService testAndWorkService;
+
+	private static FileUpDownUtil fileUpDownUtil;
+
+	@PostConstruct
+	public void init(){
+		fileUpDownUtil = this;
+		fileUpDownUtil.testAndWorkService = this.testAndWorkService;
+	}
+
+
 	@Value("${filePath}")	//静态属性使用setter方法注入properties文件的属性
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
@@ -56,10 +75,10 @@ public class FileUpDownUtil{
 	static{
 		upLoadPicType.add(".jpg");
 		upLoadPicType.add(".png");
-		
+
 		upLoadType.add(".ppt");
 		upLoadType.add(".pdf");
-		
+
 		uploadMaterielType.add(".jpg");
 		uploadMaterielType.add(".png");
 		uploadMaterielType.add(".docx");
@@ -68,10 +87,10 @@ public class FileUpDownUtil{
 		uploadMaterielType.add(".pptx");
 		uploadMaterielType.add(".pdf");
 	}
-	
+
 	/**
 	* 物料上传 表单指定enctype="multipart/form-data"
-	* @param 
+	* @param
 	* @throws
 	* @return Map<String,Object>
 	* @author suzhao
@@ -85,7 +104,7 @@ public class FileUpDownUtil{
 		if(!file.isEmpty()){
 			try {
 				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
-				
+
 				String updateFileName = file.getOriginalFilename().split("[.]")[0];
 				String sectionType = "."+file.getOriginalFilename().split("[.]")[1];
 				if(!uploadMaterielType.contains(sectionType)){
@@ -97,14 +116,14 @@ public class FileUpDownUtil{
 				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
 				String dirPath = dirPathMap.get("dir");
 				String saveRealName = upLoadId+sectionType;
-				
+
 				file.transferTo(new File(dirPath + "\\" + saveRealName));
-				
-				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	
+
+				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);
 				resultMap.put("materielId", upLoadId);	//生成的随机ID，唯一
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
-				
+
 			} catch (IllegalStateException e) {
 				resultMap.put("code", "-1");
 				resultMap.put("message", "文件上传异常");
@@ -114,7 +133,7 @@ public class FileUpDownUtil{
 				resultMap.put("message", "文件上传异常");
 				logger.error("---------文件上传异常---------", e);
 			}
-			
+
 		}else{
 			resultMap.put("code", "-1");
 			resultMap.put("message", "上传文件为空");
@@ -278,7 +297,7 @@ public class FileUpDownUtil{
 //		String savePath = filePath;
 //		savePath = savePath + sectionUrl.replace("/", "\\");
 		
-//		String fileRealPath = savePath + "\\" + fileName + sectionType; 
+//		String fileRealPath = savePath + "\\" + fileName + sectionType;
 		File file = new File(filePath);
 		if(!file.exists()){
 			resultMap.put("code", "-1");
@@ -308,8 +327,77 @@ public class FileUpDownUtil{
 		out.close();
 		return resultMap;
 	}
-	
-	
+
+
+	/**
+	 * 下载当前课程所有文件
+	 * @param sections（当前课程所有章节信息）
+	 * @param temporaryPath（服务器端创建文件临时储存总目录）
+	 */
+	public static void allDownLoadUtil(List<Section> sections , String temporaryPath){
+		//存储文件的根目录
+		String savePath = filePath;
+
+		for(Section section : sections){
+			if(StringUtils.isEmpty(section.getSectionUrl())){
+				continue;
+			}
+
+			String filePath = savePath + section.getSectionUrl().replace("/", "\\");
+			String fileRealPath = filePath + "\\" + section.getCoursewareId() +"_"+section.getUpdateFileName() + section.getSectionType();
+			File file = new File(fileRealPath);
+			if(file.exists()){
+				//服务器端创建文件临时储存二级目录
+				String secondTemPath = temporaryPath + "\\"+ section.getSectionSort();
+				File secondTemPathFile = new File(secondTemPath);
+				if(!secondTemPathFile.exists()){	//如果不存在目录就创建目录
+					secondTemPathFile.mkdirs();
+				}
+				//复制文件到指定二级目录
+				String toFilePath = secondTemPath + "\\" + section.getCoursewareId() +"_"+section.getUpdateFileName() + section.getSectionType();
+				File toFile = new File(toFilePath);
+				try {
+					Files.copy(file.toPath(), toFile.toPath());
+				} catch (IOException e) {
+					logger.error("------复制文件异常------"+file.getName(), e);
+				}
+				//查询练习信息
+				if(StringUtils.isNotEmpty(section.getWorkId())){
+					Practice work = fileUpDownUtil.testAndWorkService.getPracticeById(section.getWorkId());
+					File workFile = new File(work.getPracticeUrl());	//源文件
+					if(workFile.exists()){
+						String[] workUrls = work.getPracticeUrl().split("\\\\");	//反斜杠切割
+						String workFileName = workUrls[workUrls.length - 1];
+						String workToPath = secondTemPath + "\\" + workFileName;
+						File workToFile = new File(workToPath);
+						try {
+							Files.copy(workFile.toPath(), workToFile.toPath());
+						} catch (IOException e) {
+							logger.error("------复制文件异常------"+workFile.getName(), e);
+						}
+					}
+				}
+				//查询试卷信息
+				if(StringUtils.isNotEmpty(section.getTestPaperId())){
+					Testpaper testPaper = fileUpDownUtil.testAndWorkService.getTestpaper(section.getTestPaperId());
+					File testFile = new File(testPaper.getTestpaperUrl());	//源文件
+					if(testFile.exists()){
+						String[] testUrls = testPaper.getTestpaperUrl().split("\\\\");	//反斜杠切割
+						String testFileName = testUrls[testUrls.length - 1];
+						String testToPath = secondTemPath + "\\" + testFileName;
+						File testToFile = new File(testToPath);
+						try {
+							Files.copy(testFile.toPath(), testToFile.toPath());
+						} catch (IOException e) {
+							logger.error("------复制文件异常------"+testFile.getName(), e);
+						}
+					}
+				}
+			}
+
+		}
+	}
+
 	/**
      * @Method: findFileSavePathByFileName
      * @Description: 通过文件名和存储上传文件根目录找出要下载的文件的所在路径
@@ -336,7 +424,7 @@ public class FileUpDownUtil{
         }
         return pathMap;
     }
-    
+
     public static void main(String[] args) {
 		String name = "密码资料.txt";
 		String s1 = name.split("[.]")[0];

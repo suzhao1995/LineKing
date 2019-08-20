@@ -3,6 +3,7 @@ package com.rs.teach.service.training.impl;
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
@@ -13,6 +14,7 @@ import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainSectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +36,8 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Autowired
     private TestAndWorkMapper testAndWorkMapper;
 
+    @Value("${filePath}")
+    private String filePath;	//文件存放根目录
 
     @Override
     public TrainCourseVo selectCourseSection(String courseId) {
@@ -48,14 +52,21 @@ public class TrainSectionServiceImpl implements TrainSectionService {
             List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId, vo.getTrainSectionSort());
 
             for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
+                //课件文件全部路径
+                String coursewareUrl = filePath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                                        + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
+                                        + trainLitterSectionVo.getTrainLitterSectionType();
+                trainLitterSectionVo.setCoursewareUrl(coursewareUrl);
 
                 if (StrUtil.isNotEmpty(trainLitterSectionVo.getPracticeId())) {
                     Practice practice = testAndWorkMapper.queryPracticeById(trainLitterSectionVo.getPracticeId());
+                    trainLitterSectionVo.setPid(practice.getPid());
                     trainLitterSectionVo.setPracticeFileName(practice.getPracticeFileName());
                     trainLitterSectionVo.setPracticeUrl(practice.getPracticeUrl());
                 }
                 if (StrUtil.isNotEmpty(trainLitterSectionVo.getTestpaperId())) {
                     Testpaper testpaper = testAndWorkMapper.queryTestpaper(trainLitterSectionVo.getTestpaperId());
+                    trainLitterSectionVo.setTid(testpaper.getTid());
                     trainLitterSectionVo.setTestpaperName(testpaper.getTestpaperName());
                     trainLitterSectionVo.setTestpaperUrl(testpaper.getTestpaperUrl());
                 }
@@ -85,6 +96,11 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Override
     public void updateTrainSection(SectionDto sectionDto) {
         trainSectionMapper.updateTrainSection(sectionDto);
+    }
+
+    @Override
+    public List<Section> getSectionByCourseId(String courseId) {
+        return trainSectionMapper.getSectionByCourseId(courseId);
     }
 
 }

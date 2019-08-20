@@ -6,11 +6,19 @@
 
     <insert id="addClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
         insert into TF_EL_CLASS(CLASS_ID, SCHOOL_ID, CLASS_NAME, CLSSNO)
-        VALUES(#{classId},#{schoolId},#{className},#{clssno})
+        VALUES(SEQ_EL_CLASS.nextval,#{schoolId},#{className},#{clssno})
     </insert>
 
     <update id="updateClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
-        update TF_EL_CLASS SET SCHOOL_ID=#{schoolId},CLASS_NAME=#{className},CLSSNO=#{clssno}
+        update TF_EL_CLASS
+        <set>
+            <if test="schoolId !=null and schoolId != ''">
+                SCHOOL_ID=#{schoolId},
+            </if>
+            <if test="className !=null and className != ''">
+                CLASS_NAME=#{className},
+            </if>
+        </set>
         WHERE CLASS_ID = #{classId}
     </update>
 

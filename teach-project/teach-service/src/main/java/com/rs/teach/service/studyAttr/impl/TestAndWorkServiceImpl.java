@@ -44,4 +44,14 @@ public class TestAndWorkServiceImpl implements TestAndWorkService {
         mapper.updateTestpaper(testpaper);
     }
 
+    @Override
+    public String queryUrlByPid(String pid) {
+        return mapper.queryUrlByPid(pid);
+    }
+
+    @Override
+    public String queryUrlByTid(String tid) {
+        return mapper.queryUrlByTid(tid);
+    }
+
 }

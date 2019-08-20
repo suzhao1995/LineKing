@@ -164,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectCourse" resultType="com.rs.teach.mapper.studyAttr.entity.Course">
-		select 	COURSE_ID ,COURSE_NAME,COURSEPIC_URL
+		select 	COURSE_ID ,COURSE_NAME,COURSEPIC_URL,COURSEWARE,SCHOOLWORK,TESTPAPER,COURSE_TYPE,SCHOOL_ID,COURSE_LEV
 		from TF_EL_COURSE
 	</select>
 
@@ -181,28 +181,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update TF_EL_COURSE
 		<set>
 			<if test="courseName !=null and courseName !=''">
-				course_name = #{courseName}
+				course_name = #{courseName},
 			</if>
 			<if test="coursePicUrl !=null and coursePicUrl !=''">
-				coursepic_url = #{coursePicUrl}
+				coursepic_url = #{coursePicUrl},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				courseware =#{courseware}
+				courseware =#{courseware},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				schoolwork =#{schoolwork}
+				schoolwork =#{schoolwork},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				testpaper =#{testpaper}
+				testpaper =#{testpaper},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				course_type =#{courseType}
+				course_type =#{courseType},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				school_id =#{schoolId}
+				school_id =#{schoolId},
 			</if>
 			<if test="courseName !=null and courseName !=''">
-				course_lev =#{courseLev}
+				course_lev =#{courseLev},
 			</if>
 		</set>
 		where COURSE_ID = #{courseId}

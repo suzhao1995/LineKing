@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 		values (SEQ_EL_SECTION.nextval,#{courseId},#{litterSectionName},#{litterSectionUrl},
             #{litterSectionType},#{litterSectionSort},#{updateFileName},#{sectionSort},
-            #{sectionName},#{practiceId},#{testpaperId},#{coursewareId}
+            #{sectionName},#{testpaperId},#{practiceId},#{coursewareId}
         )
 	</insert>
 
@@ -79,37 +79,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update TF_EL_SECTION
 		<set>
 			<if test="courseId != null and courseId != ''">
-				course_id = #{courseId}
+				course_id = #{courseId},
 			</if>
 			<if test="litterSectionName != null and litterSectionName != ''">
-				section_name = #{litterSectionName}
+				section_name = #{litterSectionName},
 			</if>
 			<if test="litterSectionUrl != null and litterSectionUrl != ''">
-				section_url = #{litterSectionUrl}
+				section_url = #{litterSectionUrl},
 			</if>
 			<if test="litterSectionType != null and litterSectionType != ''">
-				section_type = #{litterSectionType}
+				section_type = #{litterSectionType},
 			</if>
 			<if test="litterSectionSort != null and litterSectionSort != ''">
-				section_sort = #{litterSectionSort}
+				section_sort = #{litterSectionSort},
 			</if>
 			<if test="updateFileName != null and updateFileName != ''">
-				update_filename = #{updateFileName}
+				update_filename = #{updateFileName},
 			</if>
 			<if test="sectionSort != null and sectionSort != ''">
-				totlesection_sort = #{sectionSort}
+				totlesection_sort = #{sectionSort},
 			</if>
 			<if test="sectionName != null and sectionName != ''">
-				totlesection_name = #{sectionName}
-			</if>
-			<if test="practiceId != null and practiceId != ''">
-				paperid = #{practiceId}
+				totlesection_name = #{sectionName},
 			</if>
 			<if test="testpaperId != null and testpaperId != ''">
-				schoolworkid = #{testpaperId}
+				paperid = #{testpaperId},
+			</if>
+			<if test="practiceId != null and practiceId != ''">
+				schoolworkid = #{practiceId},
 			</if>
 			<if test="coursewareId != null and coursewareId != ''">
-				COURSEWARE_ID = #{coursewareId}
+				COURSEWARE_ID = #{coursewareId},
 			</if>
 		</set>
 		where  SECTION_ID = #{sectionId}

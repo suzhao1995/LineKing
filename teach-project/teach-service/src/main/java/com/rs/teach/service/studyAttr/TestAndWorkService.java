@@ -54,4 +54,18 @@ public interface TestAndWorkService{
 	 * @param testpaper
 	 */
 	void updateTestpaper(Testpaper testpaper);
+
+	/**
+	 * 获取未修改之前的url
+	 * @param pid
+	 * @return
+	 */
+	String queryUrlByPid(String pid);
+
+	/**
+	 * 获取未修改之前的url
+	 * @param tid
+	 * @return
+	 */
+	String queryUrlByTid(String tid);
 }

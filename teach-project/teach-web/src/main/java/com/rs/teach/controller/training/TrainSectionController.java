@@ -13,6 +13,7 @@ import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,8 @@ public class TrainSectionController {
     @Autowired
     private UserCourseRelaService userCourseRelaService;
 
+    @Value("${filePath}")
+    private String filePath;	//文件存放根目录
     /**
      * 查询所有的课程章节
      *
@@ -140,6 +143,12 @@ public class TrainSectionController {
 
             //查询返回页面信息（1.当前小章节全部信息)
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
+            //查询返回页面信息（pdf图片文件）
+            String coursewareUrl = filePath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
+                    + "\\" + trainSection.getCoursewareId() + "_" + trainSection.getUpdateFileName()
+                    + trainSection.getTrainLitterSectionType();
+            trainSection.setCoursewareUrl(coursewareUrl);
+
             map.put("trainSection", trainSection);
 
             //查询小章节目录
@@ -155,9 +164,6 @@ public class TrainSectionController {
                 userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()));
             }
 
-            //查询返回页面信息（pdf图片文件）
-
-
             responseBean.addSuccess(map);
             return responseBean;
         } catch (Exception e) {
@@ -165,24 +171,6 @@ public class TrainSectionController {
             responseBean.addError(e.getMessage());
             return responseBean;
         }
-    }
-
-
-    /**
-     * 资源下载（当前小章节）
-     * trainSectionId  文件上传保存的唯一id
-     */
-    @RequestMapping(value = "download", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean download() {
-        ResponseBean responseBean = new ResponseBean();
-        try {
-
-        } catch (Exception e) {
-            logger.error("当前小章节-下载失败", e);
-            responseBean.addError("下载失败");
-        }
-        return responseBean;
     }
 
 }
