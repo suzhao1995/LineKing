@@ -3,6 +3,7 @@ package com.rs.teach.controller.personalCenter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,7 @@ import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
+import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
@@ -117,8 +119,16 @@ public class CenterController{
 		}
 		//查询课程表
 		List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
+		ajaxData.put("schedules", schedules);
+		//首页问候语
+		String helloWord = DateUtil.sayHello(new Date());
+		ajaxData.put("helloWord", helloWord);
 		
-		bean.addSuccess(schedules);
+		User user = userService.getUserById(userId);
+		ajaxData.put("picUrl", user.getAttr().getPicUrl());
+		ajaxData.put("endTime", user.getEndDate());
+		
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
