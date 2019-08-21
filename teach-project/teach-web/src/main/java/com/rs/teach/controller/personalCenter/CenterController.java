@@ -112,7 +112,7 @@ public class CenterController{
 		//判断用户是否编辑过个人资料
 		boolean flag = userService.isModifyInfo(userId);
 		if(!flag){
-			bean.addError("请先编辑个人资料");
+			bean.addError("999", "请先编辑个人资料");
 			return bean;
 		}
 		//查询课程表
