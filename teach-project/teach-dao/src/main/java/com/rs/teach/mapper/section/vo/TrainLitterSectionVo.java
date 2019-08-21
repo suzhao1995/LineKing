@@ -42,9 +42,11 @@ public class TrainLitterSectionVo implements Serializable {
     private String practiceId;     //作业ID
     private String practiceFileName;   //作业文件上传name
     private String practiceUrl;    //作业文件url
+    private String practicePath;    //作业映射路径
 
     private String tid;              //考试主键
     private String testpaperId;     //考试ID
     private String testpaperName;   //考试文件上传name
     private String testpaperUrl;    //考试文件url
+    private String testpaperPath;    //考试映射路径
 }

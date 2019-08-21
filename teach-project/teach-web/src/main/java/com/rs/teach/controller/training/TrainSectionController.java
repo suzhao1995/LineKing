@@ -45,8 +45,8 @@ public class TrainSectionController {
     @Autowired
     private UserCourseRelaService userCourseRelaService;
 
-    @Value("${filePath}")
-    private String filePath;	//文件存放根目录
+    @Value("${fileMappingPath}")
+    private String fileMappingPath;	//文件存放根目录
     /**
      * 查询所有的课程章节
      *
@@ -144,7 +144,7 @@ public class TrainSectionController {
             //查询返回页面信息（1.当前小章节全部信息)
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
             //查询返回页面信息（pdf图片文件）
-            String coursewareUrl = filePath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
+            String coursewareUrl = fileMappingPath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
                     + "\\" + trainSection.getCoursewareId() + "_" + trainSection.getUpdateFileName()
                     + trainSection.getTrainLitterSectionType();
             trainSection.setCoursewareUrl(coursewareUrl);

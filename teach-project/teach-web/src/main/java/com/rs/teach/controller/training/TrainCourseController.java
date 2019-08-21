@@ -49,24 +49,4 @@ public class TrainCourseController {
             return responseBean;
         }
     }
-
-    /**
-     * 课件内容全部下载（当前课程）
-     */
-    @RequestMapping(value = "downloadAll", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean downloadAll(@RequestBody TrainParamDto trainParamDto) {
-        ResponseBean responseBean = new ResponseBean();
-        String courseId = trainParamDto.getCourseId();
-        try {
-
-        }catch (Exception e){
-            logger.error("当前课程-下载失败",e);
-            responseBean.addError("下载失败");
-        }
-        return responseBean;
-    }
-
-
-
 }

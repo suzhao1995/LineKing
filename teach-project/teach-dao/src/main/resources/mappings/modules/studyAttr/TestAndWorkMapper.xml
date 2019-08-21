@@ -18,13 +18,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<insert id="insertPractice" parameterType="com.rs.teach.mapper.studyAttr.entity.Practice">
-		insert into TF_EL_PRACTICE(PID,PRACTICE_ID, PRACTICE_FILE_NAME, PRACTICE_URL)
-		VALUES(SEQ_EL_PRACTICE.nextval,#{practiceId},#{practiceFileName},#{practiceUrl})
+		insert into TF_EL_PRACTICE(PID,PRACTICE_ID, PRACTICE_FILE_NAME, PRACTICE_URL,PRACTICE_PATH)
+		VALUES(SEQ_EL_PRACTICE.nextval,#{practiceId},#{practiceFileName},#{practiceUrl},#{practicePath})
 	</insert>
 
 	<insert id="insertTestpaper" parameterType="com.rs.teach.mapper.studyAttr.entity.Testpaper">
-		insert into TF_EL_TESTPAPER(TID,testpaper_id, testpaper_name, testpaper_url)
-		values (SEQ_EL_TESTPAPER.nextval,#{testpaperId},#{testpaperName},#{testpaperUrl})
+		insert into TF_EL_TESTPAPER(TID,testpaper_id, testpaper_name, testpaper_url,TESTPAPER_PATH)
+		values (SEQ_EL_TESTPAPER.nextval,#{testpaperId},#{testpaperName},#{testpaperUrl},#{testpaperPath})
 	</insert>
 
     <update id="updatePractice" parameterType="com.rs.teach.mapper.studyAttr.entity.Practice">
@@ -38,6 +38,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="practiceUrl != null and practiceUrl !=''">
 				PRACTICE_URL = #{practiceUrl},
+			</if>
+			<if test="practicePath != null and practicePath !=''">
+				PRACTICE_PATH = #{practicePath},
 			</if>
 		</set>
 		where PID = #{pid}
@@ -54,6 +57,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="testpaperUrl != null and testpaperUrl !=''">
 				TESTPAPER_URL = #{testpaperUrl},
+			</if>
+			<if test="testpaperPath != null and testpaperPath !=''">
+				TESTPAPER_PATH = #{testpaperPath},
 			</if>
 		</set>
 		where TID = #{tid}

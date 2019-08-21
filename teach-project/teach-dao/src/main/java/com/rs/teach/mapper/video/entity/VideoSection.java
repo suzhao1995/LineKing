@@ -1,5 +1,7 @@
 package com.rs.teach.mapper.video.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -9,116 +11,31 @@ import java.io.Serializable;
 * @date: 2019年8月21日 下午1:03:27
 * @version: V1.0
 */
+@Data
 public class VideoSection implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7064879483600937565L;
+	private static final long serialVersionUID = -8509058569897494920L;
 	
-	private String videoSectionId;	//
+	private String videoSectionId;	//章节id
 	
-	private String videoSectionName;	//
+	private String videoSectionName;	//章节名
 	
-	private String videoId;		//
+	private String videoId;		//视频课程id
 	
-	private String videoSectionUrl;		//
+	private String videoSectionUrl;		//章节路径（服务器路径）
+
+	private String videoSectionPath;    //章节绝对路径
 	
-	private String videoSectionSort;	//
+	private String videoSectionSort;	//章节序号
 	
-	private String videoTotleSort;	//
+	private String videoTotleSort;	//大章节序号
 	
-	private String videoTotleName;	//
+	private String videoTotleName;	//大章节名
 	
-	private String paperId;		//
+	private String paperId;		//试卷ID
 	
-	private String workId;	//
+	private String workId;	//作业ID
 	
-	private String courseWareId;	//
-	
-	public VideoSection(){
-		
-	}
-
-	public String getVideoSectionId() {
-		return videoSectionId;
-	}
-
-	public void setVideoSectionId(String videoSectionId) {
-		this.videoSectionId = videoSectionId;
-	}
-
-	public String getVideoSectionName() {
-		return videoSectionName;
-	}
-
-	public void setVideoSectionName(String videoSectionName) {
-		this.videoSectionName = videoSectionName;
-	}
-
-	public String getVideoId() {
-		return videoId;
-	}
-
-	public void setVideoId(String videoId) {
-		this.videoId = videoId;
-	}
-
-	public String getVideoSectionUrl() {
-		return videoSectionUrl;
-	}
-
-	public void setVideoSectionUrl(String videoSectionUrl) {
-		this.videoSectionUrl = videoSectionUrl;
-	}
-
-	public String getVideoSectionSort() {
-		return videoSectionSort;
-	}
-
-	public void setVideoSectionSort(String videoSectionSort) {
-		this.videoSectionSort = videoSectionSort;
-	}
-
-	public String getVideoTotleSort() {
-		return videoTotleSort;
-	}
-
-	public void setVideoTotleSort(String videoTotleSort) {
-		this.videoTotleSort = videoTotleSort;
-	}
-
-	public String getVideoTotleName() {
-		return videoTotleName;
-	}
-
-	public void setVideoTotleName(String videoTotleName) {
-		this.videoTotleName = videoTotleName;
-	}
-
-	public String getPaperId() {
-		return paperId;
-	}
-
-	public void setPaperId(String paperId) {
-		this.paperId = paperId;
-	}
-
-	public String getWorkId() {
-		return workId;
-	}
-
-	public void setWorkId(String workId) {
-		this.workId = workId;
-	}
-
-	public String getCourseWareId() {
-		return courseWareId;
-	}
-
-	public void setCourseWareId(String courseWareId) {
-		this.courseWareId = courseWareId;
-	}
-	
+	private String courseWareId;	//课件id
 	
 }

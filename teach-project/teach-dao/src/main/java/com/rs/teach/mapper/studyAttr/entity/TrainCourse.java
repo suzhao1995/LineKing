@@ -27,8 +27,6 @@ public class TrainCourse extends PageDto implements Serializable {
 	private String trainCourseName;	//培训课程名称
 	private String trainSectionNumber;	//培训章节总数
 	private String trainCoursePicUrl;	//培训课程资源Url
-	private String practiceId;	//作业id
-	private String testpaperId;	//试卷ID
 	private String extend1;	//预留字段
 	private String extend2;	//预留字段
 	private String extend3;	//预留字段

@@ -53,13 +53,6 @@
 		<artifactId>druid</artifactId>
 		<version>${druid.version}</version>
 	</dependency>
-	  <!--lombok插件-->
-	  <dependency>
-		  <groupId>org.projectlombok</groupId>
-		  <artifactId>lombok</artifactId>
-		  <version>1.16.10</version>
-		  <optional>true</optional>
-	  </dependency>
   </dependencies>
   
   <build>

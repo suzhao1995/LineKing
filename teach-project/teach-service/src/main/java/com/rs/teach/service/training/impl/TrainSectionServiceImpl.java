@@ -36,8 +36,8 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Autowired
     private TestAndWorkMapper testAndWorkMapper;
 
-    @Value("${filePath}")
-    private String filePath;	//文件存放根目录
+    @Value("${fileMappingPath}")
+    private String fileMappingPath;	//文件存放根目录
 
     @Override
     public TrainCourseVo selectCourseSection(String courseId) {
@@ -53,7 +53,7 @@ public class TrainSectionServiceImpl implements TrainSectionService {
 
             for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
                 //课件文件全部路径
-                String coursewareUrl = filePath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                String coursewareUrl = fileMappingPath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
                                         + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
                                         + trainLitterSectionVo.getTrainLitterSectionType();
                 trainLitterSectionVo.setCoursewareUrl(coursewareUrl);
@@ -63,12 +63,14 @@ public class TrainSectionServiceImpl implements TrainSectionService {
                     trainLitterSectionVo.setPid(practice.getPid());
                     trainLitterSectionVo.setPracticeFileName(practice.getPracticeFileName());
                     trainLitterSectionVo.setPracticeUrl(practice.getPracticeUrl());
+                    trainLitterSectionVo.setPracticePath(practice.getPracticePath());
                 }
                 if (StrUtil.isNotEmpty(trainLitterSectionVo.getTestpaperId())) {
                     Testpaper testpaper = testAndWorkMapper.queryTestpaper(trainLitterSectionVo.getTestpaperId());
                     trainLitterSectionVo.setTid(testpaper.getTid());
                     trainLitterSectionVo.setTestpaperName(testpaper.getTestpaperName());
                     trainLitterSectionVo.setTestpaperUrl(testpaper.getTestpaperUrl());
+                    trainLitterSectionVo.setTestpaperPath(testpaper.getTestpaperPath());
                 }
             }
             vo.setTrainLitterSectionVoList(trainLitterSectionVoList);

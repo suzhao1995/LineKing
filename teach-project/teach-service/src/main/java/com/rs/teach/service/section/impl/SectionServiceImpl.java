@@ -32,8 +32,8 @@ public class SectionServiceImpl implements SectionService {
     @Autowired
     private TestAndWorkMapper testAndWorkMapper;
 
-    @Value("${filePath}")
-    private String filePath;	//文件存放根目录
+    @Value("${fileMappingPath}")
+    private String fileMappingPath;	//文件存放根目录
 
     @Override
     public List<Section> getSectionByUser(String userId, String sectionId) {
@@ -83,7 +83,7 @@ public class SectionServiceImpl implements SectionService {
 
             for (TrainLitterSectionVo litterSectionVo : litterSectionVoList) {
                 //课件文件全部路径
-                String coursewareUrl = filePath + litterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                String coursewareUrl = fileMappingPath + litterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
                         + "\\" + litterSectionVo.getCoursewareId() + "_" + litterSectionVo.getUpdateFileName()
                         + litterSectionVo.getTrainLitterSectionType();
                 litterSectionVo.setCoursewareUrl(coursewareUrl);
@@ -93,12 +93,14 @@ public class SectionServiceImpl implements SectionService {
                     litterSectionVo.setPid(practice.getPid());
                     litterSectionVo.setPracticeFileName(practice.getPracticeFileName());
                     litterSectionVo.setPracticeUrl(practice.getPracticeUrl());
+                    litterSectionVo.setPracticePath(practice.getPracticePath());
                 }
                 if (StrUtil.isNotEmpty(litterSectionVo.getTestpaperId())) {
                     Testpaper testpaper = testAndWorkMapper.queryTestpaper(litterSectionVo.getTestpaperId());
                     litterSectionVo.setTid(testpaper.getTid());
                     litterSectionVo.setTestpaperName(testpaper.getTestpaperName());
                     litterSectionVo.setTestpaperUrl(testpaper.getTestpaperUrl());
+                    litterSectionVo.setTestpaperPath(testpaper.getTestpaperPath());
                 }
             }
             vo.setTrainLitterSectionVoList(litterSectionVoList);

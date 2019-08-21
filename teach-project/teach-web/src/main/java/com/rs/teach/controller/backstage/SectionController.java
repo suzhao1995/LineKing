@@ -1,7 +1,5 @@
 package com.rs.teach.controller.backstage;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
@@ -37,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +116,7 @@ public class SectionController {
                     practice.setPracticeId(practiceMap.get("upLoadId").toString());
                     practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
                     practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
+                    practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
 
                     sectionDto.setPracticeId(practice.getPracticeId());
 
@@ -138,6 +136,7 @@ public class SectionController {
                     testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
                     testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
                     testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
+                    testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
 
                     sectionDto.setTestpaperId(testpaper.getTestpaperId());
 
@@ -239,6 +238,7 @@ public class SectionController {
                 practice.setPracticeId(practiceMap.get("upLoadId").toString());
                 practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
                 practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
+                practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
 
                 sectionDto.setPracticeId(practice.getPracticeId());
 
@@ -260,6 +260,7 @@ public class SectionController {
                 testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
                 testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
                 testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
+                testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
 
                 sectionDto.setTestpaperId(testpaper.getTestpaperId());
 
