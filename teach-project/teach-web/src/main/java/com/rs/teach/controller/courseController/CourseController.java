@@ -75,8 +75,8 @@ public class CourseController{
 	@Autowired
 	private SchoolService schoolService;
 	
-	@Value("${filePath}")
-	private String filePath;	//文件存放根目录
+	@Value("${fileMappingPath}")
+	private String fileMappingPath;	//文件存放根目录
 	/**
 	* 课程目录资源初始化
 	* @param 
@@ -328,8 +328,8 @@ public class CourseController{
 		ajaxData.put("section", section);	//本章详情
 
 		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
-		String savePath = filePath;
-		String fileUrl = savePath +section.getSectionUrl().replace("/", "\\")+"\\"+fileName+".pdf";
+		String savePath = fileMappingPath;
+		String fileUrl = savePath +section.getSectionUrl()+"/"+fileName+".pdf";
 		ajaxData.put("fileUrl", fileUrl);
 		bean.addSuccess(ajaxData);
 //		Map<String, Object> returnMap = null;
@@ -364,7 +364,7 @@ public class CourseController{
 		String testId = request.getParameter("testId");
 		//查询试卷信息
 		Testpaper testPaper = testAndWorkService.getTestpaper(testId);
-		bean.addSuccess(testPaper.getTestpaperUrl());
+		bean.addSuccess(testPaper.getTestpaperPath()); 
 		return bean;
 	}
 	
@@ -383,7 +383,7 @@ public class CourseController{
 		String workId = request.getParameter("workId");
 		//查询练习信息 
 		Practice work = testAndWorkService.getPracticeById(workId);
-		bean.addSuccess(work.getPracticeUrl());
+		bean.addSuccess(work.getPracticePath());
 		return bean;
 	}
 	

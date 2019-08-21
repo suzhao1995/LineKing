@@ -18,4 +18,5 @@ public class Testpaper implements Serializable {
     private String testpaperId;     //考试ID
     private String testpaperName;   //考试文件上传name
     private String testpaperUrl;    //考试文件url
+    private String testpaperPath;	//考试文件映射路径
 }

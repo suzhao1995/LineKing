@@ -29,6 +29,7 @@ public class Section implements Serializable{
 	private String workId;	//练习id
 	private String testPaperId;	//考试id
 	private String coursewareId; //课件Id
+	private String uploadPath;	//上传文件的映射路径
 	private String extend1;	//预留字段
 	private String extend2;
 	private String extend3;
@@ -147,6 +148,14 @@ public class Section implements Serializable{
 
 	public void setTestPaperId(String testPaperId) {
 		this.testPaperId = testPaperId;
+	}
+	
+	public String getUploadPath() {
+		return uploadPath;
+	}
+
+	public void setUploadPath(String uploadPath) {
+		this.uploadPath = uploadPath;
 	}
 
 	public String getExtend1() {

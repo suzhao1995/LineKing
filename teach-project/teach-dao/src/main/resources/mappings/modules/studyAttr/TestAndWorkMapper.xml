@@ -7,12 +7,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="testpaperId" column="TESTPAPER_ID"/>
 		<result property="testpaperName" column="TESTPAPER_NAME"/>
 		<result property="testpaperUrl" column="TESTPAPER_URL"/>
+		<result property="testpaperPath" column="TESTPAPER_PATH"/>
 	</resultMap>
 	
 	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Practice" id="work">
 		<result property="practiceId" column="PRACTICE_ID"/>
 		<result property="practiceFileName" column="PRACTICE_FILE_NAME"/>
 		<result property="practiceUrl" column="PRACTICE_URL"/>
+		<result property="practicePath" column="PRACTICE_PATH"/>
 	</resultMap>
 
 	<insert id="insertPractice" parameterType="com.rs.teach.mapper.studyAttr.entity.Practice">

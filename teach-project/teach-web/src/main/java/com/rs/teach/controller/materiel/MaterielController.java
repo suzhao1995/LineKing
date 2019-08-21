@@ -139,6 +139,7 @@ public class MaterielController {
 		if(resultMap != null && "0".equals(resultMap.get("code"))){
 			String materielId = resultMap.get("materielId").toString();
 			String materielUrl = resultMap.get("materielUrl").toString();
+			String materielPath = resultMap.get("materielPath").toString();
 			
 			Materiel materiel = new Materiel();
 			materiel.setMaterielId(materielId);
@@ -146,6 +147,7 @@ public class MaterielController {
 			materiel.setMaterielUrl(materielUrl);
 			materiel.setMaterielStatus("0");
 			materiel.setMaterielDetail(materielDetail);
+			materiel.setMaterielPath(materielPath);
 			
 			int result = materielService.addMateriel(materiel);
 			if(result == 0){

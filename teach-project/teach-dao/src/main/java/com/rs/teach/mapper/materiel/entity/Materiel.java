@@ -19,6 +19,8 @@ public class Materiel implements Serializable{
 	
 	private String materielDetail;		//物料说明
 	
+	private String materielPath;	//映射路径
+	
 	public Materiel (){
 		
 	}
@@ -61,6 +63,14 @@ public class Materiel implements Serializable{
 
 	public void setMaterielDetail(String materielDetail) {
 		this.materielDetail = materielDetail;
+	}
+
+	public String getMaterielPath() {
+		return materielPath;
+	}
+
+	public void setMaterielPath(String materielPath) {
+		this.materielPath = materielPath;
 	}
 	
 	

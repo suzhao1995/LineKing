@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="workId" column="SCHOOLWORKID" />
 		<result property="testPaperId" column="PAPERID"/>
 		<result property="coursewareId" column="COURSEWARE_ID"/>
+		<result property="uploadPath" column="UPLOAD_PATH"/>
 		<result property="extend1" column="EXTEND1" />
 		<result property="extend2" column="EXTEND2" />
 		<result property="extend3" column="EXTEND3" />

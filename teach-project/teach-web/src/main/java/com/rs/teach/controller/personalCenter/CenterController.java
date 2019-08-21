@@ -85,10 +85,11 @@ public class CenterController{
 	@Autowired
 	private UserCourseRelaService userCourseRelaService;
 	
+	@Value("${fileMappingPath}")
+	private String fileMappingPath;	//文件映射路径
+	
 	@Value("${filePath}")
 	private String filePath;	//文件存放根目录
-	
-	
 	
 	/**
 	* 个人中心课表
@@ -414,8 +415,8 @@ public class CenterController{
 		ajaxData.put("section", section);	//本章详情
 		
 		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
-		String savePath = filePath;
-		String fileUrl = savePath +section.getSectionUrl().replace("/", "\\")+"\\"+fileName+".pdf";
+		String savePath = fileMappingPath;
+		String fileUrl = savePath +section.getSectionUrl()+"/"+fileName+".pdf";
 		ajaxData.put("fileUrl", fileUrl);
 		bean.addSuccess(ajaxData);
 //		Map<String, Object> returnMap = null;
@@ -582,6 +583,7 @@ public class CenterController{
 		section.setUpdateUser(userId);
 		section.setUpdateFileName(request.getParameter("updateFileName"));
 		section.setUpLoadId(request.getParameter("upLoadId"));
+		section.setUploadPath(request.getParameter("fileMappingPath"));
 		try {
 			int result = sectionService.addTeachUpSection(section);
 			if(result == 1){

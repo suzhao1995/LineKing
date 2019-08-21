@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="materielUrl" column="materiel_Url" />
 		<result property="materielStatus" column="materiel_Status" />
 		<result property="materielDetail" column="MATERIEL_DETAIL" />
+		<result property="materielPath" column="MATERIEL_PATH" />
 	</resultMap>
 	
 	<select id="queryMateriel" resultMap="materMap" parameterType="java.lang.String">
@@ -36,8 +37,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				materiel_Id,
 				materiel_Name,
 				materiel_Url,
-				materiel_Status
-				MATERIEL_DETAIL
+				materiel_Status,
+				MATERIEL_DETAIL,
+				MATERIEL_PATH
 			)
 		values
 			(
@@ -45,7 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{materielName},
 				#{materielUrl},
 				#{materielStatus},
-				#{materielDetail}
+				#{materielDetail},
+				#{materielPath}
 			)
 	</insert>
 </mapper>

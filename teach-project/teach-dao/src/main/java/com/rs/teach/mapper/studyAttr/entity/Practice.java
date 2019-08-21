@@ -18,5 +18,5 @@ public class Practice implements Serializable {
     private String practiceId;     //作业ID
     private String practiceFileName;   //作业文件上传name
     private String practiceUrl;    //作业文件url
-
+    private String practicePath;	//作业映射路径
 }
