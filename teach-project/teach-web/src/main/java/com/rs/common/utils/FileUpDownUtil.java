@@ -98,10 +98,7 @@ public class FileUpDownUtil{
 
 		uploadMaterielType.add(".jpg");
 		uploadMaterielType.add(".png");
-		uploadMaterielType.add(".docx");
-		uploadMaterielType.add(".dox");
 		uploadMaterielType.add(".ppt");
-		uploadMaterielType.add(".pptx");
 		uploadMaterielType.add(".pdf");
 	}
 
@@ -133,11 +130,30 @@ public class FileUpDownUtil{
 				//使用hash算法散列存储文件位置
 				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
 				String dirPath = dirPathMap.get("dir");
-				String saveRealName = upLoadId+sectionType;
+				String saveRealName = upLoadId+"_"+sectionType;
 
 				file.transferTo(new File(dirPath + "\\" + saveRealName));
+				String officeUrl = dirPath + "\\" + saveRealName;
+				String pdfUrl = dirPath + "\\" + upLoadId+"_"+updateFileName+".pdf";
 				
-				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + sectionType;
+				if(".ppt".equals(sectionType)){
+					Map<String,Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
+					if("-1".equals(officeMap.get("resultCode"))){
+						resultMap.put("code", "-1");
+						resultMap.put("message", "文件上传异常");
+						//删除原始文件
+						File officeFile = new File(dirPath + "\\" + saveRealName);
+						if(officeFile.exists()){
+							//删除
+							officeFile.delete();
+						}
+						logger.error("---------文件上传异常---------");
+						return resultMap;
+					}
+					String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + "/"+upLoadId+"_" +updateFileName+ ".pdf";
+					resultMap.put("materielPath", materielPath);	//绝对路径
+				}
+				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + saveRealName;
 				
 				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	//本地服务器地址
 				resultMap.put("materielPath", materielPath);	//绝对路径
@@ -272,7 +288,7 @@ public class FileUpDownUtil{
 						return resultMap;
 					}
 				}
-				String fileMappingPath = fileSaveUrl + dirPathMap.get("sortDir") + saveRealName + sectionType;
+				String fileMappingPath = fileSaveUrl + dirPathMap.get("sortDir") + upLoadId+"_"+updateFileName+".pdf";
 				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一	上传为章节课件 upLoadId = courseWareId， 上传为修改课件， upLoadId = upLoadId
 				resultMap.put("updateFileName", updateFileName);
 				resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
