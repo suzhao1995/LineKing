@@ -44,12 +44,26 @@ public class FileUpDownUtil{
 	private static final List<String> uploadMaterielType = new ArrayList<String>();	//指定物料上传格式
 	private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 	
-	private static final String imgSaveUrl = "/teach-web/upLoad/img";	//图片保存在服务器的头路径
-	private static final String fileSaveUrl = "/teach-web/upLoad/";	//文件保存在服务器的头路径
-	private static final String materielSaveUrl = "/teach-web/upLoad/materiel";	//物料保存在服务器的头路径
 	private static String filePath;	//文件路径
 	private static String imgPath;	//图片路径
 	private static String materielPath;	//物料路径
+	
+	private static String imgSaveUrl;	//图像映射路径
+	private static String materielSaveUrl;	//物料映射路径
+	private static String fileSaveUrl;	//文件映射路径
+	
+	@Value("${imgMappingPath}")	//静态属性使用setter方法注入properties文件的属性
+	public void setImgSaveUrl(String imgSaveUrl) {
+		this.imgSaveUrl = imgSaveUrl;
+	}
+	@Value("${materMappingPath}")	//静态属性使用setter方法注入properties文件的属性
+	public void setMaterielSaveUrl(String materielSaveUrl) {
+		this.materielSaveUrl = materielSaveUrl;
+	}
+	@Value("${fileMappingPath}")	//静态属性使用setter方法注入properties文件的属性
+	public void setFileSaveUrl(String fileSaveUrl) {
+		this.fileSaveUrl = fileSaveUrl;
+	}
 
 	@Autowired
 	private TestAndWorkService testAndWorkService;
@@ -258,10 +272,12 @@ public class FileUpDownUtil{
 						return resultMap;
 					}
 				}
+				String fileMappingPath = fileSaveUrl + dirPathMap.get("sortDir") + saveRealName + sectionType;
 				resultMap.put("upLoadId", upLoadId);	//生成的随机章节ID，唯一	上传为章节课件 upLoadId = courseWareId， 上传为修改课件， upLoadId = upLoadId
 				resultMap.put("updateFileName", updateFileName);
 				resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
 				resultMap.put("pdfUrl", pdfUrl);	//完整的pdf保存路径
+				resultMap.put("fileMappingPath", fileMappingPath);	//映射路径
 				resultMap.put("sectionType", sectionType);
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
