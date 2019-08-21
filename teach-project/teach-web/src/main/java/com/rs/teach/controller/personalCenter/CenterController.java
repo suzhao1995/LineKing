@@ -114,8 +114,7 @@ public class CenterController{
 		//判断用户是否编辑过个人资料
 		boolean flag = userService.isModifyInfo(userId);
 		if(!flag){
-			bean.addError("999", "请先编辑个人资料");
-			return bean;
+			ajaxData.put("isEdit", "false");
 		}
 		//查询课程表
 		List<Schedule> schedules = scheduleService.getSchedulesByUserId(userId);
