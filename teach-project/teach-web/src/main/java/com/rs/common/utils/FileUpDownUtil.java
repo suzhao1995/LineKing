@@ -130,11 +130,20 @@ public class FileUpDownUtil{
 				//使用hash算法散列存储文件位置
 				Map<String,String> dirPathMap = findFileSavePathByFileName(updateFileName,savePath);
 				String dirPath = dirPathMap.get("dir");
-				String saveRealName = upLoadId+"_"+sectionType;
+				String saveRealName = upLoadId+sectionType;
 
 				file.transferTo(new File(dirPath + "\\" + saveRealName));
+				
 				String officeUrl = dirPath + "\\" + saveRealName;
-				String pdfUrl = dirPath + "\\" + upLoadId+"_"+updateFileName+".pdf";
+				String pdfUrl = dirPath + "\\" + upLoadId+".pdf";
+				
+				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") +"/"+ saveRealName;
+				
+				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	//本地服务器地址
+				resultMap.put("materielPath", materielPath);	//绝对路径
+				resultMap.put("materielId", upLoadId);	//生成的随机ID，唯一
+				resultMap.put("code", "0");
+				resultMap.put("message", "文件上传成功");
 				
 				if(".ppt".equals(sectionType)){
 					Map<String,Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
@@ -150,16 +159,10 @@ public class FileUpDownUtil{
 						logger.error("---------文件上传异常---------");
 						return resultMap;
 					}
-					String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + "/"+upLoadId+"_" +updateFileName+ ".pdf";
+					materielPath = materielSaveUrl + dirPathMap.get("sortDir") + "/"+upLoadId+".pdf";
 					resultMap.put("materielPath", materielPath);	//绝对路径
 				}
-				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + saveRealName;
 				
-				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	//本地服务器地址
-				resultMap.put("materielPath", materielPath);	//绝对路径
-				resultMap.put("materielId", upLoadId);	//生成的随机ID，唯一
-				resultMap.put("code", "0");
-				resultMap.put("message", "文件上传成功");
 
 			} catch (IllegalStateException e) {
 				resultMap.put("code", "-1");
