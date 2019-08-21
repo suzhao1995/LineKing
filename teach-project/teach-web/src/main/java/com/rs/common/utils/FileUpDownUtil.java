@@ -44,6 +44,9 @@ public class FileUpDownUtil{
 	private static final List<String> uploadMaterielType = new ArrayList<String>();	//指定物料上传格式
 	private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 	
+	private static final String imgSaveUrl = "/teach-web/upLoad/img";	//图片保存在服务器的头路径
+	private static final String fileSaveUrl = "/teach-web/upLoad/";	//文件保存在服务器的头路径
+	private static final String materielSaveUrl = "/teach-web/upLoad/materiel";	//物料保存在服务器的头路径
 	private static String filePath;	//文件路径
 	private static String imgPath;	//图片路径
 	private static String materielPath;	//物料路径
@@ -101,6 +104,7 @@ public class FileUpDownUtil{
 		//文件保存路径
 		//String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
 		String savePath = materielPath;
+		
 		if(!file.isEmpty()){
 			try {
 				String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
@@ -118,8 +122,11 @@ public class FileUpDownUtil{
 				String saveRealName = upLoadId+sectionType;
 
 				file.transferTo(new File(dirPath + "\\" + saveRealName));
-
-				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);
+				
+				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") + sectionType;
+				
+				resultMap.put("materielUrl", dirPath + "\\" + saveRealName);	//本地服务器地址
+				resultMap.put("materielPath", materielPath);	//绝对路径
 				resultMap.put("materielId", upLoadId);	//生成的随机ID，唯一
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
@@ -172,7 +179,9 @@ public class FileUpDownUtil{
 				
 				file.transferTo(new File(dirPath + "\\" + saveRealName));
 				
-				resultMap.put("picUrl", dirPath + "\\" + saveRealName);	
+				String picUrl = imgSaveUrl + dirPathMap.get("sortDir") + saveRealName;
+				
+				resultMap.put("picUrl", picUrl);
 				resultMap.put("picId", upLoadId);	//生成的随机章节ID，唯一
 				resultMap.put("code", "0");
 				resultMap.put("message", "文件上传成功");
