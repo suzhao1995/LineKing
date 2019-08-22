@@ -3,5 +3,38 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.video.dao.VideoMapper">
+	<resultMap type="com.rs.teach.mapper.video.entity.Video" id="video">
+		<result property="videoId" column="VIDEO_ID" />
+		<result property="videoName" column="VIDEO_NAME" />
+		<result property="videoUrl" column="VIDEO_URL" />
+		<result property="schoolWork" column="SCHOOLWORK" />
+		<result property="videoWare" column="VIDEOWARE" />
+		<result property="testPaper" column="TESTPAPER" />
+		<result property="videoType" column="VIDEO_TYPE" />
+		<result property="schoolId" column="SCHOOL_ID" />
+	</resultMap>
 	
+	<resultMap type="com.rs.teach.mapper.video.entity.VideoSection" id="videoSection">
+		<result property="videoSectionId" column="VIDEOSECTION_ID" />
+		<result property="videoSectionName" column="VIDEOSECTION_NAME" />
+		<result property="videoId" column="VIDEO_ID" />
+		<result property="videoSectionUrl" column="VIDEOSECTION_URL" />
+		<result property="videoSectionPath" column="VIDEOSECTION_PATH" />
+		<result property="videoSectionSort" column="VIDEOSECTION_SORT" />
+		<result property="videoTotleSort" column="VIDEOTOTLE_SORT" />
+		<result property="videoTotleName" column="VIDEOTOTLE_NAME" />
+		<result property="paperId" column="PAPER_ID" />
+		<result property="workId" column="WORK_ID" />
+		<result property="courseWareId" column="COURSE_WAREID" />
+	</resultMap>
+	
+	<select id="queryVideos" parameterType="java.lang.String" resultMap="video">
+		select * from tf_el_video
+		<where>
+			1 = 1
+			<if test="videoType != null and videoType != ''">
+				and VIDEO_TYPE = #{videoType}
+			</if>
+		</where>
+	</select>
 </mapper>

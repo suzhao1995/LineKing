@@ -1,5 +1,9 @@
 package com.rs.teach.mapper.video.dao;
 
+import java.util.List;
+
+import com.rs.teach.mapper.video.entity.Video;
+
 /**
 * VideoMapper.java
 * @Description:视频课程dao
@@ -8,5 +12,5 @@ package com.rs.teach.mapper.video.dao;
 * @version: V1.0
 */
 public interface VideoMapper{
-	
+	public List<Video> queryVideos(String videoType);
 }
