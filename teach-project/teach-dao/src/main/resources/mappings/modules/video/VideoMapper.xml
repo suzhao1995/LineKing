@@ -37,4 +37,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+	
+	<!-- 查询我的视频课程 -->
+	<resultMap type="java.util.HashMap" id="myVideo">
+		<result property="videoId" column="VIDEO_ID" />
+		<result property="videoName" column="VIDEO_NAME" />
+	</resultMap>
+	<select id="MyVideo" parameterType="java.lang.String" resultMap="myVideo">
+		select vi.video_id,vi.video_name from tf_el_video vi, user_course_rela re 
+    	where vi.video_id = re.course_id
+        	and re.user_id = #{userId}
+        	and re.rela_type = '3' group by vi.video_id,vi.video_name
+	</select>
+	
+	<!-- 查询视频课程的总章节数 -->
+	<select id="getVideoNum" parameterType="java.lang.String" resultType="java.lang.String">
+		select count(1) from tf_el_video_section where VIDEO_ID = #{videoId}
+	</select>
+	
+	<!-- 根据id查询视频课程信息 -->
+	<select id="queryVideoById" parameterType="java.lang.String" resultMap="video">
+		select * from tf_el_video where video_id = #{videoId}
+	</select>
+	
+	<!-- 查询已学完的章节信息 -->
+	<resultMap type="java.util.HashMap" id="secMap">
+		<result property="sectionId" column="section_id" />
+		<result property="sectionSort" column="section_SORT" />
+		<result property="sectionName" column="section_name" />
+		<result property="totleSectionSort" column="totleSection_sort" />
+		<result property="totleSectionName" column="totleSection_name" />
+	</resultMap>
+	<select id="finishStudy" parameterType="java.lang.String" resultMap="secMap">
+		select re.section_id,ve.VIDEOSECTION_NAME as section_name,ve.VIDEOSECTION_SORT as section_SORT,ve.VIDEOTOTLE_SORT as totleSection_sort,ve.VIDEOTOTLE_NAME as totleSection_name from user_course_rela re, tf_el_video_section ve 
+		where re.section_id = ve.VIDEOSECTION_ID
+		  and re.rela_type = '4' 
+		  and re.user_id = #{userId}
+		  and re.course_id = #{videoId}
+		  and re.class_id = #{classId} 
+		  and re.isfinish = '2'
+	</select>
 </mapper>

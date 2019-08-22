@@ -41,6 +41,7 @@ import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.studyAttr.StudyTeamService;
 import com.rs.teach.service.timeTable.ScheduleService;
 import com.rs.teach.service.training.UserCourseRelaService;
+import com.rs.teach.service.video.VideoService;
 
 /**
 * CenterController.java
@@ -83,6 +84,9 @@ public class CenterController{
 	 * */
 	@Autowired
 	private SectionService sectionService;
+	
+	@Autowired
+	private VideoService videoService;
 	
 	@Autowired
 	private UserCourseRelaService userCourseRelaService;
@@ -258,7 +262,12 @@ public class CenterController{
 		//查询用户所教各班级课程
 		List<Map<String,Object>> list = courseService.getCourseInfoForUser(userId,classId);
 		for(Map<String,Object> map : list){
-			List<Map<String,Object>> finishSec = courseService.getFinishStudy(userId, map.get("classId").toString(), map.get("courseId").toString());
+			List<Map<String,Object>> finishSec = new ArrayList<Map<String,Object>>();
+			if("1".equals(map.get("relaType"))){
+				finishSec = courseService.getFinishStudy(userId, map.get("classId").toString(), map.get("courseId").toString());
+			}else if("3".equals(map.get("relaType"))){
+				finishSec = videoService.getFinishStudy(userId, map.get("classId").toString(), map.get("courseId").toString());
+			}
 			int number = finishSec == null ? 0 : finishSec.size();	//已学完章节数量
 			map.put("finishNumber", number);
 			int totleNum = Integer.valueOf(map.get("sectionNumber").toString());	//课程章节总数

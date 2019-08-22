@@ -8,6 +8,8 @@ import java.util.Map;
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
+import com.rs.teach.mapper.video.dao.VideoMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class CourseServiceImpl implements CourseService{
 
 	@Autowired
 	private SectionMapper sectionMapper;
+	
+	@Autowired
+	private VideoMapper videoMapper;
 
 	@Override
 	public List<Course> getCourseByUserId(String userId) {
@@ -34,7 +39,12 @@ public class CourseServiceImpl implements CourseService{
 	public List<Map<String, Object>> getCourseInfoForUser(String userId, String classId) {
 		List<Map<String, Object>> list = mapper.courseInfoForUser(userId, classId);
 		for(Map<String, Object> map : list){
-			String sectionNum = sectionMapper.selectSectionNum(map.get("courseId").toString());
+			String sectionNum = "";
+			if("1".equals(map.get("relaType"))){
+				sectionNum = sectionMapper.selectSectionNum(map.get("courseId").toString());
+			}else if("3".equals(map.get("relaType"))){
+				sectionNum = videoMapper.getVideoNum(map.get("courseId").toString());
+			}
 			map.put("sectionNumber", sectionNum);
 		}
 		return list;

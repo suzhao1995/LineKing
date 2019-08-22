@@ -32,6 +32,10 @@ public class Video implements Serializable{
 	
 	private String schoolId;	//视频课程归属学校
 	
+	private String isBelongMe;	//是否属于我的课程
+	
+	private String videoNum;	//总章节数
+	
 	public Video(){
 		
 	}
@@ -97,6 +101,18 @@ public class Video implements Serializable{
 
 	public void setSchoolId(String schoolId) {
 		this.schoolId = schoolId;
+	}
+	public String getIsBelongMe() {
+		return isBelongMe;
+	}
+	public void setIsBelongMe(String isBelongMe) {
+		this.isBelongMe = isBelongMe;
+	}
+	public String getVideoNum() {
+		return videoNum;
+	}
+	public void setVideoNum(String videoNum) {
+		this.videoNum = videoNum;
 	}
 	
 	
