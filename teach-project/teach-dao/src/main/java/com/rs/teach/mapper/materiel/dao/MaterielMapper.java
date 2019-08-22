@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.rs.teach.mapper.materiel.entity.Materiel;
 
 public interface MaterielMapper{
-	List<Materiel> queryMateriel(@Param("adminOperation") String adminOperation);
+	List<Materiel> queryMateriel(@Param("adminOperation") String adminOperation, @Param("code") String code);
 	
 	int updateStatus(@Param("materielId") String materielId, @Param("status") String status);
 	

@@ -20,6 +20,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="adminOperation == 1">
 				and t.MATERIEL_STATUS = '1'
 			</if>
+			<if test="code != null and code != ''">
+				and t.code = #{code}
+			</if>
 		</where> 
 	</select>
 	

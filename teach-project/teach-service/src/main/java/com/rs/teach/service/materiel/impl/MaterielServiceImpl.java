@@ -16,8 +16,8 @@ public class MaterielServiceImpl implements MaterielService{
 	private MaterielMapper mapper;
 	
 	@Override
-	public List<Materiel> getMateriel(String adminOperation) {
-		return mapper.queryMateriel(adminOperation);
+	public List<Materiel> getMateriel(String adminOperation, String code) {
+		return mapper.queryMateriel(adminOperation,code);
 	}
 
 	@Override

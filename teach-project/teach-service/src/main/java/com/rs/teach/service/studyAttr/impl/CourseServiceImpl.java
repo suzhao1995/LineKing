@@ -32,7 +32,12 @@ public class CourseServiceImpl implements CourseService{
 
 	@Override
 	public List<Map<String, Object>> getCourseInfoForUser(String userId, String classId) {
-		return mapper.courseInfoForUser(userId, classId);
+		List<Map<String, Object>> list = mapper.courseInfoForUser(userId, classId);
+		for(Map<String, Object> map : list){
+			String sectionNum = sectionMapper.selectSectionNum(map.get("courseId").toString());
+			map.put("sectionNumber", sectionNum);
+		}
+		return list;
 	}
 
 	@Override

@@ -292,39 +292,25 @@ public class CenterController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		String classId = request.getParameter("classId");
 		String courseId = request.getParameter("courseId");
+		String relaType = request.getParameter("relaType");
 		
-		Course course = courseService.queryCourseByCourseId(courseId);
-		
-		List<Map<String,Object>> list = sectionService.getSectionStatus(courseId, userId, classId);
-		course.setSectionNumber(String.valueOf(list.size()));
-		ajaxData.put("course", course);	//课程资源信息
-		
-		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
-		//按大章节目录进行分组
-		Map<String,List<Map<String,Object>>> map = new HashMap<String,List<Map<String,Object>>>();
-		for(Map smap : list){
-			List<Map<String,Object>> tmpList = map.get(smap.get("totleSectionSort"));
-			if(tmpList == null){
-				tmpList = new ArrayList<Map<String,Object>>();
-				tmpList.add(smap);
-				map.put(String.valueOf(smap.get("totleSectionSort")), tmpList);
-			}else{
-				tmpList.add(smap);
-			}
+		if("3".equals(relaType)){
+			//查看视频课程详情
+			
+			
+		}else if("1".equals(relaType)){
+			
+			Course course = courseService.queryCourseByCourseId(courseId);
+			
+			List<Map<String,Object>> list = sectionService.getSectionStatus(courseId, userId, classId);
+			course.setSectionNumber(String.valueOf(list.size()));
+			ajaxData.put("course", course);	//课程资源信息
+			
+			List<TrainSectionVo> sectionList = groupByTotle(list);
+			ajaxData.put("sectionList", sectionList);
+			bean.addSuccess(ajaxData);
 		}
-		Set set = map.entrySet();
-		Iterator<Set> iterator = set.iterator();
-		while(iterator.hasNext()){
-			Map.Entry<String, List<Map<String,Object>>> entry = (Entry<String, List<Map<String,Object>>>) iterator.next();
-			TrainSectionVo sectionVo = new TrainSectionVo();
-			sectionVo.setTrainSectionSort(entry.getKey());
-			sectionVo.setTrainSectionName(String.valueOf(entry.getValue().get(0).get("totleSectionName")));
-			sectionVo.setSectionStatusList(entry.getValue());
-			sectionList.add(sectionVo);
-		}
-		ajaxData.put("sectionList", sectionList);
 		
-		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -334,7 +320,7 @@ public class CenterController{
 	* @throws
 	* @return ResponseBean
 	* @author suzhao
-	 * @throws IOException 
+	* @throws IOException 
 	* @date 2019年7月30日 下午3:43:12
 	*/
 	@RequestMapping("/queryModifyCourse")
@@ -348,15 +334,18 @@ public class CenterController{
 		
 		String sectionId = request.getParameter("sectionId");
 		
+		Section modifySec = sectionService.getSectionById(sectionId);
+		ajaxData.put("totleSort", modifySec.getTotleSectionSort());
+		ajaxData.put("totleName", modifySec.getTotleSectionName());
+		ajaxData.put("sort", modifySec.getSectionSort());
+		ajaxData.put("name", modifySec.getSectionName());
+		ajaxData.put("sectionId", modifySec.getSectionId());
 		//查看我修改的课件信息
 		List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
 		if(sections.size() > 0){
-			bean.addSuccess(sections);
-		}else{
-			bean.addError("本章节，您未上传过课件");
-			return bean;
+			ajaxData.put("updateSection", sections);
 		}
-		
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -644,5 +633,32 @@ public class CenterController{
 		DecimalFormat df=new DecimalFormat("0.00");
 		return df.format((float)num/totleNum);
     }
+	
+	private static List<TrainSectionVo> groupByTotle(List<Map<String,Object>> list){
+		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
+		//按大章节目录进行分组
+		Map<String,List<Map<String,Object>>> map = new HashMap<String,List<Map<String,Object>>>();
+		for(Map smap : list){
+			List<Map<String,Object>> tmpList = map.get(smap.get("totleSectionSort"));
+			if(tmpList == null){
+				tmpList = new ArrayList<Map<String,Object>>();
+				tmpList.add(smap);
+				map.put(String.valueOf(smap.get("totleSectionSort")), tmpList);
+			}else{
+				tmpList.add(smap);
+			}
+		}
+		Set set = map.entrySet();
+		Iterator<Set> iterator = set.iterator();
+		while(iterator.hasNext()){
+			Map.Entry<String, List<Map<String,Object>>> entry = (Entry<String, List<Map<String,Object>>>) iterator.next();
+			TrainSectionVo sectionVo = new TrainSectionVo();
+			sectionVo.setTrainSectionSort(entry.getKey());
+			sectionVo.setTrainSectionName(String.valueOf(entry.getValue().get(0).get("totleSectionName")));
+			sectionVo.setSectionStatusList(entry.getValue());
+			sectionList.add(sectionVo);
+		}
+		return sectionList;
+	}
 	
 }

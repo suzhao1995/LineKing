@@ -26,15 +26,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="courseId" column="course_id" />
 		<result property="courseName" column="course_name" />
 		<result property="sectionNumber" column="section_number" />
+		<result property="relaType" column="rela_type" />
 	</resultMap>
 	
 	<select id="courseInfoForUser" parameterType="java.lang.String" resultMap="InfoMap">
-		select re.class_id, cl.class_name,re.course_id,tc.course_name,tc.section_number 
+		select re.class_id, cl.class_name,re.course_id,tc.course_name,tc.section_number,re.rela_type
 			from user_course_rela re, tf_el_course tc,tf_el_class cl 
 		<where> 
 			  re.course_id = tc.course_id 
 			  and re.class_id = cl.class_id 
-			  and re.user_id = #{userId} and re.rela_type = '1'
+			  and re.user_id = #{userId} and re.rela_type in ('1','3')
 			  <if test="classId != null and classId != ''">
 			  	and re.class_id = #{classId}
 			  </if>

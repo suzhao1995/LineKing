@@ -6,11 +6,13 @@ import com.rs.teach.mapper.materiel.entity.Materiel;
 
 public interface MaterielService{
 	
-	public List<Materiel> getMateriel(String adminOperation);
+	public List<Materiel> getMateriel(String adminOperation,String code);
 	
 	public int modifyStatus(String materielId, String status);
 	
 	public Materiel getMaterielById(String materielId);
 	
 	public int addMateriel(Materiel materiel);
+	
+	
 }

@@ -57,10 +57,12 @@ public class MaterielController {
 		
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
+		String code = request.getParameter("code");
+		
 		//初始化课程信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
 		//分页查询物料信息
-		List<Materiel> list = materielService.getMateriel("1");
+		List<Materiel> list = materielService.getMateriel("1",code);
 		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
 		bean.addSuccess(info);
 		return bean;
@@ -197,10 +199,11 @@ public class MaterielController {
 		ResponseBean bean = new ResponseBean();
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
+		String code = request.getParameter("code");
 		//初始化课程信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
 		//分页查询物料信息
-		List<Materiel> list = materielService.getMateriel("0");
+		List<Materiel> list = materielService.getMateriel("0",code);
 		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
 		bean.addSuccess(info);
 		return bean;
