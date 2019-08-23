@@ -64,6 +64,14 @@ public interface UserCourseRelaMapper {
      * @param classId
      */
     void insertAllSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId,@Param("relaType") String relaType);
+    
+    /**
+     * 添加视频课程的章节信息信息进入我的课程
+     * @param courseId
+     * @param userId
+     * @param classId
+     */
+    void insertVideoSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId,@Param("relaType") String relaType);
 
     /**
      * 查看是否已添加

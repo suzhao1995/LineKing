@@ -75,7 +75,11 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
 
 	@Override
 	public void addAllSection(String courseId, String userId, String classId, String relaType) {
-		userCourseRelaMapper.insertAllSection(courseId, userId, classId,relaType);
+		if("0".equals(relaType)){
+			userCourseRelaMapper.insertAllSection(courseId, userId, classId,relaType);
+		}else if("4".equals(relaType)){
+			userCourseRelaMapper.insertVideoSection(courseId, userId, classId, relaType);
+		}
 	}
 
 	@Override

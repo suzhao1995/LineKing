@@ -93,7 +93,17 @@
     		#{classId}
     	from tf_el_section where COURSE_ID = #{courseId}
     </insert>
-    
+    <!-- 添加视频课程的章节信息信息进入我的课程 -->
+    <insert id="insertVideoSection">
+    	insert into user_course_rela (COURSE_ID,USER_ID,SECTION_ID,ISFINISH,RELA_TYPE,CLASS_ID)
+    select VIDEO_ID,
+    		#{userId},
+    		VIDEOSECTION_ID,
+    		'0',
+    		#{relaType},
+    		#{classId}
+    	from tf_el_video_section where VIDEO_ID = #{courseId}
+    </insert>
     <!-- 查询教师是否添加过该课程到对应班级 -->
     <select id="isAddCourse" parameterType="java.lang.String" resultType="java.lang.Integer">
     	select count(1) from user_course_rela ucr
