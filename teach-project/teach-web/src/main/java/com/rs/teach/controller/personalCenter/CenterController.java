@@ -35,6 +35,8 @@ import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
 import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.mapper.video.entity.Video;
+import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.section.SectionService;
 import com.rs.teach.service.studyAttr.CourseService;
@@ -96,6 +98,9 @@ public class CenterController{
 	
 	@Value("${filePath}")
 	private String filePath;	//文件存放根目录
+	
+	@Value("${videoMappingUrl}")
+	private String videoMappingUrl;
 	
 	/**
 	* 个人中心课表
@@ -283,7 +288,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 初始化我的课程详情
+	* 初始化我的课程详情  --新增视频课程
 	* @param request
 	* @param response
 	* @throws
@@ -305,10 +310,18 @@ public class CenterController{
 		
 		if("3".equals(relaType)){
 			//查看视频课程详情
+			Video video = videoService.getVideoById(courseId);
 			
+			List<Map<String,Object>> list = videoService.getSectionStatus(courseId, userId, classId);
+			ajaxData.put("video", video);	//视频课程资源信息
+			
+			List<TrainSectionVo> videoSectionList = groupByTotle(list);
+			ajaxData.put("videoSectionList", videoSectionList);
+			ajaxData.put("relaType", "3");
+			bean.addSuccess(ajaxData);
 			
 		}else if("1".equals(relaType)){
-			
+			//查看普通课件详情
 			Course course = courseService.queryCourseByCourseId(courseId);
 			
 			List<Map<String,Object>> list = sectionService.getSectionStatus(courseId, userId, classId);
@@ -317,6 +330,7 @@ public class CenterController{
 			
 			List<TrainSectionVo> sectionList = groupByTotle(list);
 			ajaxData.put("sectionList", sectionList);
+			ajaxData.put("relaType", "1");
 			bean.addSuccess(ajaxData);
 		}
 		
@@ -359,7 +373,7 @@ public class CenterController{
 	}
 	
 	/**
-	* 我的课程---查看章节详情
+	* 我的课程---查看章节详情----新增视频课程
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -378,6 +392,7 @@ public class CenterController{
 		String sectionId = request.getParameter("sectionId");
 		String courseId = request.getParameter("courseId");
 		String sectionStatus = request.getParameter("status");	//课程学习状态
+		String relaType = request.getParameter("relaType");	//3：视频课程  1：普通课程
 		
 		ajaxData.put("classId", classId);
 		ajaxData.put("sectionId", sectionId);
@@ -395,51 +410,73 @@ public class CenterController{
 		}else{
 			ajaxData.put("note", "0");	//无课程笔记
 		}
-		//查询章节目录
-		List<Section> list = sectionService.getSectionByCourseId(courseId);
-		List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
-		for(int i = 0; i < list.size(); i++){
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("dirSectionId", list.get(i).getSectionId());
-			map.put("dirSectionSort", list.get(i).getSectionSort());
-			map.put("dirTotleSectionSort", list.get(i).getTotleSectionSort());
-			map.put("dirSectionName", list.get(i).getSectionName());
-			sectionDir.add(map);
-			//返回下一课的章节id
-			if(sectionId.equals(list.get(i).getSectionId())){
-				if(i+1 < list.size()){
-					ajaxData.put("nextSectionId", list.get(i+1).getSectionId());
-				}else{
-					ajaxData.put("nextSectionId", "0");	//课程已上完
+		if("1".equals(relaType)){
+			//普通课程课件
+			//查询章节目录
+			List<Section> list = sectionService.getSectionByCourseId(courseId);
+			List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
+			for(int i = 0; i < list.size(); i++){
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("dirSectionId", list.get(i).getSectionId());
+				map.put("dirSectionSort", list.get(i).getSectionSort());
+				map.put("dirTotleSectionSort", list.get(i).getTotleSectionSort());
+				map.put("dirSectionName", list.get(i).getSectionName());
+				sectionDir.add(map);
+				//返回下一课的章节id
+				if(sectionId.equals(list.get(i).getSectionId())){
+					if(i+1 < list.size()){
+						ajaxData.put("nextSectionId", list.get(i+1).getSectionId());
+					}else{
+						ajaxData.put("nextSectionId", "0");	//课程已上完
+					}
 				}
 			}
+			ajaxData.put("sectionDir", sectionDir);	//章节目录
+			
+			//查询章节详情
+			Section section = sectionService.getSectionById(sectionId);
+			
+			ajaxData.put("section", section);	//本章详情
+			
+			String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
+			String savePath = fileMappingPath;
+			String fileUrl = savePath +section.getSectionUrl()+"/"+fileName+".pdf";
+			ajaxData.put("fileUrl", fileUrl);
+			bean.addSuccess(ajaxData);
+		}else if("3".equals(relaType)){
+			//视频课程课件
+			//查询章节目录
+			List<VideoSection> list = videoService.getVideoSection(courseId);
+			List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
+			for(int i = 0; i < list.size(); i++){
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("dirSectionId", list.get(i).getVideoSectionId());
+				map.put("dirSectionName", list.get(i).getVideoSectionName());
+				map.put("dirSectionSort", list.get(i).getVideoSectionSort());
+				map.put("dirTotleSectionSort", list.get(i).getVideoTotleSort());
+				sectionDir.add(map);
+				//返回下一课的章节id
+				if(sectionId.equals(list.get(i).getVideoSectionId())){
+					if(i+1 < list.size()){
+						ajaxData.put("nextSectionId", list.get(i+1).getVideoSectionId());
+					}else{
+						ajaxData.put("nextSectionId", "0");	//课程已上完
+					}
+				}
+			}
+			ajaxData.put("sectionDir", sectionDir);	//章节目录
+			
+			//查询章节详情
+			VideoSection videoSection = videoService.getSectionBySecId(sectionId);
+			
+			ajaxData.put("videoSection", videoSection);	//本章详情
+
+			String fileName = videoSection.getCourseWareId()+"_"+videoSection.getVideoSectionName();
+			String savePath = videoMappingUrl;
+			String fileUrl = savePath +videoSection.getVideoSectionUrl()+"/"+fileName+".mp4";
+			ajaxData.put("videoUrl", fileUrl);
+			bean.addSuccess(ajaxData);
 		}
-		ajaxData.put("sectionDir", sectionDir);	//章节目录
-		
-		//查询章节详情
-		Section section = sectionService.getSectionById(sectionId);
-		
-		ajaxData.put("section", section);	//本章详情
-		
-		String fileName = section.getCoursewareId()+"_"+section.getUpdateFileName();
-		String savePath = fileMappingPath;
-		String fileUrl = savePath +section.getSectionUrl()+"/"+fileName+".pdf";
-		ajaxData.put("fileUrl", fileUrl);
-		bean.addSuccess(ajaxData);
-//		Map<String, Object> returnMap = null;
-//		try {
-//			returnMap = Pdf2ImageUtil.pdf2png(request, section.getSectionUrl(), fileName, "png");
-//			if("0".equals(returnMap.get("code"))){
-//				ajaxData.put("imgList", returnMap.get("imgList"));
-//				ajaxData.put("pageCount", returnMap.get("pageCount"));
-//				bean.addSuccess(ajaxData);
-//			}else{
-//				bean.addError(returnMap.get("message").toString());
-//			}
-//		} catch (Exception e) {
-//			logger.error("------"+fileName+"文件转换异常------", e);
-//			bean.addError("系统异常");
-//		}
 		return bean;
 	}
 	

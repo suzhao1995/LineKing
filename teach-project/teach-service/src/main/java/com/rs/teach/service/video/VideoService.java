@@ -76,4 +76,14 @@ public interface VideoService{
 	* @date 2019年8月23日 下午4:20:21
 	*/
 	public VideoSection getSectionBySecId(String videoSectionId);
+	
+	/**
+	* 查询各视频课件学习状态
+	* @param 
+	* @throws
+	* @return List<Map<String,Object>>
+	* @author suzhao
+	* @date 2019年8月23日 下午4:57:19
+	*/
+	public List<Map<String,Object>> getSectionStatus(String videoId,String userId, String classId);
 }

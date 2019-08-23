@@ -54,5 +54,10 @@ public class VideoServiceImpl implements VideoService{
 	public VideoSection getSectionBySecId(String videoSectionId) {
 		return mapper.querySectionBySecId(videoSectionId);
 	}
+
+	@Override
+	public List<Map<String, Object>> getSectionStatus(String videoId, String userId, String classId) {
+		return mapper.querySectionStatus(videoId, userId, classId);
+	}
 	
 }

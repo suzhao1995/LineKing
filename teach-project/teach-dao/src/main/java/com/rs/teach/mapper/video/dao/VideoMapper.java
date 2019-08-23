@@ -29,4 +29,6 @@ public interface VideoMapper{
 	public List<VideoSection> queryVideoSection(String videoId);
 	
 	public VideoSection querySectionBySecId(String videoSectionId);
+	
+	public List<Map<String,Object>> querySectionStatus(@Param("videoId") String videoId, @Param("userId") String userId, @Param("classId") String classId);
 }

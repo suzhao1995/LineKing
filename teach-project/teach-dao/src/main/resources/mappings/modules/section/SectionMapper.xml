@@ -145,7 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        where se.section_id = ucr.section_id 
              and se.course_id = #{courseId}
              and ucr.user_id = #{userId}
-             and ucr.class_id = #{classId}
+             and ucr.class_id = #{classId} order by se.totlesection_sort, se.section_sort
 	</select>
 
     <select id="selectSectionNum" resultType="java.lang.String">

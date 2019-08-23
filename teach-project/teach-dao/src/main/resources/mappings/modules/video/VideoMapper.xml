@@ -80,11 +80,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据vedioId查询视频课程章节信息 -->
 	<select id="queryVideoSection" parameterType="java.lang.String" resultMap="videoSection">
-		select * from tf_el_video_section where VIDEO_ID = #{videoId}
+		select * from tf_el_video_section t where VIDEO_ID = #{videoId} order by t.videototle_sort, t.videosection_sort
 	</select>
 	
 	<!-- 根据videoSectionId 查询视频章节信息 -->
 	<select id="querySectionBySecId" parameterType="java.lang.String" resultMap="videoSection">
 		select * from tf_el_video_section where VIDEOSECTION_ID = #{videoSectionId}
+	</select>
+	
+	<!-- 查询各视频课程课件学习状态 -->
+	<resultMap type="java.util.HashMap" id="sMap">
+		<result property="sectionId" column="section_id"/>
+		<result property="totleSectionSort" column="totlesection_sort"/>
+		<result property="totleSectionName" column="totlesection_name"/>
+		<result property="sectionSort" column="section_sort"/>
+		<result property="sectionName" column="section_name"/>
+		<result property="courseId" column="course_id"/>
+		<result property="studyStatus" column="isfinish"/>
+		<result property="classId" column="class_id"/>
+		<result property="coursewareId" column="courseware_id"/>
+	</resultMap>
+	<!-- 查询章节学习状态 -->
+	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
+		select vs.videosection_id as section_id, vs.videototle_sort as totlesection_sort,
+			vs.videototle_name as totlesection_name,vs.videosection_sort as section_sort, 
+			vs.videosection_name as section_name, vs.video_id as course_id, ucr.isfinish,ucr.class_id,
+       		vs.course_wareid as courseware_id
+		from tf_el_video_section vs,  user_course_rela ucr
+	where vs.videosection_id = ucr.section_id
+ 		and ucr.course_id = #{videoId}
+ 		and ucr.user_id = #{userId}
+ 		and ucr.class_id = #{classId} order by vs.videototle_sort, vs.videosection_sort
 	</select>
 </mapper>
