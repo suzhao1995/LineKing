@@ -55,7 +55,7 @@ public interface UserCourseRelaMapper {
      * @param classId
      * @return
      */
-    int insertCourse(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
+    int insertCourse(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId, @Param("relaType") String relaType);
 
     /**
      * 添加课程的章节信息信息进入我的课程
@@ -63,7 +63,7 @@ public interface UserCourseRelaMapper {
      * @param userId
      * @param classId
      */
-    void insertAllSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId);
+    void insertAllSection(@Param("courseId") String courseId, @Param("userId") String userId, @Param("classId") String classId,@Param("relaType") String relaType);
 
     /**
      * 查看是否已添加
@@ -95,4 +95,15 @@ public interface UserCourseRelaMapper {
     int updateSectionRela(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
      
     void updateRela(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
+    
+    /**
+    * 查询教师是否添加过该课程到对应班级 
+    * @param 
+    * @throws
+    * @return int
+    * @author suzhao
+    * @date 2019年8月23日 上午10:43:39
+    */
+    int isAddCourse(@Param("userId") String userId, @Param("courseId") String courseId, @Param("relaType") String relaType,@Param("classId") String classId);
+
 }

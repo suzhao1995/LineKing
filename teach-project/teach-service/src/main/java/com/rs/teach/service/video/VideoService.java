@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.video.entity.Video;
+import com.rs.teach.mapper.video.entity.VideoSection;
 
 /**
 * VideoService.java
@@ -53,4 +54,14 @@ public interface VideoService{
 	* @date 2019年8月22日 下午4:49:59
 	*/
 	public List<Map<String,Object>> getFinishStudy(String userId, String classId, String videoId);
+	
+	/**
+	* 根据videoId查询视频课程章节信息
+	* @param 
+	* @throws
+	* @return List<VideoSection>
+	* @author suzhao
+	* @date 2019年8月22日 下午5:29:29
+	*/
+	public List<VideoSection> getVideoSection(String videoId);
 }

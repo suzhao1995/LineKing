@@ -233,17 +233,17 @@ public class CourseController{
 		
 		try {
 			//判断课程是否添加过我的课程
-			int count = userCourseRelaService.getRelaType(courseId, userId);
+			int count = userCourseRelaService.isAddCourse(courseId, userId,classId);
 			if(count > 0){
 				//修改relaType
-				userCourseRelaService.modifyRelaType(courseId, userId, classId);
+				userCourseRelaService.modifyRelaType(courseId, userId, classId,"1");
 				bean.addSuccess();
 				return bean;
 			}
 			//添加课程信息
-			int result = userCourseRelaService.addCourse(courseId, userId, classId);
+			int result = userCourseRelaService.addCourse(courseId, userId, classId,"1");
 			if(result == 1){
-				userCourseRelaService.addAllSection(courseId, userId, classId);
+				userCourseRelaService.addAllSection(courseId, userId, classId,"0");
 				bean.addSuccess();
 			}
 		} catch (Exception e) {

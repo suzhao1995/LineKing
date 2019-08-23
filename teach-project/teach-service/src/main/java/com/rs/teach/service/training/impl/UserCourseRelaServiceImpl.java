@@ -69,27 +69,35 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
     }
 
 	@Override
-	public int addCourse(String courseId, String userId, String classId) {
-		return userCourseRelaMapper.insertCourse(courseId, userId, classId);
+	public int addCourse(String courseId, String userId, String classId, String relaType) {
+		return userCourseRelaMapper.insertCourse(courseId, userId, classId,relaType);
 	}
 
 	@Override
-	public void addAllSection(String courseId, String userId, String classId) {
-		userCourseRelaMapper.insertAllSection(courseId, userId, classId);
+	public void addAllSection(String courseId, String userId, String classId, String relaType) {
+		userCourseRelaMapper.insertAllSection(courseId, userId, classId,relaType);
 	}
 
 	@Override
-	public int getRelaType(String courseId, String userId) {
-		int count = userCourseRelaMapper.studyStatus(courseId, userId, 2);
+	public int isAddCourse(String courseId, String userId, String classId) {
+		int count = userCourseRelaMapper.isAddCourse(userId, courseId, "2", classId);
 		return count;
 	}
 
 	@Override
-	public void modifyRelaType(String courseId, String userId, String classId) {
+	public void modifyRelaType(String courseId, String userId, String classId, String courseType) {
 		//修改课程资源relaType = 1； 章节relaType = 0
-		int result1 = userCourseRelaMapper.updateCourseRela(userId, courseId, "1", classId);
-		if(result1 > 0 ){
-			userCourseRelaMapper.updateSectionRela(userId, courseId, "0", classId);
+		if("1".equals(courseType)){
+			
+			int result1 = userCourseRelaMapper.updateCourseRela(userId, courseId, "1", classId);
+			if(result1 > 0 ){
+				userCourseRelaMapper.updateSectionRela(userId, courseId, "0", classId);
+			}
+		}else if("2".equals(courseType)){
+			int result1 = userCourseRelaMapper.updateCourseRela(userId, courseId, "3", classId);
+			if(result1 > 0 ){
+				userCourseRelaMapper.updateSectionRela(userId, courseId, "4", classId);
+			}
 		}
 	}
 

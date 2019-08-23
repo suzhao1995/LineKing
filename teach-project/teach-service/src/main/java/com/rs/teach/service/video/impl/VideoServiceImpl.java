@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.rs.teach.mapper.video.dao.VideoMapper;
 import com.rs.teach.mapper.video.entity.Video;
+import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.service.video.VideoService;
 
 @Service
@@ -42,6 +43,12 @@ public class VideoServiceImpl implements VideoService{
 	@Override
 	public List<Map<String, Object>> getFinishStudy(String userId, String classId, String videoId) {
 		return mapper.finishStudy(userId, classId, videoId);
+	}
+
+	@Override
+	public List<VideoSection> getVideoSection(String videoId) {
+		
+		return null;
 	}
 	
 }

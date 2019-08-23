@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.video.entity.VideoSection;
 
 /**
  * @author 汪航
@@ -32,5 +33,7 @@ public class TrainSectionVo implements Serializable{
     
     //包含学习状态的小章节集合
     private List<Map<String,Object>> sectionStatusList;
-
+    
+    //视频课程资源大章节下的小章节集合
+    private List<VideoSection> VideoList;
 }

@@ -78,7 +78,7 @@
     		(
     			#{courseId},
     			#{userId},
-    			'1',
+    			#{relaType},
     			#{classId}
     		)
     </insert>
@@ -89,11 +89,19 @@
     		#{userId},
     		SECTION_ID,
     		'0',
-    		'0',
+    		#{relaType},
     		#{classId}
     	from tf_el_section where COURSE_ID = #{courseId}
     </insert>
     
+    <!-- 查询教师是否添加过该课程到对应班级 -->
+    <select id="isAddCourse" parameterType="java.lang.String" resultType="java.lang.Integer">
+    	select count(1) from user_course_rela ucr
+        where ucr.course_Id = #{courseId}
+        and ucr.user_Id = #{userId}
+        and ucr.rela_type = #{relaType}
+        and ucr.CLASS_ID = #{classId}
+    </select>
     <update id="updateCourseRela" parameterType="java.lang.String">
     	update USER_COURSE_RELA set RELA_TYPE = #{relaType} 
     	where course_Id = #{courseId}

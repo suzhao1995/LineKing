@@ -48,13 +48,29 @@ public interface UserCourseRelaService {
      */
     void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish);
     
-    int addCourse(String courseId, String userId, String classId);
+    /**
+    * 添加课程信息到我的课程
+    * @param 
+    * @throws
+    * @return int
+    * @author suzhao
+    * @date 2019年8月23日 上午10:52:39
+    */
+    int addCourse(String courseId, String userId, String classId, String relaType);
     
-    void addAllSection(String courseId, String userId, String classId);
+    void addAllSection(String courseId, String userId, String classId, String relaType);
     
-    int getRelaType(String courseId, String userId);
+    int isAddCourse(String courseId, String userId, String classId);
     
-    void modifyRelaType(String courseId, String userId, String classId);
+    /**
+    * 修改relaType的状态码
+    * @param courseType = 1： 修改普通课件，  courseType = 2 修改视频课件
+    * @throws
+    * @return void
+    * @author suzhao
+    * @date 2019年8月23日 上午10:50:26
+    */
+    void modifyRelaType(String courseId, String userId, String classId,String courseType);
     
     void cancelCourse(String courseId, String userId, String classId); 
 }
