@@ -217,16 +217,20 @@ public class IndexController {
 			for(int i = 0; i < schedules.size(); i++){
 				if(weekDay <= 5){
 					if(weekDay == schedules.get(i).getWeekDay()){
-						if(DateUtil.StringToDate(schedules.get(i).getStartDate(), "hh:mm").getTime() > loginTime){
+						if(DateUtil.StringToDate(schedules.get(i).getStartDate(), "HH:mm").getTime() > loginTime){
 							return schedules.get(i);
 						}else{
+							if(i == schedules.size() - 1){
+								//取每周第一节课
+								return schedules.get(0);
+							}
 							continue;
 						}
 					}else{
 						if(i < schedules.size() && schedules.get(i).getWeekDay() > weekDay){
 							//取下一次课
 							return schedules.get(i);
-						}else if( i == schedules.size()){
+						}else if( i == schedules.size() - 1){
 							//取每周第一节课
 							return schedules.get(0);
 						}
