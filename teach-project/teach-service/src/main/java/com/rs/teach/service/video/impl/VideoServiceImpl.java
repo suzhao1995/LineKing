@@ -28,7 +28,7 @@ public class VideoServiceImpl implements VideoService{
 	}
 
 	@Override
-	public List<Video> MyVideo(String userId) {
+	public List<Map<String,Object>> MyVideo(String userId) {
 		return mapper.MyVideo(userId);
 	}
 
@@ -47,8 +47,12 @@ public class VideoServiceImpl implements VideoService{
 
 	@Override
 	public List<VideoSection> getVideoSection(String videoId) {
-		
-		return null;
+		return mapper.queryVideoSection(videoId);
+	}
+
+	@Override
+	public VideoSection getSectionBySecId(String videoSectionId) {
+		return mapper.querySectionBySecId(videoSectionId);
 	}
 	
 }

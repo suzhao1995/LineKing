@@ -33,7 +33,7 @@ public interface VideoService{
 	* @author suzhao
 	* @date 2019年8月22日 下午2:46:18
 	*/
-	public List<Video> MyVideo(String userId);
+	public List<Map<String,Object>> MyVideo(String userId);
 	
 	/**
 	* 查询单个视频课程信息
@@ -47,7 +47,9 @@ public interface VideoService{
 	
 	/**
 	* 获取已学完的视频课程
-	* @param 
+	* @param userId 用户id
+	* @param classId 班级id
+	* @param videoId 视频课程id
 	* @throws
 	* @return List<Map<String,Object>>
 	* @author suzhao
@@ -64,4 +66,14 @@ public interface VideoService{
 	* @date 2019年8月22日 下午5:29:29
 	*/
 	public List<VideoSection> getVideoSection(String videoId);
+	
+	/**
+	* 根据videoSectionId查询视频章节信息
+	* @param videoSectionId 视频课件id
+	* @throws
+	* @return VideoSection
+	* @author suzhao
+	* @date 2019年8月23日 下午4:20:21
+	*/
+	public VideoSection getSectionBySecId(String videoSectionId);
 }

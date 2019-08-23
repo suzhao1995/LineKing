@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,10 +25,13 @@ import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.entity.Course;
+import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.video.entity.Video;
 import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.service.studyAttr.StudyTeamService;
+import com.rs.teach.service.studyAttr.TestAndWorkService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import com.rs.teach.service.video.VideoService;
 
@@ -51,6 +55,13 @@ public class VideoController{
 	
 	@Autowired
 	private UserCourseRelaService userCourseRelaService;
+	
+	@Autowired
+	private TestAndWorkService testAndWorkService;
+	
+	@Value("${videoMappingUrl}")
+	private String videoMappingUrl;
+	
 	
 	/**
 	* 初始化视频课程资源
@@ -76,7 +87,7 @@ public class VideoController{
 		List<Video> list = videoService.getVideos(videoType);
 		
 		//查询属于我的课程的信息
-		List<Video>	MyVideo = videoService.MyVideo(userId);
+		List<Map<String,Object>> MyVideo = videoService.MyVideo(userId);
 		for(Video video : list){
 			MyCourseToList(video,MyVideo);
 		}
@@ -115,9 +126,9 @@ public class VideoController{
 		
 		ajaxData.put("videoList", videoList);
 		//查询属于我的课程的信息
-		List<Video>	MyVideo = videoService.MyVideo(userId);
-		for(Video video1 : MyVideo){
-			if(video1.getVideoId().equals(video.getVideoId())){
+		List<Map<String,Object>> MyVideo = videoService.MyVideo(userId);
+		for(Map<String,Object> video1 : MyVideo){
+			if(video1.get("videoId").equals(video.getVideoId())){
 				ajaxData.put("videoStatus", "1");	//1：已添加到我的课程
 			}
 		}
@@ -145,7 +156,7 @@ public class VideoController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		//获取请求参数
-		String courseId = request.getParameter("courseId");
+		String courseId = request.getParameter("videoId");	//视频课程id
 		String classId = request.getParameter("classId");
 		
 		try {
@@ -171,6 +182,98 @@ public class VideoController{
 	}
 	
 	/**
+	* 视频章节详细信息
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月23日 下午2:30:19
+	*/
+	@RequestMapping("/videoSecDeatails")
+	@ResponseBody
+	public ResponseBean videoSectionDeatails(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		//获取用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		String videoSectionId = request.getParameter("videoSectionId");
+		String videoId = request.getParameter("videoId");
+		
+		//查询章节目录
+		List<VideoSection> list = videoService.getVideoSection(videoId);
+		List<Map<String,Object>> sectionDir = new ArrayList<Map<String,Object>>();
+		for(int i = 0; i < list.size(); i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("dirSectionId", list.get(i).getVideoSectionId());
+			map.put("dirSectionName", list.get(i).getVideoSectionName());
+			map.put("dirSectionSort", list.get(i).getVideoSectionSort());
+			map.put("dirTotleSectionSort", list.get(i).getVideoTotleSort());
+			sectionDir.add(map);
+			//返回下一课的章节id
+			if(videoSectionId.equals(list.get(i).getVideoSectionId())){
+				if(i+1 < list.size()){
+					ajaxData.put("nextSectionId", list.get(i+1).getVideoSectionId());
+				}else{
+					ajaxData.put("nextSectionId", "0");	//课程已上完
+				}
+			}
+		}
+		ajaxData.put("sectionDir", sectionDir);	//章节目录
+		
+		//查询章节详情
+		VideoSection videoSection = videoService.getSectionBySecId(videoSectionId);
+		
+		ajaxData.put("videoSection", videoSection);	//本章详情
+
+		String fileName = videoSection.getCourseWareId()+"_"+videoSection.getVideoSectionName();
+		String savePath = videoMappingUrl;
+		String fileUrl = savePath +videoSection.getVideoSectionUrl()+"/"+fileName+".mp4";
+		ajaxData.put("videoUrl", fileUrl);
+		bean.addSuccess(ajaxData);
+		
+		return bean;
+	}
+	
+	/**
+	* 查看试卷信息
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月12日 下午4:24:50
+	*/
+	@RequestMapping("/testDetails")
+	@ResponseBody
+	public ResponseBean testDetails(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		String testId = request.getParameter("testId");
+		//查询试卷信息
+		Testpaper testPaper = testAndWorkService.getTestpaper(testId);
+		bean.addSuccess(testPaper.getTestpaperPath()); 
+		return bean;
+	}
+	
+	/**
+	* 查看练习信息
+	* @param  
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月12日 下午4:24:50
+	*/
+	@RequestMapping("/workDetails")
+	@ResponseBody
+	public ResponseBean workDetails(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		String workId = request.getParameter("workId");
+		//查询练习信息 
+		Practice work = testAndWorkService.getPracticeById(workId);
+		bean.addSuccess(work.getPracticePath());
+		return bean;
+	}
+	
+	/**
 	* 将属于我的课程添加到课程列表
 	* @param 
 	* @throws
@@ -178,11 +281,11 @@ public class VideoController{
 	* @author suzhao
 	* @date 2019年8月12日 上午10:03:40
 	*/
-	public void MyCourseToList(Video video, List<Video> myVideo){
+	public void MyCourseToList(Video video, List<Map<String,Object>> myVideo){
 		
 		for(int i = 0; i <myVideo.size(); i++){
 			//将属于我的课程添加进list
-			if(video.getVideoId().equals(myVideo.get(i).getVideoId())){
+			if(video.getVideoId().equals(myVideo.get(i).get("videoId"))){
 				video.setIsBelongMe("true");
 			}
 		}
@@ -191,7 +294,7 @@ public class VideoController{
 	/*
 	 * 按大章节目录进行分组
 	 * */
-	public List<TrainSectionVo> groupByToleSort(List<VideoSection> list){
+	public static List<TrainSectionVo> groupByToleSort(List<VideoSection> list){
 		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
 		//按大章节目录进行分组
 		Map<String,List<VideoSection>> map = new HashMap<String,List<VideoSection>>();

@@ -82,4 +82,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="queryVideoSection" parameterType="java.lang.String" resultMap="videoSection">
 		select * from tf_el_video_section where VIDEO_ID = #{videoId}
 	</select>
+	
+	<!-- 根据videoSectionId 查询视频章节信息 -->
+	<select id="querySectionBySecId" parameterType="java.lang.String" resultMap="videoSection">
+		select * from tf_el_video_section where VIDEOSECTION_ID = #{videoSectionId}
+	</select>
 </mapper>

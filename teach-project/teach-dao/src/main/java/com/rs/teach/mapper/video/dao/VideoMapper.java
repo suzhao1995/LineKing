@@ -18,7 +18,7 @@ import com.rs.teach.mapper.video.entity.VideoSection;
 public interface VideoMapper{
 	public List<Video> queryVideos(String videoType);
 	
-	public List<Video> MyVideo(String userId);
+	public List<Map<String,Object>> MyVideo(String userId);
 	
 	public String getVideoNum(String videoId);
 	
@@ -27,4 +27,6 @@ public interface VideoMapper{
 	public List<Map<String, Object>> finishStudy(@Param("userId") String userId, @Param("classId") String classId, @Param("videoId") String videoId);
 
 	public List<VideoSection> queryVideoSection(String videoId);
+	
+	public VideoSection querySectionBySecId(String videoSectionId);
 }
