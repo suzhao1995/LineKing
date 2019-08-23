@@ -357,7 +357,7 @@ public class FileUpDownUtil {
         String savePath = videoPath;
         if (!file.isEmpty()) {
             try {
-                String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
+                String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成文件id
 
                 String updateFileName = file.getOriginalFilename().split("[.]")[0];
                 String sectionType = "." + file.getOriginalFilename().split("[.]")[1];
@@ -379,7 +379,7 @@ public class FileUpDownUtil {
                 resultMap.put("videoUrl", videoUrl);   //本地服务器地址
                 resultMap.put("updateFileName",updateFileName); //上传文件名
                 resultMap.put("videoPath", videoPath);  //项目绝对路径
-                resultMap.put("videoId", upLoadId);    //生成的随机章节ID，唯一
+                resultMap.put("videoId", upLoadId);    //生成的文件ID
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
 
@@ -405,13 +405,14 @@ public class FileUpDownUtil {
      * 视频下载方法
      *
      * @param filePath   文件全路径 例如：D:\RSUpLoad\4\3\486e9d53ae764cb6b733e375f90fce22_电信（第三版）.MP4
+     * @param downLoadName   文件保存名 例如：电信（第三版）
      * @return void
      * @throws
      * @throws IOException
      * @author suzhao
      * @date 2019年8月1日 上午11:46:24
      */
-    public static Map<String, Object> videoFileDownLoad(HttpServletResponse response, String filePath,String sectionType, String downLoadName ) throws IOException {
+    public static Map<String, Object> videoFileDownLoad(HttpServletResponse response, String filePath, String downLoadName ) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
         File file = new File(filePath);
         if (!file.exists()) {
@@ -421,7 +422,7 @@ public class FileUpDownUtil {
         }
         //设置响应头，控制浏览器下载该文件
         response.setContentType("video/mpeg4");// 设定输出的类型
-        response.setHeader("Content-Disposition", "attachment;filename="  + URLEncoder.encode(filePath,"UTF-8"));
+        response.setHeader("Content-Disposition", "attachment;filename="  + URLEncoder.encode(downLoadName+".mp4","UTF-8"));
         //读取文件，保存文件到输入流
         FileInputStream inputStream = new FileInputStream(file);
         //创建输出流

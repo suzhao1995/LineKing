@@ -35,7 +35,6 @@
         select #{courseId},#{userId},train_section_id,#{note}
         from tf_el_train_section ts
         where ts.train_course_id = #{courseId}
-        and ts.train_litter_section_url is null
         and not exists
         (select 1 from tf_el_note  where User_id = #{userId} and course_id = #{courseId})
     </insert>

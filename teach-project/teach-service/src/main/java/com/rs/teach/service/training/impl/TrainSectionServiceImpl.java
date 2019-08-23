@@ -1,8 +1,10 @@
 package com.rs.teach.service.training.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.dto.TotleSectionDto;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +40,7 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     private TestAndWorkMapper testAndWorkMapper;
 
     @Value("${fileMappingPath}")
-    private String fileMappingPath;	//文件存放根目录
+    private String fileMappingPath;    //文件存放根目录
 
     @Override
     public TrainCourseVo selectCourseSection(String courseId) {
@@ -54,8 +57,8 @@ public class TrainSectionServiceImpl implements TrainSectionService {
             for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
                 //课件文件全部路径
                 String coursewareUrl = fileMappingPath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
-                                        + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
-                                        + trainLitterSectionVo.getTrainLitterSectionType();
+                        + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
+                        + trainLitterSectionVo.getTrainLitterSectionType();
                 trainLitterSectionVo.setCoursewareUrl(coursewareUrl);
 
                 if (StrUtil.isNotEmpty(trainLitterSectionVo.getPracticeId())) {
@@ -92,6 +95,17 @@ public class TrainSectionServiceImpl implements TrainSectionService {
 
     @Override
     public void addTrainSection(SectionDto sectionDto) {
+        Integer result = trainSectionMapper.IsBlank(sectionDto);
+        Integer sort = 0;
+        if (result > 0){
+            TrainLitterSectionVo trainLitterSectionVo = trainSectionMapper.selectTrainLitterSectionSortMax(sectionDto);
+            if (StrUtil.isNotBlank(trainLitterSectionVo.getTrainLitterSectionSort())) {
+                sort = Integer.valueOf(trainLitterSectionVo.getTrainLitterSectionSort());
+            }
+        }
+        sort += 1;
+        sectionDto.setLitterSectionSort(String.valueOf(sort));
+
         trainSectionMapper.addTrainSection(sectionDto);
     }
 
@@ -103,6 +117,44 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Override
     public List<Section> getSectionByCourseId(String courseId) {
         return trainSectionMapper.getSectionByCourseId(courseId);
+    }
+
+    @Override
+    public void addTotleSection(TotleSectionDto totleSectionDto) {
+        Integer result = trainSectionMapper.IsEmpty(totleSectionDto.getCourseId());
+
+        List<TotleSection> list = new ArrayList<>();
+        Integer sort = 0;
+
+        if (result > 0){
+            //查询当前课程大章节序号最大的一条数据
+            TotleSection resultTotleSection = trainSectionMapper.selectTotoleSectionSortMax(totleSectionDto.getCourseId());
+            if (StrUtil.isNotBlank(resultTotleSection.getTotleSectionSort())) {
+                sort = Integer.valueOf(resultTotleSection.getTotleSectionSort());
+            }
+        }
+        //循环注入大章节序号
+        for (int i = 0; i < totleSectionDto.getTotleSectionName().length; i++) {
+            sort += 1;
+            TotleSection totleSection = new TotleSection();
+            totleSection.setCourseId(totleSectionDto.getCourseId());
+            totleSection.setTotleSectionSort(String.valueOf(sort));
+            totleSection.setTotleSectionName(totleSectionDto.getTotleSectionName()[i]);
+            list.add(totleSection);
+        }
+        //批量插入
+        trainSectionMapper.addAllTotleSection(list);
+    }
+
+    @Override
+    public List<TotleSection> selectTotleSection(TotleSectionDto totleSectionDto) {
+        return trainSectionMapper.selectTotleSection(totleSectionDto);
+    }
+
+    @Override
+    public void updateTotleSection(TotleSectionDto totleSectionDto) {
+        totleSectionDto.setTotleSectionNameforUpdate(totleSectionDto.getTotleSectionName()[0]);
+        trainSectionMapper.updateTotleSection(totleSectionDto);
     }
 
 }

@@ -3,7 +3,9 @@ package com.rs.teach.mapper.section.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.dto.TotleSectionDto;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import org.apache.ibatis.annotations.Param;
@@ -110,4 +112,49 @@ public interface SectionMapper{
 	 * @param sectionDto
 	 */
 	void updateSection(SectionDto sectionDto);
+	/**
+	 * 查询当前课程大章节序号最大的一条数据
+	 * @param courseId
+	 * @return
+	 */
+    TotleSection selectTotoleSectionSortMax(@Param("courseId") String courseId);
+
+	/**
+	 * 批量插入
+	 * @param list
+	 */
+	void addAllTotleSection(@Param("list") List<TotleSection> list);
+
+	/**
+	 * 查询大章节
+	 * @param totleSectionDto
+	 * @return
+	 */
+	List<TotleSection> selectTotleSection(TotleSectionDto totleSectionDto);
+
+	/**
+	 * 修改大章节名
+	 * @param totleSectionDto
+	 */
+	void updateTotleSection(TotleSectionDto totleSectionDto);
+	/**
+	 * 查询当前课程是否含有大章节
+	 * @param courseId
+	 * @return
+	 */
+	Integer IsEmpty(@Param("courseId") String courseId);
+
+	/**
+	 * 查询当前课程大章节内有无小章节
+	 * @param sectionDto
+	 * @return
+	 */
+	Integer IsBlank(SectionDto sectionDto);
+
+	/**
+	 * 查询当前课程大章节中小章节序号最大的一条数据
+	 * @param sectionDto
+	 * @return
+	 */
+	TrainLitterSectionVo selectTrainLitterSectionSortMax(SectionDto sectionDto);
 }

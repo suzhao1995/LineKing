@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
 	</insert>
 
-	<update id="updateSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
+    <update id="updateSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
 		update TF_EL_SECTION
 		<set>
 			<if test="courseId != null and courseId != ''">
@@ -116,16 +116,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where  SECTION_ID = #{sectionId}
 	</update>
 
-
-    <select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
+	<select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.UPLOAD_ID = #{upLoadId}
 	</select>
 	
 	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from tf_el_section t where t.COURSE_ID = #{courseId} order by t.totlesection_sort,t.section_sort
 	</select>
-	
-	
 	<resultMap type="java.util.HashMap" id="sMap">
 		<result property="sectionId" column="section_id"/>
 		<result property="totleSectionSort" column="totlesection_sort"/>
@@ -166,6 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				SECTION_NAME AS trainLitterSectionName,
                 SECTION_URL AS trainLitterSectionUrl,
                 SECTION_TYPE AS trainLitterSectionType,
+                UPDATE_FILENAME AS updateFileName,
                 SCHOOLWORKID AS practiceId ,
                 PAPERID AS testpaperId,
                 COURSEWARE_ID AS coursewareId
@@ -174,5 +172,73 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and TOTLESECTION_SORT = #{trainSectionSort}
          order by SECTION_SORT
 
+	</select>
+    <select id="selectTotoleSectionSortMax" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+		select * from
+         (
+            select ID,TOTLE_SECTION_SORT,TOTLE_SECTION_NAME,COURSE_ID
+            from TF_EL_TOTLE_SECTION
+            where COURSE_ID = #{courseId}
+            order by TOTLE_SECTION_SORT desc
+        )
+        where rownum = 1
+	</select>
+
+	<insert id="addAllTotleSection">
+		insert into TF_EL_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
+		select SEQ_EL_TOTLE_SECTION.nextval,A.* from(
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
+				SELECT
+				#{item.totleSectionSort,jdbcType=VARCHAR},
+				#{item.totleSectionName,jdbcType=VARCHAR},
+				#{item.courseId,jdbcType=VARCHAR}
+				FROM DUAL
+			</foreach>
+		) A
+	</insert>
+
+	<select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+		select * from TF_EL_TOTLE_SECTION
+		<where>
+			1 = 1
+			<if test="courseId != null and courseId !='' ">
+				and COURSE_ID = #{courseId}
+			</if>
+		</where>
+		order by TOTLE_SECTION_SORT
+	</select>
+
+    <update id="updateTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto">
+		update TF_EL_TOTLE_SECTION
+        set TOTLE_SECTION_NAME = #{totleSectionNameforUpdate}
+        where id = #{id}
+	</update>
+	<select id="IsEmpty" resultType="java.lang.Integer">
+		select count(1) from TF_EL_TOTLE_SECTION
+        where COURSE_ID = #{courseId}
+	</select>
+	<select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
+		select count(1) from TF_EL_SECTION
+        where COURSE_ID = #{courseId}
+        and TOTLESECTION_SORT = #{sectionSort}
+	</select>
+	<select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto"
+			resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
+		select * from
+         (
+            select SECTION_ID AS trainSectionId,
+				SECTION_SORT AS trainLitterSectionSort,
+				SECTION_NAME AS trainLitterSectionName,
+                SECTION_URL AS trainLitterSectionUrl,
+                SECTION_TYPE AS trainLitterSectionType,
+                SCHOOLWORKID AS practiceId ,
+                PAPERID AS testpaperId,
+                COURSEWARE_ID AS coursewareId
+            from TF_EL_SECTION
+            where COURSE_ID = #{courseId}
+            and TOTLESECTION_SORT = #{sectionSort}
+            order by SECTION_SORT desc
+        )
+        where rownum = 1
 	</select>
 </mapper>

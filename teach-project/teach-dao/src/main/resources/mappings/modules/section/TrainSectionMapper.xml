@@ -19,6 +19,7 @@
         )
 
     </insert>
+
     <update id="updateTrainSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
         update TF_EL_TRAIN_SECTION
         <set>
@@ -79,7 +80,7 @@
 
     <select id="selectTrainLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
         select TRAIN_SECTION_ID,TRAIN_LITTER_SECTION_SORT,TRAIN_LITTER_SECTION_NAME
-               ,TRAIN_LITTER_SECTION_URL,TRAIN_LITTER_SECTION_TYPE,PRACTICE_ID ,TESTPAPER_ID
+               ,TRAIN_LITTER_SECTION_URL,TRAIN_LITTER_SECTION_TYPE,UPDATE_FILE_NAME,PRACTICE_ID ,TESTPAPER_ID
                ,COURSEWARE_ID
         FROM TF_EL_TRAIN_SECTION
         WHERE TRAIN_COURSE_ID = #{courseId}
@@ -109,4 +110,66 @@
         order by train_section_sort,train_litter_section_sort
     </select>
 
+
+    <select id="selectTotoleSectionSortMax" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+        select * from
+         (
+            select ID,TOTLE_SECTION_SORT,TOTLE_SECTION_NAME,COURSE_ID
+            from TF_EL_TRAIN_TOTLE_SECTION
+            where COURSE_ID = #{courseId}
+            order by TOTLE_SECTION_SORT desc
+        )
+        where rownum = 1
+    </select>
+
+    <insert id="addAllTotleSection" parameterType="java.util.List">
+        insert into TF_EL_TRAIN_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
+        select SEQ_EL_TRAIN_TOTLE_SECTION.nextval,A.* from(
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
+              SELECT
+                #{item.totleSectionSort,jdbcType=VARCHAR},
+                #{item.totleSectionName,jdbcType=VARCHAR},
+                #{item.courseId,jdbcType=VARCHAR}
+              FROM DUAL
+            </foreach>
+        ) A
+    </insert>
+
+    <select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+        select * from TF_EL_TRAIN_TOTLE_SECTION
+        <where>
+            1 = 1
+            <if test="courseId != null and courseId !='' ">
+                and COURSE_ID = #{courseId}
+            </if>
+        </where>
+        order by TOTLE_SECTION_SORT
+    </select>
+
+    <update id="updateTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto">
+        update TF_EL_TRAIN_TOTLE_SECTION
+        set TOTLE_SECTION_NAME = #{totleSectionNameforUpdate}
+        where id = #{id}
+    </update>
+
+    <select id="IsEmpty" resultType="java.lang.Integer">
+        select count(1) from TF_EL_TRAIN_TOTLE_SECTION
+        where COURSE_ID = #{courseId}
+    </select>
+    <select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
+        select count(1) from TF_EL_TRAIN_SECTION
+        where TRAIN_COURSE_ID = #{courseId}
+        and TRAIN_SECTION_SORT = #{sectionSort}
+    </select>
+    <select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
+        select * from
+         (
+            select *
+            from TF_EL_TRAIN_SECTION
+            where TRAIN_COURSE_ID = #{courseId}
+            and TRAIN_SECTION_SORT = #{sectionSort}
+            order by TRAIN_LITTER_SECTION_SORT desc
+        )
+        where rownum = 1
+    </select>
 </mapper>

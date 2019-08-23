@@ -16,7 +16,7 @@ public class VideoSection implements Serializable{
 
 	private static final long serialVersionUID = -8509058569897494920L;
 	
-	private String videoSectionId;	//章节id
+	private String videoSectionId;	//章节id(主键)
 	
 	private String videoSectionName;	//章节名
 	

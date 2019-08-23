@@ -37,29 +37,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
-	
+
+    <select id="selectVideoSection" resultType="com.rs.teach.mapper.video.entity.VideoSection">
+
+	</select>
+
+	<select id="queryVideoSectionByVideoId" resultType="com.rs.teach.mapper.section.entity.Section">
+		select 	VIDEO_SECTION_ID as sectionId,
+				VIDEO_SECTION_NAME as ,
+				VIDEO_ID as,
+				VIDEO_SECTION_URL as,
+				VIDEO_SECTION_PATH as ,
+				VIDEO_SECTION_SORT as,
+				VIDEO_TOTLE_SORT as ,
+				VIDEO_TOTLE_NAME as,
+				PAPER_ID as testPaperId,
+				WORK_ID as workId,
+				COURSE_WARE_ID as coursewareId
+		from TF_EL_VIDEO_SECTION
+		where  VIDEO_ID = #{videoId}
+		order by VIDEO_TOTLE_SORT,VIDEO_SECTION_SORT
+	</select>
+
+
 	<!-- 查询我的视频课程 -->
 	<resultMap type="java.util.HashMap" id="myVideo">
 		<result property="videoId" column="VIDEO_ID" />
 		<result property="videoName" column="VIDEO_NAME" />
 	</resultMap>
 	<select id="MyVideo" parameterType="java.lang.String" resultMap="myVideo">
-		select vi.video_id,vi.video_name from tf_el_video vi, user_course_rela re 
+		select vi.video_id,vi.video_name from tf_el_video vi, user_course_rela re
     	where vi.video_id = re.course_id
         	and re.user_id = #{userId}
         	and re.rela_type = '3' group by vi.video_id,vi.video_name
 	</select>
-	
+
 	<!-- 查询视频课程的总章节数 -->
 	<select id="getVideoNum" parameterType="java.lang.String" resultType="java.lang.String">
 		select count(1) from tf_el_video_section where VIDEO_ID = #{videoId}
 	</select>
-	
+
 	<!-- 根据id查询视频课程信息 -->
 	<select id="queryVideoById" parameterType="java.lang.String" resultMap="video">
 		select * from tf_el_video where video_id = #{videoId}
 	</select>
-	
+
 	<!-- 查询已学完的章节信息 -->
 	<resultMap type="java.util.HashMap" id="secMap">
 		<result property="sectionId" column="section_id" />
@@ -69,25 +91,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="totleSectionName" column="totleSection_name" />
 	</resultMap>
 	<select id="finishStudy" parameterType="java.lang.String" resultMap="secMap">
-		select re.section_id,ve.VIDEOSECTION_NAME as section_name,ve.VIDEOSECTION_SORT as section_SORT,ve.VIDEOTOTLE_SORT as totleSection_sort,ve.VIDEOTOTLE_NAME as totleSection_name from user_course_rela re, tf_el_video_section ve 
+		select re.section_id,ve.VIDEOSECTION_NAME as section_name,ve.VIDEOSECTION_SORT as section_SORT,ve.VIDEOTOTLE_SORT as totleSection_sort,ve.VIDEOTOTLE_NAME as totleSection_name from user_course_rela re, tf_el_video_section ve
 		where re.section_id = ve.VIDEOSECTION_ID
-		  and re.rela_type = '4' 
+		  and re.rela_type = '4'
 		  and re.user_id = #{userId}
 		  and re.course_id = #{videoId}
-		  and re.class_id = #{classId} 
+		  and re.class_id = #{classId}
 		  and re.isfinish = '2'
 	</select>
-	
+
 	<!-- 根据vedioId查询视频课程章节信息 -->
 	<select id="queryVideoSection" parameterType="java.lang.String" resultMap="videoSection">
 		select * from tf_el_video_section t where VIDEO_ID = #{videoId} order by t.videototle_sort, t.videosection_sort
 	</select>
-	
+
 	<!-- 根据videoSectionId 查询视频章节信息 -->
 	<select id="querySectionBySecId" parameterType="java.lang.String" resultMap="videoSection">
 		select * from tf_el_video_section where VIDEOSECTION_ID = #{videoSectionId}
 	</select>
-	
+
 	<!-- 查询各视频课程课件学习状态 -->
 	<resultMap type="java.util.HashMap" id="sMap">
 		<result property="sectionId" column="section_id"/>
@@ -103,7 +125,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询章节学习状态 -->
 	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
 		select vs.videosection_id as section_id, vs.videototle_sort as totlesection_sort,
-			vs.videototle_name as totlesection_name,vs.videosection_sort as section_sort, 
+			vs.videototle_name as totlesection_name,vs.videosection_sort as section_sort,
 			vs.videosection_name as section_name, vs.video_id as course_id, ucr.isfinish,ucr.class_id,
        		vs.course_wareid as courseware_id
 		from tf_el_video_section vs,  user_course_rela ucr

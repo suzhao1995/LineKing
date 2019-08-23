@@ -30,7 +30,7 @@ public class SummaryController {
      * 课后总结保存
      * param
      * userId; //用户id
-     * sectionSort;  //大章节序号
+     * sectionId;  //章节id
      * courseId      //课程id
      * summary      //课后总结
      */

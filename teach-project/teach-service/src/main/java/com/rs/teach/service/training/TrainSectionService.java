@@ -1,6 +1,8 @@
 package com.rs.teach.service.training;
 
+import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.dto.TotleSectionDto;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
@@ -54,4 +56,23 @@ public interface TrainSectionService {
      * @return
      */
     List<Section> getSectionByCourseId(String courseId);
+
+    /**
+     * 大章节添加
+     * @param totleSectionDto
+     */
+    void addTotleSection(TotleSectionDto totleSectionDto);
+
+    /**
+     * 查询大章节
+     * @param totleSectionDto
+     * @return
+     */
+    List<TotleSection> selectTotleSection(TotleSectionDto totleSectionDto);
+
+    /**
+     * 修改大章节名
+     * @param totleSectionDto
+     */
+    void updateTotleSection(TotleSectionDto totleSectionDto);
 }

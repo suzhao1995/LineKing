@@ -1,13 +1,16 @@
 package com.rs.teach.controller.backstage;
 
 import cn.hutool.core.util.StrUtil;
+import com.rs.common.utils.BPUtil;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
+import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.dto.DownloadSectionDto;
 import com.rs.teach.mapper.section.dto.SectionDto;
+import com.rs.teach.mapper.section.dto.TotleSectionDto;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.entity.TrainSection;
 import com.rs.teach.mapper.studyAttr.entity.Course;
@@ -42,7 +45,7 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * @author 汪航
- * @Description
+ * @Description  后台管理员章节controller
  * @create 2019-08-15 11:07
  */
 @Controller
@@ -68,8 +71,78 @@ public class SectionController {
 
     @Value("${filePath}")
     private String filePath;	//文件存放根目录
+
+
     /**
-     * 添加章节
+     * 添加大章节
+     * @param totleSectionDto
+     * @return
+     */
+    @RequestMapping(value = "/addTotleSection",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean addTotleSection(@RequestBody TotleSectionDto totleSectionDto){
+        ResponseBean bean = new ResponseBean();
+        try {
+            BPUtil.check(StrUtil.isEmpty(totleSectionDto.getCourseId()),"请选择课程");
+            if (StrUtil.equals("1", totleSectionDto.getIsTrain())) {
+                trainSectionService.addTotleSection(totleSectionDto);
+            } else {
+                sectionService.addTotleSection(totleSectionDto);
+            }
+            bean.addSuccess();
+            logger.info("大章节-添加-成功");
+        } catch (Exception e) {
+            logger.error("大章节-添加-失败");
+            bean.addError("大章节添加失败");
+        }
+        return bean;
+    }
+
+    /**
+     * 查询大章节
+     * @param totleSectionDto
+     * @return
+     */
+    @RequestMapping(value = "/selectTotleSection",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectTotleSection(@RequestBody TotleSectionDto totleSectionDto){
+        ResponseBean bean = new ResponseBean();
+        List<TotleSection> totleSectionList = null;
+        if (StrUtil.equals("1", totleSectionDto.getIsTrain())) {
+            totleSectionList =  trainSectionService.selectTotleSection(totleSectionDto);
+        } else {
+            totleSectionList = sectionService.selectTotleSection(totleSectionDto);
+        }
+        bean.addSuccess(totleSectionList);
+        return bean;
+    }
+
+    /**
+     * 修改大章节名
+     * @param totleSectionDto
+     * @return
+     */
+    @RequestMapping(value = "/updateTotleSection",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean updateTotleSection(@RequestBody TotleSectionDto totleSectionDto){
+        ResponseBean bean = new ResponseBean();
+        try {
+            if (StrUtil.equals("1", totleSectionDto.getIsTrain())) {
+               trainSectionService.updateTotleSection(totleSectionDto);
+            } else {
+                sectionService.updateTotleSection(totleSectionDto);
+            }
+            logger.info("修改-大章节-成功");
+            bean.addSuccess();
+        } catch (Exception e) {
+            logger.error("修改-大章节-失败",e);
+            bean.addError("修改大章节失败");
+        }
+        return bean;
+    }
+
+    /**
+     * 添加小章节
      *
      * @param courseWareFile（课件）
      * @param practiceFile（作业）

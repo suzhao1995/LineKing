@@ -3,6 +3,8 @@ package com.rs.teach.service.video.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.video.entity.VideoSection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,15 @@ public class VideoServiceImpl implements VideoService{
 	public List<Map<String, Object>> getSectionStatus(String videoId, String userId, String classId) {
 		return mapper.querySectionStatus(videoId, userId, classId);
 	}
-	
+
+    @Override
+    public VideoSection selectVideoSection(String videoSectionId) {
+		return mapper.selectVideoSection(videoSectionId);
+    }
+
+	@Override
+	public List<Section> queryVideoSectionByVideoId(String videoId) {
+		return mapper.queryVideoSectionByVideoId(videoId);
+	}
+
 }
