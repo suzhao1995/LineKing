@@ -44,8 +44,8 @@ public class UserCourseRelaServiceImpl implements UserCourseRelaService {
     }
 
     @Override
-    public void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish) {
-        userCourseRelaMapper.updateIsFinish(trainCourseId, userId, sectionId, isFinish);
+    public void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish, String classId) {
+        userCourseRelaMapper.updateIsFinish(trainCourseId, userId, sectionId, isFinish,classId);
     }
 
     @Override

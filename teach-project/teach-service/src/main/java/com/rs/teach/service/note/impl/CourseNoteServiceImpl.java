@@ -39,7 +39,7 @@ public class CourseNoteServiceImpl implements CourseNoteService {
         }else{
             noteMapper.addNote(courseNote);
         }
-        userCourseRelaMapper.updateIsFinish(courseNote.getCourseId(),courseNote.getUserId(),courseNote.getSectionId(), CourseStatusEnum.convent2TableNum(CourseStatusEnum.END.name()));
+        userCourseRelaMapper.updateIsFinish(courseNote.getCourseId(),courseNote.getUserId(),courseNote.getSectionId(), CourseStatusEnum.convent2TableNum(CourseStatusEnum.END.name()),null);
     }
 
     @Override

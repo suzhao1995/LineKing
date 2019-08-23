@@ -400,7 +400,7 @@ public class CenterController{
 		
 		if("0".equals(sectionStatus)){
 			//修改课程状态
-			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 1);
+			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 1,classId);
 		}
 		//查询课程笔记
 		List<Map<String,Object>> noteList = courseService.getNoteSummary(userId, classId, courseId, "0", sectionId);
@@ -595,7 +595,7 @@ public class CenterController{
 				courseService.addSummary(noteSummary);
 			}
 			//修改课程状态
-			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 2);
+			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 2,classId);
 			bean.addSuccess();
 		} catch (Exception e) {
 			logger.error("--------保存异常-------", e);

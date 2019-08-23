@@ -46,7 +46,7 @@ public interface UserCourseRelaService {
      * @param sectionId
      * @param isFinish
      */
-    void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish);
+    void updateIsFinish(String trainCourseId, String userId, String sectionId, Integer isFinish, String classId);
     
     /**
     * 添加课程信息到我的课程

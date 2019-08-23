@@ -57,6 +57,9 @@
         where course_Id = #{trainCourseId}
         and user_Id = #{userId}
         and section_Id = #{sectionId}
+        <if test="classId != null and classId != ''">
+        	and CLASS_ID = #{classId}
+        </if>
     </update>
 
     <update id="updateRelaType">

@@ -161,7 +161,7 @@ public class TrainSectionController {
 
             //加入到我的课程就修改学习状态
             if (status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name())) {
-                userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()));
+                userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()),null);
             }
 
             responseBean.addSuccess(map);

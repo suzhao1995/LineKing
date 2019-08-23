@@ -46,7 +46,7 @@ public interface UserCourseRelaMapper {
      * @param sectionId
      * @param isFinish
      */
-    void updateIsFinish(@Param("trainCourseId") String trainCourseId, @Param("userId")String userId, @Param("sectionId")String sectionId, @Param("isFinish")Integer isFinish);
+    void updateIsFinish(@Param("trainCourseId") String trainCourseId, @Param("userId")String userId, @Param("sectionId")String sectionId, @Param("isFinish")Integer isFinish,@Param("classId") String classId);
 
     /**
      * 添加课程信息进入我的课程
