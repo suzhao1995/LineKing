@@ -19,7 +19,7 @@ import com.rs.teach.mapper.video.entity.VideoSection;
 * @version: V1.0
 */
 public interface VideoMapper{
-	public List<Video> queryVideos(String videoType);
+	public List<Video> queryVideos(@Param("videoType") String videoType);
 
     /**
      * 查询电影章节信息

@@ -129,7 +129,7 @@ public class VideoController{
 		List<Map<String,Object>> MyVideo = videoService.MyVideo(userId);
 		for(Map<String,Object> video1 : MyVideo){
 			if(video1.get("videoId").equals(video.getVideoId())){
-				ajaxData.put("videoStatus", "1");	//1：已添加到我的课程
+				video.setIsBelongMe("true");
 			}
 		}
 		//查询用户所属校区班级
