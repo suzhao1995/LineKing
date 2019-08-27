@@ -11,7 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="videoWare" column="VIDEOWARE" />
 		<result property="testPaper" column="TESTPAPER" />
 		<result property="videoType" column="VIDEO_TYPE" />
-		<result property="schoolId" column="SCHOOL_ID" />
 	</resultMap>
 	
 	<resultMap type="com.rs.teach.mapper.video.entity.VideoSection" id="videoSection">
@@ -29,11 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="queryVideos" parameterType="java.lang.String" resultMap="video">
-		select * from tf_el_video
+		select t.VIDEO_ID,t.VIDEO_NAME,
+		t.VIDEO_URL,t.SCHOOLWORK,t.VIDEOWARE,t.TESTPAPER,t.VIDEO_TYPE from tf_el_video t,school_course_rela scr
 		<where>
-			1 = 1
+			t.VIDEO_ID = scr.COURSE_ID
+			and scr.SCHOOL_ID = #{schoolId}
 			<if test="videoType != null and videoType != ''">
-				and VIDEO_TYPE = #{videoType}
+				and t.VIDEO_TYPE = #{videoType}
 			</if>
 		</where>
 	</select>

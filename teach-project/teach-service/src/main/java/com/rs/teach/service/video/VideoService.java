@@ -24,7 +24,7 @@ public interface VideoService{
 	* @author suzhao
 	* @date 2019年8月21日 下午4:44:34
 	*/
-	public List<Video> getVideos(String videoType);
+	public List<Video> getVideos(String videoType, String schoolId);
 
 	/**
 	 * 查询电影章节信息

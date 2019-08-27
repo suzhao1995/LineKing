@@ -94,11 +94,10 @@ public class CourseController{
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		//获取用户信息
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String schoolId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("schoolId").toString();		//校区id
 		
 		String courseType = request.getParameter("courseType");	//课程类型
-		String schoolId = request.getParameter("schoolId");		//校区id
 		String courseLev = request.getParameter("courseLev");	//课程等级
-		
 		String likeSearch = request.getParameter("lickSearch");	//模糊查找的内容
 		
 		
@@ -133,9 +132,6 @@ public class CourseController{
 	public ResponseBean getQueryCondition(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
-		
-		List<School> schoolList = schoolService.selectSchool();
-		ajaxData.put("schoolList", schoolList);
 		
 		List<Map<String,Object>> courseTypeList = courseService.groupCourseType();
 		ajaxData.put("courseTypeList", courseTypeList);

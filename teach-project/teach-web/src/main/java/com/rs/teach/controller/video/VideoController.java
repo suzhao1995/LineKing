@@ -78,13 +78,14 @@ public class VideoController{
 		
 		//获取用户信息
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		String schoolId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("schoolId").toString();		//校区id
 		
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		String videoType = request.getParameter("videoType");
 		
 		//初始化分页信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
-		List<Video> list = videoService.getVideos(videoType);
+		List<Video> list = videoService.getVideos(videoType,schoolId);
 		
 		//查询属于我的课程的信息
 		List<Map<String,Object>> MyVideo = videoService.MyVideo(userId);

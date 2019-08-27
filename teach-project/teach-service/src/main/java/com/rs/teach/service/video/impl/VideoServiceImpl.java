@@ -20,8 +20,8 @@ public class VideoServiceImpl implements VideoService{
 	private VideoMapper mapper;
 	
 	@Override
-	public List<Video> getVideos(String videoType) {
-		List<Video> list = mapper.queryVideos(videoType);
+	public List<Video> getVideos(String videoType, String schoolId) {
+		List<Video> list = mapper.queryVideos(videoType, schoolId);
 		for(Video video : list){
 			String videoNum = mapper.getVideoNum(video.getVideoId());
 			video.setVideoNum(videoNum);
