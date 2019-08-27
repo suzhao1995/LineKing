@@ -164,6 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<where>
 				 t.course_id = scr.course_id
 				 and scr.school_id = #{con_schoolId}
+				 and scr.COURSE_FLAG = '1'
 				<if test="con_courseType != null and con_courseType != ''">
 					and t.COURSE_TYPE = #{con_courseType}
 				</if>
