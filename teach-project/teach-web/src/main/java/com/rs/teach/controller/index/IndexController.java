@@ -130,7 +130,7 @@ public class IndexController {
 					messageService.addMessage(message);
 				}
 				//登录成功，保存用户信息到session
-				String sessionInfo = loginUser.getUserId();
+				String sessionInfo = loginUser.getUserId()+","+loginUser.getSchoolId();
 				SessionUtil.cleanOldSession(sessionInfo);	//如果用户再次登录清除已存在的session，确保每个用户只有一个session
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userInfo", sessionInfo);

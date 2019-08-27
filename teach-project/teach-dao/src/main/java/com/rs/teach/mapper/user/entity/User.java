@@ -26,6 +26,7 @@ public class User implements Serializable{
 	private String update;	//修改时间
 	private String modifier;	//修改人
 	private String isDefault;	//是否为默认：0：默认；1：已修改
+	private String schoolId;	//校区id
 	private String endDate;	//账号到期时间
 	private PicAttr attr;	//图片属性
 	private String sessionKey;	//所有需要登录才能访问的接口， 都需要传递sessionKey
@@ -124,6 +125,14 @@ public class User implements Serializable{
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getSchoolId() {
+		return schoolId;
+	}
+
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
 	}
 	
 	

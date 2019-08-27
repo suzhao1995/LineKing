@@ -148,19 +148,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="schoolWork" column="SCHOOLWORK" />
 		<result property="testPaper" column="TESTPAPER" />
 		<result property="courseType" column="COURSE_TYPE" />
-		<result property="schoolId" column="SCHOOL_ID" />
 		<result property="courseLev" column="COURSE_LEV" />
 	</resultMap>
 	<!-- 分页查询课程信息 -->
 	<select id="queryCourse" parameterType="map" resultMap="queryCourseMap">
-		select * from tf_el_course t 
+		select t.COURSE_ID,
+			t.COURSE_NAME,
+			t.SECTION_NUMBER,
+			t.COURSEPIC_URL,
+			t.COURSEWARE,
+			t.SCHOOLWORK,
+			t.TESTPAPER,
+			t.COURSE_TYPE,
+			t.COURSE_LEV from tf_el_course t, school_course_rela scr
 			<where>
-				1 = 1
+				 t.course_id = scr.course_id
+				 and scr.school_id = #{con_schoolId}
 				<if test="con_courseType != null and con_courseType != ''">
 					and t.COURSE_TYPE = #{con_courseType}
-				</if>
-				<if test="con_schoolId != null and con_schoolId != ''">
-					and t.SCHOOL_ID = #{con_schoolId}
 				</if>
 				<if test="con_courseLev != null and con_courseLev != ''">
 					and t.COURSE_LEV = #{con_courseLev}

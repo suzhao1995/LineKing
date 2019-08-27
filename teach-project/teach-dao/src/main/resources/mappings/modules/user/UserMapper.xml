@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="adminFlag" column="ADMIN_FLAG" />
 		<result property="endDate" column="end_Date" />
 		<result property="isDefault" column="ISDEFAULT" />
+		<result property="schoolId" column="SCHOOL_ID" />
 		<association property="attr" javaType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
 			<id property="associationId" column="USER_ID" />
 			<result property="picId" column="pic_id" />
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<select id="getUserById" parameterType="java.lang.String" resultMap="userInfo">
 		select tu.USER_ID,tu.USER_NAME,tu.SERIAL_NUMBER,tu.PASS_WORD,tu.ADMIN_FLAG,tu.end_Date,
-			tu.ISDEFAULT,pa.pic_id,pa.pic_url
+			tu.ISDEFAULT,tu.SCHOOL_ID,pa.pic_id,pa.pic_url
 		from TF_EL_TEACH_USER tu,TF_EL_PIC_ATTR pa 
 		where tu.USER_ID = pa.ASSOCIATION_ID and tu.USER_ID = #{id}
 	</select>
@@ -32,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="adminFlag" column="ADMIN_FLAG" />
 		<result property="endDate" column="end_Date" />
 		<result property="isDefault" column="ISDEFAULT" />
+		<result property="schoolId" column="SCHOOL_ID" />
 	</resultMap>
 	<select id="getTeachUser" parameterType="java.lang.String" resultMap="user">
 		select * from TF_EL_TEACH_USER t where t.USER_ID = #{id}
