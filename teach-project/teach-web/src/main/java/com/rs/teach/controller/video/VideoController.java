@@ -28,10 +28,12 @@ import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.StudyTeam;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
+import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.mapper.video.entity.Video;
 import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.service.studyAttr.StudyTeamService;
 import com.rs.teach.service.studyAttr.TestAndWorkService;
+import com.rs.teach.service.sysCode.SysCodeService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import com.rs.teach.service.video.VideoService;
 
@@ -62,6 +64,8 @@ public class VideoController{
 	@Value("${videoMappingUrl}")
 	private String videoMappingUrl;
 	
+	@Autowired
+	private SysCodeService sysCodeService;
 	
 	/**
 	* 初始化视频课程资源
@@ -82,6 +86,9 @@ public class VideoController{
 		
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		String videoType = request.getParameter("videoType");
+		if("all".equals(videoType)){
+			videoType = null;
+		}
 		
 		//初始化分页信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
@@ -98,6 +105,25 @@ public class VideoController{
 		return bean;
 	}
 	
+	/**
+	* 查询物料分类
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月17日 下午1:14:05
+	*/
+	@RequestMapping("/initVideoType")
+	@ResponseBody
+	public ResponseBean initMaterielType(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		//初始化物料分类
+		List<SysCode> list = sysCodeService.getSysCodeList("VIDEO_CODE");
+		ajaxData.put("videoType", list);
+		bean.addSuccess(ajaxData);
+		return bean;
+	}
 	/**
 	* 初始化单个视频课程的课件信息
 	* @param 

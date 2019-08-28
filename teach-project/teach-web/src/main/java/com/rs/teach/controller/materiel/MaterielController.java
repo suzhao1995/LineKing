@@ -1,6 +1,7 @@
 package com.rs.teach.controller.materiel;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,10 @@ import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.materiel.entity.Materiel;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
+import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.materiel.MaterielService;
+import com.rs.teach.service.sysCode.SysCodeService;
 
 /**
 * MaterielController.java
@@ -42,6 +45,9 @@ public class MaterielController {
 	@Autowired
 	private MaterielService materielService;
 	
+	@Autowired
+	private SysCodeService sysCodeService;
+	
 	/**
 	* 分页查询物料
 	* @param 
@@ -54,17 +60,38 @@ public class MaterielController {
 	@ResponseBody
 	public ResponseBean initMateriel(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
-		
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		String code = request.getParameter("code");
-		
+		if("all".equals(code)){
+			code = null;
+		}
 		//初始化课程信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 6);
 		//分页查询物料信息
 		List<Materiel> list = materielService.getMateriel("1",code);
-		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
+		PageInfo<Materiel> info = new PageInfo<Materiel>(list,6);
 		bean.addSuccess(info);
+		return bean;
+	}
+	
+	/**
+	* 查询物料分类
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月17日 下午1:14:05
+	*/
+	@RequestMapping("/initMaterielType")
+	@ResponseBody
+	public ResponseBean initMaterielType(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		//初始化物料分类
+		List<SysCode> list = sysCodeService.getSysCodeList("MATERIEL_CODE");
+		ajaxData.put("materielType", list);
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -122,92 +149,7 @@ public class MaterielController {
 		return bean;
 	}
 	
-	/**
-	* 管理员--上传物料
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:10:15
-	*/
-	@RequestMapping("/upLoadMateriel")
-	@ResponseBody
-	public ResponseBean upLoadMateriel(HttpServletRequest request, HttpServletResponse response,@RequestParam("file") MultipartFile file){
-		ResponseBean bean = new ResponseBean();
-		String materielName = request.getParameter("materielName");
-		String materielDetail = request.getParameter("materielDetail");
-		Map<String,Object> resultMap = FileUpDownUtil.materielUpLoad(request, file);
-		
-		if(resultMap != null && "0".equals(resultMap.get("code"))){
-			String materielId = resultMap.get("materielId").toString();
-			String materielUrl = resultMap.get("materielUrl").toString();
-			String materielPath = resultMap.get("materielPath").toString();
-			
-			Materiel materiel = new Materiel();
-			materiel.setMaterielId(materielId);
-			materiel.setMaterielName(materielName);
-			materiel.setMaterielUrl(materielUrl);
-			materiel.setMaterielStatus("0");
-			materiel.setMaterielDetail(materielDetail);
-			materiel.setMaterielPath(materielPath);
-			
-			int result = materielService.addMateriel(materiel);
-			if(result == 0){
-				bean.addError("上传物料失败");
-			}
-		}else{
-			bean.addError(resultMap.get("message").toString());
-		}
-		bean.addSuccess();
-		return bean;
-	}
 	
-	/**
-	* 管理员--上下架操作
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:35:17
-	*/
-	@RequestMapping("/updateStatus")
-	@ResponseBody
-	public ResponseBean updateStatus(HttpServletRequest request, HttpServletResponse response){
-		ResponseBean bean = new ResponseBean();
-		String status = request.getParameter("status");
-		String materielId = request.getParameter("materielId");
-		int result = materielService.modifyStatus(materielId, status);
-		if(result == 0){
-			bean.addError("上下架失败");
-		}
-		bean.addSuccess();
-		return bean;
-	}
-	
-	
-	/**
-	* 管理员--初始化物料
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:35:17
-	*/
-	@RequestMapping("/adminInit")
-	@ResponseBody
-	public ResponseBean adminInit(HttpServletRequest request, HttpServletResponse response){
-		ResponseBean bean = new ResponseBean();
-		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
-		
-		String code = request.getParameter("code");
-		//初始化课程信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
-		//分页查询物料信息
-		List<Materiel> list = materielService.getMateriel("0",code);
-		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
-		bean.addSuccess(info);
-		return bean;
-	}
 	
 	
 }

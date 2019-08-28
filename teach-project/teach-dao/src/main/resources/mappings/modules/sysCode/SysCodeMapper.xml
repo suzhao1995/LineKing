@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.sysCode.dao.SysCodeMapper">
+	<resultMap type="com.rs.teach.mapper.sysCode.entity.SysCode" id="code">
+		<result property="cid" column="CID"/>
+		<result property="code" column="CODE"/>
+		<result property="codeValue" column="CODE_VALUE"/>
+		<result property="codeType" column="CODE_TYPE"/>
+		<result property="codeSort" column="CODE_SORT"/>
+		<result property="createBy" column="CREATE_BY"/>
+		<result property="createDate" column="CREATE_DATE"/>
+	</resultMap>
+	
+	<select id="querySysCodeList" parameterType="java.lang.String" resultMap="code">
+		select * from sys_code t where t.CODE_TYPE = #{codeType} order by t.CODE_SORT
+	</select>
+</mapper>

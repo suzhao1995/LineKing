@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<where>
 			t.VIDEO_ID = scr.COURSE_ID
 			and scr.SCHOOL_ID = #{schoolId}
+			and scr.COURSE_FLAG = '1'
 			<if test="videoType != null and videoType != ''">
 				and t.VIDEO_TYPE = #{videoType}
 			</if>
