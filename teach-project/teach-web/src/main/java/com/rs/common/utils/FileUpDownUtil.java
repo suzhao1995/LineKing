@@ -382,7 +382,7 @@ public class FileUpDownUtil {
     /**
      * 视频下载方法
      *
-     * @param filePath   文件全路径 例如：D:\RSUpLoad\4\3\486e9d53ae764cb6b733e375f90fce22_电信（第三版）.MP4
+     * @param filePath   文件全路径 例如：D:\RSUpLoad\4\3\486e9d53ae764cb6b733e375f90fce22.MP4
      * @param downLoadName   文件保存名 例如：电信（第三版）
      * @return void
      * @throws
