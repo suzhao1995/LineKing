@@ -72,38 +72,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  and re.isfinish = '2'
 	</select>
 	
-	<resultMap type="java.util.HashMap" id="noteMap">
-		<result property="sectionId" column="section_Id" />
-		<result property="sectionSort" column="section_SORT" />
-		<result property="sectionName" column="section_name" />
-		<result property="sectionUrl" column="section_url" />
-		<result property="classId" column="class_id" />
-		<result property="classNote" column="note" />
-		<result property="courseId" column="course_id" />
-	</resultMap>
-	<select id="queryNote" parameterType="map" resultMap="noteMap">
-		select ts.section_Id,ts.section_SORT, ts.section_name,ts.section_url,ns.class_id,ns.note,ns.course_id 
-			from tf_el_note ns, tf_el_section ts 
-		where ns.section_id = ts.section_id 
-			  and ns.user_id = #{con_userId} 
+	<select id="queryNote" parameterType="map" resultType="java.lang.String">
+		select ns.note
+			from tf_el_note ns
+		where
+			  ns.user_id = #{con_userId} 
 			  and ns.course_id = #{con_courseId} 
 			  and ns.class_id = #{con_classId}
 			  and ns.section_id = #{con_sectionId}
 	</select>
 	
-	<resultMap type="java.util.HashMap" id="summaryMap">
-		<result property="sectionId" column="section_Id" />
-		<result property="sectionSort" column="section_SORT" />
-		<result property="sectionName" column="section_name" />
-		<result property="classId" column="class_id" />
-		<result property="classSummary" column="summary" />
-		<result property="courseId" column="course_id" />
-	</resultMap>
-	<select id="querySummary" parameterType="map" resultMap="summaryMap">
-		select ts.section_Id,ts.section_SORT, ts.section_name,ns.class_id,ns.summary,ns.course_id 
-			from tf_el_summary ns, tf_el_section ts 
-		where ns.section_id = ts.section_id
-			  and ns.user_id = #{con_userId} 
+	<select id="querySummary" parameterType="map" resultType="java.lang.String">
+		select ns.summary
+			from tf_el_summary ns
+		where
+			  ns.user_id = #{con_userId} 
 			  and ns.course_id = #{con_courseId} 
 			  and ns.class_id = #{con_classId}
 			  and ns.section_id = #{con_sectionId}

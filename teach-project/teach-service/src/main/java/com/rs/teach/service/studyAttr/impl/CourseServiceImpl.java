@@ -57,19 +57,19 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId) {
+	public String getNoteSummary(String userId, String classId, String courseId, String code, String sectionId) {
 		Map<String,String> con_map = new HashMap<String,String>();
 		con_map.put("con_userId", userId);
 		con_map.put("con_classId", classId);
 		con_map.put("con_courseId", courseId);
 		con_map.put("con_sectionId", sectionId);
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		String str = null;
 		if("0".equals(code)){
-			list = mapper.queryNote(con_map);
+			str = mapper.queryNote(con_map);
 		}else if("1".equals(code)){
-			list = mapper.querySummary(con_map);
+			str = mapper.querySummary(con_map);
 		}
-		return list;
+		return str;
 	}
 
 	@Override

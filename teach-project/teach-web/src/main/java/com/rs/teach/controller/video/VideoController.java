@@ -253,10 +253,7 @@ public class VideoController{
 		
 		ajaxData.put("videoSection", videoSection);	//本章详情
 
-		String fileName = videoSection.getCourseWareId()+"_"+videoSection.getVideoSectionName();
-		String savePath = videoMappingUrl;
-		String fileUrl = savePath +videoSection.getVideoSectionUrl()+"/"+fileName+".mp4";
-		ajaxData.put("videoUrl", fileUrl);
+		ajaxData.put("videoUrl", videoSection.getVideoSectionPath());
 		bean.addSuccess(ajaxData);
 		
 		return bean;

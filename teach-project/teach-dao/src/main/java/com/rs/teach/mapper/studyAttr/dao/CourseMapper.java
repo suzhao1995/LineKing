@@ -52,7 +52,7 @@ public interface CourseMapper{
 	* @author suzhao
 	* @date 2019年7月30日 下午4:41:16
 	*/
-	public List<Map<String,Object>> queryNote(Map<String,String> map);
+	public String queryNote(Map<String,String> map);
 	
 	/**
 	* 查询各班级课程 课后总结
@@ -62,7 +62,7 @@ public interface CourseMapper{
 	* @author suzhao
 	* @date 2019年7月30日 下午4:41:16
 	*/
-	public List<Map<String,Object>> querySummary(Map<String,String> map);
+	public String querySummary(Map<String,String> map);
 	
 	/**
 	* 查询该章节是否已做课后总结

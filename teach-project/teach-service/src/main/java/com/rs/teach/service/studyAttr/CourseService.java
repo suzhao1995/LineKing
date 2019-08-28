@@ -58,7 +58,7 @@ public interface CourseService{
 	* @author suzhao
 	* @date 2019年7月30日 下午4:41:16
 	*/
-	 List<Map<String,Object>> getNoteSummary(String userId, String classId, String courseId, String code, String sectionId);
+	 String getNoteSummary(String userId, String classId, String courseId, String code, String sectionId);
 	
 	/**
 	* 查询该章节是否已做课后总结

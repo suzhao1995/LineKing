@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -403,10 +404,9 @@ public class CenterController{
 			userCourseRelaService.updateIsFinish(courseId, userId, sectionId, 1,classId);
 		}
 		//查询课程笔记
-		List<Map<String,Object>> noteList = courseService.getNoteSummary(userId, classId, courseId, "0", sectionId);
-		if(noteList.size() > 0){
-			Map<String,Object> resultMap = noteList.get(0);
-			ajaxData.put("note", resultMap.get("classNote"));
+		String note = courseService.getNoteSummary(userId, classId, courseId, "0", sectionId);
+		if(StringUtils.isNotEmpty(note)){
+			ajaxData.put("note", note);
 		}else{
 			ajaxData.put("note", "0");	//无课程笔记
 		}
@@ -471,10 +471,7 @@ public class CenterController{
 			
 			ajaxData.put("videoSection", videoSection);	//本章详情
 
-			String fileName = videoSection.getCourseWareId()+"_"+videoSection.getVideoSectionName();
-			String savePath = videoMappingUrl;
-			String fileUrl = savePath +videoSection.getVideoSectionUrl()+"/"+fileName+".mp4";
-			ajaxData.put("videoUrl", fileUrl);
+			ajaxData.put("videoUrl", videoSection.getVideoSectionPath());
 			bean.addSuccess(ajaxData);
 		}
 		return bean;
@@ -503,10 +500,9 @@ public class CenterController{
 		ajaxData.put("sectionId", sectionId);
 		ajaxData.put("courseId", courseId);
 		//查询课程总结
-		List<Map<String,Object>> summaryList = courseService.getNoteSummary(userId, classId, courseId, "1", sectionId);
-		if(summaryList.size() > 0){
-			Map<String,Object> resultMap = summaryList.get(0);
-			ajaxData.put("summary", resultMap.get("classSummary"));
+		String summary = courseService.getNoteSummary(userId, classId, courseId, "1", sectionId);
+		if(StringUtils.isNotEmpty(summary)){
+			ajaxData.put("summary", summary);
 		}else{
 			ajaxData.put("summary", "0");	//无课程总结
 		}
