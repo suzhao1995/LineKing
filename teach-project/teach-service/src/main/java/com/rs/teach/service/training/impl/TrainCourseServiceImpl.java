@@ -25,9 +25,9 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     private TrainSectionMapper trainSectionMapper;
 
     @Override
-    public List<TrainCourseVo> selectTrainCourse() {
+    public List<TrainCourseVo> selectTrainCourse(CourseDto courseDto) {
 
-        List<TrainCourseVo> trainCourseVos = trainCourseMapper.selectTrainCourse();
+        List<TrainCourseVo> trainCourseVos = trainCourseMapper.selectTrainCourse(courseDto);
         for (TrainCourseVo vo : trainCourseVos) {
             vo.setTrainSectionNumber(trainSectionMapper.selectSectionNum(vo.getTrainCourseId()));
         }

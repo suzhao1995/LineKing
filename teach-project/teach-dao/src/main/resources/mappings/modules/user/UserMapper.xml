@@ -42,7 +42,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="isUpdateInfo" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(1) from TF_EL_TEACH_USER where user_Id = #{id} and ISDEFAULT = '1'
 	</select>
-	
+	<select id="queryTeachNumBySchoolId" resultType="java.lang.Integer">
+		select count(1) from TF_EL_TEACH_USER
+		where SCHOOL_ID = #{schoolId}
+	</select>
+
 	<update id="updateUser" parameterType="com.rs.teach.mapper.user.entity.User">
 		update TF_EL_TEACH_USER t 
 			set t.USER_NAME = #{userName}, t.PASS_WORD = #{passWord}, t.ISDEFAULT = #{isDefault},

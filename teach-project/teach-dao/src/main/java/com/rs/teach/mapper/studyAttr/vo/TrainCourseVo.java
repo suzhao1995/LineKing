@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,5 +25,6 @@ public class TrainCourseVo implements Serializable {
 	private String trainCourseName;	//培训课程名称
 	private Integer trainSectionNumber;	//培训章节总数
 	private String trainCoursePicUrl;	//培训课程封面URL
+	private String addTime;      			//培训课程添加时间
 	private List<TrainSectionVo> trainSectionVoList;    //课程下的大章节集合
 }

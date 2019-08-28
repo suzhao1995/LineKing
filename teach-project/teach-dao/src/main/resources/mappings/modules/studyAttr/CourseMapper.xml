@@ -182,18 +182,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tf_el_course where COURSE_ID = #{courseId}
 	</select>
 
-	<select id="selectCourse" resultType="com.rs.teach.mapper.studyAttr.entity.Course">
-		select 	COURSE_ID ,COURSE_NAME,COURSEPIC_URL,COURSEWARE,SCHOOLWORK,TESTPAPER,COURSE_TYPE,SCHOOL_ID,COURSE_LEV
+	<select id="selectCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto" resultType="com.rs.teach.mapper.studyAttr.entity.Course">
+		select COURSE_ID,COURSE_NAME,COURSE_TYPE,COURSE_LEV
 		from TF_EL_COURSE
+		<where>
+			and 1= 1
+			<if test="courseName != null and courseName != ''">
+				and COURSE_NAME like  '%' || #{courseName} || '%'
+			</if>
+			<if test="courseType != null and courseType != ''">
+				and COURSE_TYPE = #{courseType}
+			</if>
+		</where>
 	</select>
 
 	<insert id="addCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
 		insert into TF_EL_COURSE(
 					course_id, course_name, coursepic_url, courseware,
-					schoolwork, testpaper, course_type, school_id, course_lev
+					schoolwork, testpaper, course_type, course_lev
 					)
 		values (SEQ_EL_COURSE.nextval,#{courseName},#{coursePicUrl},#{courseware},
-				#{schoolwork},#{testpaper},#{courseType},#{schoolId},#{courseLev})
+				#{schoolwork},#{testpaper},#{courseType},#{courseLev})
 	</insert>
 
 	<update id="updateCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
@@ -205,22 +214,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="coursePicUrl !=null and coursePicUrl !=''">
 				coursepic_url = #{coursePicUrl},
 			</if>
-			<if test="courseName !=null and courseName !=''">
+			<if test="courseware !=null and courseware !=''">
 				courseware =#{courseware},
 			</if>
-			<if test="courseName !=null and courseName !=''">
+			<if test="schoolwork !=null and schoolwork !=''">
 				schoolwork =#{schoolwork},
 			</if>
-			<if test="courseName !=null and courseName !=''">
+			<if test="testpaper !=null and testpaper !=''">
 				testpaper =#{testpaper},
 			</if>
-			<if test="courseName !=null and courseName !=''">
+			<if test="courseType !=null and courseType !=''">
 				course_type =#{courseType},
 			</if>
-			<if test="courseName !=null and courseName !=''">
-				school_id =#{schoolId},
-			</if>
-			<if test="courseName !=null and courseName !=''">
+			<if test="courseLev !=null and courseLev !=''">
 				course_lev =#{courseLev},
 			</if>
 		</set>
@@ -273,15 +279,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select t.course_lev from tf_el_course t group by t.course_lev
 	</select>
 
-    <select id="selectTrainCourse" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
-		select COURSE_ID
+    <select id="selectTrainCourse" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
+		select COURSE_ID,COURSE_NAME,COURSE_TYPE
 		from TF_EL_COURSE
+		<where>
+			and 1= 1 
+			<if test="courseName != null and courseName != ''">
+				and COURSE_NAME like  '%' || #{courseName} || '%'
+			</if>
+			<if test="courseType != null and courseType != ''">
+				and COURSE_TYPE = #{courseType}
+			</if>
+		</where>
 	</select>
 
     <select id="selectCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
-		select COURSE_ID AS train_course_Id,
-              COURSE_NAME AS train_course_Name,
-              COURSEPIC_URL AS TRAIN_COURSEPIC_URL
+		select COURSE_ID AS trainCourseId,
+              COURSE_NAME AS trainCourseName,
+              COURSEPIC_URL AS trainCoursePicUrl
         from tf_el_course
         where course_Id = #{courseId}
 	</select>

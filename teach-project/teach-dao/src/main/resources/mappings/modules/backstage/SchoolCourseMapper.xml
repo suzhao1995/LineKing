@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.SchoolCourseMapper">
+
+    <insert id="addSchoolCourse" parameterType="com.rs.teach.mapper.backstage.entity.School">
+        insert into SCHOOL_COURSE_RELA(school_id,course_flag , course_id)
+        select #{schoolId}, A.* from(
+        <foreach collection="courseIds" item="item" index="index" open="(" close=")" separator="union all" >
+            select
+            '1',#{item}
+            from dual
+        </foreach>
+        )A
+    </insert>
+
+    <delete id="deleteSchoolCourse">
+        delete from SCHOOL_COURSE_RELA
+        where SCHOOL_ID = #{schoolId}
+    </delete>
+
+    <select id="selectCourseBySchoolId" resultType="com.rs.teach.mapper.backstage.entity.SchoolCourseRela">
+        select SCHOOL_COURSE_RELA.COURSE_ID,COURSE_NAME
+         from SCHOOL_COURSE_RELA,TF_EL_COURSE
+        where TF_EL_COURSE.COURSE_ID = SCHOOL_COURSE_RELA.COURSE_ID
+        and SCHOOL_ID = #{schoolId}
+        and course_flag = '1'
+    </select>
+
+</mapper>

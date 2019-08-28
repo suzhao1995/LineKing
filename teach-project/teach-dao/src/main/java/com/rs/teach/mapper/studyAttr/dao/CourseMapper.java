@@ -3,6 +3,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
@@ -134,8 +135,9 @@ public interface CourseMapper{
 	/**
 	 * 查询所有课程
 	 * @return
+	 * @param courseDto
 	 */
-	List<Course> selectCourse();
+	List<Course> selectCourse(CourseDto courseDto);
 
 
 	public int isExsitNote(@Param("userId") String userId, @Param("sectionId") String sectionId, @Param("classId") String classId);
@@ -146,8 +148,8 @@ public interface CourseMapper{
 	public List<Map<String,Object>> groupCourseType();
 	public List<Map<String,Object>> groupCourseLev();
 
-	//管理员查询全部课程的id
-    List<TrainCourseVo> selectTrainCourse();
+	//管理员查询全部课程
+    List<TrainCourseVo> selectTrainCourse(SectionDto sectionDto);
 
 	/**
 	 * 根据id查询大章节信息

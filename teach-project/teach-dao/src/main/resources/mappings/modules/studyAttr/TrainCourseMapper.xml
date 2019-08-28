@@ -5,9 +5,10 @@
 <mapper namespace="com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper">
 
     <insert id="addTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
-        insert into TF_EL_TRAIN_COURSE(train_course_id, train_course_name, train_coursepic_url)
-        values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl})
+        insert into TF_EL_TRAIN_COURSE(train_course_id, train_course_name, train_coursepic_url,ADD_TIME)
+        values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl},#{addTime})
     </insert>
+
     <update id="updateTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
         update TF_EL_TRAIN_COURSE
         <set>
@@ -26,13 +27,18 @@
         where TRAIN_COURSE_ID=#{courseId}
     </delete>
 
-    <select id="selectTrainCourse" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
+    <select id="selectTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
         select TC.train_course_Id,
               TC.train_course_Name,
-              TC.train_coursePic_url
+              TC.train_coursePic_url,
+              TC.ADD_TIME
         from tf_el_train_course  TC
-
-
+        <where>
+            1 = 1
+            <if test="courseName != null and courseName != ''">
+               and train_course_Name like '%'|| #{courseName} ||'%'
+            </if>
+        </where>
     </select>
 
     <select id="selectTrainCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">

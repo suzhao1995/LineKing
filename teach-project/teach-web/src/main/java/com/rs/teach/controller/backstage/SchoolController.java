@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.backstage.entity.School;
+import com.rs.teach.mapper.backstage.vo.SchoolVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.service.backstage.SchoolService;
 import org.apache.log4j.Logger;
@@ -38,6 +39,12 @@ public class SchoolController {
     public ResponseBean addSchool(@RequestBody School school) {
         ResponseBean bean = new ResponseBean();
         try {
+            //此学校是否存在
+            Integer result = schoolService.isEmpty(school);
+            if (result > 0) {
+                bean.addError("不能重复添加学校！");
+                return bean;
+            }
             schoolService.addSchool(school);
             bean.addSuccess();
         } catch (Exception e) {
@@ -48,6 +55,7 @@ public class SchoolController {
     }
 
     /**
+     * 校区删除
      * @param school
      * @return
      */
@@ -66,6 +74,11 @@ public class SchoolController {
         return bean;
     }
 
+    /**
+     * 修改学校信息
+     * @param school
+     * @return
+     */
     @RequestMapping(value = "/updateSchool", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean updateSchool(@RequestBody School school) {
@@ -89,8 +102,22 @@ public class SchoolController {
     @ResponseBody
     public ResponseBean selectSchool(@RequestBody PageDto pageDto) {
         ResponseBean bean = new ResponseBean();
-        PageInfo<School> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> schoolService.selectSchool());
+        PageInfo<SchoolVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> schoolService.selectSchoolVo());
         bean.addSuccess(pageInfo);
+        return bean;
+    }
+
+    /**
+     * 修改时数据回显
+     * @param school
+     * @return
+     */
+    @RequestMapping(value = "/selectSchoolBySchoolId", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectSchoolBySchoolId(@RequestBody School school) {
+        ResponseBean bean = new ResponseBean();
+        SchoolVo schoolVo = schoolService.selectSchoolBySchoolId(school);
+        bean.addSuccess(schoolVo);
         return bean;
     }
 

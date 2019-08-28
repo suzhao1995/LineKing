@@ -38,4 +38,9 @@ public class ClassServiceImpl implements ClassService {
     public List<TFClass> selectClass() {
         return classMapper.selectClass();
     }
+
+    @Override
+    public TFClass selectClassBySchoolId(TFClass tfClass) {
+        return classMapper.selectClassBySchoolId(tfClass);
+    }
 }

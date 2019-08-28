@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.common.PageDto;
-import com.rs.teach.mapper.common.TrainParamDto;
+import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
 import org.apache.log4j.Logger;
@@ -40,7 +40,8 @@ public class TrainCourseController {
         ResponseBean responseBean = new ResponseBean();
         try {
             //分页查询
-            PageInfo<TrainCourseVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> trainCourseService.selectTrainCourse());
+            CourseDto courseDto = new CourseDto();
+            PageInfo<TrainCourseVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> trainCourseService.selectTrainCourse(courseDto));
             responseBean.addSuccess(pageInfo);
             return responseBean;
         }catch (Exception  e){

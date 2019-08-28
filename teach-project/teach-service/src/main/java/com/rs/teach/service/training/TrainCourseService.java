@@ -15,8 +15,9 @@ public interface TrainCourseService {
     /**
      * 查询培训课程
      * @return
+     * @param courseDto
      */
-    List<TrainCourseVo> selectTrainCourse();
+    List<TrainCourseVo> selectTrainCourse(CourseDto courseDto);
 
     /**
      * 添加培训课程

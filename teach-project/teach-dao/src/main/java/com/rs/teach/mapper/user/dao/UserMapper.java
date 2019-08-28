@@ -49,4 +49,11 @@ public interface UserMapper {
 	* @date 2019年8月2日 下午4:26:48
 	*/
 	public User getTeachUser(String id);
+
+	/**
+	 * 查询此校区的老师数量
+	 * @param schoolId
+	 * @return
+	 */
+    Integer queryTeachNumBySchoolId(String schoolId);
 }

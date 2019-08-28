@@ -18,5 +18,6 @@ public class School extends PageDto implements Serializable {
     private String schoolId;      //学校ID
     private String schoolName;    //学校name
     private String schoolAddress;     //学校地址
+    private String[] courseIds;       //课程id
 
 }

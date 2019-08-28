@@ -16,8 +16,9 @@ public interface TrainCourseMapper {
     /**
      * 查询培训课程
      * @return
+     * @param courseDto
      */
-    List<TrainCourseVo> selectTrainCourse();
+    List<TrainCourseVo> selectTrainCourse(CourseDto courseDto);
 
     /**
      * 根据id查课程信息

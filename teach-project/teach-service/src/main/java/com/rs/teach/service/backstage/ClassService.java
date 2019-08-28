@@ -32,4 +32,11 @@ public interface ClassService {
      * @return 分页查询数据
      */
     List<TFClass> selectClass();
+
+    /**
+     * 根据校区id查询班级信息
+     * @param tfClass
+     * @return
+     */
+    TFClass selectClassBySchoolId(TFClass tfClass);
 }

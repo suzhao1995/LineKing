@@ -30,4 +30,12 @@
     <select id="selectClass" resultType="com.rs.teach.mapper.backstage.entity.TFClass">
         select * FROM TF_EL_CLASS
     </select>
+    <select id="queryNumBySchoolId" resultType="java.lang.Integer">
+        select count(1) from TF_EL_CLASS
+        where SCHOOL_ID = #{schoolId}
+    </select>
+    <select id="selectClassBySchoolId" parameterType="com.rs.teach.mapper.backstage.entity.TFClass" resultType="com.rs.teach.mapper.backstage.entity.TFClass">
+        select * from  TF_EL_CLASS
+        where SCHOOL_ID = #{schoolId}
+    </select>
 </mapper>

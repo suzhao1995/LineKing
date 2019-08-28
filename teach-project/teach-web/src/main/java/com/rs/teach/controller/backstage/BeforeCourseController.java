@@ -1,10 +1,13 @@
 package com.rs.teach.controller.backstage;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
-import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.training.TrainCourseService;
@@ -62,6 +65,7 @@ public class BeforeCourseController {
         courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
+                courseDto.setAddTime(DateUtil.now());
                 trainCourseService.addTrainCourse(courseDto);
             } else {
                 courseService.addCourse(courseDto);
@@ -108,13 +112,13 @@ public class BeforeCourseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/updateCourse",method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCourse", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean updateCourse(@RequestParam("file") MultipartFile file, CourseDto courseDto,
                                      HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
 
-        if(!file.isEmpty()){
+        if (!file.isEmpty()) {
             //上传文件
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //文件上传是否成功
@@ -148,18 +152,17 @@ public class BeforeCourseController {
     @ResponseBody
     public ResponseBean queryCourse(@RequestBody CourseDto courseDto) {
         ResponseBean bean = new ResponseBean();
-        try {
-            if (StrUtil.equals("1", courseDto.getIsTrain())) {
-                List<TrainCourseVo> courseVos = trainCourseService.selectTrainCourse();
-                bean.addSuccess(courseVos);
-            } else {
-                List<Course> courseVos = courseService.selectCourse();
-                bean.addSuccess(courseVos);
-            }
-        } catch (Exception e) {
-            logger.error("课程-查询-失败", e);
-            bean.addError("查询失败");
+
+        if (StrUtil.equals("1", courseDto.getIsTrain())) {
+            //获取所有课程信息
+            PageInfo<TrainCourseVo> pageInfo = PageHelper.startPage(courseDto).doSelectPageInfo(() -> trainCourseService.selectTrainCourse(courseDto));
+            bean.addSuccess(pageInfo);
+        } else {
+            //获取所有课程信息
+            PageInfo<Course> pageInfo = PageHelper.startPage(courseDto).doSelectPageInfo(() -> courseService.selectCourse(courseDto));
+            bean.addSuccess(pageInfo);
         }
+
         return bean;
     }
 

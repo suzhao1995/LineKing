@@ -5,7 +5,7 @@
 <mapper namespace="com.rs.teach.mapper.backstage.dao.SchoolMapper">
 
     <insert id="addSchool" parameterType="com.rs.teach.mapper.backstage.entity.School">
-        insert into TF_EL_SCHOOL(school_id, school_name, school_address)
+        insert into TF_EL_SCHOOL(school_id,school_name, school_address)
         VALUES (SEQ_EL_SCHOOL.nextval,#{schoolName},#{schoolAddress})
     </insert>
 
@@ -28,5 +28,24 @@
     </delete>
     <select id="selectSchool" resultType="com.rs.teach.mapper.backstage.entity.School">
         select * from TF_EL_SCHOOL
+    </select>
+    <select id="selectSchoolVo" resultType="com.rs.teach.mapper.backstage.vo.SchoolVo">
+        select * from TF_EL_SCHOOL
+    </select>
+    <select id="selectSchoolId" parameterType="com.rs.teach.mapper.backstage.entity.School" resultType="java.lang.String">
+        select SCHOOL_ID
+        from TF_EL_SCHOOL
+        where SCHOOL_NAME = #{schoolName}
+        and SCHOOL_ADDRESS = #{schoolAddress}
+    </select>
+    <select id="isEmpty" parameterType="com.rs.teach.mapper.backstage.entity.School" resultType="java.lang.Integer">
+        select count(1) from TF_EL_SCHOOL
+        where SCHOOL_NAME = #{schoolName}
+        and SCHOOL_ADDRESS = #{schoolAddress}
+    </select>
+
+    <select id="selectSchoolBySchoolId" parameterType="com.rs.teach.mapper.backstage.entity.School" resultType="com.rs.teach.mapper.backstage.vo.SchoolVo">
+        select * from TF_EL_SCHOOL
+        where SCHOOL_ID = #{schoolId}
     </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.rs.teach.service.studyAttr;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
@@ -130,7 +131,7 @@ public interface CourseService{
 	/**
 	 * 查询全部课程
 	 */
-	List<Course> selectCourse();
+	List<Course> selectCourse(CourseDto courseDto);
 
 	public boolean isExsitNote(String userId, String sectionId, String classId);
 	public int updateNote(NoteSummary noteSummary);
@@ -140,7 +141,7 @@ public interface CourseService{
 	public List<Map<String,Object>> groupCourseType();
 	public List<Map<String,Object>> groupCourseLev();
 
-	//管理员查询全部课程的id
-    List<TrainCourseVo> selectTrainCourse();
+	//管理员查询全部课程
+    List<TrainCourseVo> selectTrainCourse(SectionDto sectionDto);
 
 }

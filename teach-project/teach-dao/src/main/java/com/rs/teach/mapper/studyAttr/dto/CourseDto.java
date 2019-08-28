@@ -1,8 +1,10 @@
 package com.rs.teach.mapper.studyAttr.dto;
 
+import com.rs.teach.mapper.common.PageDto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 汪航
@@ -10,7 +12,7 @@ import java.io.Serializable;
  * @create 2019-08-14 17:06
  */
 @Data
-public class CourseDto implements Serializable {
+public class CourseDto extends PageDto implements Serializable {
 
     private static final long serialVersionUID = -5282333731331735980L;
 
@@ -43,5 +45,8 @@ public class CourseDto implements Serializable {
 
     //课程等级
     private String courseLev;
+
+    //培训课程添加时间
+    private String addTime;
 
 }

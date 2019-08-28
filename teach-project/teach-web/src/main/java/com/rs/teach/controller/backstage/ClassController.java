@@ -30,6 +30,11 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
+    /**
+     * 添加班级
+     * @param tfClass
+     * @return
+     */
     @RequestMapping(value = "/addClass" ,method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean addClass(@RequestBody TFClass tfClass){
@@ -44,6 +49,11 @@ public class ClassController {
         return bean;
     }
 
+    /**
+     * 删除班级
+     * @param tfClass
+     * @return
+     */
     @RequestMapping(value = "/deleteClass" ,method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean deleteClass(@RequestBody TFClass tfClass){
@@ -59,6 +69,11 @@ public class ClassController {
         return bean;
     }
 
+    /**
+     * 修改班级
+     * @param tfClass
+     * @return
+     */
     @RequestMapping(value = "/updateClass" ,method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean updateClass(@RequestBody TFClass tfClass){
@@ -73,6 +88,27 @@ public class ClassController {
         return bean;
     }
 
+    /**
+     * 根据校区id查询所有班级
+     * @param tfClass
+     * @return
+     */
+    @RequestMapping(value = "/selectClassBySchoolId" ,method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectClassBySchoolId(@RequestBody TFClass tfClass){
+        ResponseBean bean = new ResponseBean();
+        TFClass result = classService.selectClassBySchoolId(tfClass);
+        bean.addSuccess(result);
+        return bean;
+    }
+
+
+    /**
+     * 查询所有班级
+     *
+     * @param pageDto
+     * @return
+     */
     @RequestMapping(value = "/selectClass" ,method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean selectClass(@RequestBody PageDto pageDto){
@@ -81,4 +117,5 @@ public class ClassController {
         bean.addSuccess(pageInfo);
         return bean;
     }
+
 }

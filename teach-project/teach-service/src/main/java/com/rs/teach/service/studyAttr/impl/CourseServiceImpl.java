@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.section.dao.SectionMapper;
+import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.mapper.video.dao.VideoMapper;
@@ -122,8 +123,8 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public List<Course> selectCourse() {
-		List<Course> courseVos = mapper.selectCourse();
+	public List<Course> selectCourse(CourseDto courseDto) {
+		List<Course> courseVos = mapper.selectCourse(courseDto);
 		for (Course vo : courseVos) {
 			vo.setSectionNumber(sectionMapper.selectSectionNum(vo.getCourseId()));
 		}
@@ -160,8 +161,8 @@ public class CourseServiceImpl implements CourseService{
 	}
 
     @Override
-    public List<TrainCourseVo> selectTrainCourse() {
-        return mapper.selectTrainCourse();
+    public List<TrainCourseVo> selectTrainCourse(SectionDto sectionDto) {
+        return mapper.selectTrainCourse(sectionDto);
 
     }
 
