@@ -16,4 +16,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="querySysCodeList" parameterType="java.lang.String" resultMap="code">
 		select * from sys_code t where t.CODE_TYPE = #{codeType} order by t.CODE_SORT
 	</select>
+	
+	<delete id="delSysCode" parameterType="java.lang.String">
+		delete from sys_code t where t.CID = #{cid}
+	</delete>
+	
+	<!-- 根据cid查询code表 -->
+	<select id="querySysCode" parameterType="java.lang.String" resultMap="code">
+		select * from sys_code t where t.CID = #{cid}
+	</select>
+	
+	<insert id="insertSysCode" parameterType="com.rs.teach.mapper.sysCode.entity.SysCode">
+		insert into sys_code
+			(
+				CID,
+				CODE,
+				CODE_VALUE,
+				CODE_TYPE,
+				CODE_SORT,
+				CREATE_BY,
+				CREATE_DATE
+			)
+		values
+			(
+				#{cid},
+				#{code},
+				#{codeValue},
+				#{codeType},
+				#{codeSort},
+				#{createBy},
+				#{createDate}
+			)
+	</insert>
+	
+	<update id="updateSysCode" parameterType="com.rs.teach.mapper.sysCode.entity.SysCode">
+		update sys_code c 
+		set c.CODE_VALUE = #{codeValue}, c.CREATE_BY = #{createBy},c.CREATE_DATE = #{createDate}
+		where c.CID = #{cid} and c.CODE_TYPE = #{codeType}
+	</update>
 </mapper>

@@ -21,6 +21,10 @@ public class Materiel implements Serializable{
 	
 	private String materielPath;	//映射路径
 	
+	private String materielType;	//物料分类
+	
+	private String createDate;	//上传日期
+	
 	public Materiel (){
 		
 	}
@@ -71,6 +75,22 @@ public class Materiel implements Serializable{
 
 	public void setMaterielPath(String materielPath) {
 		this.materielPath = materielPath;
+	}
+
+	public String getMaterielType() {
+		return materielType;
+	}
+
+	public void setMaterielType(String materielType) {
+		this.materielType = materielType;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 	
 	

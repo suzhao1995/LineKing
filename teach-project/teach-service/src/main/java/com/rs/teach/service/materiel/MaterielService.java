@@ -14,5 +14,12 @@ public interface MaterielService{
 	
 	public int addMateriel(Materiel materiel);
 	
+	public void delMateriel(String materielId);
+	
+	public int modifyMateriel(Materiel materiel);
+	
+	public List<Materiel> adminGetMateriel(String code);
+	
+	public List<Materiel> getMaterielByName(String name);
 	
 }

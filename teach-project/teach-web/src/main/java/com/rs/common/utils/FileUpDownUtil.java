@@ -164,26 +164,7 @@ public class FileUpDownUtil {
                 resultMap.put("materielId", upLoadId);    //生成的随机ID，唯一
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
-
-				if(".ppt".equals(sectionType)){
-					Map<String,Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
-					if("-1".equals(officeMap.get("resultCode"))){
-						resultMap.put("code", "-1");
-						resultMap.put("message", "文件上传异常");
-						//删除原始文件
-						File officeFile = new File(dirPath + "\\" + saveRealName);
-						if(officeFile.exists()){
-							//删除
-							officeFile.delete();
-						}
-						logger.error("---------文件上传异常---------");
-						return resultMap;
-					}
-					materielPath = materielSaveUrl + dirPathMap.get("sortDir") + "/"+upLoadId+".pdf";
-					resultMap.put("materielPath", materielPath);	//绝对路径
-				}
-
-
+                
             } catch (IllegalStateException e) {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");

@@ -13,4 +13,13 @@ import com.rs.teach.mapper.sysCode.entity.SysCode;
 */
 public interface SysCodeService{
 	public List<SysCode> getSysCodeList(String codeType);
+	
+	public void delSysCode(String cid);
+	
+	public SysCode getSysCode(String cid);
+	
+	public int addSysCode(SysCode sysCode);
+	
+	public int modifySysCode(SysCode sysCode);
+	
 }

@@ -19,5 +19,25 @@ public class SysCodeServiceImpl implements SysCodeService{
 	public List<SysCode> getSysCodeList(String codeType) {
 		return mapper.querySysCodeList(codeType);
 	}
+
+	@Override
+	public void delSysCode(String cid) {
+		mapper.delSysCode(cid);
+	}
+
+	@Override
+	public SysCode getSysCode(String cid) {
+		return mapper.querySysCode(cid);
+	}
+
+	@Override
+	public int addSysCode(SysCode sysCode) {
+		return mapper.insertSysCode(sysCode);
+	}
+
+	@Override
+	public int modifySysCode(SysCode sysCode) {
+		return mapper.updateSysCode(sysCode);
+	}
 	
 }

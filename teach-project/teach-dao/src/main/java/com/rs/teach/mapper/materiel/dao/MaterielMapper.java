@@ -15,4 +15,12 @@ public interface MaterielMapper{
 	
 	int insertMateriel(Materiel materiel);
 	
+	void delMateriel(String materielId);
+	
+	int updateMateriel(Materiel materiel);
+	
+	public List<Materiel> adminGetMateriel(String code);
+	
+	public List<Materiel> queryMaterielByName(String name);
+	
 }

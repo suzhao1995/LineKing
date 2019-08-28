@@ -34,6 +34,26 @@ public class MaterielServiceImpl implements MaterielService{
 	public int addMateriel(Materiel materiel) {
 		return mapper.insertMateriel(materiel);
 	}
+
+	@Override
+	public void delMateriel(String materielId) {
+		mapper.delMateriel(materielId);
+	}
+
+	@Override
+	public int modifyMateriel(Materiel materiel) {
+		return mapper.updateMateriel(materiel);
+	}
+
+	@Override
+	public List<Materiel> adminGetMateriel(String code) {
+		return mapper.adminGetMateriel(code);
+	}
+
+	@Override
+	public List<Materiel> getMaterielByName(String name) {
+		return mapper.queryMaterielByName(name);
+	}
 	
 	
 }

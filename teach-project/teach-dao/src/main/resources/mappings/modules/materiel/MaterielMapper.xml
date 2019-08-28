@@ -11,6 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="materielStatus" column="materiel_Status" />
 		<result property="materielDetail" column="MATERIEL_DETAIL" />
 		<result property="materielPath" column="MATERIEL_PATH" />
+		<result property="materielType" column="MATERIEL_CODE" />
+		<result property="createDate" column="CREATE_DATE" />
 	</resultMap>
 	
 	<select id="queryMateriel" resultMap="materMap" parameterType="java.lang.String">
@@ -42,7 +44,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				materiel_Url,
 				materiel_Status,
 				MATERIEL_DETAIL,
-				MATERIEL_PATH
+				MATERIEL_PATH,
+				MATERIEL_CODE,
+				CREATE_DATE
 			)
 		values
 			(
@@ -51,7 +55,62 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{materielUrl},
 				#{materielStatus},
 				#{materielDetail},
-				#{materielPath}
+				#{materielPath},
+				#{materielType},
+				#{createDate}
 			)
 	</insert>
+	
+	<delete id="delMateriel" parameterType="java.lang.String">
+		delete from tf_el_materiel t where t.materiel_Id = #{materielId}
+	</delete>
+	
+	<!-- 修改物料信息 -->
+	<update id="updateMateriel" parameterType="com.rs.teach.mapper.materiel.entity.Materiel">
+		update tf_el_materiel t 
+		<set>
+			<if test="materielName != null and materielName != ''">
+				t.materiel_Name = #{materielName},
+			</if>
+			<if test="materielUrl != null and materielUrl != ''">
+				t.materiel_Url = #{materielUrl},
+			</if>
+			<if test="materielDetail != null and materielDetail != ''">
+				t.MATERIEL_DETAIL = #{materielDetail},
+			</if>
+			<if test="materielPath != null and materielPath != ''">
+				t.MATERIEL_PATH = #{materielPath},
+			</if>
+			<if test="materielType != null and materielType != ''">
+				t.MATERIEL_CODE = #{materielType},
+			</if>
+			t.CREATE_DATE = #{createDate}
+		</set>
+		where t.materiel_Id = #{materielId}
+	</update>
+	
+	<!-- 管理员查询所有物料 -->
+	<select id="adminGetMateriel" parameterType="java.lang.String" resultMap="materMap">
+		select t.materiel_Id,t.materiel_Name,
+			t.materiel_Url,t.materiel_Status,t.MATERIEL_DETAIL,
+			t.MATERIEL_PATH,t.CREATE_DATE,c.CODE_VALUE as MATERIEL_CODE
+		from tf_el_materiel t, sys_code c 
+		<where>
+			t.MATERIEL_CODE = c.code
+			<if test="code != null and code != ''">
+				and t.MATERIEL_CODE = #{code}
+			</if>
+		</where> 
+	</select>
+	
+	<!-- 按照物料名称模糊查询 -->
+	<select id="queryMaterielByName" parameterType="java.lang.String" resultMap="materMap">
+		select t.materiel_Id,t.materiel_Name,
+			t.materiel_Url,t.materiel_Status,t.MATERIEL_DETAIL,
+			t.MATERIEL_PATH,t.CREATE_DATE,c.CODE_VALUE as MATERIEL_CODE
+		from tf_el_materiel t, sys_code c 
+		where
+			t.MATERIEL_CODE = c.code
+			and t.materiel_Name like '%'||#{name}||'%'
+	</select>
 </mapper>
