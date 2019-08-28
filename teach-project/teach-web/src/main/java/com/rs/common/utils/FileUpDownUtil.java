@@ -154,9 +154,6 @@ public class FileUpDownUtil {
 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
-				String officeUrl = dirPath + "\\" + saveRealName;
-				String pdfUrl = dirPath + "\\" + upLoadId+".pdf";
-
 				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") +"/"+ saveRealName;
 
                 resultMap.put("materielUrl", dirPath + "\\" + saveRealName);    //本地服务器地址
