@@ -238,7 +238,7 @@ public class FileUpDownUtil {
                 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
-                String picUrl = imgSaveUrl + dirPathMap.get("sortDir") + saveRealName;
+                String picUrl = imgSaveUrl + dirPathMap.get("sortDir") + "/" + saveRealName;
 
                 resultMap.put("picUrl", picUrl);	//映射路径
                 resultMap.put("saveUrl", dirPath + "\\" + saveRealName);	//保存在服务器的路径
@@ -327,6 +327,7 @@ public class FileUpDownUtil {
                 resultMap.put("updateFileName", updateFileName);
                 resultMap.put("sectionUrl", dirPathMap.get("sortDir"));
                 resultMap.put("pdfUrl", pdfUrl);    //完整的pdf保存路径
+                resultMap.put("catchFilePath",catchFilePath);  //原始文件保存路径
                 resultMap.put("fileMappingPath", fileMappingPath);    //映射路径
                 resultMap.put("sectionType", sectionType);
                 resultMap.put("code", "0");
@@ -386,7 +387,7 @@ public class FileUpDownUtil {
 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
-                String trainDataPath = trainDataSaveUrl + dirPathMap.get("sortDir") + saveRealName;
+                String trainDataPath = trainDataSaveUrl + dirPathMap.get("sortDir") + "/" + saveRealName;
                 String trainDataUrl = dirPath + "\\" + saveRealName;
 
                 resultMap.put("trainDataId", trainDataId);    //生成的文件ID
@@ -457,7 +458,7 @@ public class FileUpDownUtil {
 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
-                String videoPath = videoSaveUrl + dirPathMap.get("sortDir") + saveRealName;
+                String videoPath = videoSaveUrl + dirPathMap.get("sortDir") + "/" + saveRealName;
                 String videoUrl = dirPath + "\\" + saveRealName;
 
                 resultMap.put("videoUrl", videoUrl);   //本地服务器地址

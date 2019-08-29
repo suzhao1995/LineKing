@@ -153,7 +153,7 @@ public class SectionController {
      */
     @RequestMapping(value = "/addSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addSection(@RequestBody SectionDto sectionDto,
+    public ResponseBean addSection(SectionDto sectionDto,
                                    HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
@@ -268,7 +268,7 @@ public class SectionController {
      */
     @RequestMapping(value = "/updateSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateSection(@RequestBody SectionDto sectionDto,
+    public ResponseBean updateSection(SectionDto sectionDto,
                                       HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
@@ -337,8 +337,8 @@ public class SectionController {
             if (StrUtil.isNotBlank(practice.getPid())) {
                 //获取之前作业文件路径
                 String practiceUrl = testAndWorkService.queryUrlByPid(sectionDto.getPid());
-                DeleteFileUtil.deleteFile(practiceUrl);
                 testAndWorkService.updatePractice(practice);
+                DeleteFileUtil.deleteFile(practiceUrl);
             } else {
                 testAndWorkService.insertPractice(practice);
             }
@@ -346,8 +346,8 @@ public class SectionController {
             if (StrUtil.isNotBlank(testpaper.getTid())) {
                 //获取之前考试文件路径
                 String testpaperUrl = testAndWorkService.queryUrlByTid(sectionDto.getTid());
-                DeleteFileUtil.deleteFile(testpaperUrl);
                 testAndWorkService.updateTestpaper(testpaper);
+                DeleteFileUtil.deleteFile(testpaperUrl);
             } else {
                 testAndWorkService.insertTestpaper(testpaper);
             }
@@ -355,6 +355,8 @@ public class SectionController {
             if (StrUtil.equals("1", sectionDto.getIsTrain())) {
                 //获取之前课件文件路径
                 TrainSection trainSection = trainSectionService.selectTrainSection(sectionDto.getSectionId());
+                trainSectionService.updateTrainSection(sectionDto);
+                //修改成功再删除
                 if (StrUtil.isNotBlank(trainSection.getCoursewareId())) {
                     //获取服务器路径（删除原始文件）
                     String coursewareUrl = filePath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
@@ -364,10 +366,11 @@ public class SectionController {
                         DeleteFileUtil.deleteFile(coursewareUrl + ".pdf");
                     }
                 }
-                trainSectionService.updateTrainSection(sectionDto);
             } else {
                 //获取之前课件文件路径
                 Section section = sectionService.getSectionById(sectionDto.getSectionId());
+                sectionService.updateSection(sectionDto);
+                //修改成功再删除
                 if (StrUtil.isNotBlank(section.getCoursewareId())) {
                     //获取服务器路径（删除原始文件）
                     String coursewareUrl = filePath + section.getSectionUrl().replace("/", "\\")
@@ -377,7 +380,6 @@ public class SectionController {
                         DeleteFileUtil.deleteFile(coursewareUrl + ".pdf");
                     }
                 }
-                sectionService.updateSection(sectionDto);
             }
             bean.addSuccess("修改成功！");
         } catch (Exception e) {

@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * @author 汪航
- * @Description  后台video模块
+ * @Description  管理员 -- video模块
  * @create 2019-08-21 16:47
  */
 @Slf4j

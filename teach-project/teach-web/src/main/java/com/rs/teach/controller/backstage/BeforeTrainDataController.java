@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * @author 汪航
- * @Description
+ * @Description  管理员--培训考核
  * @create 2019-08-28 12:14
  */
 @Slf4j

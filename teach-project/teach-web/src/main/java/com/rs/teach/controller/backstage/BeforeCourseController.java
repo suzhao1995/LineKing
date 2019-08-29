@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * @author 汪航
- * @Description
+ * @Description   管理员 -- 课程模块
  * @create 2019-08-14 10:32
  */
 @Controller

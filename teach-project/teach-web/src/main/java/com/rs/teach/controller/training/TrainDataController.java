@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * @author 汪航
- * @Description
+ * @Description  培训考核
  * @create 2019-08-28 17:56
  */
 @Slf4j
