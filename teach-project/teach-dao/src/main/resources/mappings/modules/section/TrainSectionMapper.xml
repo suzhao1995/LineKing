@@ -69,6 +69,7 @@
         select * from tf_el_train_section
         where train_course_Id = #{trainCourseId}
         and train_section_sort = #{trainSectionSort}
+        order by train_litter_section_sort asc
     </select>
 
     <select id="selectTrainSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">

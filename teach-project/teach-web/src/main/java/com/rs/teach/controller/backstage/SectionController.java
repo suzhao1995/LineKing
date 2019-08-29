@@ -1,8 +1,6 @@
 package com.rs.teach.controller.backstage;
 
 import cn.hutool.core.util.StrUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.BPUtil;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
@@ -149,77 +147,77 @@ public class SectionController {
     /**
      * 添加小章节
      *
-     * @param courseWareFile（课件）
-     * @param practiceFile（作业）
-     * @param testpaperFile（试卷）
      * @param sectionDto
      * @param request
      * @return
      */
     @RequestMapping(value = "/addSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addSection(@RequestParam(value = "courseWareFile", required = false) MultipartFile courseWareFile,
-                                   @RequestParam(value = "practiceFile", required = false) MultipartFile practiceFile,
-                                   @RequestParam(value = "testpaperFile", required = false) MultipartFile testpaperFile,
-                                   SectionDto sectionDto,
+    public ResponseBean addSection(@RequestBody SectionDto sectionDto,
                                    HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
         Testpaper testpaper = new Testpaper();
-        if (courseWareFile != null) {
-            if (!courseWareFile.isEmpty()) {
-                //课件文件上传
-                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, courseWareFile);
-                //文件上传是否成功
-                if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
-                    bean.addError(courseWareMap.get("message").toString());
-                    return bean;
-                }
-                sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
-                sectionDto.setLitterSectionUrl(courseWareMap.get(("sectionUrl")).toString());
-                sectionDto.setUpdateFileName(courseWareMap.get("updateFileName").toString());
-                sectionDto.setLitterSectionType(courseWareMap.get("sectionType").toString());
+        /**
+         * * @param courseWareFileName（课件）
+         * * @param practiceFileName（作业）
+         * * @param testpaperFileName（试卷）
+         */
+        MultipartFile[] files = sectionDto.getFiles();
+        String courseWareFileName = files[0].getOriginalFilename();
+        String practiceFileName = files[1].getOriginalFilename();
+        String testpaperFileName = files[2].getOriginalFilename();
+
+        if (StrUtil.isNotBlank(courseWareFileName)) {
+            //课件文件上传
+            Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
+            //文件上传是否成功
+            if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
+                bean.addError(courseWareMap.get("message").toString());
+                return bean;
             }
+            sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
+            sectionDto.setLitterSectionUrl(courseWareMap.get(("sectionUrl")).toString());
+            sectionDto.setUpdateFileName(courseWareMap.get("updateFileName").toString());
+            sectionDto.setLitterSectionType(courseWareMap.get("sectionType").toString());
+
+            sectionDto.setCoursewareUrl(courseWareMap.get("pdfUrl").toString());
         }
         try {
-            if (practiceFile != null) {
-                if (!practiceFile.isEmpty()) {
-                    //作业文件上传
-                    Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
-                    //文件上传是否成功
-                    if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
-                        bean.addError(practiceMap.get("message").toString());
-                        return bean;
-                    }
-                    practice.setPracticeId(practiceMap.get("upLoadId").toString());
-                    practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
-                    practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
-                    practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
-
-                    sectionDto.setPracticeId(practice.getPracticeId());
-
-                    testAndWorkService.insertPractice(practice);
+            if (StrUtil.isNotBlank(practiceFileName)) {
+                //作业文件上传
+                Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
+                //文件上传是否成功
+                if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
+                    bean.addError(practiceMap.get("message").toString());
+                    return bean;
                 }
+                practice.setPracticeId(practiceMap.get("upLoadId").toString());
+                practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
+                practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
+                practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
+
+                sectionDto.setPracticeId(practice.getPracticeId());
+
+                testAndWorkService.insertPractice(practice);
             }
 
-            if (testpaperFile != null) {
-                if (!testpaperFile.isEmpty()) {
-                    //试卷文件上传
-                    Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
-                    //文件上传是否成功
-                    if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
-                        bean.addError(testpaperMap.get("message").toString());
-                        return bean;
-                    }
-                    testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
-                    testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
-                    testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
-                    testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
-
-                    sectionDto.setTestpaperId(testpaper.getTestpaperId());
-
-                    testAndWorkService.insertTestpaper(testpaper);
+            if (StrUtil.isNotBlank(testpaperFileName)) {
+                //试卷文件上传
+                Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
+                //文件上传是否成功
+                if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
+                    bean.addError(testpaperMap.get("message").toString());
+                    return bean;
                 }
+                testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
+                testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
+                testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
+                testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
+
+                sectionDto.setTestpaperId(testpaper.getTestpaperId());
+
+                testAndWorkService.insertTestpaper(testpaper);
             }
 
             if (StrUtil.equals("1", sectionDto.getIsTrain())) {
@@ -230,7 +228,10 @@ public class SectionController {
             bean.addSuccess("添加成功！");
         } catch (Exception e) {
             logger.error("课程-添加-失败", e);
-            bean.addError("添加失败");
+            //添加失败删除文件
+            String[] fileNames = {sectionDto.getCoursewareUrl(),practice.getPracticeUrl(),testpaper.getTestpaperUrl()};
+            DeleteFileUtil.deleteFiles(fileNames);
+            bean.addError("-1","添加失败");
         }
         return bean;
     }
@@ -261,73 +262,74 @@ public class SectionController {
     /**
      * 修改小章节
      *
-     * @param courseWareFile
-     * @param practiceFile
-     * @param testpaperFile
      * @param sectionDto（）
      * @param request
      * @return
      */
     @RequestMapping(value = "/updateSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateSection(@RequestParam(value = "courseWareFile", required = false) MultipartFile courseWareFile,
-                                      @RequestParam(value = "practiceFile", required = false) MultipartFile practiceFile,
-                                      @RequestParam(value = "testpaperFile", required = false) MultipartFile testpaperFile,
-                                      SectionDto sectionDto,
+    public ResponseBean updateSection(@RequestBody SectionDto sectionDto,
                                       HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
         Testpaper testpaper = new Testpaper();
-        if (courseWareFile != null) {
-            if (!courseWareFile.isEmpty()) {
-                //课件文件上传
-                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, courseWareFile);
-                //文件上传是否成功
-                if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
-                    bean.addError(courseWareMap.get("message").toString());
-                    return bean;
-                }
-                sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
-                sectionDto.setLitterSectionUrl(courseWareMap.get(("sectionUrl")).toString());
-                sectionDto.setUpdateFileName(courseWareMap.get("updateFileName").toString());
-                sectionDto.setLitterSectionType(courseWareMap.get("sectionType").toString());
-            }
-        }
-        if (practiceFile != null) {
-            if (!practiceFile.isEmpty()) {
-                //作业文件上传
-                Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
-                //文件上传是否成功
-                if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
-                    bean.addError(practiceMap.get("message").toString());
-                    return bean;
-                }
-                practice.setPid(sectionDto.getPid());
-                practice.setPracticeId(practiceMap.get("upLoadId").toString());
-                practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
-                practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
-                practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
 
-                sectionDto.setPracticeId(practice.getPracticeId());
-            }
-        }
-        if (testpaperFile != null) {
-            if (!testpaperFile.isEmpty()) {
-                //试卷文件上传
-                Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
-                //文件上传是否成功
-                if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
-                    bean.addError(testpaperMap.get("message").toString());
-                    return bean;
-                }
-                testpaper.setTid(sectionDto.getTid());
-                testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
-                testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
-                testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
-                testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
+        /**
+         * * @param courseWareFileName（课件）
+         * * @param practiceFileName（作业）
+         * * @param testpaperFileName（试卷）
+         */
+        MultipartFile[] files = sectionDto.getFiles();
+        String courseWareFileName = files[0].getOriginalFilename();
+        String practiceFileName = files[1].getOriginalFilename();
+        String testpaperFileName = files[2].getOriginalFilename();
 
-                sectionDto.setTestpaperId(testpaper.getTestpaperId());
+        if (StrUtil.isNotBlank(courseWareFileName)) {
+            //课件文件上传
+            Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
+            //文件上传是否成功
+            if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
+                bean.addError(courseWareMap.get("message").toString());
+                return bean;
             }
+            sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
+            sectionDto.setLitterSectionUrl(courseWareMap.get(("sectionUrl")).toString());
+            sectionDto.setUpdateFileName(courseWareMap.get("updateFileName").toString());
+            sectionDto.setLitterSectionType(courseWareMap.get("sectionType").toString());
+
+            sectionDto.setCoursewareUrl(courseWareMap.get("pdfUrl").toString());
+        }
+        if (StrUtil.isNotBlank(practiceFileName)) {
+            //作业文件上传
+            Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
+            //文件上传是否成功
+            if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
+                bean.addError(practiceMap.get("message").toString());
+                return bean;
+            }
+            practice.setPid(sectionDto.getPid());
+            practice.setPracticeId(practiceMap.get("upLoadId").toString());
+            practice.setPracticeFileName(practiceMap.get("updateFileName").toString());
+            practice.setPracticeUrl(practiceMap.get("pdfUrl").toString());
+            practice.setPracticePath(practiceMap.get("fileMappingPath").toString());
+
+            sectionDto.setPracticeId(practice.getPracticeId());
+        }
+        if (StrUtil.isNotBlank(testpaperFileName)) {
+            //试卷文件上传
+            Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
+            //文件上传是否成功
+            if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
+                bean.addError(testpaperMap.get("message").toString());
+                return bean;
+            }
+            testpaper.setTid(sectionDto.getTid());
+            testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
+            testpaper.setTestpaperName(testpaperMap.get("updateFileName").toString());
+            testpaper.setTestpaperUrl(testpaperMap.get("pdfUrl").toString());
+            testpaper.setTestpaperPath(testpaperMap.get("fileMappingPath").toString());
+
+            sectionDto.setTestpaperId(testpaper.getTestpaperId());
         }
 
         try {
@@ -380,7 +382,10 @@ public class SectionController {
             bean.addSuccess("修改成功！");
         } catch (Exception e) {
             logger.error("课程-修改-失败", e);
-            bean.addError("修改失败");
+            //修改失败删除文件
+            String[] fileNames = {sectionDto.getCoursewareUrl(),practice.getPracticeUrl(),testpaper.getTestpaperUrl()};
+            DeleteFileUtil.deleteFiles(fileNames);
+            bean.addError("-1","修改失败");
         }
         return bean;
     }

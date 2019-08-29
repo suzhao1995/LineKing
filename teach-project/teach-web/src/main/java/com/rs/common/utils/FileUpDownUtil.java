@@ -363,6 +363,9 @@ public class FileUpDownUtil {
     public static Map<String, Object> trainDataUpload(MultipartFile file) {
         HashMap<String, Object> resultMap = new HashMap<>();
         String savePath = trainDataPath;
+        //发生异常删除文件的路径
+        String catchFilePath = null;
+
         if (!file.isEmpty()) {
             try {
                 String trainDataId = UUID.randomUUID().toString().replace("-", "");//生成文件id
@@ -378,6 +381,8 @@ public class FileUpDownUtil {
                 Map<String, String> dirPathMap = findFileSavePathByFileName(trainDataFileName, savePath);
                 String dirPath = dirPathMap.get("dir");
                 String saveRealName = trainDataId + trainDataType;
+
+                catchFilePath = dirPath + "\\" + saveRealName;
 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
@@ -400,6 +405,12 @@ public class FileUpDownUtil {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
                 logger.error("---------文件上传异常---------", e);
+                //删除原始文件
+                File officeFile = new File(catchFilePath);
+                if (officeFile.exists()) {
+                    //删除
+                    officeFile.delete();
+                }
             }
 
         } else {
@@ -423,6 +434,9 @@ public class FileUpDownUtil {
     public static Map<String, Object> videoUpload(MultipartFile file) {
         HashMap<String, Object> resultMap = new HashMap<>();
         String savePath = videoPath;
+        //发生异常删除文件的路径
+        String catchFilePath = null;
+
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成文件id
@@ -438,6 +452,8 @@ public class FileUpDownUtil {
                 Map<String, String> dirPathMap = findFileSavePathByFileName(updateFileName, savePath);
                 String dirPath = dirPathMap.get("dir");
                 String saveRealName = upLoadId + sectionType;
+
+                catchFilePath = dirPath + "\\" + saveRealName;
 
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
@@ -459,6 +475,12 @@ public class FileUpDownUtil {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
                 logger.error("---------文件上传异常---------", e);
+                //删除原始文件
+                File officeFile = new File(catchFilePath);
+                if (officeFile.exists()) {
+                    //删除
+                    officeFile.delete();
+                }
             }
 
         } else {

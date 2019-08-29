@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.section.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -37,6 +38,11 @@ public class SectionDto implements Serializable {
 
     //考试表主键
     private String tid;
+
+    //文件数组
+    private MultipartFile[] files;
+
+    private String coursewareUrl;//课件文件全部路径
 
     /**      下面字段系统生成        */
     //小章节url

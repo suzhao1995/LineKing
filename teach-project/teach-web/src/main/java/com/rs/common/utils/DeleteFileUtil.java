@@ -1,5 +1,6 @@
 package com.rs.common.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.controller.backstage.SectionController;
 import org.apache.log4j.Logger;
 
@@ -14,22 +15,37 @@ public class DeleteFileUtil {
 
 
     private static final Logger logger = Logger.getLogger(DeleteFileUtil.class);
+
+    /**
+     * 循环删除文件
+     * @param fileNames
+     */
+    public static void deleteFiles(String[] fileNames){
+        for (int i = 0; i < fileNames.length ; i++) {
+            deleteFile(fileNames[i]);
+        }
+    }
+
     /**
      * 删除单个文件
      * @param fileName
      * @return
      */
     public static void deleteFile(String fileName){
-        File file = new File(fileName);
-        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除&& file.isFile()
-        if (file.exists() ) {
-            if (file.delete()) {
-                logger.info("删除单个文件" + fileName + "成功！");
+        if (StrUtil.isNotBlank(fileName)){
+            File file = new File(fileName);
+            // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除&& file.isFile()
+            if (file.exists()) {
+                if (file.delete()) {
+                    logger.info("删除单个文件" + fileName + "成功！");
+                } else {
+                    logger.error("删除单个文件" + fileName + "失败！");
+                }
             } else {
-                logger.error("删除单个文件" + fileName + "失败！");
+                logger.error("删除单个文件失败" + fileName + "不存在！");
             }
-        } else {
-            logger.error("删除单个文件失败" + fileName + "不存在！");
+        }else {
+            logger.error("删除单个文件失败-文件为空！");
         }
     }
 

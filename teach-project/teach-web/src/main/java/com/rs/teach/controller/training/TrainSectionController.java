@@ -46,7 +46,8 @@ public class TrainSectionController {
     private UserCourseRelaService userCourseRelaService;
 
     @Value("${fileMappingPath}")
-    private String fileMappingPath;	//文件存放根目录
+    private String fileMappingPath;    //文件存放根目录
+
     /**
      * 查询所有的课程章节
      *
@@ -155,13 +156,27 @@ public class TrainSectionController {
             List<TrainSection> sectionList = trainSectionService.selectSectionList(trainSection.getTrainCourseId(), trainSection.getTrainSectionSort());
             map.put("sectionList", sectionList);
 
+            for (int i = 0; i < sectionList.size(); i++) {
+                if (StrUtil.equalsIgnoreCase(sectionId, sectionList.get(i).getTrainSectionId())) {
+                    if (i + 1 < sectionList.size()) {
+                        //下一章id
+                        map.put("nextSectionId", sectionList.get(i + 1).getTrainSectionId());
+                        break;
+                    }else {
+                        //已学完
+                        map.put("nextSectionId","0");
+                        break;
+                    }
+                }
+            }
+
             //判断标识符
             Integer status = userCourseRelaService.studyStatus(userId, trainSection.getTrainCourseId());
             map.put("status", status);
 
             //加入到我的课程就修改学习状态
             if (status == RelaTypeEnum.convent2TableNum(RelaTypeEnum.JOIN.name())) {
-                userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(),userId,sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()),null);
+                userCourseRelaService.updateIsFinish(trainSection.getTrainCourseId(), userId, sectionId, CourseStatusEnum.convent2TableNum(CourseStatusEnum.STARTING.name()), null);
             }
 
             responseBean.addSuccess(map);
