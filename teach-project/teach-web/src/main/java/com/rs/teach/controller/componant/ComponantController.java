@@ -106,7 +106,7 @@ public class ComponantController{
 	}
 	
 	/**
-	* 多文件上传
+	* 多文件上传	测试--test
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -121,6 +121,10 @@ public class ComponantController{
 		System.out.println(files[0].getOriginalFilename());
 		System.out.println(files[1].getOriginalFilename());
 		System.out.println(files[2].getOriginalFilename());
+		
+		System.out.println(request.getParameter("materielName"));
+		System.out.println(request.getParameter("materielDetail"));
+		System.out.println(request.getParameter("code"));
 //		for(MultipartFile file: files){
 //			if(StringUtils.isEmpty(file.getOriginalFilename())){
 //				System.out.println("1");

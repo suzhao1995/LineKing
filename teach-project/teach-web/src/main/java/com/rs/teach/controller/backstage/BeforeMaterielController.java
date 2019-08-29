@@ -50,9 +50,6 @@ public class BeforeMaterielController{
 	@Autowired
 	private SysCodeService sysCodeService;
 	
-	@Value("${picPath}")
-	private String picPath;	//物料封面存放服务器的根路径
-	
 	
 	/**
 	* 管理员--保存上传的物料信息	上传文件MultipartFile[]大小指定为2
@@ -83,27 +80,17 @@ public class BeforeMaterielController{
 		Map<String,Object> materielImgMap = FileUpDownUtil.picUpLoad(request, materielImg);
 		
 		if("0".equals(materielFileMap.get("code")) && "0".equals(materielImgMap.get("code"))){
-			String materielName = request.getParameter("materielName");	//物料名称
-			String materielDetail = request.getParameter("materielDetail");	//物料说明
-			String materielCode = request.getParameter("code");	//物料分类的code值
-			
-			String materielId = materielFileMap.get("materielId").toString();	//物料id
-			String materielUrl = materielFileMap.get("materielUrl").toString();	//物料保存在服务器的路径
-			String materielPath = materielImgMap.get("picUrl").toString();	//	物料封面映射路径
-			String materielImgUrl = materielImgMap.get("saveUrl").toString();	//物料封面保存在服务器的路径
-			
-			String createDate = DateUtil.dateFormat(new Date(), "yyyy-MM-dd");	//物料创建时间
 			
 			Materiel materiel = new Materiel();
-			materiel.setMaterielId(materielId);
-			materiel.setMaterielName(materielName);
-			materiel.setMaterielUrl(materielUrl);
+			materiel.setMaterielId(materielFileMap.get("materielId").toString());	//物料id
+			materiel.setMaterielName(request.getParameter("materielName"));	//物料名称
+			materiel.setMaterielUrl(materielFileMap.get("materielUrl").toString());	//物料保存在服务器的路径
 			materiel.setMaterielStatus("1");
-			materiel.setMaterielDetail(materielDetail);
-			materiel.setMaterielPath(materielPath);
-			materiel.setMaterielType(materielCode);
-			materiel.setCreateDate(createDate);
-			materiel.setMaterielImgUrl(materielImgUrl);
+			materiel.setMaterielDetail(request.getParameter("materielDetail"));	//物料说明
+			materiel.setMaterielPath(materielImgMap.get("picUrl").toString());	//物料封面映射路径
+			materiel.setMaterielType(request.getParameter("code"));	//物料分类的code值
+			materiel.setCreateDate(DateUtil.dateFormat(new Date(), "yyyy-MM-dd"));	//物料创建时间
+			materiel.setMaterielImgUrl(materielImgMap.get("saveUrl").toString());	//物料封面保存在服务器的路径
 			try {
 				materielService.addMateriel(materiel);
 				bean.addSuccess();
