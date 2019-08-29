@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DateUtil;
+import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
@@ -48,60 +50,12 @@ public class BeforeMaterielController{
 	@Autowired
 	private SysCodeService sysCodeService;
 	
+	@Value("${picPath}")
+	private String picPath;	//物料封面存放服务器的根路径
+	
 	
 	/**
-	* 管理员--上传物料资料
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:10:15
-	*/
-	@RequestMapping("/upLoadMateriel")
-	@ResponseBody
-	public ResponseBean upLoadMateriel(HttpServletRequest request, HttpServletResponse response,@RequestParam("file") MultipartFile file){
-		ResponseBean bean = new ResponseBean();
-		Map<String,Object> ajaxData = new HashMap<String,Object>();
-		Map<String,Object> resultMap = FileUpDownUtil.materielUpLoad(request, file);
-		
-		if(resultMap != null && "0".equals(resultMap.get("code"))){
-			ajaxData.put("materielUrl", resultMap.get("materielUrl"));
-			ajaxData.put("materielId", resultMap.get("materielId"));
-		}else{
-			bean.addError(resultMap.get("message").toString());
-			logger.info("--------上传物料封面失败--------"+resultMap.get("message"));
-		}
-		bean.addSuccess(ajaxData);
-		return bean;
-	}
-	
-	/**
-	* 管理员--上传物料封面
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:10:15
-	*/
-	@RequestMapping("/upLoadMaterielImg")
-	@ResponseBody
-	public ResponseBean upLoadMaterielImg(HttpServletRequest request, HttpServletResponse response,@RequestParam("file") MultipartFile file){
-		ResponseBean bean = new ResponseBean();
-		Map<String,Object> ajaxData = new HashMap<String,Object>();
-		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-		
-		if(resultMap != null && "0".equals(resultMap.get("code"))){
-			ajaxData.put("materielPath", resultMap.get("picUrl"));
-		}else{
-			bean.addError(resultMap.get("message").toString());
-			logger.info("--------上传物料封面失败--------"+resultMap.get("message"));
-		}
-		bean.addSuccess(ajaxData);
-		return bean;
-	}
-	
-	/**
-	* 管理员--保存上传的物料信息
+	* 管理员--保存上传的物料信息	上传文件MultipartFile[]大小指定为2
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -110,33 +64,58 @@ public class BeforeMaterielController{
 	*/
 	@RequestMapping("/saveMateriel")
 	@ResponseBody
-	public ResponseBean saveMateriel(HttpServletRequest request, HttpServletResponse response){
+	public ResponseBean saveMateriel(HttpServletRequest request, HttpServletResponse response, @RequestParam("files") MultipartFile[] files){
 		ResponseBean bean = new ResponseBean();
-		String materielName = request.getParameter("materielName");
-		String materielDetail = request.getParameter("materielDetail");
-		String materielId = request.getParameter("materielId");
-		String materielUrl = request.getParameter("materielUrl");
-		String materielPath = request.getParameter("materielPath");
-		String materielCode = request.getParameter("code");
-		String createDate = DateUtil.dateFormat(new Date(), "yyyy-MM-dd");
 		
-		Materiel materiel = new Materiel();
-		materiel.setMaterielId(materielId);
-		materiel.setMaterielName(materielName);
-		materiel.setMaterielUrl(materielUrl);
-		materiel.setMaterielStatus("1");
-		materiel.setMaterielDetail(materielDetail);
-		materiel.setMaterielPath(materielPath);
-		materiel.setMaterielType(materielCode);
-		materiel.setCreateDate(createDate);
-		
-		int result = materielService.addMateriel(materiel);
-		if(result == 0){
-			bean.addError("上传物料失败");
-			return bean;
+		for(MultipartFile file : files){
+			if(StringUtils.isEmpty(file.getOriginalFilename())){
+				bean.addError("-1", "缺少物料或物料封面");
+				return bean;
+			}
 		}
 		
-		bean.addSuccess();
+		//物料文件上传
+		MultipartFile materielFile = files[0];
+		Map<String,Object> materielFileMap = FileUpDownUtil.materielUpLoad(request, materielFile);
+		
+		//物料封面上传
+		MultipartFile materielImg = files[1];
+		Map<String,Object> materielImgMap = FileUpDownUtil.picUpLoad(request, materielImg);
+		
+		if("0".equals(materielFileMap.get("code")) && "0".equals(materielImgMap.get("code"))){
+			String materielName = request.getParameter("materielName");	//物料名称
+			String materielDetail = request.getParameter("materielDetail");	//物料说明
+			String materielCode = request.getParameter("code");	//物料分类的code值
+			
+			String materielId = materielFileMap.get("materielId").toString();	//物料id
+			String materielUrl = materielFileMap.get("materielUrl").toString();	//物料保存在服务器的路径
+			String materielPath = materielImgMap.get("picUrl").toString();	//	物料封面映射路径
+			String materielImgUrl = materielImgMap.get("saveUrl").toString();	//物料封面保存在服务器的路径
+			
+			String createDate = DateUtil.dateFormat(new Date(), "yyyy-MM-dd");	//物料创建时间
+			
+			Materiel materiel = new Materiel();
+			materiel.setMaterielId(materielId);
+			materiel.setMaterielName(materielName);
+			materiel.setMaterielUrl(materielUrl);
+			materiel.setMaterielStatus("1");
+			materiel.setMaterielDetail(materielDetail);
+			materiel.setMaterielPath(materielPath);
+			materiel.setMaterielType(materielCode);
+			materiel.setCreateDate(createDate);
+			materiel.setMaterielImgUrl(materielImgUrl);
+			try {
+				materielService.addMateriel(materiel);
+				bean.addSuccess();
+			} catch (Exception e) {
+				//入库失败删除服务器文件
+				//删除服务器文件
+				DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
+				//删除封面图片
+				DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
+				bean.addError("-1", "上传失败");
+			}
+		}
 		return bean;
 	}
 	
@@ -158,12 +137,20 @@ public class BeforeMaterielController{
 			return bean;
 		}
 		try {
-			materielService.delMateriel(materielId);
-			bean.addSuccess();
+			Materiel materiel = materielService.getMaterielById(materielId);
+			if(materiel != null){
+				//删除服务器文件
+				DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
+				//删除封面图片
+				DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
+				
+			}
 		} catch (Exception e) {
 			bean.addError("删除物料失败");
 			logger.info("------删除物料失败------"+e);
 		}
+		materielService.delMateriel(materielId);
+		bean.addSuccess();
 		return bean;
 	}
 	
@@ -177,35 +164,64 @@ public class BeforeMaterielController{
 	*/
 	@RequestMapping("/updateMateriel")
 	@ResponseBody
-	public ResponseBean updateMateriel(HttpServletRequest request, HttpServletResponse response){
+	public ResponseBean updateMateriel(HttpServletRequest request, HttpServletResponse response,@RequestParam("files") MultipartFile[] files){
 		ResponseBean bean = new ResponseBean();
 		String materielId = request.getParameter("materielId");
 		if(StringUtils.isEmpty(materielId)){
-			bean.addError("请选择一条记录");
+			bean.addError("-1","请选择一条记录");
 			return bean;
 		}
-		String materielName = request.getParameter("materielName");
-		String materielDetail = request.getParameter("materielDetail");
-		String materielUrl = request.getParameter("materielUrl");
-		String materielPath = request.getParameter("materielPath");
-		String materielCode = request.getParameter("code");
-		String createDate = DateUtil.dateFormat(new Date(), "yyyy-MM-dd");
+		//根据id查询需要修改的物料信息
+		Materiel modify = materielService.getMaterielById(materielId);
 		
+		//修改后的物料信息
 		Materiel materiel = new Materiel();
 		materiel.setMaterielId(materielId);
-		materiel.setMaterielName(materielName);
-		materiel.setMaterielUrl(materielUrl);
+		materiel.setMaterielName(request.getParameter("materielName"));//物料名称
 		materiel.setMaterielStatus("1");
-		materiel.setMaterielDetail(materielDetail);
-		materiel.setMaterielPath(materielPath);
-		materiel.setMaterielType(materielCode);
-		materiel.setCreateDate(createDate);
+		materiel.setMaterielDetail(request.getParameter("materielDetail"));	//物料说明
+		materiel.setMaterielType(request.getParameter("code"));
+		materiel.setCreateDate(DateUtil.dateFormat(new Date(), "yyyy-MM-dd"));	//物料创建时间
+		
+		//物料文件上传
+		if(StringUtils.isNotEmpty(files[0].getOriginalFilename())){
+			
+			MultipartFile materielFile = files[0];
+			Map<String,Object> materielFileMap = FileUpDownUtil.materielUpLoad(request, materielFile);
+			if(materielFileMap != null && "0".equals(materielFileMap.get("code"))){
+				materiel.setMaterielUrl(materielFileMap.get("materielUrl").toString());
+			}
+		}
+		
+		//物料封面上传
+		if(StringUtils.isNotEmpty(files[1].getOriginalFilename())){
+			MultipartFile materielImg = files[1];
+			Map<String,Object> materielImgMap = FileUpDownUtil.picUpLoad(request, materielImg);
+			if(materielImgMap != null && "0".equals(materielImgMap.get("code"))){
+				materiel.setMaterielPath(materielImgMap.get("picUrl").toString());
+				materiel.setMaterielImgUrl(materielImgMap.get("saveUrl").toString());
+			}
+		}
+		
 		try {
 			materielService.modifyMateriel(materiel);
+			if(StringUtils.isNotEmpty(materiel.getMaterielUrl())){
+				//删除原始物料服务器文件
+				DeleteFileUtil.deleteFile(modify.getMaterielUrl());
+			}
+			if(StringUtils.isNotEmpty(modify.getMaterielImgUrl())){
+				//删除原始物料封面图片
+				DeleteFileUtil.deleteFile(modify.getMaterielImgUrl());
+			}
 			bean.addSuccess();
 		} catch (Exception e) {
-			bean.addError("修改物料失败");
-			logger.info("------修改物料失败------"+e);
+			//入库失败删除服务器文件
+			//删除服务器文件
+			DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
+			//删除封面图片
+			DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
+			bean.addError("-1", "修改物料失败");
+			logger.info("------修改物料失败-----"+e);
 		}
 		return bean;
 	}
@@ -295,7 +311,7 @@ public class BeforeMaterielController{
 		String cid = request.getParameter("cid");	//字典主键
 		
 		if(StringUtils.isEmpty(cid)){
-			bean.addError("请选择一条记录");
+			bean.addError("-1","请选择一条记录");
 			return bean;
 		}
 		//判断该物料分类是否有物料
@@ -303,7 +319,7 @@ public class BeforeMaterielController{
 		if(sysCode != null){
 			List<Materiel> list = materielService.getMateriel("1",sysCode.getCode());
 			if(list.size() > 0){
-				bean.addError("该物料分类中含有物料资源，请先删除物料资源");
+				bean.addError("-1","该物料分类中含有物料资源，请先删除物料资源");
 				return bean;
 			}
 		}
@@ -331,7 +347,7 @@ public class BeforeMaterielController{
 		//查询物料分类总数 限定6个
 		List<SysCode> list = sysCodeService.getSysCodeList("MATERIEL_CODE");
 		if(list.size() >= 6){
-			bean.addError("分类已达上限");
+			bean.addError("-1","分类已达上限");
 			return bean;
 		}
 		SysCode sysCode = new SysCode();

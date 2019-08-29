@@ -134,8 +134,11 @@ public class CenterController{
 		ajaxData.put("helloWord", helloWord);
 		
 		User user = userService.getUserById(userId);
-		ajaxData.put("picUrl", user.getAttr().getPicUrl());
+		if(user.getAttr() != null){
+			ajaxData.put("picUrl", user.getAttr().getPicUrl());
+		}
 		ajaxData.put("endTime", user.getEndDate());
+		ajaxData.put("teachUserName", user.getUserName());
 		
 		bean.addSuccess(ajaxData);
 		return bean;
