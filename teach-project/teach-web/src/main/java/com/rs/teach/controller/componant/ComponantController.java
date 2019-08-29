@@ -1,6 +1,7 @@
 package com.rs.teach.controller.componant;
 
 import com.alibaba.druid.util.StringUtils;
+import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
@@ -105,6 +106,64 @@ public class ComponantController{
 		return bean;
 	}
 	
+	
+	/**
+	* 用户图像上传
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月1日 下午5:27:45
+	*/
+	@RequestMapping("/upLoadPic")
+	@ResponseBody
+	public ResponseBean upLoadPic(HttpServletRequest request, @RequestParam("file") MultipartFile file){
+		ResponseBean bean = new ResponseBean();
+		//获取登录的用户id
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+
+		//上传文件
+		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+
+		if(resultMap != null && "0".equals(resultMap.get("code"))){
+			//判断用户是否上传过图片
+			User userInfo = userService.getUserById(userId);
+			PicAttr pic = userInfo.getAttr();
+			String catchPath = null;	//原始图片存储路径	需删除
+			try {
+				if(pic == null){
+					//新增
+					catchPath = resultMap.get("saveUrl").toString();
+					PicAttr picAttr = new PicAttr();
+					picAttr.setAssociationId(userId);
+					picAttr.setPicId(resultMap.get("picId").toString());
+					picAttr.setPicUrl(resultMap.get("picUrl").toString());
+					picAttr.setSavePath(resultMap.get("saveUrl").toString());
+					picAttrService.addPic(picAttr);
+				}else{
+					catchPath = pic.getSavePath();	//原始图片存储路径	需删除
+					pic.setPicUrl(resultMap.get("picUrl").toString());
+					pic.setSavePath(resultMap.get("saveUrl").toString());
+					picAttrService.modifyPic(pic);
+				}
+				
+				bean.addSuccess(resultMap);
+			} catch (Exception e) {
+				//入库失败删除服务器文件
+				//删除服务器文件
+				DeleteFileUtil.deleteFile(catchPath);
+				bean.addError("-1", "失败");
+				logger.info("------修改物料失败-----"+e);
+			}
+			
+		}else{
+			bean.addError(resultMap.get("message").toString());
+		}
+		return bean;
+	}
+	
+	
+	
 	/**
 	* 多文件上传	测试--test
 	* @param 
@@ -132,51 +191,6 @@ public class ComponantController{
 //				System.out.println(file.getOriginalFilename());
 //			}
 //		}
-		return bean;
-	}
-	
-	/**
-	* 用户图像上传
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月1日 下午5:27:45
-	*/
-	@RequestMapping("/upLoadPic")
-	@ResponseBody
-	public ResponseBean upLoadPic(HttpServletRequest request, @RequestParam("file") MultipartFile file){
-		ResponseBean bean = new ResponseBean();
-		//获取登录的用户id
-		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-
-		//上传文件
-		Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-
-		if(resultMap != null && "0".equals(resultMap.get("code"))){
-			//判断用户是否上传过图片
-			User userInfo = userService.getUserById(userId);
-			PicAttr pic = userInfo.getAttr();
-			int result = 0;
-			if(pic == null){
-				//新增
-				PicAttr picAttr = new PicAttr();
-				picAttr.setAssociationId(userId);
-				picAttr.setPicId(resultMap.get("picId").toString());
-				picAttr.setPicUrl(resultMap.get("picUrl").toString());
-				result = picAttrService.addPic(picAttr);
-			}else{
-				pic.setPicUrl(resultMap.get("picUrl").toString());
-				result = picAttrService.modifyPic(pic);
-			}
-			if(result == 0){
-				bean.addDefaultError();
-				return bean;
-			}
-			bean.addSuccess(resultMap);
-		}else{
-			bean.addError(resultMap.get("message").toString());
-		}
 		return bean;
 	}
 

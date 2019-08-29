@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="com.rs.teach.mapper.resourcesAttr.dao.PicAttrMapper">
 	<update id="updatePic" parameterType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
-		update TF_EL_PIC_ATTR t set t.PIC_URL = #{picUrl} where t.PIC_ID = {picId}
+		update TF_EL_PIC_ATTR t set t.PIC_URL = #{picUrl},t.SAVE_PATH = #{savePath} where t.PIC_ID = {picId}
 	</update>
 	
 	<insert id="insertPic" parameterType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
@@ -12,13 +12,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			(
 				PIC_ID,
 				ASSOCIATION_ID,
-				PIC_URL
+				PIC_URL,
+				SAVE_PATH
 			)
 		values
 			(
 				#{picId},
 				#{associationId},
-				#{picUrl}
+				#{picUrl},
+				#{savePath}
 			)
 	</insert>
 	

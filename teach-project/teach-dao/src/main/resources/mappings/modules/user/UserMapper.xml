@@ -16,11 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<id property="associationId" column="USER_ID" />
 			<result property="picId" column="pic_id" />
 			<result property="picUrl" column="pic_url" />
+			<result property="savePath" column="save_path" />
 		</association>
 	</resultMap>
 	<select id="getUserById" parameterType="java.lang.String" resultMap="userInfo">
 		select tu.USER_ID,tu.USER_NAME,tu.SERIAL_NUMBER,tu.PASS_WORD,tu.ADMIN_FLAG,tu.end_Date,
-			tu.ISDEFAULT,tu.SCHOOL_ID,pa.pic_id,pa.pic_url
+			tu.ISDEFAULT,tu.SCHOOL_ID,pa.pic_id,pa.pic_url,pa.save_path
 		from TF_EL_TEACH_USER tu,TF_EL_PIC_ATTR pa 
 		where tu.USER_ID = pa.ASSOCIATION_ID and tu.USER_ID = #{id}
 	</select>

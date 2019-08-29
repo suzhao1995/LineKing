@@ -18,6 +18,7 @@ public class PicAttr implements Serializable{
 	private String picId;	//图片id
 	private String associationId;	//关联id
 	private String picUrl;	//图片链接
+	private String savePath;	//保存在服务器的地址
 	
 	public PicAttr() {
 		
@@ -45,6 +46,14 @@ public class PicAttr implements Serializable{
 
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
+	}
+
+	public String getSavePath() {
+		return savePath;
+	}
+
+	public void setSavePath(String savePath) {
+		this.savePath = savePath;
 	}
 	
 	
