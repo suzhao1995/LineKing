@@ -38,6 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<select id="getTeachUser" parameterType="java.lang.String" resultMap="user">
 		select * from TF_EL_TEACH_USER t where t.USER_ID = #{id}
+		union
+		select * from TF_EL_TEACH_USER t where t.serial_number = #{id}
 	</select>
 	
 	<select id="isUpdateInfo" parameterType="java.lang.String" resultType="java.lang.Integer">
