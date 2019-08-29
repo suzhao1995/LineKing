@@ -231,7 +231,8 @@ public class FileUpDownUtil {
 
                 String picUrl = imgSaveUrl + dirPathMap.get("sortDir") + saveRealName;
 
-                resultMap.put("picUrl", picUrl);
+                resultMap.put("picUrl", picUrl);	//映射路径
+                resultMap.put("saveUrl", dirPath + "\\" + saveRealName);	//保存在服务器的路径
                 resultMap.put("picId", upLoadId);    //生成的随机章节ID，唯一
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");

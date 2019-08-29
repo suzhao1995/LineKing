@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="materielPath" column="MATERIEL_PATH" />
 		<result property="materielType" column="MATERIEL_CODE" />
 		<result property="createDate" column="CREATE_DATE" />
+		<result property="materielImgUrl" column="MATERIEL_IMGURL" />
 	</resultMap>
 	
 	<select id="queryMateriel" resultMap="materMap" parameterType="java.lang.String">
@@ -46,7 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				MATERIEL_DETAIL,
 				MATERIEL_PATH,
 				MATERIEL_CODE,
-				CREATE_DATE
+				CREATE_DATE,
+				MATERIEL_IMGURL
 			)
 		values
 			(
@@ -57,7 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{materielDetail},
 				#{materielPath},
 				#{materielType},
-				#{createDate}
+				#{createDate},
+				#{materielImgUrl}
 			)
 	</insert>
 	
@@ -83,6 +86,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="materielType != null and materielType != ''">
 				t.MATERIEL_CODE = #{materielType},
+			</if>
+			<if test="materielImgUrl != null and materielImgUrl != ''">
+				t.MATERIEL_IMGURL = #{materielImgUrl},
 			</if>
 			t.CREATE_DATE = #{createDate}
 		</set>

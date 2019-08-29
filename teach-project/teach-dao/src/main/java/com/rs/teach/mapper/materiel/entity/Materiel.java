@@ -25,6 +25,8 @@ public class Materiel implements Serializable{
 	
 	private String createDate;	//上传日期
 	
+	private String materielImgUrl;	//物料封面保存在服务器的路径
+	
 	public Materiel (){
 		
 	}
@@ -91,6 +93,14 @@ public class Materiel implements Serializable{
 
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+
+	public String getMaterielImgUrl() {
+		return materielImgUrl;
+	}
+
+	public void setMaterielImgUrl(String materielImgUrl) {
+		this.materielImgUrl = materielImgUrl;
 	}
 	
 	
