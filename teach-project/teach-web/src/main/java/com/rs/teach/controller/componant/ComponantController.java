@@ -1,5 +1,6 @@
 package com.rs.teach.controller.componant;
 
+import com.alibaba.druid.util.StringUtils;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
@@ -101,6 +102,32 @@ public class ComponantController{
 		}else{
 			bean.addError(resultMap.get("message").toString());
 		}
+		return bean;
+	}
+	
+	/**
+	* 多文件上传
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月1日 下午5:27:45
+	*/
+	@RequestMapping("/upLoadFiles")
+	@ResponseBody
+	public ResponseBean upLoadFiles(HttpServletRequest request,  @RequestParam("files") MultipartFile[] files){
+		ResponseBean bean = new ResponseBean();
+		//上传文件
+		System.out.println(files[0].getOriginalFilename());
+		System.out.println(files[1].getOriginalFilename());
+		System.out.println(files[2].getOriginalFilename());
+//		for(MultipartFile file: files){
+//			if(StringUtils.isEmpty(file.getOriginalFilename())){
+//				System.out.println("1");
+//			}else{
+//				System.out.println(file.getOriginalFilename());
+//			}
+//		}
 		return bean;
 	}
 	

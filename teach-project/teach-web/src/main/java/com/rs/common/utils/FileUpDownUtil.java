@@ -152,7 +152,8 @@ public class FileUpDownUtil {
         //文件保存路径
         //String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
         String savePath = materielPath;
-
+        //发生异常删除文件的路径
+        String catchFilePath = null;
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
@@ -168,7 +169,9 @@ public class FileUpDownUtil {
                 Map<String, String> dirPathMap = findFileSavePathByFileName(updateFileName, savePath);
                 String dirPath = dirPathMap.get("dir");
                 String saveRealName = upLoadId + sectionType;
-
+                
+                catchFilePath = dirPath + "\\" + saveRealName;
+                
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
 				String materielPath = materielSaveUrl + dirPathMap.get("sortDir") +"/"+ saveRealName;
@@ -179,14 +182,16 @@ public class FileUpDownUtil {
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
 
-            } catch (IllegalStateException e) {
-                resultMap.put("code", "-1");
-                resultMap.put("message", "文件上传异常");
-                logger.error("---------文件上传异常---------", e);
             } catch (Exception e) {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
                 logger.error("---------文件上传异常---------", e);
+                //删除原始文件
+                File officeFile = new File(catchFilePath);
+                if (officeFile.exists()) {
+                    //删除
+                    officeFile.delete();
+                }
             }
 
         } else {
@@ -211,6 +216,8 @@ public class FileUpDownUtil {
         //文件保存路径
         //String savePath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload/img");	//保存的文件根目录
         String savePath = imgPath;
+        //发生异常删除文件的路径
+        String catchFilePath = null;
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
@@ -226,7 +233,9 @@ public class FileUpDownUtil {
                 Map<String, String> dirPathMap = findFileSavePathByFileName(updateFileName, savePath);
                 String dirPath = dirPathMap.get("dir");
                 String saveRealName = upLoadId + sectionType;
-
+                
+                catchFilePath = dirPath + "\\" + saveRealName;
+                
                 file.transferTo(new File(dirPath + "\\" + saveRealName));
 
                 String picUrl = imgSaveUrl + dirPathMap.get("sortDir") + saveRealName;
@@ -237,14 +246,17 @@ public class FileUpDownUtil {
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
 
-            } catch (IllegalStateException e) {
-                resultMap.put("code", "-1");
-                resultMap.put("message", "文件上传异常");
-                logger.error("---------文件上传异常---------", e);
             } catch (Exception e) {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
                 logger.error("---------文件上传异常---------", e);
+                
+                //删除原始文件
+                File officeFile = new File(catchFilePath);
+                if (officeFile.exists()) {
+                    //删除
+                    officeFile.delete();
+                }
             }
 
         } else {
