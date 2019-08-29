@@ -1,6 +1,7 @@
 package com.rs.teach.service.training;
 
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.TrainCourseSubject;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 import java.util.List;
@@ -43,4 +44,10 @@ public interface TrainCourseService {
      * @return
      */
     TrainCourseVo selectTrainCourseById(String courseId);
+
+    /**
+     * 查询所有培训课程科目
+     * @return
+     */
+    List<TrainCourseSubject> selectTrainCourseSubject();
 }

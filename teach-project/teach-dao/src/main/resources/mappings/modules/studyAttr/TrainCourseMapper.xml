@@ -5,19 +5,22 @@
 <mapper namespace="com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper">
 
     <insert id="addTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
-        insert into TF_EL_TRAIN_COURSE(train_course_id, train_course_name, train_coursepic_url,ADD_TIME)
-        values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl},#{addTime})
+        insert into TF_EL_TRAIN_COURSE(train_course_id, train_course_name, train_coursepic_url,ADD_TIME,SUBJECT)
+        values (SEQ_EL_TRAIN_COURSE.nextval,#{courseName},#{coursePicUrl},#{addTime},#{subject})
     </insert>
 
     <update id="updateTrainCourse" parameterType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
         update TF_EL_TRAIN_COURSE
         <set>
-        <if test="courseName != null and courseName != ''">
-            TRAIN_COURSE_NAME = #{courseName},
-        </if>
-        <if test="coursePicUrl != null and coursePicUrl != ''">
-            TRAIN_COURSEPIC_URL = #{coursePicUrl},
-        </if>
+            <if test="courseName != null and courseName != ''">
+                TRAIN_COURSE_NAME = #{courseName},
+            </if>
+            <if test="coursePicUrl != null and coursePicUrl != ''">
+                TRAIN_COURSEPIC_URL = #{coursePicUrl},
+            </if>
+            <if test="subject != null and subject != ''">
+                SUBJECT = #{subject},
+            </if>
         </set>
         WHERE TRAIN_COURSE_ID = #{courseId}
     </update>
@@ -31,7 +34,8 @@
         select TC.train_course_Id,
               TC.train_course_Name,
               TC.train_coursePic_url,
-              TC.ADD_TIME
+              TC.ADD_TIME,
+              TC.SUBJECT
         from tf_el_train_course  TC
         <where>
             1 = 1
@@ -44,9 +48,14 @@
     <select id="selectTrainCourseById" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseVo">
         select TC.train_course_Id,
               TC.train_course_Name,
-              tc.TRAIN_COURSEPIC_URL
+              tc.TRAIN_COURSEPIC_URL,
+              ADD_TIME,
+              SUBJECT
         from tf_el_train_course  TC
         where tc.train_course_Id = #{courseId}
+    </select>
+    <select id="selectTrainCourseSubject" resultType="com.rs.teach.mapper.studyAttr.vo.TrainCourseSubject">
+        select SUBJECT from TF_EL_TRAIN_COURSE
     </select>
 
 </mapper>

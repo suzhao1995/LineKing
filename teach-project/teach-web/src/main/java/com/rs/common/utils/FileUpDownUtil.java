@@ -41,18 +41,14 @@ public class FileUpDownUtil {
     private static final List<String> upLoadPicType = new ArrayList<String>();    //指定上传文件格式
     private static final List<String> uploadMaterielType = new ArrayList<String>();    //指定物料上传格式
     private static final List<String> uploadVideoType = new ArrayList<String>();    //指定视频上传格式
+    private static final List<String> uploadTrainDataType = new ArrayList<String>();    //指定培训考核上传格式
     private static Logger logger = Logger.getLogger(FileUpDownUtil.class);
 
     private static String filePath;    //文件路径
     private static String imgPath;    //图片路径
     private static String materielPath;    //物料路径
     private static String videoPath;    //视频路径
-
-    private static String imgSaveUrl;    //图像映射路径
-    private static String materielSaveUrl;    //物料映射路径
-    private static String fileSaveUrl;    //文件映射路径
-    private static String videoSaveUrl;    //文件映射路径
-
+    private static String trainDataPath;    //培训考核视频路径
     @Value("${filePath}")    //静态属性使用setter方法注入properties文件的属性
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -69,31 +65,46 @@ public class FileUpDownUtil {
     }
 
     @Value("${videoPath}")    //静态属性使用setter方法注入properties文件的属性
-    public static void setVideoPath(String videoPath) {
+    public void setVideoPath(String videoPath) {
         FileUpDownUtil.videoPath = videoPath;
     }
 
+    @Value("${trainDataPath}")    //静态属性使用setter方法注入properties文件的属性
+    public void setTrainDataPath(String trainDataPath) {
+        FileUpDownUtil.trainDataPath = trainDataPath;
+    }
+
+
+    private static String imgSaveUrl;    //图像映射路径
+    private static String materielSaveUrl;    //物料映射路径
+    private static String fileSaveUrl;    //文件映射路径
+    private static String videoSaveUrl;    //视频映射路径
+    private static String trainDataSaveUrl;    //培训考核文件映射路径
     @Value("${imgMappingPath}")    //静态属性使用setter方法注入properties文件的属性
     public void setImgSaveUrl(String imgSaveUrl) {
         this.imgSaveUrl = imgSaveUrl;
     }
-
     @Value("${materMappingPath}")    //静态属性使用setter方法注入properties文件的属性
     public void setMaterielSaveUrl(String materielSaveUrl) {
         this.materielSaveUrl = materielSaveUrl;
     }
-
     @Value("${fileMappingPath}")    //静态属性使用setter方法注入properties文件的属性
     public void setFileSaveUrl(String fileSaveUrl) {
         this.fileSaveUrl = fileSaveUrl;
     }
-
     @Value("${videoMappingUrl}")    //静态属性使用setter方法注入properties文件的属性
-    public static void setVideoSaveUrl(String videoSaveUrl) {
+    public void setVideoSaveUrl(String videoSaveUrl) {
         FileUpDownUtil.videoSaveUrl = videoSaveUrl;
+    }
+    @Value("${trainDataMappingPath}")    //静态属性使用setter方法注入properties文件的属性
+    public void setTrainDataSaveUrl(String trainDataSaveUrl) {
+        FileUpDownUtil.trainDataSaveUrl = trainDataSaveUrl;
     }
 
 
+    /**
+     * testAndWorkService注入
+     */
     @Autowired
     private TestAndWorkService testAndWorkService;
 
@@ -105,6 +116,9 @@ public class FileUpDownUtil {
         fileUpDownUtil.testAndWorkService = this.testAndWorkService;
     }
 
+    /**
+     * 静态代码块
+     */
     static {
         //图片格式
         upLoadPicType.add(".jpg");
@@ -119,6 +133,9 @@ public class FileUpDownUtil {
         uploadMaterielType.add(".pdf");
         //视频格式
         uploadVideoType.add(".mp4");
+        //培训考核文件格式
+        uploadTrainDataType.add(".doc");
+        uploadTrainDataType.add(".docx");
     }
 
     /**
@@ -161,7 +178,7 @@ public class FileUpDownUtil {
                 resultMap.put("materielId", upLoadId);    //生成的随机ID，唯一
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
-                
+
             } catch (IllegalStateException e) {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
@@ -322,6 +339,66 @@ public class FileUpDownUtil {
     }
 
     /**
+     * 培训考核文件上传方法 表单指定enctype="multipart/form-data"
+     *
+     * @param
+     * @return Map<String, Object>
+     * @throws
+     * @author suzhao
+     * @date 2019年8月1日 下午4:17:25
+     */
+    public static Map<String, Object> trainDataUpload(MultipartFile file) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        String savePath = trainDataPath;
+        if (!file.isEmpty()) {
+            try {
+                String trainDataId = UUID.randomUUID().toString().replace("-", "");//生成文件id
+
+                String trainDataFileName = file.getOriginalFilename().split("[.]")[0];
+                String trainDataType = "." + file.getOriginalFilename().split("[.]")[1];
+                if (!uploadTrainDataType.contains(trainDataType)) {
+                    resultMap.put("code", "-1");
+                    resultMap.put("message", "上传文件格式错误！");
+                    return resultMap;
+                }
+                //使用hash算法散列存储文件位置
+                Map<String, String> dirPathMap = findFileSavePathByFileName(trainDataFileName, savePath);
+                String dirPath = dirPathMap.get("dir");
+                String saveRealName = trainDataId + trainDataType;
+
+                file.transferTo(new File(dirPath + "\\" + saveRealName));
+
+                String trainDataPath = trainDataSaveUrl + dirPathMap.get("sortDir") + saveRealName;
+                String trainDataUrl = dirPath + "\\" + saveRealName;
+
+                resultMap.put("trainDataId", trainDataId);    //生成的文件ID
+                resultMap.put("trainDataFileName",trainDataFileName); //上传文件名
+                resultMap.put("trainDataPath", trainDataPath);  //项目路径
+                resultMap.put("trainDataUrl", trainDataUrl);   //本地服务器地址
+                resultMap.put("trainDataType", trainDataType);    //文件格式类型
+                resultMap.put("code", "0");
+                resultMap.put("message", "文件上传成功");
+
+            } catch (IllegalStateException e) {
+                resultMap.put("code", "-1");
+                resultMap.put("message", "文件上传异常");
+                logger.error("---------文件上传异常---------", e);
+            } catch (Exception e) {
+                resultMap.put("code", "-1");
+                resultMap.put("message", "文件上传异常");
+                logger.error("---------文件上传异常---------", e);
+            }
+
+        } else {
+            resultMap.put("code", "-1");
+            resultMap.put("message", "上传文件为空");
+        }
+        return resultMap;
+    }
+
+
+
+    /**
      * 视频上传方法 表单指定enctype="multipart/form-data"
      *
      * @param
@@ -382,7 +459,7 @@ public class FileUpDownUtil {
     /**
      * 视频下载方法
      *
-     * @param filePath   文件全路径 例如：D:\RSUpLoad\4\3\486e9d53ae764cb6b733e375f90fce22.MP4
+     * @param filePath   文件全路径 例如：D:\RSUpLoad\4\3\486e9d53ae764cb6b733e375f90fce22_电信（第三版）.MP4
      * @param downLoadName   文件保存名 例如：电信（第三版）
      * @return void
      * @throws

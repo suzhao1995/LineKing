@@ -26,5 +26,6 @@ public class TrainCourseVo implements Serializable {
 	private Integer trainSectionNumber;	//培训章节总数
 	private String trainCoursePicUrl;	//培训课程封面URL
 	private String addTime;      			//培训课程添加时间
+	private String subject;                  //培训课程科目
 	private List<TrainSectionVo> trainSectionVoList;    //课程下的大章节集合
 }

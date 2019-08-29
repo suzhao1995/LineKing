@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.TrainDataMapper">
+
+    <insert id="addTrainData" parameterType="com.rs.teach.mapper.backstage.entity.TrainData">
+        insert into TF_EL_TRAIN_DATA(id, train_data_id, train_data_name, train_data_url,
+                      train_data_path, train_data_type, add_time, TRAIN_DATA_FILE_NAME,SUBJECT)
+        values (#{id},#{trainDataId},#{trainDataName},#{trainDataUrl},
+                    #{trainDataPath},#{trainDataType},#{addTime},#{trainDataFileName},#{subject})
+    </insert>
+    <update id="UpdateTrainData" parameterType="com.rs.teach.mapper.backstage.entity.TrainData">
+        update TF_EL_TRAIN_DATA
+        <set>
+            <if test="trainDataId != null and trainDataId != ''">
+                train_data_id = #{trainDataId},
+            </if>
+            <if test="trainDataName != null and trainDataName != ''">
+                train_data_name = #{trainDataName},
+            </if>
+            <if test="trainDataUrl != null and trainDataUrl != ''">
+                train_data_url = #{trainDataUrl},
+            </if>
+            <if test="trainDataPath != null and trainDataPath != ''">
+                train_data_path = #{trainDataPath},
+            </if>
+            <if test="trainDataType != null and trainDataType != ''">
+                train_data_type = #{trainDataType},
+            </if>
+            <if test="trainDataFileName != null and trainDataFileName != ''">
+                TRAIN_DATA_FILE_NAME = #{trainDataFileName},
+            </if>
+            <if test="subject != null and subject != ''">
+                SUBJECT = #{subject},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+    <select id="selectTrainDataById" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
+        select * from TF_EL_TRAIN_DATA
+        where id = #{id}
+    </select>
+    <select id="selectTrainData" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
+        select ID,TRAIN_DATA_NAME,ADD_TIME,TRAIN_DATA_URL,SUBJECT from TF_EL_TRAIN_DATA
+    </select>
+    <delete id="trainDataSelect">
+        delete from TF_EL_TRAIN_DATA
+        where id = #{id}
+    </delete>
+</mapper>
