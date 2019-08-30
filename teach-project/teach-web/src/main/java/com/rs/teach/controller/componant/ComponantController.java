@@ -144,20 +144,29 @@ public class ComponantController{
 					catchPath = pic.getSavePath();	//原始图片存储路径	需删除
 					pic.setPicUrl(resultMap.get("picUrl").toString());
 					pic.setSavePath(resultMap.get("saveUrl").toString());
-					picAttrService.modifyPic(pic);
+					int result = picAttrService.modifyPic(pic);
+					//删除服务器文件
+					if(result == 1){
+						DeleteFileUtil.deleteFile(catchPath);
+					}
 				}
 				
 				bean.addSuccess(resultMap);
 			} catch (Exception e) {
 				//入库失败删除服务器文件
 				//删除服务器文件
-				DeleteFileUtil.deleteFile(catchPath);
-				bean.addError("-1", "失败");
-				logger.info("------修改物料失败-----"+e);
+				if(pic == null){
+					DeleteFileUtil.deleteFile(catchPath);
+				}else{
+					//修改图像发生异常，删除新上传的图像
+					DeleteFileUtil.deleteFile(pic.getSavePath());
+				}
+				bean.addError("修改图像失败");
+				logger.info("------修改图像失败-----"+e);
 			}
 			
 		}else{
-			bean.addError(resultMap.get("message").toString());
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,resultMap.get("message").toString());
 		}
 		return bean;
 	}
