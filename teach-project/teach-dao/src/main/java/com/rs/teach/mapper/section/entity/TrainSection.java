@@ -32,7 +32,11 @@ public class TrainSection implements Serializable {
     private String practiceId;	//作业url
     private String testpaperId;	//试卷url
     private String coursewareId; //课件url
-    private String coursewareUrl;//课件文件全部路径
+
+    private String practiceUrl;//作业文件映射全部路径
+    private String testpaperUrl;//试卷文件映射全部路径
+    private String coursewareUrl;//课件文件映射全部路径
+
     private String extend1;    //预留字段
     private String extend2;
     private String extend3;

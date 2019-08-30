@@ -61,12 +61,30 @@
     </update>
 
     <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
-        select * from tf_el_train_section
-        where train_section_Id = #{sectionId}
+        select ts.TRAIN_SECTION_ID,
+        ts.TRAIN_COURSE_ID,
+        ts.train_section_id,
+        ts.train_course_id,
+        ts.train_section_sort,
+        ts.train_section_name,
+        ts.train_litter_section_sort,
+        ts.train_litter_section_name,
+         ts.train_litter_section_url,
+         ts.train_litter_section_type,
+         ts.update_file_name,
+         ts.practice_id,
+         ts.testpaper_id,
+         ts.courseware_id,
+         t.TESTPAPER_PATH AS practiceUrl,
+         p.PRACTICE_PATH AS testpaperUrl
+        from tf_el_train_section ts,TF_EL_TESTPAPER t ,tf_el_practice p
+        where ts.testpaper_id = t.testpaper_id
+        and ts.practice_id = p.practice_id
+        and train_section_Id =  #{sectionId}
     </select>
 
     <select id="selectSectionList" resultType="com.rs.teach.mapper.section.entity.TrainSection">
-        select * from tf_el_train_section
+        select TRAIN_SECTION_ID,TRAIN_COURSE_ID,TRAIN_SECTION_SORT,TRAIN_SECTION_NAME,TRAIN_LITTER_SECTION_SORT,TRAIN_LITTER_SECTION_NAME from tf_el_train_section
         where train_course_Id = #{trainCourseId}
         and train_section_sort = #{trainSectionSort}
         order by train_litter_section_sort asc
