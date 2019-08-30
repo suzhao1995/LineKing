@@ -66,7 +66,7 @@ public class BeforeMaterielController{
 		
 		for(MultipartFile file : files){
 			if(StringUtils.isEmpty(file.getOriginalFilename())){
-				bean.addError("-1", "缺少物料或物料封面");
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "缺少物料或物料封面");
 				return bean;
 			}
 		}
@@ -100,7 +100,7 @@ public class BeforeMaterielController{
 				DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
 				//删除封面图片
 				DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
-				bean.addError("-1", "上传失败");
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败");
 			}
 		}
 		return bean;
@@ -120,7 +120,7 @@ public class BeforeMaterielController{
 		ResponseBean bean = new ResponseBean();
 		String materielId = request.getParameter("materielId");
 		if(StringUtils.isEmpty(materielId)){
-			bean.addError("请选择一条记录");
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"请选择一条记录");
 			return bean;
 		}
 		try {
@@ -155,7 +155,7 @@ public class BeforeMaterielController{
 		ResponseBean bean = new ResponseBean();
 		String materielId = request.getParameter("materielId");
 		if(StringUtils.isEmpty(materielId)){
-			bean.addError("-1","请选择一条记录");
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"请选择一条记录");
 			return bean;
 		}
 		//根据id查询需要修改的物料信息
@@ -207,7 +207,7 @@ public class BeforeMaterielController{
 			DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
 			//删除封面图片
 			DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
-			bean.addError("-1", "修改物料失败");
+			bean.addError("修改物料失败");
 			logger.info("------修改物料失败-----"+e);
 		}
 		return bean;
@@ -298,7 +298,7 @@ public class BeforeMaterielController{
 		String cid = request.getParameter("cid");	//字典主键
 		
 		if(StringUtils.isEmpty(cid)){
-			bean.addError("-1","请选择一条记录");
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"请选择一条记录");
 			return bean;
 		}
 		//判断该物料分类是否有物料
@@ -306,7 +306,7 @@ public class BeforeMaterielController{
 		if(sysCode != null){
 			List<Materiel> list = materielService.getMateriel("1",sysCode.getCode());
 			if(list.size() > 0){
-				bean.addError("-1","该物料分类中含有物料资源，请先删除物料资源");
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"该物料分类中含有物料资源，请先删除物料资源");
 				return bean;
 			}
 		}
@@ -334,7 +334,7 @@ public class BeforeMaterielController{
 		//查询物料分类总数 限定6个
 		List<SysCode> list = sysCodeService.getSysCodeList("MATERIEL_CODE");
 		if(list.size() >= 6){
-			bean.addError("-1","分类已达上限");
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"分类已达上限");
 			return bean;
 		}
 		SysCode sysCode = new SysCode();
@@ -356,7 +356,7 @@ public class BeforeMaterielController{
 		try {
 			int result = sysCodeService.addSysCode(sysCode);
 			if(result == 0){
-				bean.addError("新增物料分类失败");
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"新增物料分类失败");
 				return bean;
 			}
 			bean.addSuccess();
@@ -396,7 +396,7 @@ public class BeforeMaterielController{
 		try {
 			int result = sysCodeService.modifySysCode(sysCode);
 			if(result == 0){
-				bean.addError("修改物料分类失败");
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"修改物料分类失败");
 				return bean;
 			}
 			bean.addSuccess();

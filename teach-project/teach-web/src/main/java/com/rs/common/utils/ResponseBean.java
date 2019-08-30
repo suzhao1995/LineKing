@@ -23,6 +23,7 @@ public class ResponseBean implements Serializable{
     public static final String CODE_LIMIT_ERROR = "1010";
     public static final String CODE_SHOP_ERROR = "1020";
     public static final String CODE_DECRYPT_ERROR = "1006";
+    public static final String CODE_MESSAGE_ERROR = "1050";
     private String code = "0";
     private String message = "成功";
     private Object data = null;

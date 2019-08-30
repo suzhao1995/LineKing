@@ -26,8 +26,11 @@ public class SessionUtil {
 	}
  
 	private static ConcurrentHashMap<String, HttpSession> sessionMap;
+	//异地登录存储map
+	public static ConcurrentHashMap<String, Object> remoteLoginMap;
 	static {
 		sessionMap = new ConcurrentHashMap<>();
+		remoteLoginMap =  new ConcurrentHashMap<>();
 	}
  
 	public static ConcurrentHashMap<String, HttpSession> getSessionMap() {
@@ -83,7 +86,14 @@ public class SessionUtil {
 			}
 			if (StringUtils.isNotBlank(sessionKey)) {
 				sessionMap.remove(sessionKey);
+				remoteLoginMap.put(sessionKey, "remoteLogin");	//添加进异地登录Map,并在切面进行判断
 			}
+		}
+	}
+	
+	public static synchronized void cleanOldRemoteMap(String sessionId){
+		if(remoteLoginMap != null && remoteLoginMap.size() > 0){
+			remoteLoginMap.remove(sessionId);
 		}
 	}
 }

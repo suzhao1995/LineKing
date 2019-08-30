@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -35,14 +38,22 @@ public class TeachAspect {
 	    Signature signature = joinPoint.getSignature();
 	    String methodName = signature.getName();
 
-//		前后端联调后打开注释  方法名已verify开头的方法不需要进行登录验证
+		//前后端联调后打开注释  方法名已verify开头的方法不需要进行登录验证
 		if(!methodName.toUpperCase().startsWith("VERIFY")){
-			if(!isLogin(request)){
+			Map<String,Object> resultMap = isLogin(request);
+			if("1030".equals(resultMap.get("isLogin"))){
+				//异地登录
+				ResponseBean bean = new ResponseBean();
+				bean.addError("1030", "该账号已在其他地方登录，您已被迫下线，如非本人操作请重新登录并及时修改密码");
+				returnObject = bean;
+				return returnObject; 
+			}
+			if("1040".equals(resultMap.get("isLogin"))){
 				//返回登录页面
 				ResponseBean bean = new ResponseBean();
 				bean.addError("-1", "用户未登录");
 				returnObject = bean;
-				return returnObject;
+				return returnObject; 
 			}
 		}
 	    try {
@@ -82,8 +93,9 @@ public class TeachAspect {
         return returnObject;
 	}
 
-		public boolean isLogin(HttpServletRequest request){
-		boolean isLogin = false;
+	public Map<String,Object> isLogin(HttpServletRequest request){
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("isLogin", "1040");	//用户未登录
 		//判断用户是否登录
 	    HttpSession session = null;
 	    String sessionId = "";
@@ -92,15 +104,22 @@ public class TeachAspect {
 		}else if(StringUtils.isNotBlank(request.getHeader("sessionKey"))){
 			sessionId = request.getHeader("sessionKey");
 		}
-	    if(sessionId != null){
-	    	session = (HttpSession) SessionUtil.getSessionMap().get(sessionId);
-			if (session != null) {
-				String sessionValue = (String) session.getAttribute("userInfo");
-				if (StringUtils.isNotBlank(sessionValue)) {
-					isLogin = true;
-				}
-			}
+	    Map<String,Object> remoteLoginMap = SessionUtil.remoteLoginMap;
+	    if(remoteLoginMap != null && "remoteLogin".equals(remoteLoginMap.get(sessionId))){
+	    	resultMap.put("isLogin", "1030");		//异地登录code
+	    	SessionUtil.cleanOldRemoteMap(sessionId);
+	    }else{
+	    	
+	    	if(sessionId != null){
+	    		session = (HttpSession) SessionUtil.getSessionMap().get(sessionId);
+	    		if (session != null) {
+	    			String sessionValue = (String) session.getAttribute("userInfo");
+	    			if (StringUtils.isNotBlank(sessionValue)) {
+	    				resultMap.put("isLogin", "0");	//已登录
+	    			}
+	    		}
+	    	}
 	    }
-	    return isLogin;
+	    return resultMap;
 	}
 }
