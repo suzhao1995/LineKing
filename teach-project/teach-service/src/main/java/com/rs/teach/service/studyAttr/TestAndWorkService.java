@@ -68,4 +68,18 @@ public interface TestAndWorkService{
 	 * @return
 	 */
 	String queryUrlByTid(String tid);
+
+	/**
+	 * 查询作业文件
+	 * @param sectionId
+	 * @return
+	 */
+    Practice selectPractice(String sectionId);
+
+	/**
+	 * 查询试卷文件
+	 * @param sectionId
+	 * @return
+	 */
+	Testpaper selectTestpaper(String sectionId);
 }

@@ -68,4 +68,8 @@ public interface TestAndWorkMapper{
 	 * @return
 	 */
 	String queryUrlByTid(@Param("tid") String tid);
+
+    Practice selectPractice(@Param("sectionId") String sectionId);
+
+	Testpaper selectTestpaper(@Param("sectionId") String sectionId);
 }

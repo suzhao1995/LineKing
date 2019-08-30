@@ -54,4 +54,14 @@ public class TestAndWorkServiceImpl implements TestAndWorkService {
         return mapper.queryUrlByTid(tid);
     }
 
+    @Override
+    public Practice selectPractice(String sectionId) {
+        return mapper.selectPractice(sectionId);
+    }
+
+    @Override
+    public Testpaper selectTestpaper(String sectionId) {
+        return mapper.selectTestpaper(sectionId);
+    }
+
 }

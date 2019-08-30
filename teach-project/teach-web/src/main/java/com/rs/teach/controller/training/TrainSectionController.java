@@ -8,12 +8,16 @@ import com.rs.teach.mapper.common.Enums.CourseStatusEnum;
 import com.rs.teach.mapper.common.Enums.RelaTypeEnum;
 import com.rs.teach.mapper.common.TrainParamDto;
 import com.rs.teach.mapper.section.entity.TrainSection;
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
+import com.rs.teach.service.studyAttr.TestAndWorkService;
 import com.rs.teach.service.training.TrainSectionService;
 import com.rs.teach.service.training.UserCourseRelaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +48,9 @@ public class TrainSectionController {
      */
     @Autowired
     private UserCourseRelaService userCourseRelaService;
+
+    @Autowired
+    private TestAndWorkService testAndWorkService;
 
     @Value("${fileMappingPath}")
     private String fileMappingPath;    //文件存放根目录
@@ -188,4 +195,39 @@ public class TrainSectionController {
         }
     }
 
+    /**
+     * 在线查看作业
+     */
+    @RequestMapping(value = "seeOnlinePractice", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean seeOnlinePractice(@RequestBody TrainParamDto trainParamDto) {
+        ResponseBean responseBean = new ResponseBean();
+        String sectionId = trainParamDto.getSectionId();
+        try {
+            Practice practice = testAndWorkService.selectPractice(sectionId);
+            responseBean.addSuccess(practice);
+        } catch (Exception e) {
+            logger.debug("培训-在线查看作业-失败", e);
+            responseBean.addError(e.getMessage());
+        }
+        return responseBean;
+    }
+
+    /**
+     * 在线查看试卷
+     */
+    @RequestMapping(value = "seeOnlineTestPaper", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean seeOnlineTestPaper(@RequestBody TrainParamDto trainParamDto) {
+        ResponseBean responseBean = new ResponseBean();
+        String sectionId = trainParamDto.getSectionId();
+        try {
+            Testpaper testPaper = testAndWorkService.selectTestpaper(sectionId);
+            responseBean.addSuccess(testPaper);
+        } catch (Exception e) {
+            logger.debug("培训-在线查看试卷-失败", e);
+            responseBean.addError(e.getMessage());
+        }
+        return responseBean;
+    }
 }

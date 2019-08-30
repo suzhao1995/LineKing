@@ -83,4 +83,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_TESTPAPER
 		where TID = #{tid}
 	</select>
+    <select id="selectPractice" resultType="com.rs.teach.mapper.studyAttr.entity.Practice">
+		select PID,PRACTICE_PATH
+		from TF_EL_PRACTICE,TF_EL_TRAIN_SECTION
+		where TF_EL_TRAIN_SECTION.PRACTICE_ID = TF_EL_PRACTICE.PRACTICE_ID
+		and TRAIN_SECTION_ID = #{sectionId}
+	</select>
+	<select id="selectTestpaper" resultType="com.rs.teach.mapper.studyAttr.entity.Testpaper">
+		select TID,TESTPAPER_PATH
+		from TF_EL_TESTPAPER,TF_EL_TRAIN_SECTION
+		where TF_EL_TRAIN_SECTION.TESTPAPER_ID = TF_EL_TESTPAPER.TESTPAPER_ID
+		and TRAIN_SECTION_ID = #{sectionId}
+	</select>
 </mapper>

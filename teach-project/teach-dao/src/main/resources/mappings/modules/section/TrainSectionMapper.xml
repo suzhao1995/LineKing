@@ -74,13 +74,9 @@
          ts.update_file_name,
          ts.practice_id,
          ts.testpaper_id,
-         ts.courseware_id,
-         t.TESTPAPER_PATH AS practiceUrl,
-         p.PRACTICE_PATH AS testpaperUrl
-        from tf_el_train_section ts,TF_EL_TESTPAPER t ,tf_el_practice p
-        where ts.testpaper_id = t.testpaper_id
-        and ts.practice_id = p.practice_id
-        and train_section_Id =  #{sectionId}
+         ts.courseware_id
+        from tf_el_train_section ts
+        where train_section_Id =  #{sectionId}
     </select>
 
     <select id="selectSectionList" resultType="com.rs.teach.mapper.section.entity.TrainSection">
