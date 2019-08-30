@@ -18,6 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where co.course_id = re.course_id
 			  and re.user_id = #{userId}
 			  and re.rela_type = '1' group by co.course_id,co.course_name
+	union all
+		select vi.video_id as course_id,vi.video_name as course_name from tf_el_video vi, user_course_rela re 
+    	where vi.video_id = re.course_id
+        and re.user_id = #{userId}
+        and re.rela_type = '3' group by vi.video_id,vi.video_name
 	</select>
 	
 	<resultMap type="java.util.HashMap" id="InfoMap">

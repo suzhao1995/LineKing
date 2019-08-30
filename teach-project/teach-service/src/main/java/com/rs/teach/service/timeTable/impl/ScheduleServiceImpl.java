@@ -42,4 +42,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 		dao.deleteSchedule(scheduleId);
 	}
 
+	@Override
+	public List<Map<String, Object>> getClassIdByUserId(String userId) {
+		return dao.queryClassIdByUserId(userId);
+	}
+
 }

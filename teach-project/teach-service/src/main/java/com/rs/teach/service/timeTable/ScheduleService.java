@@ -46,7 +46,7 @@ public interface ScheduleService{
 	public int modifySchedule(Schedule schedule);
 	
 	/**
-	* 查询用户所教班级
+	* 查询用户课表所教班级
 	* @param userId
 	* @throws
 	* @return List<StudyTeam>
@@ -64,4 +64,14 @@ public interface ScheduleService{
 	* @date 2019年8月13日 上午11:16:53
 	*/
 	public void delSchedule(String scheduleId);
+	
+	/**
+	* 查询用户课程所绑定的班级
+	* @param 
+	* @throws
+	* @return List<Map<String,Object>>
+	* @author suzhao
+	* @date 2019年8月30日 下午5:19:09
+	*/
+	public List<Map<String,Object>> getClassIdByUserId(String userId);
 }

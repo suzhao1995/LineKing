@@ -66,4 +66,14 @@ public interface ScheduleMapper{
 	* @date 2019年8月13日 上午11:16:53
 	*/
 	public void deleteSchedule(String scheduleId);
+	
+	/**
+	* 查询用户课程所绑定的班级
+	* @param 
+	* @throws
+	* @return List<Map<String,Object>>
+	* @author suzhao
+	* @date 2019年8月30日 下午5:19:09
+	*/
+	public List<Map<String,Object>> queryClassIdByUserId(String userId);
 }

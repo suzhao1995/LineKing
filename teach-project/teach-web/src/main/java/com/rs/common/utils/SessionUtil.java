@@ -27,17 +27,23 @@ public class SessionUtil {
  
 	private static ConcurrentHashMap<String, HttpSession> sessionMap;
 	//异地登录存储map
-	public static ConcurrentHashMap<String, Object> remoteLoginMap;
+	private static ConcurrentHashMap<String, String> remoteLoginMap;
 	static {
 		sessionMap = new ConcurrentHashMap<>();
-		remoteLoginMap =  new ConcurrentHashMap<>();
+		remoteLoginMap =  new ConcurrentHashMap<String, String>();
 	}
  
 	public static ConcurrentHashMap<String, HttpSession> getSessionMap() {
 		sessionMap = cleanMap(sessionMap);
 		return sessionMap;
 	}
- 
+	
+	public static  ConcurrentHashMap<String, String> getRemoteLoginMap(){
+		remoteLoginMap = cleanRemoteMap(remoteLoginMap);
+		return remoteLoginMap;
+	}
+	
+	//清除过期的session信息
 	private static synchronized ConcurrentHashMap<String, HttpSession> cleanMap(
 			ConcurrentHashMap<String, HttpSession> map) {
 		if (map.size() < 1) {
@@ -66,7 +72,8 @@ public class SessionUtil {
 		list = null;
 		return map;
 	}
- 
+	
+	//重复登录，清除上一次用户登录的信息
 	public static synchronized void cleanOldSession(String userInfo) {
 		if (sessionMap != null && sessionMap.size() > 0) {
 			Set<Entry<String, HttpSession>> entrySet = sessionMap.entrySet();
@@ -86,14 +93,42 @@ public class SessionUtil {
 			}
 			if (StringUtils.isNotBlank(sessionKey)) {
 				sessionMap.remove(sessionKey);
-				remoteLoginMap.put(sessionKey, "remoteLogin");	//添加进异地登录Map,并在切面进行判断
+				remoteLoginMap.put(sessionKey, String.valueOf(new Date().getTime()));	//添加进异地登录Map,并在切面进行判断
 			}
 		}
 	}
 	
+	//清除异地登录的过期信息 
+	private static synchronized  ConcurrentHashMap<String,String> cleanRemoteMap(ConcurrentHashMap<String,String> map){
+		if(map.size() < 1){
+			return map;
+		}
+		List<String> list = new ArrayList<>();	//保存清除数据的list集合
+		
+		Set<Entry<String, String>> entrySet = map.entrySet();
+		for(Entry<String, String> entry : entrySet){
+			//获取当前时间	精确到秒
+			long nowTime = new Date().getTime();
+			long remoteTime = Long.valueOf(entry.getValue());
+			long maxAge = sessionMaxAge * 1000L;
+			long remoteAge = nowTime - remoteTime;
+			if(remoteAge > maxAge){
+				list.add(entry.getKey());
+			}
+			
+		}
+		if(list != null && list.size() > 0){
+			for(int i = 0; i < list.size(); i++){
+				map.remove(list.get(i));
+			}
+		}
+		list = null;
+		return map;
+	}
 	public static synchronized void cleanOldRemoteMap(String sessionId){
 		if(remoteLoginMap != null && remoteLoginMap.size() > 0){
 			remoteLoginMap.remove(sessionId);
 		}
 	}
+	
 }

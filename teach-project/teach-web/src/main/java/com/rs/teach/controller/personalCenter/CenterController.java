@@ -259,7 +259,7 @@ public class CenterController{
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		//查询用户所教班级
-		List<Map<String,Object>> teams = scheduleService.getStudyTeamByUserId(userId);
+		List<Map<String,Object>> teams = scheduleService.getClassIdByUserId(userId);
 		ajaxData.put("teams", teams);
 		String classId = request.getParameter("classId");
 		if("all".equals(classId)){
@@ -352,7 +352,7 @@ public class CenterController{
 	*/
 	@RequestMapping("/queryModifyCourse")
 	@ResponseBody
-	public ResponseBean queryNote(HttpServletRequest request, HttpServletResponse response){
+	public ResponseBean queryModifyCourse(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
 		
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
@@ -360,13 +360,24 @@ public class CenterController{
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		String sectionId = request.getParameter("sectionId");
+		String relaType = request.getParameter("relaType");
 		
-		Section modifySec = sectionService.getSectionById(sectionId);
-		ajaxData.put("totleSort", modifySec.getTotleSectionSort());
-		ajaxData.put("totleName", modifySec.getTotleSectionName());
-		ajaxData.put("sort", modifySec.getSectionSort());
-		ajaxData.put("name", modifySec.getSectionName());
-		ajaxData.put("sectionId", modifySec.getSectionId());
+		if("1".equals("relaType")){
+			Section modifySec = sectionService.getSectionById(sectionId);
+			ajaxData.put("totleSort", modifySec.getTotleSectionSort());
+			ajaxData.put("totleName", modifySec.getTotleSectionName());
+			ajaxData.put("sort", modifySec.getSectionSort());
+			ajaxData.put("name", modifySec.getSectionName());
+			ajaxData.put("sectionId", modifySec.getSectionId());
+		}
+		if("3".equals(relaType)){
+			VideoSection videoSection = videoService.getSectionBySecId(sectionId);
+			ajaxData.put("totleSort", videoSection.getVideoTotleSort());
+			ajaxData.put("totleName", videoSection.getVideoTotleName());
+			ajaxData.put("sort", videoSection.getVideoSectionSort());
+			ajaxData.put("name", videoSection.getVideoSectionName());
+			ajaxData.put("sectionId", videoSection.getVideoSectionId());
+		}
 		//查看我修改的课件信息
 		List<Section> sections = sectionService.getSectionByUser(userId, sectionId);
 		if(sections.size() > 0){

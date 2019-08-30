@@ -104,8 +104,8 @@ public class TeachAspect {
 		}else if(StringUtils.isNotBlank(request.getHeader("sessionKey"))){
 			sessionId = request.getHeader("sessionKey");
 		}
-	    Map<String,Object> remoteLoginMap = SessionUtil.remoteLoginMap;
-	    if(remoteLoginMap != null && "remoteLogin".equals(remoteLoginMap.get(sessionId))){
+	    Map<String,String> remoteLoginMap = SessionUtil.getRemoteLoginMap();
+	    if(StringUtils.isNotEmpty(remoteLoginMap.get(sessionId))){
 	    	resultMap.put("isLogin", "1030");		//异地登录code
 	    	SessionUtil.cleanOldRemoteMap(sessionId);
 	    }else{

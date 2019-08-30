@@ -16,20 +16,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="querySchedulesByUserId" parameterType="java.lang.String" resultMap="schedules">
-		select sd.SCHEDULE_ID,
-			   sd.TEACHUSER_ID,
-			   tu.user_Name,
-			   ce.course_Name as curriculum,
-			   sd.curriculumId,
-			   sd.START_DATE,
-			   sd.END_DATE,
-			   sd.WEEK_DAY,
-			   ca.Class_Name
-		    from TF_EL_SCHEDULE sd, TF_EL_COURSE ce,TF_EL_CLASS ca, TF_EL_TEACH_USER tu
-			where sd.CURRICULUMID = ce.course_Id
-				and sd.CLASSID = ca.Class_Id
-				and sd.TEACHUSER_ID = tu.user_Id
-				and sd.TEACHUSER_ID = #{userId} order by sd.WEEK_DAY,to_date(sd.start_date,'hh24:mi')
+			select * from (select sd.SCHEDULE_ID,
+	         sd.TEACHUSER_ID,
+	         tu.user_Name,
+	         ce.course_Name as curriculum,
+	         sd.curriculumId,
+	         sd.START_DATE,
+	         sd.END_DATE,
+	         sd.WEEK_DAY,
+	         ca.Class_Name
+	        from TF_EL_SCHEDULE sd, TF_EL_COURSE ce,TF_EL_CLASS ca, TF_EL_TEACH_USER tu
+	      where sd.CURRICULUMID = ce.course_Id
+	        and sd.CLASSID = ca.Class_Id
+	        and sd.TEACHUSER_ID = tu.user_Id
+	        and sd.TEACHUSER_ID = #{userId}
+	union all
+	select sd.SCHEDULE_ID,
+	         sd.TEACHUSER_ID,
+	         tu.user_Name,
+	         vi.video_name as curriculum,
+	         sd.curriculumId,
+	         sd.START_DATE,
+	         sd.END_DATE,
+	         sd.WEEK_DAY,
+	         ca.Class_Name
+	        from TF_EL_SCHEDULE sd, tf_el_video vi,TF_EL_CLASS ca, TF_EL_TEACH_USER tu
+	      where sd.CURRICULUMID = vi.video_id
+	        and sd.CLASSID = ca.Class_Id
+	        and sd.TEACHUSER_ID = tu.user_Id
+	        and sd.TEACHUSER_ID = #{userId}) sd order by sd.WEEK_DAY,to_date(sd.start_date,'hh24:mi')
 	</select>
 	
 	<insert id="insertSchedule" parameterType="com.rs.teach.mapper.timeTable.entity.Schedule">
@@ -69,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="classId" column="CLASSID" />
 		<result property="className" column="CLASS_NAME" />
 	</resultMap>
+	<!-- 查询用户课表所教班级 -->
 	<select id="queryStudyTeamById" parameterType="java.lang.String" resultMap="stMap">
 		select t.classid,tc.class_name from TF_EL_SCHEDULE t,tf_el_class tc 
 		where t.classid = tc.class_id and t.teachuser_id = #{userId} group by t.classid, tc.class_name
@@ -77,4 +93,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteSchedule">
 		delete from TF_EL_SCHEDULE where SCHEDULE_ID = #{scheduleId}
 	</delete>
+	
+	<!-- 查询用户课程所绑定班级 -->
+	<select id="queryClassIdByUserId" parameterType="java.lang.String" resultMap="stMap">
+		select  tc.class_id, tc.class_name from user_course_rela re, tf_el_class tc 
+    where tc.class_id = re.class_id and re.user_id = #{userId} group by tc.class_id, tc.class_name
+	</select>
 </mapper>

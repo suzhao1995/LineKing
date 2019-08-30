@@ -87,12 +87,12 @@ public class InformationController{
 		User userInfo = userService.getUserById(userId);
 		if(userInfo != null){
 			userInfo.setUserName(userName);
-			userInfo.setPassWord(passWord);
 			userInfo.setSerialNumber(serialNumber);
 			userInfo.setModifier(userId);
-			userInfo.setUpdate(DateUtil.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"));
+			userInfo.setUpdate(DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 			String isDefault = userInfo.getIsDefault();
 			if("0".equals(isDefault) && !passWord.equals(userInfo.getPassWord())){
+				userInfo.setPassWord(passWord);
 				userInfo.setIsDefault("1");
 			}
 			int result = userService.modifyUser(userInfo);
