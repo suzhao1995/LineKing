@@ -154,7 +154,7 @@ public class TrainSectionController {
             //查询返回页面信息（pdf图片文件）
             String coursewareUrl = fileMappingPath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
                     + "\\" + trainSection.getCoursewareId() + "_" + trainSection.getUpdateFileName()
-                    + trainSection.getTrainLitterSectionType();
+                    + ".pdf";
             trainSection.setCoursewareUrl(coursewareUrl);
 
             map.put("trainSection", trainSection);
