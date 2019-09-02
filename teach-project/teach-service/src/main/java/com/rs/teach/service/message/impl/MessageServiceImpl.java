@@ -34,5 +34,16 @@ public class MessageServiceImpl implements MessageService{
 	public int modifyIsRead(String userId, String messageId) {
 		return mapper.updateIsRead(userId, messageId);
 	}
+
+	@Override
+	public List<Message> getMessages() {
+		return mapper.queryMessages();
+	}
+
+	@Override
+	public int addMessages(Message message) {
+		return mapper.addMessages(message);
+	}
+	
 	
 }

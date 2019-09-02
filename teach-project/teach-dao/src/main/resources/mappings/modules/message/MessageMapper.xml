@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="messageTime" column="MESSAGE_TIME" />
 		<result property="userId" column="USER_ID" />
 		<result property="isRead" column="IS_READ" />
+		<result property="isPopUp" column="IS_POPUP"/>
 	</resultMap>
 	<select id="queryMessage" parameterType="java.lang.String" resultMap="message">
 		select * from tf_el_message t 
@@ -57,4 +58,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateIsRead" parameterType="java.lang.String">
 		update tf_el_message t set t.IS_READ = '1' where t.USER_ID = #{userId} and t.MESSAGE_ID = #{messageId}
 	</update>
+	
+	<!-- 管理员 start -->
+	<select id="queryMessages" resultMap="message">
+		select * from tf_el_message
+	</select>
+	
+	<insert id="addMessages" parameterType="com.rs.teach.mapper.massage.entity.Message">
+		insert into tf_el_message(message_id,message_type,massage_content,message_time,user_id,IS_POPUP)
+	select SEQ_EL_MESSAGE.nextval,
+	       #{messageType},
+	       #{messageContent},
+	       #{messageTime},
+	       t.user_id,
+	       #{isPopUp}
+	       from tf_el_teach_user t
+	</insert>
 </mapper>

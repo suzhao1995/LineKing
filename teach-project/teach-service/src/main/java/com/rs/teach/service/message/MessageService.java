@@ -45,4 +45,25 @@ public interface MessageService{
 	* @date 2019年8月5日 上午11:36:19
 	*/
 	public int modifyIsRead(String userId,String messageId);
+	
+	//管理员 start
+	/**
+	* 查询所有消息
+	* @param 
+	* @throws
+	* @return List<Message>
+	* @author suzhao
+	* @date 2019年9月2日 下午6:21:50
+	*/
+	public List<Message> getMessages();
+	
+	/**
+	* 批量新增
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年9月2日 下午6:44:44
+	*/
+	public int addMessages(Message message);
 }

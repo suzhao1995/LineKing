@@ -53,4 +53,26 @@ public interface MessageMapper{
 	* @date 2019年8月5日 上午11:36:19
 	*/
 	public int updateIsRead(@Param("userId") String userId, @Param("messageId") String messageId);
+	
+	//管理员 start
+	
+	/**
+	* 查询所有消息
+	* @param 
+	* @throws
+	* @return List<Message>
+	* @author suzhao
+	* @date 2019年9月2日 下午6:22:23
+	*/
+	public List<Message> queryMessages();
+	
+	/**
+	* 批量新增
+	* @param 
+	* @throws
+	* @return int
+	* @author suzhao
+	* @date 2019年9月2日 下午6:45:37
+	*/
+	public int addMessages(Message message);
 }
