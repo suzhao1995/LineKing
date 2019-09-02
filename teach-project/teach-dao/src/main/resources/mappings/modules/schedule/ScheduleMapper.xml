@@ -81,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<resultMap type="java.util.Map" id="stMap">
-		<result property="classId" column="CLASSID" />
+		<result property="classId" column="CLASS_ID" />
 		<result property="className" column="CLASS_NAME" />
 	</resultMap>
 	<!-- 查询用户课表所教班级 -->
