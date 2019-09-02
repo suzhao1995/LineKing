@@ -94,7 +94,7 @@ public class ComponantController{
 	*/
 	@RequestMapping("/upLoadFile")
 	@ResponseBody
-	public ResponseBean upLoadFile(HttpServletRequest request,  @RequestParam("file") MultipartFile file){
+	public ResponseBean verifyUpLoadFile(HttpServletRequest request,  @RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		//上传文件
 		Map<String,Object> resultMap = FileUpDownUtil.fileUpLoad(request, file);
