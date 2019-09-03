@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="videoWare" column="VIDEOWARE" />
 		<result property="testPaper" column="TESTPAPER" />
 		<result property="videoType" column="VIDEO_TYPE" />
+		<result property="videoPath" column="VIDEO_PATH"/>
 	</resultMap>
 	
 	<resultMap type="com.rs.teach.mapper.video.entity.VideoSection" id="videoSection">
@@ -40,19 +41,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</where>
 	</select>
 
-    <select id="selectVideoSection" resultType="com.rs.teach.mapper.video.entity.VideoSection">
-
-	</select>
+    
 
 	<select id="queryVideoSectionByVideoId" resultType="com.rs.teach.mapper.section.entity.Section">
 		select 	VIDEO_SECTION_ID as sectionId,
-				VIDEO_SECTION_NAME as ,
-				VIDEO_ID as,
-				VIDEO_SECTION_URL as,
-				VIDEO_SECTION_PATH as ,
-				VIDEO_SECTION_SORT as,
-				VIDEO_TOTLE_SORT as ,
-				VIDEO_TOTLE_NAME as,
+				VIDEO_SECTION_NAME as sectionName,
+				VIDEO_ID as courseId,
+				VIDEO_SECTION_URL as sectionUrl,
+				VIDEO_SECTION_SORT as sectionSort,
+				VIDEO_TOTLE_SORT as totleSectionSort,
+				VIDEO_TOTLE_NAME as totleSectionName,
 				PAPER_ID as testPaperId,
 				WORK_ID as workId,
 				COURSE_WARE_ID as coursewareId
@@ -136,4 +134,127 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		and ucr.user_id = #{userId}
  		and ucr.class_id = #{classId} order by vs.videototle_sort, vs.videosection_sort
 	</select>
+	
+	<!-- 管理员系统sql Start -->
+	<select id="adminQueryVideos" parameterType="java.lang.String" resultMap="video">
+		select * from tf_el_video where VIDEO_TYPE = #{videoType}
+	</select>
+	
+	<select id="adminVideosInit" parameterType="java.lang.String" resultMap="video">
+		select * from tf_el_video
+		<where>
+			1 = 1
+			<if test="videoType != null and videoType != ''">
+				and VIDEO_TYPE = #{videoType}
+			</if>
+			<if test="videoName != null and videoName != ''">
+				and VIDEO_NAME like '%'||#{videoName}||'%'
+			</if>
+		</where>
+	</select>
+	
+	<!-- 新增视频课程 -->
+	<insert id="adminInsertVideo" parameterType="com.rs.teach.mapper.video.entity.Video">
+		insert into tf_el_video 
+			(
+				VIDEO_ID,
+				VIDEO_NAME,
+				VIDEO_URL,
+				VIDEO_PATH,
+				SCHOOLWORK,
+				VIDEOWARE,
+				TESTPAPER,
+				VIDEO_TYPE
+			)
+		values
+			(
+				#{videoId},
+				#{videoName},
+				#{videoUrl},
+				#{videoPath},
+				#{schoolWork},
+				#{videoWare},
+				#{testPaper},
+				#{videoType}
+			)
+	</insert>
+	
+	<delete id="adminDelVideo" parameterType="java.lang.String">
+		delete from tf_el_video where VIDEO_ID = #{videoId}
+	</delete>
+	
+	<update id="adminUpdate" parameterType="com.rs.teach.mapper.video.entity.Video">
+		update tf_el_video t
+		<set>
+			<if test="videoUrl != null and videoUrl != ''">
+				t.VIDEO_URL = #{videoUrl},
+			</if>
+			<if test="videoPath != null and videoPath != ''">
+				t.VIDEO_PATH = #{videoPath},
+			</if>
+			t.VIDEO_NAME = #{videoName},
+			t.VIDEO_TYPE = #{videoType},
+			t.SCHOOLWORK = #{schoolWork},
+			t.VIDEOWARE = #{videoWare},
+			t.TESTPAPER = #{testPaper}
+		</set>
+		where t.VIDEO_ID = #{videoId}
+	</update>
+	
+	<!-- 查询大章节信息 -->
+	<resultMap type="java.util.HashMap" id="totleInfo">
+		<result property="totleSort" column="TOTLE_SECTION_SORT" />
+		<result property="totleName" column="TOTLE_SECTION_NAME" />
+	</resultMap>
+	<select id="adminTotleInfo" parameterType="java.lang.String">
+		select TOTLE_SECTION_SORT,TOTLE_SECTION_NAME from tf_el_train_totle_section where course_Id = #{videoId} order by TOTLE_SECTION_SORT
+	</select>
+	
+	<!-- 根据video查询视频课程的所有章节信息(包含未添加小章节的大章节信息) -->
+	<resultMap type="java.util.HashMap" id="adminVideoInfo">
+		<result property="sectionId" column="videosection_id"/>
+		<result property="sectionSort" column="videosection_sort"/>
+		<result property="sectionName" column="videosection_name"/>
+		<result property="totleSectionSort" column="videototle_sort"/>
+		<result property="totleSectionName" column="videototle_name"/>
+	</resultMap>
+	<select id="adminGetVideoInfo" parameterType="java.lang.String" resultMap="adminVideoInfo">
+		select t.videosection_id,t.videosection_sort,t.videosection_name,t.videototle_sort,t.videototle_name 
+			from tf_el_video_section t
+       	where VIDEO_ID = #{videoId}
+	union
+		select '','','',ts.totle_section_sort,ts.totle_section_name 
+			from tf_el_train_totle_section ts 
+		where ts.course_id = #{videoId}
+			and not exists (select * from tf_el_video_section t where t.videototle_name = ts.totle_section_name)
+	</select>
+	
+	<!-- 新增大章节 -->
+	<insert id="adminAddTotleInfo" parameterType="com.rs.teach.mapper.backstage.entity.TotleSection">
+		insert into tf_el_train_totle_section
+			(
+				ID,
+				TOTLE_SECTION_SORT,
+				TOTLE_SECTION_NAME,
+				COURSE_ID
+			)
+		values
+			(
+				SEQ_EL_TRAIN_TOTLE_SECTION.nextval,
+				#{totleSectionSort},
+				#{totleSectionName},
+				#{courseId}
+			)
+	</insert>
+	
+	<select id="getTotleSection" parameterType="java.lang.String" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+		select * from tf_el_train_totle_section where ID = #{id}
+	</select>
+	
+	<update id="updateTotleSection" parameterType="com.rs.teach.mapper.backstage.entity.TotleSection">
+		update TF_EL_TRAIN_TOTLE_SECTION
+        set TOTLE_SECTION_NAME = #{totleSectionName}
+        where id = #{id}
+	</update>
+	
 </mapper>

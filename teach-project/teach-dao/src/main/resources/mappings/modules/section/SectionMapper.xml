@@ -134,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="classId" column="class_id"/>
 		<result property="coursewareId" column="courseware_id"/>
 	</resultMap>
-	<!-- 查询章节学习状态 -->
+	<!-- 查询章节学习状态  todo-->
 	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
 		select se.section_id,se.totlesection_sort,se.totlesection_name,se.section_sort,se.section_name,
        se.course_id,ucr.isfinish,ucr.class_id,se.courseware_id

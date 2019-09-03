@@ -131,13 +131,13 @@ public class BeforeMaterielController{
 				//删除封面图片
 				DeleteFileUtil.deleteFile(materiel.getMaterielImgUrl());
 				
+				materielService.delMateriel(materielId);
+				bean.addSuccess();
 			}
 		} catch (Exception e) {
 			bean.addError("删除物料失败");
 			logger.info("------删除物料失败------"+e);
 		}
-		materielService.delMateriel(materielId);
-		bean.addSuccess();
 		return bean;
 	}
 	

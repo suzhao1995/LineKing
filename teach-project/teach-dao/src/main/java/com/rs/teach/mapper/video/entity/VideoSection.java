@@ -32,6 +32,8 @@ public class VideoSection implements Serializable{
 	
 	private String videoTotleName;	//大章节名
 	
+	private String videoTotleSortId;	//大章节序号id
+	
 	private String paperId;		//试卷ID
 	
 	private String workId;	//作业ID

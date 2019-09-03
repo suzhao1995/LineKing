@@ -22,6 +22,8 @@ public class Video implements Serializable{
 	
 	private String videoUrl;	//视频课程封面
 	
+	private String videoPath;	//视频封面服务器路径
+	
 	private String schoolWork;	//是否含有作业（1：是；0：否）
 	
 	private String videoWare;	//是否含有视频课件（1：是；0：否）
@@ -104,6 +106,12 @@ public class Video implements Serializable{
 	}
 	public void setVideoNum(String videoNum) {
 		this.videoNum = videoNum;
+	}
+	public String getVideoPath() {
+		return videoPath;
+	}
+	public void setVideoPath(String videoPath) {
+		this.videoPath = videoPath;
 	}
 	
 	

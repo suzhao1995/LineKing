@@ -3,6 +3,7 @@ package com.rs.teach.service.video.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.video.entity.VideoSection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +63,60 @@ public class VideoServiceImpl implements VideoService{
 		return mapper.querySectionStatus(videoId, userId, classId);
 	}
 
-    @Override
-    public VideoSection selectVideoSection(String videoSectionId) {
-		return mapper.selectVideoSection(videoSectionId);
-    }
-
 	@Override
 	public List<Section> queryVideoSectionByVideoId(String videoId) {
 		return mapper.queryVideoSectionByVideoId(videoId);
+	}
+	
+	//管理员模块 Start
+	@Override
+	public List<Video> adminGetVideos(String videoType) {
+		return mapper.adminQueryVideos(videoType);
+	}
+
+	@Override
+	public List<Video> adminVideosInit(String videoName, String videoType) {
+		return mapper.adminVideosInit(videoName, videoType);
+	}
+
+	@Override
+	public void adminAddVideo(Video video) {
+		mapper.adminInsertVideo(video);
+	}
+
+	@Override
+	public void adminDelVideo(String videoId) {
+		mapper.adminDelVideo(videoId);
+	}
+
+	@Override
+	public void adminUpdate(Video video) {
+		mapper.adminUpdate(video);
+	}
+
+	@Override
+	public List<Map<String,String>> adminTotleInfo(String videoId) {
+		return mapper.adminTotleInfo(videoId);
+	}
+
+	@Override
+	public List<Map<String, Object>> adminGetVideoInfo(String videoId) {
+		return mapper.adminGetVideoInfo(videoId);
+	}
+
+	@Override
+	public int adminAddTotleInfo(TotleSection totleSection) {
+		return mapper.adminAddTotleInfo(totleSection);
+	}
+
+	@Override
+	public TotleSection getTotleSection(String id) {
+		return mapper.getTotleSection(id);
+	}
+
+	@Override
+	public void updateTotleSection(TotleSection totleSection) {
+		mapper.updateTotleSection(totleSection);
 	}
 
 }

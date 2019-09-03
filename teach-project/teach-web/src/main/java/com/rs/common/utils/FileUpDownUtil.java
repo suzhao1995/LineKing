@@ -604,9 +604,15 @@ public class FileUpDownUtil {
             if (StringUtils.isEmpty(section.getSectionUrl())) {
                 continue;
             }
-
-            String filePath = savePath + section.getSectionUrl().replace("/", "\\");
-            String fileRealPath = filePath + "\\" + section.getCoursewareId() + "_" + section.getUpdateFileName() + section.getSectionType();
+            String fileRealPath = null;
+            if(section.getSectionUrl().endsWith("mp4")){
+            	//视频课件下载
+            	fileRealPath = section.getSectionUrl();
+            }else{
+            	//普通课件下载
+            	String filePath = savePath + section.getSectionUrl().replace("/", "\\");
+            	fileRealPath = filePath + "\\" + section.getCoursewareId() + "_" + section.getUpdateFileName() + section.getSectionType();
+            }
             File file = new File(fileRealPath);
             if (file.exists()) {
                 //服务器端创建文件临时储存二级目录
