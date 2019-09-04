@@ -119,4 +119,24 @@ public class VideoServiceImpl implements VideoService{
 		mapper.updateTotleSection(totleSection);
 	}
 
+	@Override
+	public List<VideoSection> adminGetVedioSection(String totleSortId, String videoId) {
+		return mapper.adminGetVedioSection(totleSortId, videoId);
+	}
+
+	@Override
+	public void insertVideoSection(VideoSection videoSection) {
+		mapper.insertVideoSection(videoSection);
+	}
+
+	@Override
+	public void delVideoSection(String videoSectionId) {
+		mapper.delVideoSection(videoSectionId);
+	}
+
+	@Override
+	public void updateVideoSection(VideoSection videoSection) {
+		mapper.updateVideoSection(videoSection);
+	}
+
 }

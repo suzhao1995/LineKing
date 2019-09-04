@@ -64,4 +64,14 @@ public class TestAndWorkServiceImpl implements TestAndWorkService {
         return mapper.selectTestpaper(sectionId);
     }
 
+	@Override
+	public void delTestPaper(String tid) {
+		mapper.delTestPaper(tid);
+	}
+
+	@Override
+	public void delWork(String pid) {
+		mapper.delWork(pid);
+	}
+
 }

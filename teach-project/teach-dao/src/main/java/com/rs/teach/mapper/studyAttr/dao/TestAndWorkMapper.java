@@ -72,4 +72,24 @@ public interface TestAndWorkMapper{
     Practice selectPractice(@Param("sectionId") String sectionId);
 
 	Testpaper selectTestpaper(@Param("sectionId") String sectionId);
+	
+	/**
+	* 删除试卷
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:36:00
+	*/
+	void delTestPaper(String tid);
+	
+	/**
+	* 删除试卷
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:36:00
+	*/
+	void delWork(String pid);
 }

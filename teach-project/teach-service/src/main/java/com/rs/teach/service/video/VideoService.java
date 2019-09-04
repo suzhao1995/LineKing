@@ -198,4 +198,44 @@ public interface VideoService{
 	*/
 	public void updateTotleSection(TotleSection totleSection);
 	
+	/**
+	* 根据大章节id 和 视频id查询视频课件信息
+	* @param 
+	* @throws
+	* @return List<VideoSection>
+	* @author suzhao
+	* @date 2019年9月4日 下午12:17:44
+	*/
+	public List<VideoSection> adminGetVedioSection(String totleSortId, String videoId);
+	
+	/**
+	* 上传视频课件
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:11:32
+	*/
+	public void insertVideoSection(VideoSection videoSection);
+	
+	/**
+	* 删除视频课件
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:44:41
+	*/
+	public void delVideoSection(String videoSectionId);
+	
+	/**
+	* 修改视频课件
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午5:39:43
+	*/
+	public void updateVideoSection(VideoSection videoSection);
+	
 }

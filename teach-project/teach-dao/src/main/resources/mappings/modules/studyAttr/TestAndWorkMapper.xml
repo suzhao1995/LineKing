@@ -4,6 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.studyAttr.dao.TestAndWorkMapper">
 	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Testpaper" id="testPaper">
+		<result property="tid" column="TID"/>
 		<result property="testpaperId" column="TESTPAPER_ID"/>
 		<result property="testpaperName" column="TESTPAPER_NAME"/>
 		<result property="testpaperUrl" column="TESTPAPER_URL"/>
@@ -11,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<resultMap type="com.rs.teach.mapper.studyAttr.entity.Practice" id="work">
+		<result property="pid" column="PID"/>
 		<result property="practiceId" column="PRACTICE_ID"/>
 		<result property="practiceFileName" column="PRACTICE_FILE_NAME"/>
 		<result property="practiceUrl" column="PRACTICE_URL"/>
@@ -95,4 +97,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where TF_EL_TRAIN_SECTION.TESTPAPER_ID = TF_EL_TESTPAPER.TESTPAPER_ID
 		and TRAIN_SECTION_ID = #{sectionId}
 	</select>
+	
+	<!-- 删除试卷 -->
+	<delete id="delTestPaper" parameterType="java.lang.String">
+		delete from TF_EL_TESTPAPER where TID = #{tid}
+	</delete>
+	
+	<!-- 删除试卷 -->
+	<delete id="delWork" parameterType="java.lang.String">
+		delete from TF_EL_PRACTICE where PID = #{pid}
+	</delete>
 </mapper>

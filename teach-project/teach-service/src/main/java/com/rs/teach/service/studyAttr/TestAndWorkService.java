@@ -82,4 +82,24 @@ public interface TestAndWorkService{
 	 * @return
 	 */
 	Testpaper selectTestpaper(String sectionId);
+	
+	/**
+	* 删除试卷
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:36:00
+	*/
+	void delTestPaper(String tid);
+	
+	/**
+	* 删除试卷
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月4日 下午3:36:00
+	*/
+	void delWork(String pid);
 }

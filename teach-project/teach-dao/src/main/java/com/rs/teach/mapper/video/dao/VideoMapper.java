@@ -64,4 +64,12 @@ public interface VideoMapper{
 	
 	public void updateTotleSection(TotleSection totleSection);
 	
+	public List<VideoSection> adminGetVedioSection(@Param("totleSortId") String totleSortId, @Param("videoId") String videoId);
+	
+	public void insertVideoSection(VideoSection videoSection);
+	
+	public void delVideoSection(String videoSectionId);
+	
+	public void updateVideoSection(VideoSection videoSection);
+	
 }

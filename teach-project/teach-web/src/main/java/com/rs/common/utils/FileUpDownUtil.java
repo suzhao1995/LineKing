@@ -468,11 +468,7 @@ public class FileUpDownUtil {
                 resultMap.put("code", "0");
                 resultMap.put("message", "文件上传成功");
 
-            } catch (IllegalStateException e) {
-                resultMap.put("code", "-1");
-                resultMap.put("message", "文件上传异常");
-                logger.error("---------文件上传异常---------", e);
-            } catch (Exception e) {
+            }catch (Exception e) {
                 resultMap.put("code", "-1");
                 resultMap.put("message", "文件上传异常");
                 logger.error("---------文件上传异常---------", e);

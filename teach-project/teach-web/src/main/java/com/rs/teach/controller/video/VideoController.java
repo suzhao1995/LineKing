@@ -274,6 +274,10 @@ public class VideoController{
 		String testId = request.getParameter("testId");
 		//查询试卷信息
 		Testpaper testPaper = testAndWorkService.getTestpaper(testId);
+		if(testPaper == null){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "试卷信息有误，请联系管理员！");
+			return bean;
+		}
 		bean.addSuccess(testPaper.getTestpaperPath()); 
 		return bean;
 	}
@@ -293,6 +297,10 @@ public class VideoController{
 		String workId = request.getParameter("workId");
 		//查询练习信息 
 		Practice work = testAndWorkService.getPracticeById(workId);
+		if(work == null){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "作业信息有误，请联系管理员！");
+			return bean;
+		}
 		bean.addSuccess(work.getPracticePath());
 		return bean;
 	}

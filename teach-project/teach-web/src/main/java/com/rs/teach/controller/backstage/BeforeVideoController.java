@@ -11,10 +11,13 @@ import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
 import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.entity.Section;
-import com.rs.teach.mapper.section.vo.TrainSectionVo;
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.mapper.video.entity.Video;
 import com.rs.teach.mapper.video.entity.VideoSection;
+import com.rs.teach.mapper.video.entity.VideoSectionVo;
+import com.rs.teach.service.studyAttr.TestAndWorkService;
 import com.rs.teach.service.sysCode.SysCodeService;
 import com.rs.teach.service.video.VideoService;
 
@@ -56,6 +59,9 @@ public class BeforeVideoController {
     
     @Autowired
 	private SysCodeService sysCodeService;
+    
+    @Autowired
+	private TestAndWorkService testAndWorkService;
     
     /**
     * 下载单个视频课件
@@ -294,7 +300,7 @@ public class BeforeVideoController {
 	*/
 	@RequestMapping("/initVideoSection")
 	@ResponseBody
-	public ResponseBean verifyinitVideoSection(HttpServletRequest request, HttpServletResponse response){
+	public ResponseBean initVideoSection(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
 		String videoId = request.getParameter("videoId");
@@ -305,7 +311,7 @@ public class BeforeVideoController {
 			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "该视频课程展示没有章节信息，请添加");
 			return bean; 
 		}
-		List<TrainSectionVo> videoList = groupByTotle(list);
+		List<VideoSectionVo> videoList = groupByTotle(list);
 		ajaxData.put("videoList", videoList);
 		bean.addSuccess(ajaxData);
 		return bean;
@@ -356,7 +362,7 @@ public class BeforeVideoController {
 		ResponseBean bean = new ResponseBean();
 		
 		String totleName = request.getParameter("totleName");
-		String totleId = request.getParameter("totleId");
+		String totleId = request.getParameter("videoTotleId");	//大章节id
 		
 		TotleSection totleSection = videoService.getTotleSection(totleId);
 		totleSection.setTotleSectionName(totleName);
@@ -372,7 +378,7 @@ public class BeforeVideoController {
 	}
 	
 	/**
-	* 添加课件信息
+	* 管理员---添加课件信息
 	* @param 
 	* @throws
 	* @return ResponseBean
@@ -393,15 +399,210 @@ public class BeforeVideoController {
 		videoSection.setVideoSectionId(DateUtil.dateFormat(new Date(), "yyyyMMddHHmmss"));	//视频课件id
 		videoSection.setVideoSectionName(videoSectionName); 	//视频课件名称
 		videoSection.setVideoId(request.getParameter("videoId"));	//视频课程id
+		videoSection.setVideoTotleSortId(request.getParameter("videoTotleId"));	//大章节id
 		//查询视频课件上传序号
-		
+		List<VideoSection> videoSections = videoService.adminGetVedioSection(request.getParameter("videoTotleId"), request.getParameter("videoId"));
+		if(videoSections.size() > 0){
+			int sort = Integer.valueOf(videoSections.get(videoSections.size() - 1).getVideoSectionSort()) + 1;
+			videoSection.setVideoSectionSort(String.valueOf(sort));
+		}else{
+			videoSection.setVideoSectionSort("1");
+		}
 		//上传视频
 		if(StringUtils.isNotEmpty(files[0].getOriginalFilename())){
 			MultipartFile videoSectionFile = files[0];
-			
+			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
+			if(resultMap != null && "0".equals(resultMap.get("code"))){
+				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
+				videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
+		}
+		//上传作业
+		Practice work = new Practice();
+		if(StringUtils.isNotEmpty(files[1].getOriginalFilename())){
+			MultipartFile workFile = files[1];
+			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
+			if(workMap != null && "0".equals(workMap.get("code"))){
+				videoSection.setWorkId(workMap.get("upLoadId").toString());
+				//插入作业表
+				work.setPracticeId(workMap.get("upLoadId").toString());
+				work.setPracticeFileName(workMap.get("updateFileName").toString());
+				work.setPracticePath(workMap.get("fileMappingPath").toString());
+				work.setPracticeUrl(workMap.get("pdfUrl").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
 		}
 		
+		Testpaper test = new Testpaper();
+		//上传考试文件
+		if(StringUtils.isNotEmpty(files[2].getOriginalFilename())){
+			MultipartFile paperFile = files[2];
+			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
+			if(paperMap != null && "0".equals(paperMap.get("code"))){
+				videoSection.setPaperId(paperMap.get("upLoadId").toString());
+	
+				//插入试卷表
+				test.setTestpaperId(paperMap.get("upLoadId").toString());
+				test.setTestpaperName(paperMap.get("updateFileName").toString());
+				test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
+				test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
+		}
 		
+		try {
+			videoService.insertVideoSection(videoSection);
+			testAndWorkService.insertPractice(work);
+			testAndWorkService.insertTestpaper(test);
+			bean.addSuccess();
+		} catch (Exception e) {
+			logger.error("-----视频模块视频上传入表失败----", e);
+			//删除原有课件
+			String[] filePath = new String[5];
+			filePath[0] = videoSection.getVideoSectionUrl();	//删除视频文件
+			filePath[1] = test.getTestpaperUrl();	//删除试卷文件
+			filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
+			filePath[3] = work.getPracticeUrl();	//删除作业文件
+			filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
+			DeleteFileUtil.deleteFiles(filePath);
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败！");
+		}
+		
+		return bean;
+	}
+	
+	/**
+	* 管理员---删除小章节
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年9月4日 下午3:26:52
+	*/
+	@RequestMapping("/delVideoSection")
+	@ResponseBody
+	public ResponseBean delVideoSection(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		String videoSectionId = request.getParameter("videoSectionId");
+		//查询小章节信息
+		VideoSection videoSection = videoService.getSectionBySecId(videoSectionId);
+		if(videoSection == null){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "小章节不存在！");
+			return bean;
+		}
+		//查询章节绑定的作业
+		Practice work = testAndWorkService.getPracticeById(videoSection.getWorkId());
+		if(work != null){
+			DeleteFileUtil.deleteFile(work.getPracticeUrl()); 	//删除pdf文件
+			String pptUrl = work.getPracticeUrl().split("[.]")[0] + ".ppt";
+			DeleteFileUtil.deleteFile(pptUrl);
+			testAndWorkService.delWork(work.getPid());
+		}
+		//查询章节绑定的试卷
+		Testpaper test = testAndWorkService.getTestpaper(videoSection.getPaperId());
+		if(test != null){
+			//删除原有课件
+			DeleteFileUtil.deleteFile(test.getTestpaperUrl());	//删除pdf文件
+			String pptUrl = test.getTestpaperUrl().split("[.]")[0] + ".ppt";
+			DeleteFileUtil.deleteFile(pptUrl);
+			testAndWorkService.delTestPaper(test.getTid());
+		}
+		//删除小章节
+		DeleteFileUtil.deleteFile(videoSection.getVideoSectionUrl());
+		videoService.delVideoSection(videoSectionId);
+		bean.addSuccess();
+		return bean;
+	}
+	
+	/**
+	* 管理员---编辑小章节
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年9月4日 下午3:48:01
+	*/
+	@RequestMapping("/updateVideoSection")
+	@ResponseBody
+	public ResponseBean updateVideoSection(HttpServletRequest request, HttpServletResponse response, @RequestParam("files") MultipartFile[] files){
+		ResponseBean bean = new ResponseBean();
+		String videoSectionId = request.getParameter("videoSectionId");
+		
+		//查询小章节信息
+		VideoSection modify = videoService.getSectionBySecId(videoSectionId);
+		if(modify == null){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "小章节不存在！");
+			return bean;
+		}
+		VideoSection videoSection = new VideoSection();
+		videoSection.setVideoSectionId(videoSectionId); 	//章节id
+		videoSection.setVideoSectionName(request.getParameter("videoSectionName")); 	//章节名称
+		videoSection.setVideoTotleSortId(modify.getVideoTotleSortId()); 	//大章节序号id
+		videoSection.setVideoId(modify.getVideoId());	//视频课程id
+		videoSection.setVideoSectionSort(modify.getVideoSectionSort());	//视频章节序号
+		//上传视频
+		if(StringUtils.isNotEmpty(files[0].getOriginalFilename())){
+			MultipartFile videoSectionFile = files[0];
+			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
+			if(resultMap != null && "0".equals(resultMap.get("code"))){
+				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
+				videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
+		}
+		//作业
+		Practice work = new Practice();
+		if(StringUtils.isNotEmpty(files[1].getOriginalFilename())){
+			MultipartFile workFile = files[1];
+			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
+			if(workMap != null && "0".equals(workMap.get("code"))){
+				videoSection.setWorkId(workMap.get("upLoadId").toString());
+				//插入作业表
+				work.setPracticeId(workMap.get("upLoadId").toString());
+				work.setPracticeFileName(workMap.get("updateFileName").toString());
+				work.setPracticePath(workMap.get("fileMappingPath").toString());
+				work.setPracticeUrl(workMap.get("pdfUrl").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
+		}
+		
+		Testpaper test = new Testpaper();
+		//上传考试文件
+		if(StringUtils.isNotEmpty(files[2].getOriginalFilename())){
+			MultipartFile paperFile = files[2];
+			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
+			if(paperMap != null && "0".equals(paperMap.get("code"))){
+				videoSection.setPaperId(paperMap.get("upLoadId").toString());
+	
+				//插入试卷表
+				test.setTestpaperId(paperMap.get("upLoadId").toString());
+				test.setTestpaperName(paperMap.get("updateFileName").toString());
+				test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
+				test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
+			}else{
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+				return bean;
+			}
+		}
+		try {
+			videoService.updateVideoSection(videoSection);
+			if(StringUtils.isNotEmpty(videoSection.getVideoSectionUrl()) && StringUtils.isNotEmpty(videoSection.getVideoSectionPath())){
+				
+			}
+		} catch (Exception e) {
+			
+		}
 		
 		return bean;
 	}
@@ -554,8 +755,8 @@ public class BeforeVideoController {
 	/*
 	 * 按大章节目录进行分组
 	 * */
-	private static List<TrainSectionVo> groupByTotle(List<Map<String,Object>> list){
-		List<TrainSectionVo> sectionList = new ArrayList<TrainSectionVo>();
+	private static List<VideoSectionVo> groupByTotle(List<Map<String,Object>> list){
+		List<VideoSectionVo> sectionList = new ArrayList<VideoSectionVo>();
 		//按大章节目录进行分组
 		Map<String,List<Map<String,Object>>> map = new HashMap<String,List<Map<String,Object>>>();
 		for(Map smap : list){
@@ -572,11 +773,12 @@ public class BeforeVideoController {
 		Iterator<Set> iterator = set.iterator();
 		while(iterator.hasNext()){
 			Map.Entry<String, List<Map<String,Object>>> entry = (Entry<String, List<Map<String,Object>>>) iterator.next();
-			TrainSectionVo sectionVo = new TrainSectionVo();
-			sectionVo.setTrainSectionSort(entry.getKey());
-			sectionVo.setTrainSectionName(String.valueOf(entry.getValue().get(0).get("totleSectionName")));
+			VideoSectionVo sectionVo = new VideoSectionVo();
+			sectionVo.setVideoTotleSort(entry.getKey());
+			sectionVo.setVideoTotleId(String.valueOf(entry.getValue().get(0).get("totleSortId")));
+			sectionVo.setVideoTotleName(String.valueOf(entry.getValue().get(0).get("totleSectionName")));
 			if(!"null".equals(String.valueOf(entry.getValue().get(0).get("sectionId"))) && StringUtils.isNotEmpty(String.valueOf(entry.getValue().get(0).get("sectionId")))){
-				sectionVo.setSectionStatusList(entry.getValue());
+				sectionVo.setVideoSectionList(entry.getValue());
 			}
 			sectionList.add(sectionVo);
 		}

@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="videoSectionUrl" column="VIDEOSECTION_URL" />
 		<result property="videoSectionPath" column="VIDEOSECTION_PATH" />
 		<result property="videoSectionSort" column="VIDEOSECTION_SORT" />
+		<result property="videoTotleSortId" column="VIDEOTOTLE_SORTID" />
 		<result property="videoTotleSort" column="VIDEOTOTLE_SORT" />
 		<result property="videoTotleName" column="VIDEOTOTLE_NAME" />
 		<result property="paperId" column="PAPER_ID" />
@@ -120,7 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="querySectionBySecId" parameterType="java.lang.String" resultMap="videoSection">
 		select t.videosection_id,t.videosection_name,
        		t.video_id,t.videosection_url,
-       		t.videosection_path,t.videosection_sort,
+       		t.videosection_path,t.videosection_sort,t.VIDEOTOTLE_SORTID,
        		ts.totle_section_sort as VIDEOTOTLE_SORT ,ts.totle_section_name as VIDEOTOTLE_NAME,
        		t.paper_id,t.work_id,t.course_wareid 
        	from tf_el_video_section t,tf_el_train_totle_section ts 
@@ -276,4 +277,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
 	</update>
 	
+	<!-- 根据大章节序号 和 视频课程id查询章节信息 -->
+	<select id="adminGetVedioSection" parameterType="java.lang.String" resultType="com.rs.teach.mapper.video.entity.VideoSection">
+		select * from tf_el_video_section t where t.video_id = #{videoId} and t.VIDEOTOTLE_SORTID = #{totleSortId}
+	</select>
+	
+	<!-- 插入视频课件 -->
+	<insert id="insertVideoSection" parameterType="com.rs.teach.mapper.video.entity.VideoSection">
+		insert into tf_el_video_section
+			(
+				VIDEOSECTION_ID,
+				VIDEOSECTION_NAME,
+				VIDEO_ID,
+				VIDEOSECTION_URL,
+				VIDEOSECTION_PATH,
+				VIDEOSECTION_SORT,
+				VIDEOTOTLE_SORTID,
+				PAPER_ID,
+				WORK_ID
+			)
+		values
+			(
+				#{videoSectionId},
+				#{videoSectionName},
+				#{videoId},
+				#{videoSectionUrl},
+				#{videoSectionPath},
+				#{videoSectionSort},
+				#{videoTotleSortId},
+				#{paperId},
+				#{workId}
+			)
+	</insert>
+	
+	<!-- 删除视频课件 -->
+	<delete id="delVideoSection" parameterType="java.lang.String">
+		delete from tf_el_video_section where VIDEOSECTION_ID = #{videoSectionId}
+	</delete>
+	
+	<!-- 修改视频课件 -->
+	<update id="updateVideoSection" parameterType="com.rs.teach.mapper.video.entity.VideoSection">
+		update tf_el_video_section
+		<set>
+			<if test="videoSectionName != null and videoSectionName != ''">
+				VIDEOSECTION_NAME = #{videoSectionName},
+			</if>
+			<if test="videoSectionUrl != null and videoSectionUrl != ''">
+				VIDEOSECTION_URL = #{videoSectionUrl},
+			</if>
+			<if test="videoSectionPath != null and videoSectionPath != ''">
+				VIDEOSECTION_PATH = #{videoSectionPath},
+			</if>
+			<if test="paperId != null and paperId != ''">
+				PAPER_ID = #{paperId},
+			</if>
+			<if test="workId != null and workId != ''">
+				WORK_ID = #{workId},
+			</if>
+		</set>
+		where VIDEOSECTION_ID = #{videoSectionId}
+	</update>
 </mapper>
