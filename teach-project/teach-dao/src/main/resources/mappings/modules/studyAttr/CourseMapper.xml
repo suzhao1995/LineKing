@@ -68,8 +68,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="finishStudy" parameterType="java.lang.String" resultMap="secMap">
-		select re.section_id,ts.section_name,ts.section_SORT,ts.totleSection_sort,ts.totleSection_name from user_course_rela re, tf_el_section ts 
-		where re.section_id = ts.section_id 
+		select re.section_id,ts.section_name,ts.section_SORT,s.totle_section_sort as totleSection_sort,s.totle_section_name as totleSection_name
+			from user_course_rela re, tf_el_section ts,tf_el_train_totle_section s
+		where re.section_id = ts.section_id and ts.totlesection_sortid = s.id
 		  and re.rela_type = '0' 
 		  and re.user_id = #{userId}
 		  and re.course_id = #{courseId}

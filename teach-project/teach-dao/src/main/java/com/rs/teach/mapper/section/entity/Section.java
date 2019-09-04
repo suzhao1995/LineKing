@@ -30,6 +30,9 @@ public class Section implements Serializable{
 	private String testPaperId;	//考试id
 	private String coursewareId; //课件Id
 	private String uploadPath;	//上传文件的映射路径
+	
+	private String totleSortId;	//大章节id
+	
 	private String extend1;	//预留字段
 	private String extend2;
 	private String extend3;
@@ -188,6 +191,14 @@ public class Section implements Serializable{
 
 	public void setExtend4(String extend4) {
 		this.extend4 = extend4;
+	}
+
+	public String getTotleSortId() {
+		return totleSortId;
+	}
+
+	public void setTotleSortId(String totleSortId) {
+		this.totleSortId = totleSortId;
 	}
 	
 	

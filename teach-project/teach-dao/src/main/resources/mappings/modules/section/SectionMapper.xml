@@ -8,6 +8,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="sectionId" column="SECTION_ID" />
 		<result property="sectionSort" column="SECTION_SORT" />
 		<result property="sectionName" column="SECTION_NAME" />
+		<result property="totleSectionSort" column="totlesection_sort" />
+		<result property="totleSectionName" column="totlesection_Name" />
+		<result property="totleSortId" column="totlesection_sortId" />
 		<result property="sectionUrl" column="SECTION_URL" />
 		<result property="courseId" column="COURSE_ID" />
 		<result property="updateUser" column="UPDATE_USER" />
@@ -28,7 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="querySection" parameterType="java.lang.String" resultMap="sectionMap">
-		select * from tf_el_section t where t.section_id = #{sectionId}
+		select  t.section_id,t.section_sort,t.section_name,
+       			ts.totle_section_sort as totlesection_sort, ts.totle_section_name as totlesection_Name,
+       			t.totlesection_sortid, t.section_url,t.course_id,t.update_filename,t.section_type,
+       			t.schoolworkid,t.paperid,t.courseware_id
+       		from tf_el_section t, tf_el_train_totle_section ts 
+       where t.totlesection_sortid = ts.id and t.section_id = #{sectionId}
 	</select>
 	
 	<insert id="insertTeachUpSection" parameterType="com.rs.teach.mapper.section.entity.Section">
@@ -121,7 +129,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
-		select * from tf_el_section t where t.COURSE_ID = #{courseId} order by t.totlesection_sort,t.section_sort
+		select  t.section_id,t.section_sort,t.section_name,
+       			ts.totle_section_sort as totlesection_sort, ts.totle_section_name as totlesection_Name,
+       			t.totlesection_sortid, t.section_url,t.course_id,t.update_filename,t.section_type,
+       			t.schoolworkid,t.paperid,t.courseware_id
+       		from tf_el_section t, tf_el_train_totle_section ts 
+       where t.totlesection_sortid = ts.id and t.course_id = #{courseId} order by ts.totle_section_sort, t.section_sort
 	</select>
 	<resultMap type="java.util.HashMap" id="sMap">
 		<result property="sectionId" column="section_id"/>
@@ -134,15 +147,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="classId" column="class_id"/>
 		<result property="coursewareId" column="courseware_id"/>
 	</resultMap>
-	<!-- 查询章节学习状态  todo-->
+	<!-- 查询章节学习状态-->
 	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
-		select se.section_id,se.totlesection_sort,se.totlesection_name,se.section_sort,se.section_name,
+		select se.section_id,ts.totle_section_sort as totlesection_sort,ts.totle_section_name as totlesection_name,se.section_sort,se.section_name,
        se.course_id,ucr.isfinish,ucr.class_id,se.courseware_id
-     from tf_el_section se, user_course_rela ucr
-       where se.section_id = ucr.section_id 
+     from tf_el_section se, user_course_rela ucr, tf_el_train_totle_section ts
+       where se.section_id = ucr.section_id and se.totlesection_sortid = ts.id
              and se.course_id = #{courseId}
              and ucr.user_id = #{userId}
-             and ucr.class_id = #{classId} order by se.totlesection_sort, se.section_sort
+             and ucr.class_id = #{classId} order by ts.totle_section_sort, se.section_sort
 	</select>
 
     <select id="selectSectionNum" resultType="java.lang.String">
