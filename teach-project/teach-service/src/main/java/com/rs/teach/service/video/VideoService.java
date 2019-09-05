@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.rs.teach.mapper.backstage.entity.TotleSection;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.studyAttr.entity.Practice;
+import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.video.entity.Video;
 import com.rs.teach.mapper.video.entity.VideoSection;
 
@@ -216,7 +218,7 @@ public interface VideoService{
 	* @author suzhao
 	* @date 2019年9月4日 下午3:11:32
 	*/
-	public void insertVideoSection(VideoSection videoSection);
+	public void insertVideoSection(VideoSection videoSection,Practice work, Testpaper test);
 	
 	/**
 	* 删除视频课件
@@ -230,12 +232,15 @@ public interface VideoService{
 	
 	/**
 	* 修改视频课件
-	* @param 
+	* @param oldSection 修改之前的文件
+	* @param videoSection 新文件
+	* @param work 作业
+	* @param test 试卷
 	* @throws
 	* @return void
 	* @author suzhao
 	* @date 2019年9月4日 下午5:39:43
 	*/
-	public void updateVideoSection(VideoSection videoSection);
+	public void updateVideoSection(VideoSection oldSection ,VideoSection videoSection,Practice work, Testpaper test);
 	
 }

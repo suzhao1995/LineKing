@@ -107,4 +107,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delWork" parameterType="java.lang.String">
 		delete from TF_EL_PRACTICE where PID = #{pid}
 	</delete>
+	
+	<delete id="delTestByTestId" parameterType="java.lang.String">
+		delete from TF_EL_TESTPAPER where TESTPAPER_ID = #{testId}
+	</delete>
+	
+	<delete id="delWorkByWorkId" parameterType="java.lang.String">
+		delete from TF_EL_PRACTICE where PRACTICE_ID = #{workId}
+	</delete>
 </mapper>

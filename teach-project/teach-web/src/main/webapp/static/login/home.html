@@ -21,5 +21,18 @@
 	
 	<input type="button" id="show" value="显示图片" onclick="show()">
 	<div id="showImg"></div>
+	<input type="button" id="upload" value="物料上传" onclick="uploadMateriel()">
+	
+	<input type="button" id="upload" value="物料封面上传" onclick="uploadPicMateriel()">
+	
+	<form id="uploadForms" enctype="multipart/form-data" method="post">
+		<p><input type="file" name="files"></p>
+		<p><input type="file" name="files"></p>
+		<p><input type="file" name="files"></p>
+		<p><input type="text" name="materielName"></p>
+		<p><input type="text" name="materielDetail"></p>
+		<p><input type="text" name="code"></p>
+	</form>
+	<input type="button" id="uploads" value="多文件上传" onclick="uploads()">
 </body>
 </html>

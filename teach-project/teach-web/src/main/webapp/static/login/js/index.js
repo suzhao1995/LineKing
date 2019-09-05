@@ -39,10 +39,10 @@ function login1(){
 	var userId = $("#username").val();
 	var pwd = $("#password1").val();
 	$.ajax({
-        type: "get",
+        type: "post",
         dataType: "json",
-        url: '/teach-web/trainCourse/pageInfo',
-        data: 'sessionKey=1564971154615',
+        url: '/teach-web/test/test1',
+        //data: 'sessionKey=1564971154615',
         success: function (data) {
             if (data != "") {
             	alert(data.code);

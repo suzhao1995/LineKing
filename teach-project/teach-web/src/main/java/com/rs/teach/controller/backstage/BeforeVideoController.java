@@ -458,19 +458,21 @@ public class BeforeVideoController {
 		}
 		
 		try {
-			videoService.insertVideoSection(videoSection);
-			testAndWorkService.insertPractice(work);
-			testAndWorkService.insertTestpaper(test);
+			videoService.insertVideoSection(videoSection,work,test);
 			bean.addSuccess();
 		} catch (Exception e) {
 			logger.error("-----视频模块视频上传入表失败----", e);
 			//删除原有课件
 			String[] filePath = new String[5];
 			filePath[0] = videoSection.getVideoSectionUrl();	//删除视频文件
-			filePath[1] = test.getTestpaperUrl();	//删除试卷文件
-			filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
-			filePath[3] = work.getPracticeUrl();	//删除作业文件
-			filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
+			if(test != null){
+				filePath[1] = test.getTestpaperUrl();	//删除试卷文件
+				filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
+			}
+			if(work != null){
+				filePath[3] = work.getPracticeUrl();	//删除作业文件
+				filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
+			}
 			DeleteFileUtil.deleteFiles(filePath);
 			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败！");
 		}
@@ -596,12 +598,45 @@ public class BeforeVideoController {
 			}
 		}
 		try {
-			videoService.updateVideoSection(videoSection);
+			videoService.updateVideoSection(modify,videoSection,work,test);
 			if(StringUtils.isNotEmpty(videoSection.getVideoSectionUrl()) && StringUtils.isNotEmpty(videoSection.getVideoSectionPath())){
-				
+				//删除原有视频课件信息
+				DeleteFileUtil.deleteFile(modify.getVideoSectionUrl());
 			}
+			if(StringUtils.isNotEmpty(videoSection.getWorkId())){
+				//删除原有作业
+				Practice p = testAndWorkService.getPracticeById(modify.getWorkId());
+				if(p != null){
+					DeleteFileUtil.deleteFile(p.getPracticeUrl());
+					String pptFile = p.getPracticeUrl().split("[.]")[0] + ".ppt";
+					DeleteFileUtil.deleteFile(pptFile);
+				}
+			}
+			if(StringUtils.isNotEmpty(videoSection.getPaperId())){
+				//删除原有试卷信息
+				Testpaper t = testAndWorkService.getTestpaper(modify.getPaperId());
+				if(t != null){
+					DeleteFileUtil.deleteFile(t.getTestpaperUrl());
+					String pptFile = t.getTestpaperUrl().split("[.]")[0] + ".ppt";
+					DeleteFileUtil.deleteFile(pptFile);
+				}
+			}
+			bean.addSuccess();
 		} catch (Exception e) {
-			
+			logger.error("-----视频模块视频上传入表失败----", e);
+			//删除原有课件
+			String[] filePath = new String[5];
+			filePath[0] = videoSection.getVideoSectionUrl();	//删除视频文件
+			if(test != null){
+				filePath[1] = test.getTestpaperUrl();	//删除试卷文件
+				filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
+			}
+			if(work != null){
+				filePath[3] = work.getPracticeUrl();	//删除作业文件
+				filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
+			}
+			DeleteFileUtil.deleteFiles(filePath);
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败！");
 		}
 		
 		return bean;

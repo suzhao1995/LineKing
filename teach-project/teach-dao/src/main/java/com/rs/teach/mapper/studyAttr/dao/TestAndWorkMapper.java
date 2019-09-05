@@ -74,7 +74,7 @@ public interface TestAndWorkMapper{
 	Testpaper selectTestpaper(@Param("sectionId") String sectionId);
 	
 	/**
-	* 删除试卷
+	* 根据tid删除试卷
 	* @param 
 	* @throws
 	* @return void
@@ -84,7 +84,7 @@ public interface TestAndWorkMapper{
 	void delTestPaper(String tid);
 	
 	/**
-	* 删除试卷
+	* 根据pid删除作业
 	* @param 
 	* @throws
 	* @return void
@@ -92,4 +92,16 @@ public interface TestAndWorkMapper{
 	* @date 2019年9月4日 下午3:36:00
 	*/
 	void delWork(String pid);
+	
+	/**
+	* 根据上传id删除文件
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月5日 上午11:56:26
+	*/
+	void delTestByTestId(String testId);
+	
+	void delWorkByWorkId(String workId);
 }

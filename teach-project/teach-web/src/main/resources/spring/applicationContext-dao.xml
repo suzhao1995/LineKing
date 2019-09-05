@@ -30,6 +30,12 @@
 		<property name="minIdle" value="1" />
 		<property name="maxActive" value="10" />
 	</bean>
+	<!-- 配置事务控制 -->
+	<bean id="appTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:annotation-driven proxy-target-class="false" transaction-manager="appTransactionManager" />
 
 
 	<!-- SqlSessionFactory配置 -->

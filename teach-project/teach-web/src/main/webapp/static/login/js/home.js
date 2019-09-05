@@ -45,6 +45,51 @@ function upload(){
   });
 }
 
+function uploadMateriel(){
+	var formData = new FormData($('#uploadForm')[0]);
+	$.ajax({
+      type: "post",
+      url: '/teach-web/beforeMateriel/upLoadMateriel',
+      data: formData,
+      cache : false,
+      processData : false,
+	  contentType : false,
+      success: function (data) {
+          if("0" == data.code){
+        	  alert(data.data.message);
+        	  url = data.data.sectionUrl;
+        	  fileName = data.data.updateFileName;
+        	  upLoadId = data.data.upLoadId;
+          }else{
+        	  alert(data.message);
+          }
+          
+      }
+  });
+}
+
+function uploadPicMateriel(){
+	var formData = new FormData($('#uploadForm')[0]);
+	$.ajax({
+      type: "post",
+      url: '/teach-web/beforeMateriel/upLoadMaterielImg',
+      data: formData,
+      cache : false,
+      processData : false,
+	  contentType : false,
+      success: function (data) {
+          if("0" == data.code){
+        	  alert(data.data.message);
+        	  url = data.data.sectionUrl;
+        	  fileName = data.data.updateFileName;
+        	  upLoadId = data.data.upLoadId;
+          }else{
+        	  alert(data.message);
+          }
+          
+      }
+  });
+}
 function show(){
 	$.ajax({
       type: "get",
@@ -61,6 +106,30 @@ function show(){
 	        	  }
         	  });
           }
+      }
+  });
+}
+
+//多文件上传
+function uploads(){
+	var formData = new FormData($('#uploadForms')[0]);
+	$.ajax({
+      type: "post",
+      url: '/teach-web/componant/upLoadFiles',
+      data: formData,
+      cache : false,
+      processData : false,
+	  contentType : false,
+      success: function (data) {
+          if("0" == data.code){
+        	  alert(data.data.message);
+        	  url = data.data.sectionUrl;
+        	  fileName = data.data.updateFileName;
+        	  upLoadId = data.data.upLoadId;
+          }else{
+        	  alert(data.message);
+          }
+          
       }
   });
 }
