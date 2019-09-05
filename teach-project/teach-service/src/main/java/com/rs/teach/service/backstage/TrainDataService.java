@@ -1,6 +1,7 @@
 package com.rs.teach.service.backstage;
 
 import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 
 import java.util.List;
 
@@ -39,5 +40,12 @@ public interface TrainDataService {
      * 删除培训考核文件
      * @param id
      */
-    void trainDataSelect(String id);
+    void trainDataDelete(String id);
+
+    /**
+     * 查询考核系列文件的本地地址
+     * @param id
+     * @return
+     */
+    TrainDataFileAllUrlVo selectFileAllUrl(String id);
 }

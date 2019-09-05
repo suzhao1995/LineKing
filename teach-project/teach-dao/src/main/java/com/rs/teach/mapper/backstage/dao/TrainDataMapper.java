@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.backstage.dao;
 
 import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -38,5 +39,12 @@ public interface TrainDataMapper {
      * 删除培训考核文件
      * @param id
      */
-    void trainDataSelect(@Param("id") String id);
+    void trainDataDelete(@Param("id") String id);
+
+    /**
+     * 查询考核系列文件的本地地址
+     * @param id
+     * @return
+     */
+    TrainDataFileAllUrlVo selectFileAllUrl(@Param("id") String id);
 }

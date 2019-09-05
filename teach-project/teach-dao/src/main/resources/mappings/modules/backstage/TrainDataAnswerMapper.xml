@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.TrainDataAnswerMapper">
+
+    <insert id="addTrainDataAnswer" parameterType="com.rs.teach.mapper.backstage.entity.TrainDataAnswer">
+        insert into TF_EL_TRAIN_DATA_ANSWER
+        (
+        answer_id, answer_file_id, train_answer_name, train_answer_url,
+        train_answer_path, train_answer_type, add_time, train_data_file_name
+        )
+        values
+        (
+        #{answerId},#{answerFileId},#{trainAnswerName},#{trainAnswerUrl},
+        #{trainAnswerPath},#{trainAnswerType},#{addTime},#{trainDataFileName}
+        )
+    </insert>
+
+    <select id="selectTrainDataAnswer" resultType="com.rs.teach.mapper.backstage.entity.TrainDataAnswer">
+          select TF_EL_TRAIN_DATA_ANSWER.answer_id,
+                  TF_EL_TRAIN_DATA_ANSWER.answer_file_id,
+                  TF_EL_TRAIN_DATA_ANSWER.train_answer_name,
+                  TF_EL_TRAIN_DATA_ANSWER.train_answer_url,
+                  TF_EL_TRAIN_DATA_ANSWER.train_answer_path,
+                  TF_EL_TRAIN_DATA_ANSWER.train_answer_type,
+                  TF_EL_TRAIN_DATA_ANSWER.add_time,
+                  TF_EL_TRAIN_DATA_ANSWER.train_data_file_name
+          from TF_EL_TRAIN_DATA,TF_EL_TRAIN_DATA_ANSWER
+          where TF_EL_TRAIN_DATA_ANSWER.ANSWER_ID = TF_EL_TRAIN_DATA.ANSWER_ID
+          and ID = #{id}
+    </select>
+</mapper>

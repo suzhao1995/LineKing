@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.resourcesAttr.dao;
 
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * PicAttrMapper.java
@@ -38,5 +39,5 @@ public interface PicAttrMapper{
 	* @author suzhao
 	* @date 2019年8月2日 下午3:34:11
 	*/
-	public PicAttr queryPic(String associationId);
+	 PicAttr queryPic(@Param("userId") String userId);
 }

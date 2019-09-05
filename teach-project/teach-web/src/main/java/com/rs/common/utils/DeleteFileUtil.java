@@ -5,6 +5,7 @@ import com.rs.teach.controller.backstage.SectionController;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author 汪航
@@ -17,12 +18,22 @@ public class DeleteFileUtil {
     private static final Logger logger = Logger.getLogger(DeleteFileUtil.class);
 
     /**
-     * 循环删除文件
+     * 循环删除文件传入数组
      * @param fileNames
      */
     public static void deleteFiles(String[] fileNames){
         for (int i = 0; i < fileNames.length ; i++) {
             deleteFile(fileNames[i]);
+        }
+    }
+
+    /**
+     * 循环删除文件传入数组
+     * @param fileNames
+     */
+    public static void deleteFiles(List<String> fileNames){
+        for (int i = 0; i < fileNames.size() ; i++) {
+            deleteFile(fileNames.get(i));
         }
     }
 

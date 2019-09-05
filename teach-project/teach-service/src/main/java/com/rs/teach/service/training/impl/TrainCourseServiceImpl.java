@@ -1,9 +1,9 @@
 package com.rs.teach.service.training.impl;
 
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
-import com.rs.teach.mapper.studyAttr.vo.TrainCourseSubject;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,8 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     }
 
     @Override
-    public List<TrainCourseSubject> selectTrainCourseSubject() {
-        return trainCourseMapper.selectTrainCourseSubject();
+    public List<OptionVo> trainCourseList() {
+        return trainCourseMapper.trainCourseList();
     }
 
 }

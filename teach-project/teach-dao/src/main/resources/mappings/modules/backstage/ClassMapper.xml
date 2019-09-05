@@ -5,8 +5,8 @@
 <mapper namespace="com.rs.teach.mapper.backstage.dao.ClassMapper">
 
     <insert id="addClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
-        insert into TF_EL_CLASS(CLASS_ID, SCHOOL_ID, CLASS_NAME, CLSSNO)
-        VALUES(SEQ_EL_CLASS.nextval,#{schoolId},#{className},#{clssno})
+        insert into TF_EL_CLASS(CLASS_ID, SCHOOL_ID, CLASS_NAME)
+        VALUES(SEQ_EL_CLASS.nextval,#{schoolId},#{className})
     </insert>
 
     <update id="updateClass" parameterType="com.rs.teach.mapper.backstage.entity.TFClass">
@@ -28,14 +28,18 @@
     </delete>
 
     <select id="selectClass" resultType="com.rs.teach.mapper.backstage.entity.TFClass">
-        select * FROM TF_EL_CLASS
+        select C.CLASS_ID,C.SCHOOL_ID,C.CLASS_NAME,S.SCHOOL_NAME
+        from  TF_EL_CLASS C ,TF_EL_SCHOOL S
+        WHERE S.SCHOOL_ID = C.SCHOOL_ID
     </select>
     <select id="queryNumBySchoolId" resultType="java.lang.Integer">
         select count(1) from TF_EL_CLASS
         where SCHOOL_ID = #{schoolId}
     </select>
     <select id="selectClassBySchoolId" parameterType="com.rs.teach.mapper.backstage.entity.TFClass" resultType="com.rs.teach.mapper.backstage.entity.TFClass">
-        select * from  TF_EL_CLASS
-        where SCHOOL_ID = #{schoolId}
+        select C.CLASS_ID,C.SCHOOL_ID,C.CLASS_NAME,S.SCHOOL_NAME
+        from  TF_EL_CLASS C ,TF_EL_SCHOOL S
+        WHERE S.SCHOOL_ID = C.SCHOOL_ID
+        AND C.SCHOOL_ID = #{schoolId}
     </select>
 </mapper>

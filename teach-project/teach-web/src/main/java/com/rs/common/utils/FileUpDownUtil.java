@@ -48,7 +48,7 @@ public class FileUpDownUtil {
     private static String imgPath;    //图片路径
     private static String materielPath;    //物料路径
     private static String videoPath;    //视频路径
-    private static String trainDataPath;    //培训考核视频路径
+    private static String trainDataPath;    //培训考核文件路径
     @Value("${filePath}")    //静态属性使用setter方法注入properties文件的属性
     public void setFilePath(String filePath) {
         this.filePath = filePath;

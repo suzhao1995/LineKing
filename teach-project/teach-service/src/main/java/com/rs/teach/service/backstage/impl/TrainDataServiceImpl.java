@@ -2,6 +2,7 @@ package com.rs.teach.service.backstage.impl;
 
 import com.rs.teach.mapper.backstage.dao.TrainDataMapper;
 import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import com.rs.teach.service.backstage.TrainDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,13 @@ public class TrainDataServiceImpl implements TrainDataService {
     }
 
     @Override
-    public void trainDataSelect(String id) {
-        trainDataMapper.trainDataSelect(id);
+    public void trainDataDelete(String id) {
+        trainDataMapper.trainDataDelete(id);
+
+    }
+
+    @Override
+    public TrainDataFileAllUrlVo selectFileAllUrl(String id) {
+        return trainDataMapper.selectFileAllUrl(id);
     }
 }

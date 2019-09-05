@@ -26,5 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 	</insert>
 	
-	<select id="queryPic" parameterType="java.lang.String"></select>
+	<select id="queryPic" parameterType="java.lang.String" resultType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
+		select * from TF_EL_PIC_ATTR
+		where ASSOCIATION_ID = #{userId}
+	</select>
 </mapper>

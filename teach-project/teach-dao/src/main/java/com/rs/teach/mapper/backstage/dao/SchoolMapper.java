@@ -2,6 +2,7 @@ package com.rs.teach.mapper.backstage.dao;
 
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.vo.SchoolVo;
+import com.rs.teach.mapper.common.OptionVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface SchoolMapper {
 
     void updateSchool(School school);
 
-    List<School> selectSchool();
+    List<OptionVo> selectSchool();
 
     List<SchoolVo> selectSchoolVo();
 

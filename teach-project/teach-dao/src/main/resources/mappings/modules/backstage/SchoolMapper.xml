@@ -26,8 +26,10 @@
         delete from TF_EL_SCHOOL
         where SCHOOL_ID = #{schoolId}
     </delete>
-    <select id="selectSchool" resultType="com.rs.teach.mapper.backstage.entity.School">
-        select * from TF_EL_SCHOOL
+    <select id="selectSchool" resultType="com.rs.teach.mapper.common.OptionVo">
+        select SCHOOL_ID as value,
+              SCHOOL_NAME as label
+              from TF_EL_SCHOOL
     </select>
     <select id="selectSchoolVo" resultType="com.rs.teach.mapper.backstage.vo.SchoolVo">
         select * from TF_EL_SCHOOL

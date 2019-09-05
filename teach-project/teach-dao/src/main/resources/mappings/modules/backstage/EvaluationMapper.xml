@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.EvaluationMapper">
+
+    <insert id="addEvaluation" parameterType="com.rs.teach.mapper.backstage.entity.Evaluation">
+        insert into TF_EL_EVALUATION(evaluation_id, grade, evaluation) VALUES (#{evaluationId},#{grade},#{evaluation})
+    </insert>
+    <select id="selectEvaluationById" resultType="com.rs.teach.mapper.backstage.entity.Evaluation">
+        select * from TF_EL_EVALUATION
+        where EVALUATION_ID = #{evaluationId}
+    </select>
+    <update id="updateEvaluationById" parameterType="com.rs.teach.mapper.backstage.entity.Evaluation">
+        update TF_EL_EVALUATION
+        <set>
+            <if test="grade != null and grade != ''">
+                GRADE = #{grade},
+            </if>
+            <if test="evaluation != null and evaluation != ''">
+                EVALUATION = #{evaluation},
+            </if>
+        </set>
+        where EVALUATION_ID = #{evaluationId}
+    </update>
+</mapper>

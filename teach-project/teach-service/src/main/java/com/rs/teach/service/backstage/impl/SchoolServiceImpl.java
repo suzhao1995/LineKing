@@ -5,6 +5,7 @@ import com.rs.teach.mapper.backstage.dao.SchoolCourseMapper;
 import com.rs.teach.mapper.backstage.dao.SchoolMapper;
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.vo.SchoolVo;
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.service.backstage.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +59,8 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<School> selectSchool() {
-        List<School> list = schoolMapper.selectSchool();
-        return list;
+    public List<OptionVo> selectSchool() {
+        return schoolMapper.selectSchool();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SchoolServiceImpl implements SchoolService {
         for (SchoolVo vo : list) {
             //查询此校区的班级数量
             vo.setClassNum(classMapper.queryNumBySchoolId(vo.getSchoolId()));
-            //查询教师树数量
+            //查询教师数量
             vo.setTeacherNum(userMapper.queryTeachNumBySchoolId(vo.getSchoolId()));
             //根据校区id查询所授权课程
             vo.setList(schoolCourseMapper.selectCourseBySchoolId(vo.getSchoolId()));

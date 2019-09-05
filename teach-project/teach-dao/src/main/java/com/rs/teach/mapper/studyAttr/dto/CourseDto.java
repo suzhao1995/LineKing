@@ -49,7 +49,4 @@ public class CourseDto extends PageDto implements Serializable {
     //培训课程添加时间
     private String addTime;
 
-    //培训课程科目
-    private String subject;
-
 }

@@ -1,7 +1,7 @@
 package com.rs.teach.mapper.studyAttr.dao;
 
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
-import com.rs.teach.mapper.studyAttr.vo.TrainCourseSubject;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -49,6 +49,6 @@ public interface TrainCourseMapper {
      * 查询所有培训课程科目
      * @return
      */
-    List<TrainCourseSubject> selectTrainCourseSubject();
+    List<OptionVo> trainCourseList();
 
 }

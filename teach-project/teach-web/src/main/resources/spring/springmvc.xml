@@ -74,7 +74,17 @@
             <aop:around pointcut-ref="backstage" method="checkAround"/>
         </aop:aspect>
 
+        <!--判断是否为超级管理员-->
+        <aop:aspect id="doAspect" ref="teachAspect">
+            <aop:pointcut id="backstageSupper"
+                          expression="execution (* com.rs.teach.controller.backstage.BeforeUserController.*SupperAdmin(..))"/>
+            <aop:around pointcut-ref="backstageSupper" method="checkSupperAround"/>
+        </aop:aspect>
+
     </aop:config>
 
-
+    <!--将静态资源交由默认的servlet处理-->
+    <mvc:default-servlet-handler />
+    <!--添加swagger2配置类-->
+    <bean id="swaggerConfig" class="com.rs.common.config.SwaggerConfig"/>
 </beans>

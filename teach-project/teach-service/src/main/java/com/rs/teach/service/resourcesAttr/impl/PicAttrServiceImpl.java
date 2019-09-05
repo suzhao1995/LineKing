@@ -24,8 +24,8 @@ public class PicAttrServiceImpl implements PicAttrService{
 	}
 
 	@Override
-	public PicAttr getPic(String associationId) {
-		return mapper.queryPic(associationId);
+	public PicAttr getPic(String userId) {
+		return mapper.queryPic(userId);
 	}
 	
 }

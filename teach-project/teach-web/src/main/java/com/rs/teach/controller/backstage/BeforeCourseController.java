@@ -11,9 +11,13 @@ import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.training.TrainCourseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +36,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/beforeCourse")
+@Api(value = "/beforeCourse",tags = "BeforeCourseController",description = "管理员 -- 课程模块")
 public class BeforeCourseController {
 
     private static final Logger logger = Logger.getLogger(BeforeCourseController.class);
@@ -150,6 +155,8 @@ public class BeforeCourseController {
      */
     @RequestMapping(value = "/queryCourse", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "查询课程",httpMethod="POST",response = PageInfo.class)
+    @ApiImplicitParam(name = "courseDto",value = "对象",required = true,paramType = "body")
     public ResponseBean queryCourse(@RequestBody CourseDto courseDto) {
         ResponseBean bean = new ResponseBean();
 

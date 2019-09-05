@@ -1,6 +1,9 @@
 package com.rs.teach.mapper.user.dao;
 
 import com.rs.teach.mapper.user.entity.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * UserMapper.java
@@ -56,4 +59,44 @@ public interface UserMapper {
 	 * @return
 	 */
     Integer queryTeachNumBySchoolId(String schoolId);
+
+	/**
+	 * 校验
+	 * @param userId
+	 * @return
+	 */
+	Integer checkUserId(@Param("userId") String userId);
+
+	/**
+	 * 校验
+	 * @param serialNumber
+	 * @return
+	 */
+	Integer checkTelNum(@Param("serialNumber")String serialNumber);
+	/**
+	 * 添加用户
+	 * @param user
+	 */
+	void addUser(User user);
+
+	/**
+	 * 查询所有用户信息
+	 * @param user
+	 * @return
+	 */
+	List<User> selectUserInfo(User user);
+
+	/**
+	 * 管理员修改用户信息
+	 * @param user
+	 */
+	void updateUserInfo(User user);
+
+	/**
+	 * 删除用户
+	 * @param userId
+	 */
+	void deleteUser(@Param("userId")String userId);
+
+
 }

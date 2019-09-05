@@ -2,6 +2,7 @@ package com.rs.teach.service.backstage;
 
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.vo.SchoolVo;
+import com.rs.teach.mapper.common.OptionVo;
 
 import java.util.List;
 
@@ -30,12 +31,21 @@ public interface SchoolService {
     void updateSchool(School school);
 
     /**
+     * 查询学校信息（下拉列表）
+     * @return
+     */
+    List<OptionVo> selectSchool();
+
+    /**
      * 分页查询
      */
-    List<School> selectSchool();
-
     List<SchoolVo> selectSchoolVo();
 
+    /**
+     * 学校是否存在
+     * @param school
+     * @return
+     */
     Integer isEmpty(School school);
 
     /**

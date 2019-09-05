@@ -16,6 +16,6 @@ public class TFClass extends PageDto implements Serializable {
 
     private String classId;   //班级id（主键）
     private String schoolId;  //学校id
+    private String schoolName;  //学校名称
     private String className;  //班级名称
-    private String clssno;
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper">
+
+    <insert id="addUserTrainData"  parameterType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
+        insert into USER_TRAIN_DATA_RELA(id, data_id, admin_id,TRAIN_COURSE_ID, user_id)
+         select SEQ_EL_USER_TRAIN_DATA_RELA.currval,#{dataId},#{adminId},#{trainCourseId} A.* from(
+        <foreach collection="userIds" item="item" index="index" open="(" close=")" separator="union all" >
+            select
+            #{item}
+            from dual
+        </foreach>
+        ) A
+    </insert>
+    <update id="updateUserTrainData" parameterType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
+        update USER_TRAIN_DATA_RELA
+        set ANSWER_SHEET_ID = #{answerSheetId}
+        where DATA_ID = #{dataId}
+        and USER_ID = #{userId}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </update>
+    <select id="isEmpty" resultType="java.lang.Integer">
+        select count(1) from USER_TRAIN_DATA_RELA
+        where DATA_ID = #{id}
+        and USER_ID = #{userid}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </select>
+</mapper>

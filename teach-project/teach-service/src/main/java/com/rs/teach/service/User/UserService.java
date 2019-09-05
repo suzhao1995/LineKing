@@ -2,6 +2,8 @@ package com.rs.teach.service.User;
 
 import com.rs.teach.mapper.user.entity.User;
 
+import java.util.List;
+
 /**
 * UserService.java
 * @Description:用户service
@@ -41,5 +43,43 @@ public interface UserService {
 	* @date 2019年8月2日 下午3:03:15
 	*/
 	public int modifyUser(User user);
-	
+
+	/**
+	 * 添加普通用户
+	 * @param user
+	 */
+	void addUser(User user);
+
+	/**
+	 * 校验
+	 * @param userId
+	 * @return
+	 */
+	Integer checkUserId(String userId);
+	/**
+	 * 校验
+	 * @param serialNumber
+	 * @return
+	 */
+	Integer checkTelNum(String serialNumber);
+
+	/**
+	 * 查询所有用户信息
+	 * @return
+	 */
+	List<User> selectUserInfo(User user);
+
+	/**
+	 * 修改用户信息
+	 * @param user
+	 */
+	void updateUserInfo(User user);
+
+	/**
+	 * 删除用户
+	 * @param userId
+	 */
+	void deleteUser(String userId);
+
+
 }

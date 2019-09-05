@@ -6,6 +6,7 @@ import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.mapper.user.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -20,6 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Component
 public class TeachAspect {
 
@@ -60,7 +62,7 @@ public class TeachAspect {
 			returnObject = joinPoint.proceed();
 		} catch (Throwable e) {
 			e.printStackTrace();
-			System.out.println("=========出现异常========"+e);
+			log.error("切面-判断用户是否登录-异常");
 		}
 		return returnObject;
 	}
@@ -88,10 +90,39 @@ public class TeachAspect {
             returnObject = joinPoint.proceed();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            System.out.println("切面-checkAround-异常");
+			log.error("切面-判断用户是否是管理员-异常");
         }
         return returnObject;
 	}
+
+	/**
+	 * 判断用户是否是超级管理员
+	 * @param joinPoint
+	 * @return
+	 */
+	public Object checkSupperAround(ProceedingJoinPoint joinPoint){
+        Object returnObject = null;
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Signature signature = joinPoint.getSignature();
+        String methodName = signature.getName();
+	    if(!methodName.toUpperCase().startsWith("VERIFY")){
+            String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+            User user = userMapper.getTeachUser(userId);
+            if (!StrUtil.equals("2", user.getAdminFlag())) {
+                ResponseBean bean = new ResponseBean();
+                bean.addError("-1", "用户沒有权限");
+                return bean;
+            }
+        }
+        try {
+            returnObject = joinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+			log.error("切面-判断用户是否是超级管理员-异常");
+        }
+        return returnObject;
+	}
+
 
 	public Map<String,Object> isLogin(HttpServletRequest request){
 		Map<String,Object> resultMap = new HashMap<String,Object>();

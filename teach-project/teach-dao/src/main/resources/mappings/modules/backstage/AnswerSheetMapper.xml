@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.backstage.dao.AnswerSheetMapper">
+
+    <insert id="addAnswerSheet" parameterType="com.rs.teach.mapper.backstage.entity.AnswerSheet">
+        insert into TF_EL_ANSWER_SHEET(answer_sheet_id, user_id, train_sheet_id, train_sheet_url, train_sheet_path,
+              train_sheet_type, add_time, train_sheet_file_name,EVALUATION_ID, train_course_id)
+        VALUES(SEQ_EL_ANSWER_SHEET.currval,#{userId},#{trainSheetId},#{trainSheetUrl},#{trainSheetPath},
+        #{trainSheetType},#{addTime},#{trainSheetFileName},#{evaluationId},#{trainCourseId})
+    </insert>
+    <select id="selectAnswerSheetId" parameterType="com.rs.teach.mapper.backstage.entity.AnswerSheet" resultType="java.lang.String">
+        select ANSWER_SHEET_ID
+        from TF_EL_ANSWER_SHEET
+        where user_id = #{userId}
+        and TRAIN_SHEET_ID = #{trainSheetId}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </select>
+
+    <select id="selectAnswerSheet" resultType="com.rs.teach.mapper.backstage.entity.AnswerSheet">
+        select * from TF_EL_ANSWER_SHEET
+        where ANSWER_SHEET_ID=#{answerSheetId}
+    </select>
+
+    <select id="queryAnswerSheet" resultType="com.rs.teach.mapper.backstage.vo.AnswerSheetVo">
+        select answer_sheet_id, user_id, train_sheet_id, train_sheet_url, train_sheet_path, train_sheet_type, add_time, train_sheet_file_name, TF_EL_ANSWER_SHEET.evaluation_id, train_course_id, grade, evaluation
+        from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION,TF_EL_TRAIN_DATA,USER_TRAIN_DATA_RELA
+        where TF_EL_TRAIN_DATA.ID = DATA_ID
+        and TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
+        and USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID = TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID
+        and ID = #{id}
+    </select>
+    <delete id="deleteAnswerSheetById">
+        delete from
+        (
+            select 1
+            from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION
+            where TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
+            and ANSWER_SHEET_ID = #{answerSheetId}
+        )
+    </delete>
+</mapper>

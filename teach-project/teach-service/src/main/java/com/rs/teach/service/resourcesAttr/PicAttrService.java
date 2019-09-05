@@ -11,7 +11,7 @@ public interface PicAttrService{
 	* @author suzhao
 	* @date 2019年8月2日 下午3:25:54
 	*/
-	public int modifyPic(PicAttr pic);
+	 int modifyPic(PicAttr pic);
 	
 	/**
 	* 添加图片属性资源
@@ -21,7 +21,7 @@ public interface PicAttrService{
 	* @author suzhao
 	* @date 2019年8月2日 下午3:26:25
 	*/
-	public int addPic(PicAttr pic);
+	 int addPic(PicAttr pic);
 	
 	/**
 	* 查询图片属性
@@ -31,5 +31,5 @@ public interface PicAttrService{
 	* @author suzhao
 	* @date 2019年8月2日 下午3:34:11
 	*/
-	public PicAttr getPic(String associationId);
+	 PicAttr getPic(String userId);
 }

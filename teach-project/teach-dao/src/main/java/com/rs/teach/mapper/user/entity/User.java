@@ -17,23 +17,32 @@ public class User implements Serializable{
 	 */
 	private static final long serialVersionUID = -54518571697390741L;
 	
-	private String userId; //用户名
+	private String userId; 		//用户名
 	private String userName;	//用户名称
-	private String serialNumber;	//用户手机号码
 	private String passWord;	//用户登录密码
-	private String adminFlag;	//admin:1 , 非admin：0
-	private String AttributionCampus;	//归属校区
-	private String update;	//修改时间
-	private String modifier;	//修改人
-	private String isDefault;	//是否为默认：0：默认；1：已修改
 	private String schoolId;	//校区id
-	private String endDate;	//账号到期时间
-	private PicAttr attr;	//图片属性
+	private String endDate;		//账号到期时间
+	private String adminFlag;	//权限（0为用户，1为管理员，2为超级管理员）
+	private String isDefault;	//是否为默认：0：默认；1：已修改
+	private String startTime; 	//创建时间
+	private String update;		//修改时间
+	private String modifier;	//修改人
+	private String serialNumber;	//用户手机号码
+	private PicAttr attr;		//图片属性
+	private String schoolName;	//归属校区
 	private String sessionKey;	//所有需要登录才能访问的接口， 都需要传递sessionKey
 	public User(){
 		
 	}
-	 
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -79,12 +88,12 @@ public class User implements Serializable{
 		this.adminFlag = adminFlag;
 	}
 
-	public String getAttributionCampus() {
-		return AttributionCampus;
+	public String getSchoolName() {
+		return schoolName;
 	}
 
-	public void setAttributionCampus(String attributionCampus) {
-		AttributionCampus = attributionCampus;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
 	public PicAttr getAttr() {
