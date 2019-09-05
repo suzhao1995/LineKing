@@ -56,7 +56,13 @@ public class SessionUtil {
 			// 如果session过期了，就清除掉这个session
 			long max_age = sessionMaxAge * 1000L;
 			long time = new Date().getTime();
-			long creationTime = entry.getValue().getCreationTime();
+			long creationTime = 0L;
+			try {
+				creationTime = entry.getValue().getCreationTime();
+			} catch (Exception e) {
+				list.add(entry.getKey());
+				continue;
+			}
 			long sessionAge = time - creationTime;
 			if (sessionAge > max_age) {
 				list.add(entry.getKey());
