@@ -74,4 +74,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	       #{isPopUp}
 	       from tf_el_teach_user t
 	</insert>
+	
+	<select id="queryMessageByPop" parameterType="java.lang.String" resultMap="message">
+		select * from tf_el_message where user_id = #{userId} and IS_POPUP = '1' and IS_READ = '0'
+	</select>
+	
+	<update id="updateIsPop" parameterType="java.util.List">
+		update tf_el_message set IS_POPUP = '0',IS_READ = '1'
+		<where>
+			MESSAGE_ID in
+				<foreach collection="list" item="message" index="index" separator="," open="(" close=")">
+					#{message.messageId}
+				</foreach>
+		</where>
+	</update>
 </mapper>

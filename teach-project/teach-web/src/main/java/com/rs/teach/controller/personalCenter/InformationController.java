@@ -160,4 +160,28 @@ public class InformationController{
 		
 		return bean;
 	}
+	
+	/**
+	* 首页弹窗消息展示
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月5日 上午11:33:33
+	*/
+	@RequestMapping("/popMessage")
+	@ResponseBody
+	public ResponseBean popMessage(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		//获取登录的用户信息
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
+		List<Message> list = messageService.getMessage(userId);
+		
+		bean.addSuccess(list);
+		
+		return bean;
+	}
+	
+	
 }

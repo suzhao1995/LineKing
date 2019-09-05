@@ -54,6 +54,26 @@ public interface MessageMapper{
 	*/
 	public int updateIsRead(@Param("userId") String userId, @Param("messageId") String messageId);
 	
+	/**
+	* 查询首页弹窗的所有消息
+	* @param 
+	* @throws
+	* @return List<Message>
+	* @author suzhao
+	* @date 2019年9月5日 下午6:09:19
+	*/
+	public List<Message> queryMessageByPop(String userId);
+	
+	/**
+	* 批量修改isPopUp的值
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年9月5日 下午6:29:59
+	*/
+	public void updateIsPop(List<Message> messages);
+	
 	//管理员 start
 	
 	/**

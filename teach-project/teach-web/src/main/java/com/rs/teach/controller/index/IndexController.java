@@ -127,6 +127,7 @@ public class IndexController {
 					message.setMessageTime(DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 					message.setMessageType("2");
 					message.setUserId(loginUser.getUserId());
+					message.setIsPopUp("0");
 					messageService.addMessage(message);
 				}
 				//登录成功，保存用户信息到session

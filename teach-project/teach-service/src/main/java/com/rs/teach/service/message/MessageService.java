@@ -46,6 +46,16 @@ public interface MessageService{
 	*/
 	public int modifyIsRead(String userId,String messageId);
 	
+	/**
+	* 查询首页弹窗的所有消息
+	* @param 
+	* @throws
+	* @return List<Message>
+	* @author suzhao
+	* @date 2019年9月5日 下午6:09:19
+	*/
+	public List<Message> getMessage(String userId);
+	
 	//管理员 start
 	/**
 	* 查询所有消息
