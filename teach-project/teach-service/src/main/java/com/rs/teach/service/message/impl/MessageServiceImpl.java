@@ -40,8 +40,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<Message> getMessages() {
-		return mapper.queryMessages();
+	public List<Message> getMessages(String userId) {
+		return mapper.queryMessages(userId);
 	}
 
 	@Override
@@ -50,11 +50,13 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<Message> getMessage(String userId) {
+	public List<Message> getPopMessage(String userId) {
 		List<Message> list = mapper.queryMessageByPop(userId);
 		//修改isPopUp的值
 		try {
-			mapper.updateIsPop(list);
+			if(!list.isEmpty()){
+				mapper.updateIsPop(list);
+			}
 		} catch (Exception e) {
 			logger.error("---修改isPopUp值失败---", e);
 		}

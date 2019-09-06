@@ -128,6 +128,7 @@ public class IndexController {
 					message.setMessageType("2");
 					message.setUserId(loginUser.getUserId());
 					message.setIsPopUp("0");
+					message.setSendUser("system");
 					messageService.addMessage(message);
 				}
 				//登录成功，保存用户信息到session

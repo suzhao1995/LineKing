@@ -11,6 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				MASSAGE_CONTENT,
 				MESSAGE_TIME,
 				USER_ID,
+				SEND_USER,
+				IS_POPUP,
 				EXTEND1,
 				EXTEND2,
 				EXTEND3,
@@ -23,6 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{messageContent},
 				#{messageTime},
 				#{userId},
+				#{sendUser},
+				#{isPopUp},
 				#{extend1},
 				#{extend2},
 				#{extend3},
@@ -38,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userId" column="USER_ID" />
 		<result property="isRead" column="IS_READ" />
 		<result property="isPopUp" column="IS_POPUP"/>
+		<result property="sendUser" column="SEND_USER"/>
 	</resultMap>
 	<select id="queryMessage" parameterType="java.lang.String" resultMap="message">
 		select * from tf_el_message t 
@@ -61,18 +66,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 管理员 start -->
 	<select id="queryMessages" resultMap="message">
-		select * from tf_el_message
+		select distinct MASSAGE_CONTENT,MESSAGE_TIME from tf_el_message where send_user = #{userId}
 	</select>
 	
 	<insert id="addMessages" parameterType="com.rs.teach.mapper.massage.entity.Message">
-		insert into tf_el_message(message_id,message_type,massage_content,message_time,user_id,IS_POPUP)
+		insert into tf_el_message(message_id,message_type,massage_content,message_time,user_id,IS_POPUP,SEND_USER)
 	select SEQ_EL_MESSAGE.nextval,
 	       #{messageType},
 	       #{messageContent},
 	       #{messageTime},
 	       t.user_id,
-	       #{isPopUp}
-	       from tf_el_teach_user t
+	       #{isPopUp},
+	       #{sendUser}
+	       from tf_el_teach_user t where t.ADMIN_FLAG = '0'
 	</insert>
 	
 	<select id="queryMessageByPop" parameterType="java.lang.String" resultMap="message">
@@ -80,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<update id="updateIsPop" parameterType="java.util.List">
-		update tf_el_message set IS_POPUP = '0',IS_READ = '1'
+		update tf_el_message set IS_READ = '1'
 		<where>
 			MESSAGE_ID in
 				<foreach collection="list" item="message" index="index" separator="," open="(" close=")">

@@ -54,7 +54,7 @@ public interface MessageService{
 	* @author suzhao
 	* @date 2019年9月5日 下午6:09:19
 	*/
-	public List<Message> getMessage(String userId);
+	public List<Message> getPopMessage(String userId);
 	
 	//管理员 start
 	/**
@@ -65,7 +65,7 @@ public interface MessageService{
 	* @author suzhao
 	* @date 2019年9月2日 下午6:21:50
 	*/
-	public List<Message> getMessages();
+	public List<Message> getMessages(String userId);
 	
 	/**
 	* 批量新增

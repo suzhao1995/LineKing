@@ -18,6 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DateUtil;
 import com.rs.common.utils.ResponseBean;
+import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.massage.entity.Message;
 import com.rs.teach.service.message.MessageService;
 
@@ -49,14 +50,17 @@ public class BeforeInfoController{
 	@ResponseBody
 	public ResponseBean initMessage(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+		
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		//初始化分页信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
-		List<Message> list = messageService.getMessages();
+		List<Message> list = messageService.getMessages(userId);
 		PageInfo<Message> info = new PageInfo<Message>(list,9);
 		ajaxData.put("messageList", info);
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -72,6 +76,7 @@ public class BeforeInfoController{
 	@ResponseBody
 	public ResponseBean addMessage(HttpServletRequest request, HttpServletResponse response){
 		ResponseBean bean = new ResponseBean();
+		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
 		String messageContent = request.getParameter("messageContent");	//消息内容
 		String ipPopUp = request.getParameter("isPopUp");	//是否展示到首页弹窗
@@ -81,6 +86,7 @@ public class BeforeInfoController{
 		message.setMessageTime(DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		message.setMessageType("2");
 		message.setIsPopUp(ipPopUp);
+		message.setSendUser(userId);
 		int count = messageService.addMessages(message);
 		if(count > 0){
 			bean.addSuccess();

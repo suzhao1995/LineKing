@@ -152,6 +152,7 @@ public class BeforeVideoController {
 		List<Video> list = videoService.adminVideosInit(videoName, videoType);
 		PageInfo<Video> info = new PageInfo<Video>(list,9);
 		ajaxData.put("videoList", info);
+		bean.addSuccess(ajaxData);
 		return bean;
 	}
 	
@@ -165,7 +166,7 @@ public class BeforeVideoController {
 	*/
 	@RequestMapping("/addVideo")
 	@ResponseBody
-	public ResponseBean addVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam("files") MultipartFile file){
+	public ResponseBean addVideo(HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		
 		//上传视频封面文件
@@ -244,7 +245,7 @@ public class BeforeVideoController {
 	*/
 	@RequestMapping("/updateVideo")
 	@ResponseBody
-	public ResponseBean updateVideo(HttpServletRequest request, HttpServletResponse response,@RequestParam("files") MultipartFile file){
+	public ResponseBean updateVideo(HttpServletRequest request, HttpServletResponse response,@RequestParam("file") MultipartFile file){
 		ResponseBean bean = new ResponseBean();
 		String videoId = request.getParameter("videoId");
 		if(StringUtils.isEmpty(videoId)){
@@ -344,7 +345,13 @@ public class BeforeVideoController {
 			int totleSort = Integer.valueOf(map.get("totleSort")) + 1;
 			totleSection.setTotleSectionSort(String.valueOf(totleSort));
 		}
-		
+		try {
+			
+			videoService.adminAddTotleInfo(totleSection);
+		} catch (Exception e) {
+			bean.addError("新增失败");
+			logger.info("新增大章节失败", e);
+		}
 		return bean;
 	}
 	

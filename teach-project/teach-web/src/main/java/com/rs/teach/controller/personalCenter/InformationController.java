@@ -176,7 +176,7 @@ public class InformationController{
 		//获取登录的用户信息
 		String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 		
-		List<Message> list = messageService.getMessage(userId);
+		List<Message> list = messageService.getPopMessage(userId);
 		
 		bean.addSuccess(list);
 		

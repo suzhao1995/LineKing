@@ -84,7 +84,7 @@ public interface MessageMapper{
 	* @author suzhao
 	* @date 2019年9月2日 下午6:22:23
 	*/
-	public List<Message> queryMessages();
+	public List<Message> queryMessages(String userId);
 	
 	/**
 	* 批量新增

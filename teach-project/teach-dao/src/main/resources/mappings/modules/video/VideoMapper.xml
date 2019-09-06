@@ -159,14 +159,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="adminVideosInit" parameterType="java.lang.String" resultMap="video">
-		select * from tf_el_video
+		select t.VIDEO_ID,t.VIDEO_NAME,t.VIDEO_URL,t.SCHOOLWORK,t.VIDEOWARE,t.TESTPAPER,t.VIDEO_PATH,s.code_value as VIDEO_TYPE from tf_el_video t,sys_code s
 		<where>
-			1 = 1
+			t.VIDEO_TYPE = s.code and s.code_type = 'VIDEO_CODE'
 			<if test="videoType != null and videoType != ''">
-				and VIDEO_TYPE = #{videoType}
+				and t.VIDEO_TYPE = #{videoType}
 			</if>
 			<if test="videoName != null and videoName != ''">
-				and VIDEO_NAME like '%'||#{videoName}||'%'
+				and t.VIDEO_NAME like '%'||#{videoName}||'%'
 			</if>
 		</where>
 	</select>
@@ -210,11 +210,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="videoPath != null and videoPath != ''">
 				t.VIDEO_PATH = #{videoPath},
 			</if>
-			t.VIDEO_NAME = #{videoName},
-			t.VIDEO_TYPE = #{videoType},
-			t.SCHOOLWORK = #{schoolWork},
-			t.VIDEOWARE = #{videoWare},
-			t.TESTPAPER = #{testPaper}
+			<if test="videoName != null and videoName != ''">
+				t.VIDEO_NAME = #{videoName},
+			</if>
+			<if test="videoType != null and videoType != ''">
+				t.VIDEO_TYPE = #{videoType},
+			</if>
+			<if test="schoolWork != null and schoolWork != ''">
+				t.SCHOOLWORK = #{schoolWork},
+			</if>
+			<if test="videoWare != null and videoWare != ''">
+				t.VIDEOWARE = #{videoWare},
+			</if>
+			<if test="testPaper != null and testPaper != ''">
+				t.TESTPAPER = #{testPaper}
+			</if>
+			
 		</set>
 		where t.VIDEO_ID = #{videoId}
 	</update>
@@ -224,7 +235,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="totleSort" column="TOTLE_SECTION_SORT" />
 		<result property="totleName" column="TOTLE_SECTION_NAME" />
 	</resultMap>
-	<select id="adminTotleInfo" parameterType="java.lang.String">
+	<select id="adminTotleInfo" parameterType="java.lang.String" resultMap="totleInfo">
 		select TOTLE_SECTION_SORT,TOTLE_SECTION_NAME from tf_el_train_totle_section where course_Id = #{videoId} order by TOTLE_SECTION_SORT
 	</select>
 	
