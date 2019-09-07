@@ -3,6 +3,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
@@ -157,4 +158,11 @@ public interface CourseMapper{
 	 * @return
 	 */
 	TrainCourseVo selectCourseById(@Param("courseId") String courseId);
+
+	/**
+	 * 课程下拉框
+	 * @return
+	 */
+	List<OptionVo> queryOptionVo();
+
 }

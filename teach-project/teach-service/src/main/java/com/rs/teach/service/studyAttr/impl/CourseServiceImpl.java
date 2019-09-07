@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
@@ -165,5 +166,10 @@ public class CourseServiceImpl implements CourseService{
         return mapper.selectTrainCourse(sectionDto);
 
     }
+
+	@Override
+	public List<OptionVo> queryOptionVo() {
+		return mapper.queryOptionVo();
+	}
 
 }

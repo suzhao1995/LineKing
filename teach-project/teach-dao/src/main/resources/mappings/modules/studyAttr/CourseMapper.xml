@@ -289,4 +289,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from tf_el_course
         where course_Id = #{courseId}
 	</select>
+	<select id="queryOptionVo" resultType="com.rs.teach.mapper.common.OptionVo">
+		select COURSE_ID as value ,
+				COURSE_NAME as label
+		from TF_EL_COURSE
+	</select>
 </mapper>

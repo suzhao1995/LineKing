@@ -37,7 +37,6 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("/beforeUser")
-@Api(value = "/beforeUser", tags = "BeforeUserController", description = "用户和管理员模块功能")
 public class BeforeUserController {
 
     @Autowired
@@ -56,7 +55,7 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/checkUserId", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean checkUserId(User user) {
+    public ResponseBean checkUserId(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
         if (userService.checkUserId(user.getUserId()) > 0) {
             bean.addError("登录账号已存在！请重新输入");
@@ -67,14 +66,14 @@ public class BeforeUserController {
     }
 
     /**
-     * userId校验
+     * TelNum校验
      *
      * @param user
      * @return
      */
     @RequestMapping(value = "/checkTelNum", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean checkTelNum(User user) {
+    public ResponseBean checkTelNum(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
         if (userService.checkTelNum(user.getSerialNumber()) > 0) {
             bean.addError("手机号不可重复绑定！请重新输入");
@@ -84,6 +83,34 @@ public class BeforeUserController {
         return bean;
     }
 
+    /**
+     * 学校下拉列表数据回显
+     *
+     * @return
+     */
+    @RequestMapping("/querySchool")
+    @ResponseBody
+    public ResponseBean querySchool() {
+        ResponseBean bean = new ResponseBean();
+        List<OptionVo> list = schoolService.selectSchool();
+        bean.addSuccess(list);
+        return bean;
+    }
+
+    /**
+     * 查询所有用户信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/selectUserInfo")
+    @ResponseBody
+    public ResponseBean selectUserInfo(User user) {
+        ResponseBean bean = new ResponseBean();
+        user.setAdminFlag(PermissionEnum.user_.getValue());
+        List<User> list = userService.selectUserInfo(user);
+        bean.addSuccess(list);
+        return bean;
+    }
 
     /**
      * 新增用户
@@ -117,13 +144,12 @@ public class BeforeUserController {
         user.setStartTime(DateUtil.now());
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                picAttrService.addPic(picAttr);
+                userService.addUserAndPic(user,picAttr);
             } else {
                 bean.addError("头像上传失败");
                 log.error("添加用户-头像上传失败");
                 return bean;
             }
-            userService.addUser(user);
             log.info("添加用户成功！");
             bean.addSuccess("添加成功!");
         } catch (Exception e) {
@@ -131,37 +157,6 @@ public class BeforeUserController {
             bean.addError("添加失败!");
             DeleteFileUtil.deleteFile(picAttr.getSavePath());
         }
-        return bean;
-    }
-
-
-    /**
-     * 学校下拉列表数据回显
-     *
-     * @return
-     */
-    @RequestMapping("/querySchool")
-    @ResponseBody
-    public ResponseBean querySchool() {
-        ResponseBean bean = new ResponseBean();
-        List<OptionVo> list = schoolService.selectSchool();
-        bean.addSuccess(list);
-        return bean;
-    }
-
-
-    /**
-     * 查询所有用户信息
-     *
-     * @return
-     */
-    @RequestMapping(value = "/selectUserInfo", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean selectUserInfo(@RequestBody User user) {
-        ResponseBean bean = new ResponseBean();
-        user.setAdminFlag(PermissionEnum.user_.getValue());
-        List<User> list = userService.selectUserInfo(user);
-        bean.addSuccess(list);
         return bean;
     }
 
@@ -197,13 +192,16 @@ public class BeforeUserController {
         }
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = picAttrService.modifyPic(picAttr);
+                int i = userService.updateUserInfoAndPic(user,picAttr);
                 if (i == 1) {
                     //删除原始文件
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
+            }else {
+                bean.addError("头像上传失败");
+                log.error("修改管理员-头像上传失败");
+                return bean;
             }
-            userService.updateUserInfo(user);
             bean.addSuccess("修改成功");
         } catch (Exception e) {
             log.error("用户管理员模块-修改用户-失败！", e);
@@ -220,7 +218,7 @@ public class BeforeUserController {
      *
      * @return
      */
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteUser")
     @ResponseBody
     public ResponseBean deleteUser(String userId) {
         ResponseBean bean = new ResponseBean();
@@ -230,8 +228,10 @@ public class BeforeUserController {
             userService.deleteUser(userId);
             DeleteFileUtil.deleteFile(pic.getSavePath());
             bean.addSuccess();
+            log.info("删除用户-成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            bean.addError("失败");
+            log.error("删除用户-失败",e);
         }
         return bean;
     }
@@ -243,9 +243,9 @@ public class BeforeUserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/selectAdminInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectAdminInfo")
     @ResponseBody
-    public ResponseBean selectAdminInfo(@RequestBody User user) {
+    public ResponseBean selectAdminInfo(User user) {
         ResponseBean bean = new ResponseBean();
         if (StrUtil.isBlank(user.getAdminFlag())) {
             //查全部管理员
@@ -304,13 +304,12 @@ public class BeforeUserController {
         user.setStartTime(DateUtil.now());
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                picAttrService.addPic(picAttr);
+                userService.addUserAndPic(user, picAttr);
             } else {
                 bean.addError("头像上传失败");
                 log.error("添加管理员-头像上传失败");
                 return bean;
             }
-            userService.addUser(user);
             log.info("添加管理员成功！");
             bean.addSuccess("添加成功!");
         } catch (Exception e) {
@@ -352,13 +351,16 @@ public class BeforeUserController {
         }
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = picAttrService.modifyPic(picAttr);
+                int i = userService.updateUserInfoAndPic(user,picAttr);
                 if (i == 1) {
                     //删除原始文件
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
+            }else {
+                bean.addError("头像上传失败");
+                log.error("修改管理员-头像上传失败");
+                return bean;
             }
-            userService.updateUserInfo(user);
             bean.addSuccess("修改成功");
         } catch (Exception e) {
             log.error("用户管理员模块-修改管理员-失败！", e);
@@ -384,8 +386,10 @@ public class BeforeUserController {
             userService.deleteUser(userId);
             DeleteFileUtil.deleteFile(pic.getSavePath());
             bean.addSuccess();
+            log.info("删除管理员-成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            bean.addError("失败");
+            log.error("删除管理员-失败",e);
         }
         return bean;
     }

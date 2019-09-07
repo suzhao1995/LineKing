@@ -7,7 +7,7 @@
     <insert id="addAnswerSheet" parameterType="com.rs.teach.mapper.backstage.entity.AnswerSheet">
         insert into TF_EL_ANSWER_SHEET(answer_sheet_id, user_id, train_sheet_id, train_sheet_url, train_sheet_path,
               train_sheet_type, add_time, train_sheet_file_name,EVALUATION_ID, train_course_id)
-        VALUES(SEQ_EL_ANSWER_SHEET.currval,#{userId},#{trainSheetId},#{trainSheetUrl},#{trainSheetPath},
+        VALUES(SEQ_EL_ANSWER_SHEET.nextval,#{userId},#{trainSheetId},#{trainSheetUrl},#{trainSheetPath},
         #{trainSheetType},#{addTime},#{trainSheetFileName},#{evaluationId},#{trainCourseId})
     </insert>
     <select id="selectAnswerSheetId" parameterType="com.rs.teach.mapper.backstage.entity.AnswerSheet" resultType="java.lang.String">
@@ -24,12 +24,13 @@
     </select>
 
     <select id="queryAnswerSheet" resultType="com.rs.teach.mapper.backstage.vo.AnswerSheetVo">
-        select answer_sheet_id, user_id, train_sheet_id, train_sheet_url, train_sheet_path, train_sheet_type, add_time, train_sheet_file_name, TF_EL_ANSWER_SHEET.evaluation_id, train_course_id, grade, evaluation
-        from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION,TF_EL_TRAIN_DATA,USER_TRAIN_DATA_RELA
+         select TF_EL_ANSWER_SHEET.answer_sheet_id, TF_EL_ANSWER_SHEET.user_id,USER_NAME, train_sheet_id, train_sheet_url, train_sheet_path, train_sheet_type, TF_EL_ANSWER_SHEET.add_time, train_sheet_file_name, TF_EL_ANSWER_SHEET.evaluation_id, TF_EL_ANSWER_SHEET.train_course_id, grade, evaluation
+        from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION,TF_EL_TRAIN_DATA,USER_TRAIN_DATA_RELA,TF_EL_TEACH_USER
         where TF_EL_TRAIN_DATA.ID = DATA_ID
         and TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
         and USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID = TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID
-        and ID = #{id}
+        and TF_EL_ANSWER_SHEET.USER_ID = TF_EL_TEACH_USER.USER_ID
+        and TF_EL_TRAIN_DATA.ID = #{id}
     </select>
     <delete id="deleteAnswerSheetById">
         delete from

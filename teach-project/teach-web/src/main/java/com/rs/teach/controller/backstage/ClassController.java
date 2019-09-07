@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.backstage.entity.TFClass;
 import com.rs.teach.mapper.common.PageDto;
+import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.backstage.ClassService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,38 @@ public class ClassController {
 
     @Autowired
     private ClassService classService;
+
+    @Autowired
+    private UserService userService;
+
+
+    /**
+     * 根据校区id查询所有班级
+     * @param tfClass
+     * @return
+     */
+    @RequestMapping(value = "/selectClassBySchoolId" ,method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectClassBySchoolId(@RequestBody TFClass tfClass){
+        ResponseBean bean = new ResponseBean();
+        List<TFClass> result = classService.selectClassBySchoolId(tfClass);
+        bean.addSuccess(result);
+        return bean;
+    }
+
+    /**
+     * 根据校区id查询所有教师
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/selectTeachBySchoolId" ,method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectTeachBySchoolId(@RequestBody User user){
+        ResponseBean bean = new ResponseBean();
+        List<User> result = userService.selectTeachBySchoolId(user.getSchoolId());
+        bean.addSuccess(result);
+        return bean;
+    }
 
     /**
      * 添加班级
@@ -87,21 +121,6 @@ public class ClassController {
         }
         return bean;
     }
-
-    /**
-     * 根据校区id查询所有班级
-     * @param tfClass
-     * @return
-     */
-    @RequestMapping(value = "/selectClassBySchoolId" ,method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean selectClassBySchoolId(@RequestBody TFClass tfClass){
-        ResponseBean bean = new ResponseBean();
-        TFClass result = classService.selectClassBySchoolId(tfClass);
-        bean.addSuccess(result);
-        return bean;
-    }
-
 
     /**
      * 查询所有班级

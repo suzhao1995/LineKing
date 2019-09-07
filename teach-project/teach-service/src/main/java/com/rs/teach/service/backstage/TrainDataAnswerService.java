@@ -17,9 +17,16 @@ public interface TrainDataAnswerService {
     void addTrainDataAnswer(TrainDataAnswer trainDataAnswer);
 
     /**
-     * 查询当前考核文件的答案
+     * 查询当前考核文件的答案根据trainData的主键Id
      * @param id
      * @return
      */
     TrainDataAnswer selectTrainDataAnswer(String id);
+
+    /**
+     * 获取之前答案文件信息根据answerId
+     * @param answerId
+     * @return
+     */
+    TrainDataAnswer selectTrainDataAnswerByAnswerId(String answerId);
 }

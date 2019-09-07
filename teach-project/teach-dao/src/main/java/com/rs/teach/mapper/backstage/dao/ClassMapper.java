@@ -31,5 +31,5 @@ public interface ClassMapper {
      * @param tfClass
      * @return
      */
-    TFClass selectClassBySchoolId(TFClass tfClass);
+    List<TFClass> selectClassBySchoolId(TFClass tfClass);
 }

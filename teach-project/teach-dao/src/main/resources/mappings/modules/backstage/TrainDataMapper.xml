@@ -6,9 +6,9 @@
 
     <insert id="addTrainData" parameterType="com.rs.teach.mapper.backstage.entity.TrainData">
         insert into TF_EL_TRAIN_DATA(id, train_data_id, train_data_name, train_data_url,
-                      train_data_path, train_data_type, add_time, TRAIN_DATA_FILE_NAME,TRAIN_COURSE_ID)
+                      train_data_path, train_data_type, add_time, TRAIN_DATA_FILE_NAME,TRAIN_COURSE_ID,ANSWER_ID)
         values (#{id},#{trainDataId},#{trainDataName},#{trainDataUrl},
-                    #{trainDataPath},#{trainDataType},#{addTime},#{trainDataFileName},#{trainCourseId})
+                    #{trainDataPath},#{trainDataType},#{addTime},#{trainDataFileName},#{trainCourseId},#{answerId})
     </insert>
     <update id="UpdateTrainData" parameterType="com.rs.teach.mapper.backstage.entity.TrainData">
         update TF_EL_TRAIN_DATA
@@ -44,7 +44,7 @@
     </select>
 
     <select id="selectTrainData" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
-        select ID,TRAIN_DATA_NAME,ADD_TIME,TRAIN_DATA_URL,ANSWER_ID,TRAIN_COURSE_ID,TRAIN_COURSE_NAME
+        select ID,TRAIN_DATA_NAME,TF_EL_TRAIN_DATA.ADD_TIME,TRAIN_DATA_URL,ANSWER_ID,TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME
         from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE
         where TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
     </select>
@@ -77,5 +77,27 @@
         and TF_EL_TRAIN_DATA.ID = DATA_ID
         and USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID = TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID
         and TF_EL_TRAIN_DATA.ID = #{id}
+    </select>
+
+    <select id="queryTrainDataCourseId" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
+        select id,TRAIN_COURSE_ID,TRAIN_COURSE_NAME
+        from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE
+        where TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
+        group by TF_EL_TRAIN_DATA.TRAIN_COURSE_ID
+    </select>
+    <select id="queryTrainDataAndAnswer" resultType="com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo">
+        select TF_EL_TRAIN_DATA.id,
+                TF_EL_TRAIN_DATA.train_data_name,
+                 TF_EL_TRAIN_DATA.train_data_type,
+                 TF_EL_TRAIN_DATA.train_data_file_name,
+                 TF_EL_TRAIN_DATA.train_course_id,
+                 TRAIN_COURSE_NAME,
+                 TF_EL_TRAIN_DATA_ANSWER.answer_id,
+                 TF_EL_TRAIN_DATA_ANSWER.train_answer_type,
+                 TF_EL_TRAIN_DATA_ANSWER.train_data_file_name as trainAnswerFileName
+        from TF_EL_TRAIN_DATA,TF_EL_TRAIN_DATA_ANSWER,TF_EL_TRAIN_COURSE
+        where TF_EL_TRAIN_DATA.ANSWER_ID = TF_EL_TRAIN_DATA_ANSWER.ANSWER_ID
+        and TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
+        and ID = #{id}
     </select>
 </mapper>

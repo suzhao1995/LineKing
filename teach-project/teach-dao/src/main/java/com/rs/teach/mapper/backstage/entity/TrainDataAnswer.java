@@ -16,11 +16,11 @@ public class TrainDataAnswer implements Serializable {
 
     private String answerId;   //主键id
     private String answerFileId;   //答案文件编号
-    private String trainAnswerName;   //考核标题名(用于下载时给用户返回的文件名)
+    private String trainAnswerName;   //考核标题名
     private String trainAnswerUrl; //文件本地地址
     private String trainAnswerPath;    //文件映射地址
     private String trainAnswerType;   //文件格式类型
     private String addTime;  //文件添加时间
-    private String trainDataFileName;  //上传文件名
+    private String trainDataFileName;  //上传文件名(用于下载时给用户返回的文件名)
 
 }

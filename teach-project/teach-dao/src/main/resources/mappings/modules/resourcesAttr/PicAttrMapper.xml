@@ -8,8 +8,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set PIC_URL = #{picUrl} , SAVE_PATH = #{savePath}
 		where PIC_ID = #{picId}
 	</update>
-	
-	<insert id="insertPic" parameterType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
+    <delete id="deletePic">
+		delete from TF_EL_PIC_ATTR where ASSOCIATION_ID = #{userId}
+	</delete>
+
+    <insert id="insertPic" parameterType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
 		insert into TF_EL_PIC_ATTR
 			(
 				PIC_ID,

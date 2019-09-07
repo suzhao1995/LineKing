@@ -32,4 +32,9 @@ public class TrainDataAnswerServiceImpl implements TrainDataAnswerService {
     public TrainDataAnswer selectTrainDataAnswer(String id) {
         return trainDataAnswerMapper.selectTrainDataAnswer(id);
     }
+
+    @Override
+    public TrainDataAnswer selectTrainDataAnswerByAnswerId(String answerId) {
+        return trainDataAnswerMapper.selectTrainDataAnswerByAnswerId(answerId);
+    }
 }

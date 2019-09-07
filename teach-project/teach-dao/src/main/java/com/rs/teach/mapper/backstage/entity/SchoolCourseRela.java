@@ -15,6 +15,7 @@ public class SchoolCourseRela implements Serializable {
 
     private String SchoolId;//学校id
     private String courseId;//课程id
+    private String courseName;//课程Name
     private String courseFlag;//是否拥有课程（‘1’ 是，‘0’否）
 
 }

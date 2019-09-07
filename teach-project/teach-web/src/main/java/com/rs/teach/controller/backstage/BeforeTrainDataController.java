@@ -5,6 +5,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
@@ -16,6 +17,7 @@ import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.AnswerSheetVo;
+import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import com.rs.teach.service.backstage.AnswerSheetService;
 import com.rs.teach.service.backstage.TrainDataAnswerService;
@@ -54,14 +56,12 @@ public class BeforeTrainDataController {
     @Autowired
     private TrainDataAnswerService trainDataAnswerService;
     @Autowired
-    private UserTrainDataRelaService userTrainDataRelaService;
-    @Autowired
     private AnswerSheetService answerSheetService;
 
     /**
      * 培训考核文件上传
      *
-     * @param files
+     * @param files files[0]为考核文件   files[1]为答案文件
      * @return
      */
     @RequestMapping(value = "/trainDataUpload", method = RequestMethod.POST)
@@ -94,7 +94,7 @@ public class BeforeTrainDataController {
         trainData.setAnswerId(DateUtil.format(DateTime.now(), DatePattern.PURE_DATETIME_PATTERN));
 
         //答案文件上传
-        Map<String, Object> answerMap = FileUpDownUtil.trainDataUpload(files[0]);
+        Map<String, Object> answerMap = FileUpDownUtil.trainDataUpload(files[1]);
         if (!(answerMap != null && "0".equals(answerMap.get("code")))) {
             bean.addError(answerMap.get("message").toString());
             return bean;
@@ -116,12 +116,9 @@ public class BeforeTrainDataController {
         userTrainDataRela.setUserIds(trainData.getUserIds());
         userTrainDataRela.setTrainCourseId(trainData.getTrainCourseId());
         try {
-            //考核文件添加
-            trainDataService.addTrainData(trainData);
-            //考核文件答案添加
-            trainDataAnswerService.addTrainDataAnswer(trainDataAnswer);
-            //考核人员与考核文件关联表添加
-            userTrainDataRelaService.addUserTrainData(userTrainDataRela);
+            //添加考核系列文件（考核文件添加，考核文件答案添加，考核人员与考核文件关联表添加）
+            trainDataService.addTrainDataAll(trainData, trainDataAnswer, userTrainDataRela);
+
             log.info("培训考核文件-添加-成功");
             bean.addSuccess();
         } catch (Exception e) {
@@ -134,19 +131,38 @@ public class BeforeTrainDataController {
     }
 
     /**
+     * 培训考核文件修改回显
+     *
+     * @param trainData(只取主键id) pageDto
+     * @return
+     */
+    @RequestMapping(value = "/querytrainDataAndAnswer", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean querytrainDataAndAnswer(@RequestBody TrainData trainData) {
+        ResponseBean bean = new ResponseBean();
+        List<TrainDataAndAnswerVo> vo = trainDataService.queryTrainDataAndAnswer(trainData.getId());
+        bean.addSuccess(vo);
+        return bean;
+    }
+
+    /**
      * 培训考核文件修改
      *
-     * @param files（非必须）
-     * @param trainData（id必传 trainDataName非必须）
+     * @param files（非必须）     files[0]为考核文件   files[1]为答案文件
+     * @param trainData（id必传 trainDataName必须  trainCourseId,answerId）
      * @return
      */
     @RequestMapping(value = "/trainDataUpdate", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean trainDataUpdate(@RequestParam(value = "files", required = false) MultipartFile files, TrainData trainData) {
+    public ResponseBean trainDataUpdate(@RequestParam(value = "files", required = false) MultipartFile[] files, TrainData trainData, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
+        //答案表数据
+        TrainDataAnswer trainDataAnswer = new TrainDataAnswer();
+        //指派人id
+        String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
         if (files != null) {
-            if (!files.isEmpty()) {
-                Map<String, Object> map = FileUpDownUtil.trainDataUpload(files);
+            if (!files[0].isEmpty()) {
+                Map<String, Object> map = FileUpDownUtil.trainDataUpload(files[0]);
                 if (!(map != null && "0".equals(map.get("code")))) {
                     bean.addError(map.get("message").toString());
                     return bean;
@@ -156,16 +172,40 @@ public class BeforeTrainDataController {
                 trainData.setTrainDataUrl(map.get("trainDataUrl").toString());
                 trainData.setTrainDataPath(map.get("trainDataPath").toString());
                 trainData.setTrainDataType(map.get("trainDataType").toString());
-
-                //获取之前培训考核文件路径
-                TrainData vo = trainDataService.selectTrainDataById(trainData.getId());
-                DeleteFileUtil.deleteFile(vo.getTrainDataUrl());
+            }
+            if (!files[1].isEmpty()) {
+                //答案文件上传
+                Map<String, Object> answerMap = FileUpDownUtil.trainDataUpload(files[1]);
+                if (!(answerMap != null && "0".equals(answerMap.get("code")))) {
+                    bean.addError(answerMap.get("message").toString());
+                    return bean;
+                }
+                trainDataAnswer.setAnswerId(trainData.getAnswerId());
+                trainDataAnswer.setAnswerFileId(answerMap.get("trainDataId").toString());
+                trainDataAnswer.setTrainAnswerName(trainData.getTrainDataName());
+                trainDataAnswer.setTrainAnswerPath(answerMap.get("trainDataPath").toString());
+                trainDataAnswer.setTrainAnswerType(answerMap.get("trainDataType").toString());
+                trainDataAnswer.setTrainAnswerUrl(answerMap.get("trainDataUrl").toString());
+                trainDataAnswer.setTrainDataFileName(answerMap.get("trainDataFileName").toString());
             }
         }
+        //获取之前培训考核文件路径
+        TrainData trainDataVo = trainDataService.selectTrainDataById(trainData.getId());
+        //获取之前答案文件信息根据answerId
+        TrainDataAnswer answerVo = trainDataAnswerService.selectTrainDataAnswerByAnswerId(trainData.getAnswerId());
+        String[] fileNames = {trainDataVo.getTrainDataUrl(), answerVo.getTrainAnswerUrl()};
         try {
-            trainDataService.UpdateTrainData(trainData);
+            if (StrUtil.isNotBlank(trainDataAnswer.getAnswerId())) {
+                trainDataService.UpdateTrainData(trainData, trainDataAnswer);
+            }else {
+                bean.addError("答案文件上传失败");
+                log.error("修改考核文件-答案文件上传失败");
+                return bean;
+            }
             log.info("培训考核文件-修改-成功");
-            bean.addSuccess();
+            //删除修改前的文件
+            DeleteFileUtil.deleteFiles(fileNames);
+            bean.addSuccess("失败");
         } catch (Exception e) {
             log.error("培训考核文件-修改-失败", e);
             bean.addError("失败");
@@ -194,11 +234,12 @@ public class BeforeTrainDataController {
                     fileNames.add(tvo.getTrainAnswerUrl());
                 }
             }
+
             trainDataService.trainDataDelete(trainData.getId());
             DeleteFileUtil.deleteFiles(fileNames);
 
             log.info("培训考核文件-删除-成功");
-            bean.addSuccess();
+            bean.addSuccess("失败");
         } catch (Exception e) {
             log.error("培训考核文件-删除-失败");
             bean.addError("失败");
@@ -217,18 +258,19 @@ public class BeforeTrainDataController {
     @ResponseBody
     public ResponseBean trainDataAnswerDownload(HttpServletRequest request, HttpServletResponse response) {
         ResponseBean bean = new ResponseBean();
+        //trainData的主键Id
         String id = request.getParameter("id");
         TrainDataAnswer trainDataAnswer = trainDataAnswerService.selectTrainDataAnswer(id);
         try {
-            Map<String, Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, trainDataAnswer.getTrainAnswerUrl(), trainDataAnswer.getTrainAnswerType(), trainDataAnswer.getTrainAnswerName());
+            Map<String, Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, trainDataAnswer.getTrainAnswerUrl(), trainDataAnswer.getTrainAnswerType(), trainDataAnswer.getTrainDataFileName());
             if (resultMap != null && "0".equals(resultMap.get("code"))) {
-                log.info("下载用户考卷-成功");
-                bean.addSuccess();
+                log.info("下载答案-成功");
+                bean.addSuccess("失败");
             } else {
                 bean.addError(resultMap.get("message").toString());
             }
         } catch (IOException e) {
-            log.error("下载用户考卷-失败", e);
+            log.error("下载答案-失败", e);
             bean.addError("系统异常");
         }
         return bean;
@@ -241,7 +283,7 @@ public class BeforeTrainDataController {
      * @param trainData(只取id) pageDto
      * @return
      */
-    @RequestMapping(value = "/queryAnswerSheet", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryAnswerSheet", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean queryAnswerSheet(@RequestBody TrainData trainData) {
         ResponseBean bean = new ResponseBean();
@@ -269,7 +311,7 @@ public class BeforeTrainDataController {
             Map<String, Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, answerSheet.getTrainSheetUrl(), answerSheet.getTrainSheetType(), answerSheet.getTrainSheetFileName());
             if (resultMap != null && "0".equals(resultMap.get("code"))) {
                 log.info("下载用户考卷-成功");
-                bean.addSuccess();
+                bean.addSuccess("成功");
             } else {
                 bean.addError(resultMap.get("message").toString());
             }
@@ -286,7 +328,7 @@ public class BeforeTrainDataController {
      * @param answerSheet(只取answerSheetId主键)
      * @return
      */
-    @RequestMapping(value = "/deleteAnswerSheetById", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteAnswerSheetById", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean deleteAnswerSheetById(@RequestBody AnswerSheet answerSheet) {
         ResponseBean bean = new ResponseBean();
@@ -295,6 +337,8 @@ public class BeforeTrainDataController {
             String fileName = vo.getTrainSheetUrl();
             answerSheetService.deleteAnswerSheetById(answerSheet.getAnswerSheetId());
             DeleteFileUtil.deleteFile(fileName);
+            bean.addSuccess("删除成功");
+            log.info("根据id删除答卷表数据-删除-成功");
         } catch (Exception e) {
             log.error("根据id删除答卷表数据-删除-失败");
             bean.addError("失败");

@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author wanghang
- * @Description
+ * @Description  答卷表
  * @create 2019-09-05 12:33
  */
 public interface AnswerSheetService {
@@ -37,4 +37,6 @@ public interface AnswerSheetService {
      * @param answerSheetId
      */
     void deleteAnswerSheetById(String answerSheetId);
+
+
 }

@@ -1,5 +1,6 @@
 package com.rs.teach.service.User;
 
+import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.entity.User;
 
 import java.util.List;
@@ -47,8 +48,9 @@ public interface UserService {
 	/**
 	 * 添加普通用户
 	 * @param user
+	 * @param picAttr
 	 */
-	void addUser(User user);
+	void addUserAndPic(User user, PicAttr picAttr);
 
 	/**
 	 * 校验
@@ -72,8 +74,9 @@ public interface UserService {
 	/**
 	 * 修改用户信息
 	 * @param user
+	 * @param picAttr
 	 */
-	void updateUserInfo(User user);
+	int updateUserInfoAndPic(User user, PicAttr picAttr);
 
 	/**
 	 * 删除用户
@@ -81,5 +84,16 @@ public interface UserService {
 	 */
 	void deleteUser(String userId);
 
+	/**
+	 * 考核人员回显（已添加的不会显）
+	 * @return
+	 */
+    List<User> queryUserNotIn();
 
+	/**
+	 * 根据校区id查询所有教师
+	 * @param schoolId
+	 * @return
+	 */
+	List<User> selectTeachBySchoolId(String schoolId);
 }

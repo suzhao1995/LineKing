@@ -21,4 +21,16 @@ public interface TrainDataAnswerMapper {
      * @return
      */
     TrainDataAnswer selectTrainDataAnswer(@Param("id") String id);
+    /**
+     * 获取之前答案文件信息根据answerId
+     * @param answerId
+     * @return
+     */
+    TrainDataAnswer selectTrainDataAnswerByAnswerId(@Param("answerId")String answerId);
+
+    /**
+     * 修改答案表
+     * @param trainDataAnswer
+     */
+    void updateTrainDataAnswer(TrainDataAnswer trainDataAnswer);
 }

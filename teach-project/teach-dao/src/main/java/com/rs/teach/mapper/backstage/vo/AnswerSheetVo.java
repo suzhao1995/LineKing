@@ -16,6 +16,7 @@ public class AnswerSheetVo implements Serializable {
 
     private String answerSheetId; //主键id
     private String userId;//用户id
+    private String userName;//用户name
     private String trainSheetId;//文件编号
     private String trainSheetUrl;//本地地址
     private String trainSheetPath;//文件映射地址

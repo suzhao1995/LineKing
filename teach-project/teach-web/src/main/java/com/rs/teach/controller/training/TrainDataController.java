@@ -3,6 +3,7 @@ package com.rs.teach.controller.training;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
@@ -11,7 +12,6 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.TrainData;
-import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.service.backstage.AnswerSheetService;
@@ -88,7 +88,7 @@ public class TrainDataController {
         //是否有考核权限
         Integer count = userTrainDataRelaService.isEmpty(id, trainCourseId, userid);
         if (count == 0) {
-            bean.addError("对不起！您暂时不能参见考核！");
+            bean.addError("对不起！您暂时不能参加考核！");
             return bean;
         }
         TrainData trainData = trainDataService.selectTrainDataById(id);
@@ -96,7 +96,7 @@ public class TrainDataController {
             Map<String, Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, trainData.getTrainDataUrl(), trainData.getTrainDataType(), trainData.getTrainDataName());
             if (resultMap != null && "0".equals(resultMap.get("code"))) {
                 log.info("培训考核文件下载-成功");
-                bean.addSuccess();
+                bean.addSuccess("成功");
             } else {
                 bean.addError(resultMap.get("message").toString());
             }
@@ -112,7 +112,7 @@ public class TrainDataController {
      *
      * @return
      */
-    @RequestMapping(value = "/trainCourseList", method = RequestMethod.POST)
+    @RequestMapping(value = "/trainCourseList")
     @ResponseBody
     public ResponseBean trainCourseList() {
         ResponseBean bean = new ResponseBean();
@@ -138,7 +138,13 @@ public class TrainDataController {
         //是否有考核权限
         Integer count = userTrainDataRelaService.isEmpty(id, trainCourseId, userid);
         if (count == 0) {
-            bean.addError("对不起！您暂时不能参见考核！");
+            bean.addError("对不起！您暂时不能参加考核！");
+            return bean;
+        }
+        //是否重复提交
+        String result = userTrainDataRelaService.answerSheetIdIsEmpty(id, trainCourseId, userid);
+        if (!StrUtil.equalsIgnoreCase("0",result)) {
+            bean.addError("对不起！不能重复提交！");
             return bean;
         }
         if (file != null) {

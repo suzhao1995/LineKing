@@ -1,11 +1,20 @@
 package com.rs.teach.service.backstage.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.rs.teach.mapper.backstage.dao.TrainDataAnswerMapper;
 import com.rs.teach.mapper.backstage.dao.TrainDataMapper;
+import com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper;
 import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
+import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
+import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import com.rs.teach.service.backstage.TrainDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,15 +28,25 @@ public class TrainDataServiceImpl implements TrainDataService {
 
     @Autowired
     private TrainDataMapper trainDataMapper;
+    @Autowired
+    private TrainDataAnswerMapper trainDataAnswerMapper;
+    @Autowired
+    private UserTrainDataRelaMapper userTrainDataRelaMapper;
 
     @Override
     public void addTrainData(TrainData trainData) {
         trainDataMapper.addTrainData(trainData);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void UpdateTrainData(TrainData trainData) {
-        trainDataMapper.UpdateTrainData(trainData);
+    public void UpdateTrainData(TrainData trainData, TrainDataAnswer trainDataAnswer) {
+        try {
+            trainDataMapper.UpdateTrainData(trainData);
+            trainDataAnswerMapper.updateTrainDataAnswer(trainDataAnswer);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
@@ -49,5 +68,29 @@ public class TrainDataServiceImpl implements TrainDataService {
     @Override
     public TrainDataFileAllUrlVo selectFileAllUrl(String id) {
         return trainDataMapper.selectFileAllUrl(id);
+    }
+
+    @Override
+    public List<TrainData> queryTrainDataCourseId() {
+        return trainDataMapper.queryTrainDataCourseId();
+    }
+
+    @Override
+    public List<TrainDataAndAnswerVo> queryTrainDataAndAnswer(String id) {
+        return trainDataMapper.queryTrainDataAndAnswer(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer, UserTrainDataRela userTrainDataRela) {
+        try {
+            trainDataMapper.addTrainData(trainData);
+            //考核文件答案添加
+            trainDataAnswerMapper.addTrainDataAnswer(trainDataAnswer);
+            //考核人员与考核文件关联表添加
+            userTrainDataRelaMapper.addUserTrainData(userTrainDataRela);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

@@ -1,11 +1,16 @@
 package com.rs.teach.service.User.impl;
 
-import com.rs.teach.mapper.common.Enums.PermissionEnum;
+import cn.hutool.core.util.StrUtil;
+import com.rs.teach.mapper.resourcesAttr.dao.PicAttrMapper;
+import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
+import com.rs.teach.service.resourcesAttr.PicAttrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,11 +20,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper dao;
 
+    @Autowired
+    private PicAttrMapper mapper;
+
     @Override
     public String test() {
         return dao.getUserById("0001").getUserName();
     }
-
+    @Autowired
+    private PicAttrService picAttrService;
 
     /**
      * 根据ID查询用户信息
@@ -56,9 +65,15 @@ public class UserServiceImpl implements UserService {
         return dao.updateUser(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void addUser(User user) {
-        dao.addUser(user);
+    public void addUserAndPic(User user, PicAttr picAttr) {
+        try {
+            mapper.insertPic(picAttr);
+            dao.addUser(user);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
@@ -80,14 +95,38 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void updateUserInfo(User user) {
-        dao.updateUserInfo(user);
+    public int updateUserInfoAndPic(User user, PicAttr picAttr) {
+        int i ;
+        try {
+            dao.updateUserInfo(user);
+            i = picAttrService.modifyPic(picAttr);
+        } catch (Exception e) {
+            throw e;
+        }
+        return i;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void deleteUser(String userId) {
+        //删除用户
+        dao.deleteUser(userId);
+        //删除用户的头像
+        mapper.deletePic(userId);
     }
 
     @Override
-    public void deleteUser(String userId) {
-        dao.deleteUser(userId);
+    public List<User> queryUserNotIn() {
+
+        return dao.queryUserNotIn();
+    }
+
+    @Override
+    public List<User> selectTeachBySchoolId(String schoolId) {
+
+        return dao.selectTeachBySchoolId(schoolId);
     }
 
 

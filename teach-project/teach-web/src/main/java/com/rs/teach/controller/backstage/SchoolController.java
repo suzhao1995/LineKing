@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.vo.SchoolVo;
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.service.backstage.SchoolService;
+import com.rs.teach.service.studyAttr.CourseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @author 汪航
@@ -28,6 +32,22 @@ public class SchoolController {
 
     @Autowired
     private SchoolService schoolService;
+    @Autowired
+    private CourseService courseService;
+
+
+    /**
+     * 查询权限课程(添加学校时课程下拉框)
+     * @return
+     */
+    @RequestMapping(value = "/queryOptionVo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean queryOptionVo() {
+        ResponseBean bean = new ResponseBean();
+        List<OptionVo> list = courseService.queryOptionVo();
+        bean.addSuccess(list);
+        return bean;
+    }
 
     /**
      * 添加学校
@@ -94,20 +114,6 @@ public class SchoolController {
     }
 
     /**
-     * 查询所有学校信息
-     * @param pageDto{pageNum,pageSize}
-     * @return
-     */
-    @RequestMapping(value = "/selectSchool", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseBean selectSchool(@RequestBody PageDto pageDto) {
-        ResponseBean bean = new ResponseBean();
-        PageInfo<SchoolVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> schoolService.selectSchoolVo());
-        bean.addSuccess(pageInfo);
-        return bean;
-    }
-
-    /**
      * 修改时数据回显
      * @param school
      * @return
@@ -121,4 +127,17 @@ public class SchoolController {
         return bean;
     }
 
+    /**
+     * 查询所有学校信息
+     * @param pageDto{pageNum,pageSize}
+     * @return
+     */
+    @RequestMapping(value = "/selectSchool", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean selectSchool(@RequestBody PageDto pageDto) {
+        ResponseBean bean = new ResponseBean();
+        PageInfo<SchoolVo> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> schoolService.selectSchoolVo());
+        bean.addSuccess(pageInfo);
+        return bean;
+    }
 }

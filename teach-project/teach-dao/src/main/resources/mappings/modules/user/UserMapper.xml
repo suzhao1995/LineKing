@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="passWord" column="PASS_WORD" />
 		<result property="adminFlag" column="ADMIN_FLAG" />
 		<result property="endDate" column="end_Date" />
+		<result property="startTime" column="START_TIME" />
 		<result property="isDefault" column="ISDEFAULT" />
 		<result property="schoolId" column="SCHOOL_ID" />
 		<result property="schoolName" column="SCHOOL_NAME" />
@@ -28,26 +29,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectUserInfo" parameterType="com.rs.teach.mapper.user.entity.User" resultMap="userInfo">
-		select  tu.USER_ID,tu.USER_NAME,tu.SERIAL_NUMBER,tu.PASS_WORD,tu.ADMIN_FLAG,tu.end_Date,
+		select  tu.USER_ID,tu.USER_NAME,tu.SERIAL_NUMBER,tu.ADMIN_FLAG,tu.end_Date,tu.START_TIME,
 			tu.ISDEFAULT,tu.SCHOOL_ID,pa.pic_id,pa.pic_url,pa.save_path,s.SCHOOL_NAME
 		from TF_EL_TEACH_USER tu,TF_EL_PIC_ATTR pa,TF_EL_SCHOOL s
 		<where>
 			tu.USER_ID = pa.ASSOCIATION_ID
 			and tu.SCHOOL_ID = s.SCHOOL_ID
 
-			<if test="adminFlag != null and adminFlag != '' and adminFlag =='3'">
+			<if test="adminFlag != null and adminFlag != '' and adminFlag == '3'.toString()">
 				and  <![CDATA[tu.ADMIN_FLAG <> '0']]>
 			</if>
 
-			<if test="adminFlag != null and adminFlag != '' and adminFlag !='3'">
+			<if test="adminFlag != null and adminFlag != '' and adminFlag !='3'.toString()">
 				and tu.ADMIN_FLAG = #{adminFlag}
 			</if>
 
 			<if test="userName != null and userName != ''">
-				tu.USER_NAME = #{userName}
+			  	and tu.USER_NAME like  '%'||#{userName}||'%'
 			</if>
 			<if test="schoolId != null and schoolId != ''">
-				tu.SCHOOL_ID = #{schoolId}
+				and tu.SCHOOL_ID = #{schoolId}
 			</if>
 		</where>
 	</select>
@@ -103,33 +104,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update TF_EL_TEACH_USER
 		<set>
 			<if test="userName != null and userName != ''">
-				user_name = #{userName}
+				user_name = #{userName},
 			</if>
 			<if test="serialNumber != null and serialNumber != ''">
-				SERIAL_NUMBER = #{serialNumber}
+				SERIAL_NUMBER = #{serialNumber},
 			</if>
 			<if test="passWord != null and passWord != ''">
-				PASS_WORD = #{passWord}
+				PASS_WORD = #{passWord},
 			</if>
 			<if test="update != null and update != ''">
-				UPDATE_TIME = #{update}
+				UPDATE_TIME = #{update},
 			</if>
 			<if test="modifier != null and modifier != ''">
-				MODIFIER = #{modifier}
+				MODIFIER = #{modifier},
 			</if>
 			<if test="endDate != null and endDate != ''">
-				END_DATE = #{endDate}
+				END_DATE = #{endDate},
 			</if>
 		</set>
 		where USER_ID = #{userId}
 	</update>
 	<delete id="deleteUser">
-		delete from
-		(
-			select 1
-			from TF_EL_PIC_ATTR pa , TF_EL_TEACH_USER tu
-			where pa.ASSOCIATION_ID = tu.USER_ID
-			and USER_ID = #{userId}
-		)
+		delete from TF_EL_TEACH_USER where USER_ID = #{userId}
+
 	</delete>
+	<select id="queryUserNotIn" resultType="com.rs.teach.mapper.user.entity.User">
+		select t.USER_ID,t.USER_NAME
+		from TF_EL_TEACH_USER t
+		where t.ADMIN_FLAG = '0'
+		and t.USER_ID not in (select USER_ID from USER_TRAIN_DATA_RELA)
+	</select>
+	<select id="selectTeachBySchoolId" resultType="com.rs.teach.mapper.user.entity.User">
+		select user_id, user_name,SCHOOL_ID
+		from TF_EL_TEACH_USER
+		where SCHOOL_ID = #{schoolId}
+	</select>
 </mapper>

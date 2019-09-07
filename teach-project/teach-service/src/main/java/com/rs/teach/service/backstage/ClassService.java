@@ -38,5 +38,5 @@ public interface ClassService {
      * @param tfClass
      * @return
      */
-    TFClass selectClassBySchoolId(TFClass tfClass);
+    List<TFClass> selectClassBySchoolId(TFClass tfClass);
 }

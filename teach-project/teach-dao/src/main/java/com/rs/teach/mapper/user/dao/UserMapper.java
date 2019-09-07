@@ -98,5 +98,15 @@ public interface UserMapper {
 	 */
 	void deleteUser(@Param("userId")String userId);
 
-
+	/**
+	 * 考核人员回显（已添加的不会显）
+	 * @return
+	 */
+    List<User> queryUserNotIn();
+	/**
+	 * 根据校区id查询所有教师
+	 * @param schoolId
+	 * @return
+	 */
+	List<User> selectTeachBySchoolId(@Param("schoolId") String schoolId);
 }

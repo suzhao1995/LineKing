@@ -23,10 +23,15 @@ var url = "";
 var fileName = "";
 var upLoadId = "";
 function upload(){
-	var formData = new FormData($('#uploadForm')[0]);
+	var formData = new FormData();
+    var t_files = $('#uploadForm');
+    console.log(t_files)
+    for (var i=0;i<t_files.length;i++){
+        formData.append('files',t_files[i]);
+    }
 	$.ajax({
       type: "post",
-      url: '/teach-web/componant/upLoadFile',
+      url: '/teach-web/componant/upLoadFiles',
       data: formData,
       cache : false,
       processData : false,

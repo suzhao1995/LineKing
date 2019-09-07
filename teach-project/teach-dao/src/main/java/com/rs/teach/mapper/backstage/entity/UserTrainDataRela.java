@@ -21,4 +21,8 @@ public class UserTrainDataRela implements Serializable {
     private String trainCourseId; //考核课程（绑定培训课程id）
 
     private String[] userIds; //考核用户id数组
+    private String userName;  //考核人员姓名
+    private String adminName;//指派人name
+    private String trainCourseName;//考核课程name
+
 }

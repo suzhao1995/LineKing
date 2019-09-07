@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.backstage.dao;
 
 import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,16 @@ public interface TrainDataMapper {
      * @return
      */
     TrainDataFileAllUrlVo selectFileAllUrl(@Param("id") String id);
+    /**
+     * 考核科目回显（考核文件表存在的科目）
+     * @return
+     */
+    List<TrainData> queryTrainDataCourseId();
+
+    /**
+     * 培训考核文件修改回显
+     * @param id
+     * @return
+     */
+    List<TrainDataAndAnswerVo> queryTrainDataAndAnswer(@Param("id") String id);
 }

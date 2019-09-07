@@ -80,7 +80,7 @@ public class TeachAspect {
 	    if(!methodName.toUpperCase().startsWith("VERIFY")){
             String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
             User user = userMapper.getTeachUser(userId);
-            if (!StrUtil.equals("1", user.getAdminFlag())) {
+            if (!StrUtil.equals("1", user.getAdminFlag()) && !StrUtil.equals("2", user.getAdminFlag())) {
                 ResponseBean bean = new ResponseBean();
                 bean.addError("-1", "用户沒有权限");
                 return bean;
@@ -111,6 +111,7 @@ public class TeachAspect {
             if (!StrUtil.equals("2", user.getAdminFlag())) {
                 ResponseBean bean = new ResponseBean();
                 bean.addError("-1", "用户沒有权限");
+                log.error("用户不是超级管理员");
                 return bean;
             }
         }

@@ -3,6 +3,8 @@ package com.rs.teach.mapper.backstage.dao;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author wanghang
  * @Description
@@ -10,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserTrainDataRelaMapper {
     /**
-     * 批量插入考核文件和考核人员表
+     * 批量插入考核人员与考核文件关联表
      *
      * @param userTrainDataRela
      */
@@ -32,4 +34,37 @@ public interface UserTrainDataRelaMapper {
      * @return
      */
     Integer isEmpty(@Param("id") String id, @Param("trainCourseId") String trainCourseId, @Param("userid") String userid);
+    /**
+     * 是否重复提交
+     * @param id
+     * @param trainCourseId
+     * @param userid
+     * @return
+     */
+    String answerSheetIdIsEmpty(@Param("id") String id, @Param("trainCourseId") String trainCourseId, @Param("userid") String userid);
+
+    /**
+     * 查询考核人信息
+     * @param id
+     */
+    List<UserTrainDataRela> queryUserTrainDataRela(@Param("id")String id);
+
+    /**
+     * 查询指派人信息
+     * @param id
+     * @return
+     */
+    List<UserTrainDataRela> queryAdminName(@Param("id")String id);
+
+    /**
+     * 删除参与人员
+     * @param id
+     */
+    void delete(@Param("id") String id);
+
+    /**
+     * 删除参与人员 以及关联的答卷表数据
+     * @param id
+     */
+    void deleteRela(@Param("id") String id);
 }

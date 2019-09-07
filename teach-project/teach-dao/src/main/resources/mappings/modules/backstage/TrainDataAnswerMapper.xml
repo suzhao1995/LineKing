@@ -30,4 +30,33 @@
           where TF_EL_TRAIN_DATA_ANSWER.ANSWER_ID = TF_EL_TRAIN_DATA.ANSWER_ID
           and ID = #{id}
     </select>
+    <select id="selectTrainDataAnswerByAnswerId"
+            resultType="com.rs.teach.mapper.backstage.entity.TrainDataAnswer">
+        select * from TF_EL_TRAIN_DATA_ANSWER
+        where ANSWER_ID = #{answerId}
+    </select>
+    <update id="updateTrainDataAnswer" parameterType="com.rs.teach.mapper.backstage.entity.TrainDataAnswer">
+        update TF_EL_TRAIN_DATA_ANSWER
+        <set>
+            <if test="answerFileId != null and answerFileId != ''">
+                ANSWER_FILE_ID = #{answerFileId},
+            </if>
+            <if test="trainAnswerName != null and trainAnswerName != ''">
+                TRAIN_ANSWER_NAME = #{trainAnswerName},
+            </if>
+            <if test="trainAnswerUrl != null and trainAnswerUrl != ''">
+                TRAIN_ANSWER_URL = #{trainAnswerUrl},
+            </if>
+            <if test="trainAnswerPath != null and trainAnswerPath != ''">
+                TRAIN_ANSWER_PATH = #{trainAnswerPath},
+            </if>
+            <if test="trainAnswerType != null and trainAnswerType != ''">
+                TRAIN_ANSWER_TYPE = #{trainAnswerType},
+            </if>
+            <if test="trainDataFileName != null and trainDataFileName != ''">
+                TRAIN_DATA_FILE_NAME = #{trainDataFileName},
+            </if>
+        </set>
+        where ANSWER_ID =#{answerId}
+    </update>
 </mapper>

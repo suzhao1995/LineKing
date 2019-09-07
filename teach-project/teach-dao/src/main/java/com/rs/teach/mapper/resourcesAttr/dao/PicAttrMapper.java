@@ -40,4 +40,10 @@ public interface PicAttrMapper{
 	* @date 2019年8月2日 下午3:34:11
 	*/
 	 PicAttr queryPic(@Param("userId") String userId);
+
+	/**
+	 * 删除头像
+	 * @param userId
+	 */
+	void deletePic(String userId);
 }
