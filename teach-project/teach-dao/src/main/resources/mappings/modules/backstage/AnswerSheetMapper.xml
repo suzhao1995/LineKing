@@ -33,12 +33,6 @@
         and TF_EL_TRAIN_DATA.ID = #{id}
     </select>
     <delete id="deleteAnswerSheetById">
-        delete from
-        (
-            select 1
-            from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION
-            where TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
-            and ANSWER_SHEET_ID = #{answerSheetId}
-        )
+        delete from TF_EL_ANSWER_SHEET where ANSWER_SHEET_ID = #{answerSheetId}
     </delete>
 </mapper>

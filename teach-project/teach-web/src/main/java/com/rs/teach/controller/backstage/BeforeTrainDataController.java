@@ -8,6 +8,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.rs.common.utils.BPUtil;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
@@ -333,6 +334,7 @@ public class BeforeTrainDataController {
     public ResponseBean deleteAnswerSheetById(@RequestBody AnswerSheet answerSheet) {
         ResponseBean bean = new ResponseBean();
         try {
+            BPUtil.check(StrUtil.isBlank(answerSheet.getAnswerSheetId()),"没有答卷id");
             AnswerSheet vo = answerSheetService.selectAnswerSheet(answerSheet.getAnswerSheetId());
             String fileName = vo.getTrainSheetUrl();
             answerSheetService.deleteAnswerSheetById(answerSheet.getAnswerSheetId());

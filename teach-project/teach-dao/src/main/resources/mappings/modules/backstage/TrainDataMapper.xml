@@ -80,10 +80,9 @@
     </select>
 
     <select id="queryTrainDataCourseId" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
-        select id,TRAIN_COURSE_ID,TRAIN_COURSE_NAME
+        select id,train_data_name,TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME
         from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE
         where TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
-        group by TF_EL_TRAIN_DATA.TRAIN_COURSE_ID
     </select>
     <select id="queryTrainDataAndAnswer" resultType="com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo">
         select TF_EL_TRAIN_DATA.id,

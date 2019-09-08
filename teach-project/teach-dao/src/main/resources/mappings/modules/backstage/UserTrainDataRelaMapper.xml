@@ -36,7 +36,7 @@
     </select>
 
     <select id="queryUserTrainDataRela" resultType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
-        select id, data_id, user_id, admin_id,ANSWER_SHEET_ID, train_course_id, user_name , train_course_name
+        select id, data_id, USER_TRAIN_DATA_RELA.user_id, admin_id,ANSWER_SHEET_ID, USER_TRAIN_DATA_RELA.train_course_id, user_name , train_course_name
         from USER_TRAIN_DATA_RELA,TF_EL_TEACH_USER,TF_EL_TRAIN_COURSE
         where USER_TRAIN_DATA_RELA.USER_ID = TF_EL_TEACH_USER.USER_ID
         and USER_TRAIN_DATA_RELA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
@@ -53,8 +53,10 @@
         where ID = #{id}
     </delete>
     <delete id="deleteRela">
-        delete from (
-            select 1 from USER_TRAIN_DATA_RELA,TF_EL_ANSWER_SHEET
+        delete from TF_EL_ANSWER_SHEET
+        where TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID =
+        (
+            select TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID from USER_TRAIN_DATA_RELA,TF_EL_ANSWER_SHEET
             where TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID = USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID
             and ID = #{id}
         )

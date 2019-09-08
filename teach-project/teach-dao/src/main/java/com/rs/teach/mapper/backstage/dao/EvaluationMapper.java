@@ -27,4 +27,10 @@ public interface EvaluationMapper {
      * @param evaluation
      */
     void updateEvaluationById(Evaluation evaluation);
+
+    /**
+     * 删除评价表
+     * @param answerSheetId
+     */
+    void selectEvaluationId(@Param("answerSheetId") String answerSheetId);
 }

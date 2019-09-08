@@ -68,9 +68,16 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
         return answerSheetMapper.queryAnswerSheet(id);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteAnswerSheetById(String answerSheetId) {
-        answerSheetMapper.deleteAnswerSheetById(answerSheetId);
+        try {
+            answerSheetMapper.deleteAnswerSheetById(answerSheetId);
+            evaluationMapper.selectEvaluationId(answerSheetId);
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 
 

@@ -42,7 +42,7 @@ public interface UserTrainDataRelaService {
     List<UserTrainDataRela> queryUserTrainDataRela(String id);
 
     /**
-     * 删除考核参与人员
+     * 删除考核参与人员(若上传答卷了 则删除答卷)
      * @param userTrainDataRela
      */
     void deleteUserTrainDataRela(UserTrainDataRela userTrainDataRela);

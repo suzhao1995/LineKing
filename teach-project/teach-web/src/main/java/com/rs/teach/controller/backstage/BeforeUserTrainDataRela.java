@@ -64,7 +64,7 @@ public class BeforeUserTrainDataRela {
     /**
      * 考核科目回显（考核文件表存在的科目）
      */
-    @RequestMapping(value = "/queryTrainDataCourseId", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryTrainDataCourseId")
     @ResponseBody
     public ResponseBean queryTrainDataCourseId() {
         ResponseBean bean = new ResponseBean();
@@ -76,9 +76,9 @@ public class BeforeUserTrainDataRela {
 
 
     /**
-     * 考核人员回显（已添加的不会显）
+     * 考核人员回显（已添加的不回显）
      */
-    @RequestMapping(value = "/queryUserNotIn", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryUserNotIn")
     @ResponseBody
     public ResponseBean queryUserNotIn() {
         ResponseBean bean = new ResponseBean();

@@ -23,4 +23,10 @@
         </set>
         where EVALUATION_ID = #{evaluationId}
     </update>
+    <select id="selectEvaluationId">
+        delete from TF_EL_EVALUATION
+        where EVALUATION_ID = (
+            select EVALUATION_ID from TF_EL_ANSWER_SHEET where ANSWER_SHEET_ID = #{answerSheetId}
+        )
+    </select>
 </mapper>
