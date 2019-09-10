@@ -60,7 +60,7 @@ public class BeforeUserController {
     public ResponseBean checkUserId(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
         if (userService.checkUserId(user.getUserId()) > 0) {
-            bean.addError("登录账号已存在！请重新输入");
+            bean.addError(ResponseBean.CODE_USERID_ERROR,"登录账号已存在！请重新输入");
             return bean;
         }
         bean.addSuccess("成功");
@@ -78,7 +78,7 @@ public class BeforeUserController {
     public ResponseBean checkTelNum(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
         if (userService.checkTelNum(user.getSerialNumber()) > 0) {
-            bean.addError("手机号不可重复绑定！请重新输入");
+            bean.addError(ResponseBean.CODE_TELNUM_ERROR,"手机号不可重复绑定！请重新输入");
             return bean;
         }
         bean.addSuccess("成功");
@@ -131,7 +131,7 @@ public class BeforeUserController {
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //文件上传是否成功
             if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
                 return bean;
             }
             picAttr.setAssociationId(user.getUserId());
@@ -148,7 +148,7 @@ public class BeforeUserController {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
                 userService.addUserAndPic(user, picAttr);
             } else {
-                bean.addError("头像上传失败");
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,"头像上传失败");
                 log.error("添加用户-头像上传失败");
                 return bean;
             }
@@ -184,7 +184,7 @@ public class BeforeUserController {
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //图片上传是否成功
             if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
                 return bean;
             }
             picAttr.setAssociationId(pic.getAssociationId());
@@ -200,8 +200,8 @@ public class BeforeUserController {
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
             } else {
-                bean.addError("头像上传失败");
-                log.error("修改管理员-头像上传失败");
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,"头像上传失败");
+                log.error(ResponseBean.CODE_PICTURE_ERROR,"修改管理员-头像上传失败");
                 return bean;
             }
             bean.addSuccess("修改成功");
@@ -292,7 +292,7 @@ public class BeforeUserController {
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //文件上传是否成功
             if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
                 return bean;
             }
             picAttr.setAssociationId(user.getUserId());
@@ -309,8 +309,8 @@ public class BeforeUserController {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
                 userService.addUserAndPic(user, picAttr);
             } else {
-                bean.addError("头像上传失败");
-                log.error("添加管理员-头像上传失败");
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,"头像上传失败");
+                log.error(ResponseBean.CODE_PICTURE_ERROR,"添加管理员-头像上传失败");
                 return bean;
             }
             log.info("添加管理员成功！");
@@ -344,7 +344,7 @@ public class BeforeUserController {
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //图片上传是否成功
             if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
                 return bean;
             }
             picAttr.setAssociationId(pic.getAssociationId());
@@ -360,7 +360,7 @@ public class BeforeUserController {
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
             } else {
-                bean.addError("头像上传失败");
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,"头像上传失败");
                 log.error("修改管理员-头像上传失败");
                 return bean;
             }

@@ -20,10 +20,13 @@ public class ResponseBean implements Serializable{
     private static final String CODE_ERROR = "1";
     public static final String CODE_PARAMETER_ERROR = "1000";
     public static final String CODE_SYS_ERROR = "1005";
-    public static final String CODE_LIMIT_ERROR = "1010";
-    public static final String CODE_SHOP_ERROR = "1020";
-    public static final String CODE_DECRYPT_ERROR = "1006";
+    public static final String CODE_LIMIT_ERROR = "1006";
+    public static final String CODE_SHOP_ERROR = "1007";
+    public static final String CODE_DECRYPT_ERROR = "1008";
     public static final String CODE_MESSAGE_ERROR = "1050";
+    public static final String CODE_USERID_ERROR = "1009";   //用户账号已存在
+    public static final String CODE_TELNUM_ERROR = "1010";  //用户手机号已存在
+    public static final String CODE_PICTURE_ERROR = "1011";  //图片上传异常
     private String code = "0";
     private String message = "成功";
     private Object data = null;
