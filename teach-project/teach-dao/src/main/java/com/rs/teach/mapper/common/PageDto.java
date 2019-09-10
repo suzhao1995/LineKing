@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class PageDto implements Serializable {
     private static final long serialVersionUID = 626251076886681368L;
 
-    private int pageSize = 10;   //每页记录数
+    private int pageSize = 8;   //每页记录数
     private int pageNum;    //第几页
 
     /**

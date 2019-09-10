@@ -2,6 +2,7 @@ package com.rs.teach.mapper.user.entity;
 
 import java.io.Serializable;
 
+import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 
 /**
@@ -11,7 +12,7 @@ import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 * @date: 2019年7月22日 下午5:06:47
 * @version: V1.0
 */
-public class User implements Serializable{
+public class User extends PageDto implements Serializable{
 	/**
 	 * 
 	 */

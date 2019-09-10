@@ -2,6 +2,8 @@ package com.rs.teach.controller.backstage;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
@@ -107,8 +109,8 @@ public class BeforeUserController {
     public ResponseBean selectUserInfo(User user) {
         ResponseBean bean = new ResponseBean();
         user.setAdminFlag(PermissionEnum.user_.getValue());
-        List<User> list = userService.selectUserInfo(user);
-        bean.addSuccess(list);
+        PageInfo<User> pageInfo = PageHelper.startPage(user).doSelectPageInfo(() -> userService.selectUserInfo(user));
+        bean.addSuccess(pageInfo);
         return bean;
     }
 
@@ -144,7 +146,7 @@ public class BeforeUserController {
         user.setStartTime(DateUtil.now());
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                userService.addUserAndPic(user,picAttr);
+                userService.addUserAndPic(user, picAttr);
             } else {
                 bean.addError("头像上传失败");
                 log.error("添加用户-头像上传失败");
@@ -192,12 +194,12 @@ public class BeforeUserController {
         }
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = userService.updateUserInfoAndPic(user,picAttr);
+                int i = userService.updateUserInfoAndPic(user, picAttr);
                 if (i == 1) {
                     //删除原始文件
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
-            }else {
+            } else {
                 bean.addError("头像上传失败");
                 log.error("修改管理员-头像上传失败");
                 return bean;
@@ -231,7 +233,7 @@ public class BeforeUserController {
             log.info("删除用户-成功");
         } catch (Exception e) {
             bean.addError("失败");
-            log.error("删除用户-失败",e);
+            log.error("删除用户-失败", e);
         }
         return bean;
     }
@@ -245,14 +247,15 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/selectAdminInfo")
     @ResponseBody
-    public ResponseBean selectAdminInfo(User user) {
+    public ResponseBean selectAdminInfo(User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         if (StrUtil.isBlank(user.getAdminFlag())) {
             //查全部管理员
             user.setAdminFlag("3");
         }
-        List<User> list = userService.selectUserInfo(user);
-        bean.addSuccess(list);
+        //初始化分页信息
+        PageInfo<User> pageInfo = PageHelper.startPage(user).doSelectPageInfo(() -> userService.selectUserInfo(user));
+        bean.addSuccess(pageInfo);
         return bean;
     }
 
@@ -351,12 +354,12 @@ public class BeforeUserController {
         }
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = userService.updateUserInfoAndPic(user,picAttr);
+                int i = userService.updateUserInfoAndPic(user, picAttr);
                 if (i == 1) {
                     //删除原始文件
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
-            }else {
+            } else {
                 bean.addError("头像上传失败");
                 log.error("修改管理员-头像上传失败");
                 return bean;
@@ -389,7 +392,7 @@ public class BeforeUserController {
             log.info("删除管理员-成功");
         } catch (Exception e) {
             bean.addError("失败");
-            log.error("删除管理员-失败",e);
+            log.error("删除管理员-失败", e);
         }
         return bean;
     }
