@@ -156,12 +156,7 @@
 
     <select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
         select * from TF_EL_TRAIN_TOTLE_SECTION
-        <where>
-            1 = 1
-            <if test="courseId != null and courseId !='' ">
-                and COURSE_ID = #{courseId}
-            </if>
-        </where>
+        where COURSE_ID = #{courseId}
         order by TOTLE_SECTION_SORT
     </select>
 

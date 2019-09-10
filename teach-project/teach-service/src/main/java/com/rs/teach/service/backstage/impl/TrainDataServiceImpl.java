@@ -62,7 +62,6 @@ public class TrainDataServiceImpl implements TrainDataService {
     @Override
     public void trainDataDelete(String id) {
         trainDataMapper.trainDataDelete(id);
-
     }
 
     @Override

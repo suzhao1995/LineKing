@@ -51,15 +51,9 @@
 
     <delete id="trainDataDelete">
         delete from
-        (
-          select 1
-          from TF_EL_TRAIN_DATA td,USER_TRAIN_DATA_RELA tdr,TF_EL_TRAIN_DATA_ANSWER tda,TF_EL_ANSWER_SHEET ash,TF_EL_EVALUATION e
-          where td.id = tdr.DATA_ID
-          and td.ANSWER_ID = tda.ANSWER_ID
-          and tdr.ANSWER_SHEET_ID = ash.ANSWER_SHEET_ID
-          and ash.EVALUATION_ID = e.EVALUATION_ID
-          and td.ID = #{id}
-        )
+        from TF_EL_TRAIN_DATA td
+        where td.ID = #{id}
+
     </delete>
 
     <resultMap id="map" type="com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo">
