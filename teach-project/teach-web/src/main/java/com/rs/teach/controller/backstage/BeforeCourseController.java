@@ -64,7 +64,7 @@ public class BeforeCourseController {
         Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
         //文件上传是否成功
         if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-            bean.addError(resultMap.get("message").toString());
+            bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
             return bean;
         }
         courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
@@ -128,7 +128,7 @@ public class BeforeCourseController {
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
             //文件上传是否成功
             if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
                 return bean;
             }
             courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());

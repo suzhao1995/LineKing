@@ -173,7 +173,8 @@ public class SectionController {
             Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
             //文件上传是否成功
             if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
-                bean.addError(courseWareMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_FILE_ERROR,courseWareMap.get("message").toString());
+                logger.error(ResponseBean.CODE_FILE_ERROR);
                 return bean;
             }
             sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
@@ -189,7 +190,8 @@ public class SectionController {
                 Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
                 //文件上传是否成功
                 if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
-                    bean.addError(practiceMap.get("message").toString());
+                    bean.addError(ResponseBean.CODE_FILE_ERROR,practiceMap.get("message").toString());
+                    logger.error(ResponseBean.CODE_FILE_ERROR);
                     return bean;
                 }
                 practice.setPracticeId(practiceMap.get("upLoadId").toString());
@@ -207,7 +209,8 @@ public class SectionController {
                 Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
                 //文件上传是否成功
                 if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
-                    bean.addError(testpaperMap.get("message").toString());
+                    bean.addError(ResponseBean.CODE_FILE_ERROR,testpaperMap.get("message").toString());
+                    logger.error(ResponseBean.CODE_FILE_ERROR);
                     return bean;
                 }
                 testpaper.setTestpaperId(testpaperMap.get("upLoadId").toString());
@@ -289,7 +292,7 @@ public class SectionController {
             Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
             //文件上传是否成功
             if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
-                bean.addError(courseWareMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_FILE_ERROR,courseWareMap.get("message").toString());
                 return bean;
             }
             sectionDto.setCoursewareId(courseWareMap.get("upLoadId").toString());
@@ -304,7 +307,7 @@ public class SectionController {
             Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
             //文件上传是否成功
             if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
-                bean.addError(practiceMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_FILE_ERROR,practiceMap.get("message").toString());
                 return bean;
             }
             practice.setPid(sectionDto.getPid());
@@ -320,7 +323,7 @@ public class SectionController {
             Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
             //文件上传是否成功
             if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
-                bean.addError(testpaperMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_FILE_ERROR,testpaperMap.get("message").toString());
                 return bean;
             }
             testpaper.setTid(sectionDto.getTid());

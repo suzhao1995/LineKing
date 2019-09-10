@@ -27,6 +27,8 @@ public class ResponseBean implements Serializable{
     public static final String CODE_USERID_ERROR = "1009";   //用户账号已存在
     public static final String CODE_TELNUM_ERROR = "1010";  //用户手机号已存在
     public static final String CODE_PICTURE_ERROR = "1011";  //图片上传异常
+    public static final String CODE_FILE_ERROR = "1011";  //文件上传异常
+    public static final String CODE_DOWNLOAD_ERROR = "1011";  //文件下载异常
     private String code = "0";
     private String message = "成功";
     private Object data = null;

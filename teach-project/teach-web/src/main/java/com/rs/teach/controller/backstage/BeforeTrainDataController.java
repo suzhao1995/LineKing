@@ -81,7 +81,7 @@ public class BeforeTrainDataController {
         //考核文件上传
         Map<String, Object> trainDataMap = FileUpDownUtil.trainDataUpload(files[0]);
         if (!(trainDataMap != null && "0".equals(trainDataMap.get("code")))) {
-            bean.addError(trainDataMap.get("message").toString());
+            bean.addError(ResponseBean.CODE_FILE_ERROR,trainDataMap.get("message").toString());
             return bean;
         }
         //生成时间id，例如：20190829142012  DateUtil.format(DateTime.now(), DatePattern.PURE_DATETIME_PATTERN)
@@ -97,7 +97,7 @@ public class BeforeTrainDataController {
         //答案文件上传
         Map<String, Object> answerMap = FileUpDownUtil.trainDataUpload(files[1]);
         if (!(answerMap != null && "0".equals(answerMap.get("code")))) {
-            bean.addError(answerMap.get("message").toString());
+            bean.addError(ResponseBean.CODE_FILE_ERROR,answerMap.get("message").toString());
             return bean;
         }
         TrainDataAnswer trainDataAnswer = new TrainDataAnswer();
@@ -165,7 +165,7 @@ public class BeforeTrainDataController {
             if (!files[0].isEmpty()) {
                 Map<String, Object> map = FileUpDownUtil.trainDataUpload(files[0]);
                 if (!(map != null && "0".equals(map.get("code")))) {
-                    bean.addError(map.get("message").toString());
+                    bean.addError(ResponseBean.CODE_FILE_ERROR,map.get("message").toString());
                     return bean;
                 }
                 trainData.setTrainDataId(map.get("trainDataId").toString());
@@ -178,7 +178,7 @@ public class BeforeTrainDataController {
                 //答案文件上传
                 Map<String, Object> answerMap = FileUpDownUtil.trainDataUpload(files[1]);
                 if (!(answerMap != null && "0".equals(answerMap.get("code")))) {
-                    bean.addError(answerMap.get("message").toString());
+                    bean.addError(ResponseBean.CODE_FILE_ERROR,answerMap.get("message").toString());
                     return bean;
                 }
                 trainDataAnswer.setAnswerId(trainData.getAnswerId());
@@ -200,7 +200,7 @@ public class BeforeTrainDataController {
                 trainDataService.UpdateTrainData(trainData, trainDataAnswer);
             }else {
                 bean.addError("答案文件上传失败");
-                log.error("修改考核文件-答案文件上传失败");
+                log.error(ResponseBean.CODE_FILE_ERROR,"修改考核文件-答案文件上传失败");
                 return bean;
             }
             log.info("培训考核文件-修改-成功");
@@ -268,7 +268,8 @@ public class BeforeTrainDataController {
                 log.info("下载答案-成功");
                 bean.addSuccess("失败");
             } else {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_DOWNLOAD_ERROR,resultMap.get("message").toString());
+                log.error(ResponseBean.CODE_DOWNLOAD_ERROR);
             }
         } catch (IOException e) {
             log.error("下载答案-失败", e);
@@ -314,7 +315,8 @@ public class BeforeTrainDataController {
                 log.info("下载用户考卷-成功");
                 bean.addSuccess("成功");
             } else {
-                bean.addError(resultMap.get("message").toString());
+                bean.addError(ResponseBean.CODE_DOWNLOAD_ERROR,resultMap.get("message").toString());
+                log.error(ResponseBean.CODE_DOWNLOAD_ERROR);
             }
         } catch (IOException e) {
             log.error("下载用户考卷-失败", e);
