@@ -171,7 +171,11 @@ public class IndexController {
 		Map<String,Object> userInfo = UserInfoUtil.getUserInfo(request.getParameter("sessionKey"));
 		User user = userService.getUserById(userInfo.get("userId").toString());
 		ajaxData.put("userName", user.getUserName());
-		ajaxData.put("picUrl", user.getAttr().getPicUrl());
+		if(null != user.getAttr().getPicUrl()){
+			ajaxData.put("picUrl", user.getAttr().getPicUrl());
+		}else{
+			ajaxData.put("picUrl", "");
+		}
 		//获取用户未读消息
 		List<Message> list = messageService.queryNotRead(userInfo.get("userId").toString());
 		int messageSize = list.isEmpty() ? 0 : list.size();
