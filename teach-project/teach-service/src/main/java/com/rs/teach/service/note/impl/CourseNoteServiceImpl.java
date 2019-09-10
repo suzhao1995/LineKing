@@ -29,9 +29,6 @@ public class CourseNoteServiceImpl implements CourseNoteService {
 
     @Override
     public void saveNote(CourseNote courseNote) {
-        TrainSection trainSection = trainSectionService.selectTrainSection(courseNote.getSectionId());
-        courseNote.setCourseId(trainSection.getTrainCourseId());
-
         /**判断此记录是否存在*/
         int flag = noteMapper.isEmpty(courseNote);
         if (flag > 0) {

@@ -21,6 +21,9 @@ public class SectionDto implements Serializable {
     //课程id
     private String courseId;
 
+    //大章节id
+    private String sectionSortid;
+
     //大章节序号
     private String sectionSort;
 

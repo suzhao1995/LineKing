@@ -52,7 +52,7 @@ public class TrainSectionServiceImpl implements TrainSectionService {
         List<TrainSectionVo> trainSectionVoList = trainSectionMapper.selectTrainSectionById(courseId);
         for (TrainSectionVo vo : trainSectionVoList) {
             //查询小章节
-            List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId, vo.getTrainSectionSort());
+            List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId, vo.getId());
 
             for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
                 //课件文件全部路径
@@ -89,8 +89,8 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     }
 
     @Override
-    public List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort) {
-        return trainSectionMapper.selectSectionList(trainCourseId, trainSectionSort);
+    public List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSortid) {
+        return trainSectionMapper.selectSectionList(trainCourseId, trainSectionSortid);
     }
 
     @Override

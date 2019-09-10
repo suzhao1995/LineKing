@@ -159,7 +159,7 @@ public class TrainSectionController {
             map.put("trainSection", trainSection);
 
             //查询小章节目录
-            List<TrainSection> sectionList = trainSectionService.selectSectionList(trainSection.getTrainCourseId(), trainSection.getTrainSectionSort());
+            List<TrainSection> sectionList = trainSectionService.selectSectionList(trainSection.getTrainCourseId(), trainSection.getTrainSectionSortid());
             map.put("sectionList", sectionList);
 
             for (int i = 0; i < sectionList.size(); i++) {

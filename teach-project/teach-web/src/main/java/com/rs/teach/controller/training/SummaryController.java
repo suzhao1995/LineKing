@@ -53,8 +53,7 @@ public class SummaryController {
     /**
      * 课后总结数据回显
      * param
-     * userId; //用户id
-     * sectionSort;  //大章节序号
+     * sectionId;  //章节id
      * courseId      //课程id
      */
     @RequestMapping(value = "querySummary", method = RequestMethod.POST)

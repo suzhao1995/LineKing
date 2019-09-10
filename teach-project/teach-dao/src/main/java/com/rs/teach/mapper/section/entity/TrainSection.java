@@ -22,6 +22,7 @@ public class TrainSection implements Serializable {
 
     private String trainSectionId;    //培训章节id
     private String trainCourseId;    //培训课程资源id
+    private String trainSectionSortid;    //培训大章节id
     private String trainSectionSort;    //培训大章节序号
     private String trainSectionName;    //培训大章节名
     private String trainLitterSectionSort;   //培训小章节序号

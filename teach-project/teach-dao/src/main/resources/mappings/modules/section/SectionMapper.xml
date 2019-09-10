@@ -75,12 +75,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into TF_EL_SECTION
 		(
 		section_id, course_id,section_name,  section_url,
-		section_type, section_sort, update_filename, totlesection_sort,
-		totlesection_name, paperid, schoolworkid,COURSEWARE_ID
+		section_type, section_sort, update_filename, totlesection_sortid,
+		 paperid, schoolworkid,COURSEWARE_ID
 		)
 		values (SEQ_EL_SECTION.nextval,#{courseId},#{litterSectionName},#{litterSectionUrl},
-            #{litterSectionType},#{litterSectionSort},#{updateFileName},#{sectionSort},
-            #{sectionName},#{testpaperId},#{practiceId},#{coursewareId}
+            #{litterSectionType},#{litterSectionSort},#{updateFileName},#{sectionSortid},
+           #{testpaperId},#{practiceId},#{coursewareId}
         )
 	</insert>
 
@@ -105,11 +105,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="updateFileName != null and updateFileName != ''">
 				update_filename = #{updateFileName},
 			</if>
-			<if test="sectionSort != null and sectionSort != ''">
-				totlesection_sort = #{sectionSort},
-			</if>
-			<if test="sectionName != null and sectionName != ''">
-				totlesection_name = #{sectionName},
+			<if test="sectionSortid != null and sectionSortid != ''">
+				TOTLESECTION_SORTID = #{sectionSortid},
 			</if>
 			<if test="testpaperId != null and testpaperId != ''">
 				paperid = #{testpaperId},

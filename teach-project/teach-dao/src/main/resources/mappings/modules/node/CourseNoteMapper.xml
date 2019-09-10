@@ -6,9 +6,12 @@
 
     <select id="isEmpty" resultType="java.lang.Integer">
         select count(1) from TF_EL_NOTE
-        where course_Id =#{courseId}
-        and user_Id =#{userId}
+        where user_Id =#{userId}
         and section_Id =#{sectionId}
+        and course_Id = (
+            select ts.train_course_id from TF_EL_TRAIN_SECTION ts
+            where TRAIN_SECTION_ID = #{sectionId}
+        )
     </select>
 
     <update id="updateNote" parameterType="com.rs.teach.mapper.note.entity.CourseNote">

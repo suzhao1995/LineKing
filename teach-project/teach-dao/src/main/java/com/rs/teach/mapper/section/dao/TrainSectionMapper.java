@@ -28,10 +28,10 @@ public interface TrainSectionMapper {
     /**
      * 查询小章节目录
      * @param trainCourseId
-     * @param trainSectionSort
+     * @param trainSectionSortid
      * @return
      */
-    List<TrainSection> selectSectionList(@Param("trainCourseId") String trainCourseId, @Param("trainSectionSort") String trainSectionSort);
+    List<TrainSection> selectSectionList(@Param("trainCourseId") String trainCourseId, @Param("trainSectionSortid") String trainSectionSortid);
 
     /**
      * 根据id查询大章节信息
@@ -43,10 +43,10 @@ public interface TrainSectionMapper {
     /**
      * 查询小章节信息
      * @param courseId
-     * @param trainSectionSort
+     * @param trainSectionSortid
      * @return
      */
-    List<TrainLitterSectionVo> selectTrainLitterSection(@Param("courseId") String courseId, @Param("trainSectionSort") String trainSectionSort);
+    List<TrainLitterSectionVo> selectTrainLitterSection(@Param("courseId") String courseId, @Param("trainSectionSortid") String trainSectionSortid);
 
     /**
      * 根据课程ID获取当前课程的章节总数

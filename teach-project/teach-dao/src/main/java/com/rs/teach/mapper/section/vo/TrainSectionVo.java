@@ -19,6 +19,9 @@ public class TrainSectionVo implements Serializable{
 
     private static final long serialVersionUID = -442561324686250187L;
 
+    //培训大章节主键id
+    private String id;
+
     //培训大章节序号
     private String trainSectionSort;
 

@@ -6,16 +6,16 @@
     <insert id="addTrainSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
         insert into TF_EL_TRAIN_SECTION
         (
-            train_section_id,train_course_id, train_section_sort,
-            train_section_name, train_litter_section_sort, train_litter_section_name,
+            train_section_id,train_course_id, train_section_sortid,
+            train_litter_section_sort, train_litter_section_name,
             train_litter_section_url, train_litter_section_type, update_file_name,
             practice_id, testpaper_id,COURSEWARE_ID
         )
         values (
-            SEQ_EL_TRAIN_SECTION.nextval, #{courseId},#{sectionSort},#{sectionName},
-            #{litterSectionSort},#{litterSectionName},#{litterSectionUrl},
-            #{litterSectionType},#{updateFileName},#{practiceId},
-            #{testpaperId},#{coursewareId}
+            SEQ_EL_TRAIN_SECTION.nextval, #{courseId},#{sectionSortid},
+            #{litterSectionSort},#{litterSectionName},
+            #{litterSectionUrl}, #{litterSectionType},#{updateFileName},
+            #{practiceId},#{testpaperId},#{coursewareId}
         )
 
     </insert>
@@ -29,11 +29,8 @@
             <if test="courseId != null and courseId != ''">
                 TRAIN_COURSE_ID = #{courseId},
             </if>
-            <if test="sectionSort != null and sectionSort != ''">
-                TRAIN_SECTION_SORT = #{sectionSort},
-            </if>
-            <if test="sectionName != null and sectionName != ''">
-                TRAIN_SECTION_NAME = #{sectionName},
+            <if test="sectionSortid != null and sectionSortid != ''">
+                TRAIN_SECTION_SORTID = #{sectionSortid},
             </if>
             <if test="litterSectionSort != null and litterSectionSort != ''">
                 TRAIN_LITTER_SECTION_SORT = #{litterSectionSort},
@@ -61,12 +58,12 @@
     </update>
 
     <select id="selectTrainSection" resultType="com.rs.teach.mapper.section.entity.TrainSection">
-        select ts.TRAIN_SECTION_ID,
-        ts.TRAIN_COURSE_ID,
+        select
         ts.train_section_id,
         ts.train_course_id,
-        ts.train_section_sort,
-        ts.train_section_name,
+        ts.TRAIN_SECTION_SORTID,
+        tts.TOTLE_SECTION_SORT as trainSectionSort,
+        tts.TOTLE_SECTION_NAME as trainSectionName,
         ts.train_litter_section_sort,
         ts.train_litter_section_name,
          ts.train_litter_section_url,
@@ -75,22 +72,30 @@
          ts.practice_id,
          ts.testpaper_id,
          ts.courseware_id
-        from tf_el_train_section ts
-        where train_section_Id =  #{sectionId}
+        from tf_el_train_section ts ,TF_EL_TRAIN_TOTLE_SECTION tts
+        where ts.TRAIN_SECTION_SORTID = tts.ID
+        and train_section_Id =  #{sectionId}
     </select>
 
     <select id="selectSectionList" resultType="com.rs.teach.mapper.section.entity.TrainSection">
-        select TRAIN_SECTION_ID,TRAIN_COURSE_ID,TRAIN_SECTION_SORT,TRAIN_SECTION_NAME,TRAIN_LITTER_SECTION_SORT,TRAIN_LITTER_SECTION_NAME from tf_el_train_section
-        where train_course_Id = #{trainCourseId}
-        and train_section_sort = #{trainSectionSort}
+        select ts.TRAIN_SECTION_ID,
+        ts.TRAIN_COURSE_ID,
+        ts.TRAIN_SECTION_SORTID,
+        tts.TOTLE_SECTION_SORT,
+        tts.TOTLE_SECTION_NAME,
+        ts.TRAIN_LITTER_SECTION_SORT,
+        ts.TRAIN_LITTER_SECTION_NAME
+        from tf_el_train_section ts,TF_EL_TRAIN_TOTLE_SECTION tts
+        where ts.TRAIN_SECTION_SORTID = tts.ID
+        and train_course_Id = #{trainCourseId}
+        and train_section_sortid = #{trainSectionSortid}
         order by train_litter_section_sort asc
     </select>
 
     <select id="selectTrainSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
-        select distinct TRAIN_SECTION_SORT,TRAIN_SECTION_NAME
-        FROM TF_EL_TRAIN_SECTION
-        WHERE TRAIN_COURSE_ID = #{courseId}
-        order by TRAIN_SECTION_SORT
+        select ID, TOTLE_SECTION_SORT as trainSectionSort,TOTLE_SECTION_NAME as trainSectionName
+        from TF_EL_TRAIN_TOTLE_SECTION
+        where course_id = #{courseId}
     </select>
 
     <select id="selectTrainLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
@@ -99,8 +104,8 @@
                ,COURSEWARE_ID
         FROM TF_EL_TRAIN_SECTION
         WHERE TRAIN_COURSE_ID = #{courseId}
-        and TRAIN_SECTION_SORT = #{trainSectionSort}
-         order by TRAIN_LITTER_SECTION_SORT
+        and TRAIN_SECTION_SORTID = #{trainSectionSortid}
+        order by TRAIN_LITTER_SECTION_SORT
     </select>
 
     <select id="selectSectionNum" resultType="java.lang.Integer">
@@ -110,8 +115,7 @@
     <select id="getSectionByCourseId" resultType="com.rs.teach.mapper.section.entity.Section">
         select  train_section_id as sectionId,
                 train_course_id as courseId,
-                train_section_sort as totleSectionSort,
-                train_section_name as totleSectionName,
+                train_section_sortid as totleSectionSortid,
                 train_litter_section_sort as sectionSort,
                 train_litter_section_name as sectionName,
                 train_litter_section_url as sectionUrl,

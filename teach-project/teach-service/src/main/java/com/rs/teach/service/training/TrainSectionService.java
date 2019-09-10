@@ -32,10 +32,10 @@ public interface TrainSectionService {
     /**
      * 查询小章节目录
      * @param trainCourseId
-     * @param trainSectionSort
+     * @param trainSectionSortid
      * @return
      */
-    List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSort);
+    List<TrainSection> selectSectionList(String trainCourseId, String trainSectionSortid);
 
     /**
      * 添加章节
