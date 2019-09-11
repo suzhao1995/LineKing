@@ -122,7 +122,7 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addUser(@RequestParam(value = "file", required = false) MultipartFile file, User user, HttpServletRequest request) {
+    public ResponseBean addUser(@RequestParam(value = "file") MultipartFile file, User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         PicAttr picAttr = new PicAttr();
 
@@ -283,7 +283,7 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/addUserSupperAdmin", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addUserSupperAdmin(@RequestParam(value = "file", required = false) MultipartFile file, User user, HttpServletRequest request) {
+    public ResponseBean addUserSupperAdmin(@RequestParam(value = "file") MultipartFile file, User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         PicAttr picAttr = new PicAttr();
 
@@ -303,7 +303,7 @@ public class BeforeUserController {
         //用户图像属性
         user.setAdminFlag(PermissionEnum.admin.getValue());
         user.setAttr(picAttr);
-        user.setIsDefault("0");
+        user.setIsDefault("1");
         user.setStartTime(DateUtil.now());
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
