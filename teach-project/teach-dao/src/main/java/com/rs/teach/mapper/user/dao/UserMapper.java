@@ -109,4 +109,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	List<User> selectTeachBySchoolId(@Param("schoolId") String schoolId);
+
+	/**
+	 * 修改用户信息回显
+	 * @param userId
+	 * @return
+	 */
+	User selectUserInfoById(@Param("userId") String userId);
 }

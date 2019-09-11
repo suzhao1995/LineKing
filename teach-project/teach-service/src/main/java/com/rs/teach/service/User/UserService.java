@@ -96,4 +96,11 @@ public interface UserService {
 	 * @return
 	 */
 	List<User> selectTeachBySchoolId(String schoolId);
+
+	/**
+	 * 修改用户信息回显
+	 * @param userId
+	 * @return
+	 */
+    User selectUserInfoById(String userId);
 }

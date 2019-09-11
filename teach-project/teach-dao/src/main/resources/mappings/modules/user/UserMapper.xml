@@ -139,4 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_TEACH_USER
 		where SCHOOL_ID = #{schoolId}
 	</select>
+	<select id="selectUserInfoById" resultType="com.rs.teach.mapper.user.entity.User">
+		select * from TF_EL_TEACH_USER where USER_ID = #{userId}
+	</select>
 </mapper>

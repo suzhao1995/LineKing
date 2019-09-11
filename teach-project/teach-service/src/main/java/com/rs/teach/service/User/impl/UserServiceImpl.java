@@ -129,5 +129,11 @@ public class UserServiceImpl implements UserService {
         return dao.selectTeachBySchoolId(schoolId);
     }
 
+    @Override
+    public User selectUserInfoById(String userId) {
+
+        return dao.selectUserInfoById(userId);
+    }
+
 
 }

@@ -162,6 +162,20 @@ public class BeforeUserController {
         return bean;
     }
 
+    /**
+     * 修改用户信息回显
+     *
+     * @return
+     */
+    @RequestMapping(value = "/selectUserInfoById")
+    @ResponseBody
+    public ResponseBean selectUserInfoById(User user) {
+        ResponseBean bean = new ResponseBean();
+        User vo = userService.selectUserInfoById(user.getUserId());
+        bean.addSuccess(vo);
+        return bean;
+    }
+
 
     /**
      * 修改用户信息
@@ -222,8 +236,13 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/deleteUser")
     @ResponseBody
-    public ResponseBean deleteUser(String userId) {
+    public ResponseBean deleteUser(String userId,HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
+        String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+        if(StrUtil.equalsIgnoreCase(adminId,userId)){
+            bean.addError(ResponseBean.CODE_DELETEME_ERROR,"");
+            return bean;
+        }
         try {
             //获取用户之前图像本地路径
             PicAttr pic = picAttrService.getPic(userId);
@@ -324,6 +343,21 @@ public class BeforeUserController {
     }
 
     /**
+     * 修改管理员信息回显
+     *
+     * @return
+     */
+    @RequestMapping(value = "/selectAdminInfoById")
+    @ResponseBody
+    public ResponseBean selectAdminInfoById(User user) {
+        ResponseBean bean = new ResponseBean();
+        User vo = userService.selectUserInfoById(user.getUserId());
+        bean.addSuccess(vo);
+        return bean;
+    }
+
+
+    /**
      * 修改管理员信息
      *
      * @return
@@ -381,8 +415,15 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/deleteUserSupperAdmin", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseBean deleteUserSupperAdmin(String userId) {
+    public ResponseBean deleteUserSupperAdmin(String userId,HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
+        //修改人的userId
+        String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+        if(StrUtil.equalsIgnoreCase(adminId,userId)){
+            bean.addError(ResponseBean.CODE_DELETEME_ERROR,"");
+            return bean;
+        }
+
         try {
             //获取用户之前图像本地路径
             PicAttr pic = picAttrService.getPic(userId);
