@@ -1,6 +1,7 @@
 package com.rs.teach.mapper.user.dao;
 
 import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.mapper.user.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -115,5 +116,5 @@ public interface UserMapper {
 	 * @param userId
 	 * @return
 	 */
-	User selectUserInfoById(@Param("userId") String userId);
+	UserVo selectUserInfoById(@Param("userId") String userId);
 }

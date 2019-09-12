@@ -12,6 +12,7 @@ import com.rs.teach.mapper.common.Enums.PermissionEnum;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.mapper.user.vo.UserVo;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.backstage.SchoolService;
 import com.rs.teach.service.resourcesAttr.PicAttrService;
@@ -179,7 +180,7 @@ public class BeforeUserController {
     @ResponseBody
     public ResponseBean selectUserInfoById(User user) {
         ResponseBean bean = new ResponseBean();
-        User vo = userService.selectUserInfoById(user.getUserId());
+        UserVo vo = userService.selectUserInfoById(user.getUserId());
         bean.addSuccess(vo);
         return bean;
     }

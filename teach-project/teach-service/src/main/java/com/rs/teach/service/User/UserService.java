@@ -2,6 +2,7 @@ package com.rs.teach.service.User;
 
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.mapper.user.vo.UserVo;
 
 import java.util.List;
 
@@ -102,5 +103,5 @@ public interface UserService {
 	 * @param userId
 	 * @return
 	 */
-    User selectUserInfoById(String userId);
+    UserVo selectUserInfoById(String userId);
 }

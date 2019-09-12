@@ -5,6 +5,7 @@ import com.rs.teach.mapper.resourcesAttr.dao.PicAttrMapper;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.mapper.user.entity.User;
+import com.rs.teach.mapper.user.vo.UserVo;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.resourcesAttr.PicAttrService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectUserInfoById(String userId) {
+    public UserVo selectUserInfoById(String userId) {
 
         return dao.selectUserInfoById(userId);
     }
