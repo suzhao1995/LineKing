@@ -358,7 +358,7 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/updateUserInfoSupperAdmin", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateUserInfoSupperAdmin(@RequestParam(value = "file") MultipartFile file, User user, HttpServletRequest request) {
+    public ResponseBean updateUserInfoSupperAdmin(@RequestParam(value = "file",required = false) MultipartFile file, User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         //修改人的userId
         String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
@@ -367,18 +367,21 @@ public class BeforeUserController {
         //获取用户之前图像本地路径（修改成功就删除）
         PicAttr pic = picAttrService.getPic(user.getUserId());
         PicAttr picAttr = new PicAttr();
-        if (!file.isEmpty()) {
-            //上传图片
-            Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-            //图片上传是否成功
-            if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
-                return bean;
+
+        if (file != null) {
+            if (!file.isEmpty()) {
+                //上传图片
+                Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+                //图片上传是否成功
+                if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
+                    bean.addError(ResponseBean.CODE_PICTURE_ERROR, resultMap.get("message").toString());
+                    return bean;
+                }
+                picAttr.setAssociationId(pic.getAssociationId());
+                picAttr.setPicId(pic.getPicId());
+                picAttr.setPicUrl(resultMap.get("picUrl").toString());
+                picAttr.setSavePath(resultMap.get("saveUrl").toString());
             }
-            picAttr.setAssociationId(pic.getAssociationId());
-            picAttr.setPicId(pic.getPicId());
-            picAttr.setPicUrl(resultMap.get("picUrl").toString());
-            picAttr.setSavePath(resultMap.get("saveUrl").toString());
         }
         try {
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
@@ -387,10 +390,6 @@ public class BeforeUserController {
                     //删除原始文件
                     DeleteFileUtil.deleteFile(pic.getSavePath());
                 }
-            } else {
-                bean.addError(ResponseBean.CODE_PICTURE_ERROR,"头像上传失败");
-                log.error("修改管理员-头像上传失败");
-                return bean;
             }
             bean.addSuccess("修改成功");
         } catch (Exception e) {
