@@ -139,7 +139,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_TEACH_USER
 		where SCHOOL_ID = #{schoolId}
 	</select>
+
+
+	<resultMap type="com.rs.teach.mapper.user.entity.User" id="userInfoById">
+		<id property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="serialNumber" column="SERIAL_NUMBER" />
+		<result property="passWord" column="PASS_WORD" />
+		<result property="adminFlag" column="ADMIN_FLAG" />
+		<result property="endDate" column="end_Date" />
+		<result property="schoolId" column="SCHOOL_ID" />
+		<association property="attr" javaType="com.rs.teach.mapper.resourcesAttr.entity.PicAttr">
+			<id property="associationId" column="USER_ID" />
+			<result property="picId" column="pic_id" />
+			<result property="picUrl" column="pic_url" />
+			<result property="savePath" column="save_path" />
+		</association>
+	</resultMap>
 	<select id="selectUserInfoById" resultType="com.rs.teach.mapper.user.entity.User">
-		select * from TF_EL_TEACH_USER where USER_ID = #{userId}
+		select user_id, user_name, serial_number, pass_word,school_id,end_date,PIC_ID, ASSOCIATION_ID, PIC_URL, SAVE_PATH
+		from TF_EL_TEACH_USER, TF_EL_PIC_ATTR
+		where USER_ID = ASSOCIATION_ID and  USER_ID = #{userId}
 	</select>
 </mapper>

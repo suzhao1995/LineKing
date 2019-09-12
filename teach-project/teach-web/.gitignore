@@ -9,3 +9,5 @@
 *.iml
 /ci.sh
 *.bak
+/rebel.xml
+/rebel-remote.xml
