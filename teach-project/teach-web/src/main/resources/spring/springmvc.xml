@@ -55,7 +55,7 @@
         <mvc:mapping path="/**"
                      allowed-origins="*"
                      allowed-methods="POST,GET,OPTIONS,DELETE,PUT"
-                     allowed-headers="Content-Type,ContentType,Access-Control-Allow-Headers, Authorization, X-Requested-With"
+                     allowed-headers="Content-Type,Access-Control-Allow-Headers, Authorization, X-Requested-With"
                      allow-credentials="true"/>
     </mvc:cors>
 

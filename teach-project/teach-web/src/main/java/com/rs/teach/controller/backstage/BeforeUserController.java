@@ -59,6 +59,10 @@ public class BeforeUserController {
     @ResponseBody
     public ResponseBean checkUserId(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
+        if(StrUtil.equalsIgnoreCase(user.getIsEmptyUpdate(),"2")){
+            bean.addSuccess("成功");
+            return bean;
+        }
         if (userService.checkUserId(user.getUserId()) > 0) {
             bean.addError(ResponseBean.CODE_USERID_ERROR,"登录账号已存在！请重新输入");
             return bean;
@@ -77,6 +81,10 @@ public class BeforeUserController {
     @ResponseBody
     public ResponseBean checkTelNum(@RequestBody User user) {
         ResponseBean bean = new ResponseBean();
+        if(StrUtil.equalsIgnoreCase(user.getIsEmptyUpdate(),"2")){
+            bean.addSuccess("成功");
+            return bean;
+        }
         if (userService.checkTelNum(user.getSerialNumber()) > 0) {
             bean.addError(ResponseBean.CODE_TELNUM_ERROR,"手机号不可重复绑定！请重新输入");
             return bean;
@@ -343,21 +351,6 @@ public class BeforeUserController {
     }
 
     /**
-     * 修改管理员信息回显
-     *
-     * @return
-     */
-    @RequestMapping(value = "/selectAdminInfoById")
-    @ResponseBody
-    public ResponseBean selectAdminInfoById(User user) {
-        ResponseBean bean = new ResponseBean();
-        User vo = userService.selectUserInfoById(user.getUserId());
-        bean.addSuccess(vo);
-        return bean;
-    }
-
-
-    /**
      * 修改管理员信息
      *
      * @return
@@ -413,7 +406,7 @@ public class BeforeUserController {
      *
      * @return
      */
-    @RequestMapping(value = "/deleteUserSupperAdmin", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteUserSupperAdmin")
     @ResponseBody
     public ResponseBean deleteUserSupperAdmin(String userId,HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();

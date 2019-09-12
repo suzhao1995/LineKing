@@ -32,8 +32,17 @@ public class User extends PageDto implements Serializable{
 	private PicAttr attr;		//图片属性
 	private String schoolName;	//归属校区
 	private String sessionKey;	//所有需要登录才能访问的接口， 都需要传递sessionKey
+	private String isEmptyUpdate;  //判断是新增还是修改（1是新增，2是修改）
 	public User(){
 		
+	}
+
+	public String getIsEmptyUpdate() {
+		return isEmptyUpdate;
+	}
+
+	public void setIsEmptyUpdate(String isEmptyUpdate) {
+		this.isEmptyUpdate = isEmptyUpdate;
 	}
 
 	public String getStartTime() {
