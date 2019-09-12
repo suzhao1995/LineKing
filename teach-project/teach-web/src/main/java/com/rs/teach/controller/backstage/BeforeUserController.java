@@ -55,9 +55,9 @@ public class BeforeUserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/checkUserId", method = RequestMethod.POST)
+    @RequestMapping(value = "/checkUserId")
     @ResponseBody
-    public ResponseBean checkUserId(@RequestBody User user) {
+    public ResponseBean checkUserId(User user) {
         ResponseBean bean = new ResponseBean();
         if(StrUtil.equalsIgnoreCase(user.getIsEmptyUpdate(),"2")){
             bean.addSuccess("成功");
@@ -77,9 +77,9 @@ public class BeforeUserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/checkTelNum", method = RequestMethod.POST)
+    @RequestMapping(value = "/checkTelNum")
     @ResponseBody
-    public ResponseBean checkTelNum(@RequestBody User user) {
+    public ResponseBean checkTelNum(User user) {
         ResponseBean bean = new ResponseBean();
         if(StrUtil.equalsIgnoreCase(user.getIsEmptyUpdate(),"2")){
             bean.addSuccess("成功");
