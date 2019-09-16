@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 管理员 start -->
 	<select id="queryMessages" resultMap="message">
-		select distinct MASSAGE_CONTENT,MESSAGE_TIME from tf_el_message where send_user = #{userId} order by to_char(to_date(t.message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
+		select distinct MASSAGE_CONTENT,MESSAGE_TIME from tf_el_message where send_user = #{userId} order by to_char(to_date(message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
 	</select>
 	
 	<insert id="addMessages" parameterType="com.rs.teach.mapper.massage.entity.Message">
