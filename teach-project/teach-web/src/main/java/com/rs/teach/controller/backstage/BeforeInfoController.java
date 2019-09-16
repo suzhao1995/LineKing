@@ -56,9 +56,9 @@ public class BeforeInfoController{
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		//初始化分页信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 4);
 		List<Message> list = messageService.getMessages(userId);
-		PageInfo<Message> info = new PageInfo<Message>(list,9);
+		PageInfo<Message> info = new PageInfo<Message>(list,4);
 		ajaxData.put("messageList", info);
 		bean.addSuccess(ajaxData);
 		return bean;
