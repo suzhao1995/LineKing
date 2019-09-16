@@ -81,7 +81,7 @@ public class SchoolController {
             //此学校是否存在
             Integer result = schoolService.isEmpty(school);
             if (result > 0) {
-                bean.addError("不能重复添加学校！");
+                bean.addError(ResponseBean.CODE_REPEATEDADD_ERROR,"不能重复添加学校！");
                 return bean;
             }
             schoolService.addSchool(school);

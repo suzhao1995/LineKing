@@ -36,6 +36,4 @@
         from SCHOOL_COURSE_RELA
         where SCHOOL_ID = #{schoolId}
     </select>
-
-
 </mapper>

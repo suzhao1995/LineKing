@@ -9,3 +9,5 @@
 /.idea
 *.iml
 /ci.sh
+/rebel.xml
+/rebel-remote.xml
