@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.vo.SchoolVo;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
+import com.rs.teach.service.backstage.SchoolCourseService;
 import com.rs.teach.service.backstage.SchoolService;
 import com.rs.teach.service.studyAttr.CourseService;
 import org.apache.log4j.Logger;
@@ -34,20 +36,37 @@ public class SchoolController {
     private SchoolService schoolService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private SchoolCourseService schoolCourseService;
 
 
     /**
-     * 查询权限课程(添加学校时课程下拉框)
+     * 查询权限课程(树状结构)
      * @return
      */
-    @RequestMapping(value = "/queryOptionVo", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryConditionExtVo", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean queryOptionVo() {
+    public ResponseBean queryConditionExtVo() {
         ResponseBean bean = new ResponseBean();
-        List<OptionVo> list = courseService.queryOptionVo();
+        List<ConditionExtVo> list = courseService.queryOptionVo();
         bean.addSuccess(list);
         return bean;
     }
+
+
+    /**
+     * 回显权限课程（数组）
+     * @return
+     */
+    @RequestMapping(value = "/echoCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean echoCourse(@RequestBody School school) {
+        ResponseBean bean = new ResponseBean();
+        String [] courses = schoolCourseService.echoCourse(school.getSchoolId());
+        bean.addSuccess(courses);
+        return bean;
+    }
+
 
     /**
      * 添加学校
@@ -95,7 +114,7 @@ public class SchoolController {
     }
 
     /**
-     * 修改学校信息
+     * 修改学校信息（或修改权限课程）
      * @param school
      * @return
      */
@@ -114,7 +133,7 @@ public class SchoolController {
     }
 
     /**
-     * 修改时数据回显
+     * 修改学校信息时数据回显
      * @param school
      * @return
      */

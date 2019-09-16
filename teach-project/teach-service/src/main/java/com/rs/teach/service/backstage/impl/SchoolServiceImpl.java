@@ -1,5 +1,6 @@
 package com.rs.teach.service.backstage.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.dao.ClassMapper;
 import com.rs.teach.mapper.backstage.dao.SchoolCourseMapper;
 import com.rs.teach.mapper.backstage.dao.SchoolMapper;
@@ -10,6 +11,8 @@ import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.service.backstage.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,25 +40,36 @@ public class SchoolServiceImpl implements SchoolService {
     public void addSchool(School school) {
         //添加学校
         schoolMapper.addSchool(school);
-        String schoolId = schoolMapper.selectSchoolId(school);
-        //添加学校和课程关联表
-        school.setSchoolId(schoolId);
-        schoolCourseMapper.addSchoolCourse(school);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteSchool(String schoolId) {
-        schoolMapper.deleteSchool(schoolId);
-        schoolCourseMapper.deleteSchoolCourse(schoolId);
+        try {
+            schoolMapper.deleteSchool(schoolId);
+            schoolCourseMapper.deleteSchoolCourse(schoolId);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateSchool(School school) {
-        //修改学校name和address
-        schoolMapper.updateSchool(school);
-        //修改学校授权课程
-        schoolCourseMapper.deleteSchoolCourse(school.getSchoolId());
-        schoolCourseMapper.addSchoolCourse(school);
+        try {
+            if (StrUtil.isNotBlank(school.getSchoolAddress()) && StrUtil.isNotBlank(school.getSchoolName())) {
+                //修改学校name和address
+                schoolMapper.updateSchool(school);
+            } else {
+                //修改学校授权课程
+                if (schoolCourseMapper.count(school.getSchoolId()) > 0) {
+                    schoolCourseMapper.deleteSchoolCourse(school.getSchoolId());
+                }
+                schoolCourseMapper.addSchoolCourse(school);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
@@ -71,8 +85,6 @@ public class SchoolServiceImpl implements SchoolService {
             vo.setClassNum(classMapper.queryNumBySchoolId(vo.getSchoolId()));
             //查询教师数量
             vo.setTeacherNum(userMapper.queryTeachNumBySchoolId(vo.getSchoolId()));
-            //根据校区id查询所授权课程
-            vo.setList(schoolCourseMapper.selectCourseBySchoolId(vo.getSchoolId()));
         }
         return list;
     }
@@ -85,7 +97,6 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SchoolVo selectSchoolBySchoolId(School school) {
         SchoolVo vo = schoolMapper.selectSchoolBySchoolId(school);
-        vo.setList(schoolCourseMapper.selectCourseBySchoolId(school.getSchoolId()));
         return vo;
     }
 }

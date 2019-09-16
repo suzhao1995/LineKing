@@ -56,12 +56,16 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUserTrainDataRela(UserTrainDataRela userTrainDataRela) {
-        if(StrUtil.equalsIgnoreCase("0",userTrainDataRela.getAnswerSheetId())){
-            userTrainDataRelaMapper.delete(userTrainDataRela.getId());
-        }else {
-            userTrainDataRelaMapper.delete(userTrainDataRela.getId());
-            //用户上传答卷关联删除
-            userTrainDataRelaMapper.deleteRela(userTrainDataRela.getId());
+        try {
+            if(StrUtil.equalsIgnoreCase("0",userTrainDataRela.getAnswerSheetId())){
+                userTrainDataRelaMapper.delete(userTrainDataRela.getId());
+            }else {
+                userTrainDataRelaMapper.delete(userTrainDataRela.getId());
+                //用户上传答卷关联删除
+                userTrainDataRelaMapper.deleteRela(userTrainDataRela.getId());
+            }
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

@@ -3,6 +3,7 @@ package com.rs.teach.service.studyAttr;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
@@ -146,9 +147,9 @@ public interface CourseService{
     List<TrainCourseVo> selectTrainCourse(SectionDto sectionDto);
 
 	/**
-	 * 课程下拉框
+	 * 权限课程(树状结构)
 	 * @return
 	 */
-	List<OptionVo> queryOptionVo();
+	List<ConditionExtVo> queryOptionVo();
 
 }

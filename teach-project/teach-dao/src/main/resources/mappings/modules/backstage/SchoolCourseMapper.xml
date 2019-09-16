@@ -27,5 +27,15 @@
         and SCHOOL_ID = #{schoolId}
         and course_flag = '1'
     </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(1) from SCHOOL_COURSE_RELA
+        where SCHOOL_ID = #{schoolId}
+    </select>
+    <select id="echoCourse" resultType="java.lang.String">
+        select COURSE_ID
+        from SCHOOL_COURSE_RELA
+        where SCHOOL_ID = #{schoolId}
+    </select>
+
 
 </mapper>

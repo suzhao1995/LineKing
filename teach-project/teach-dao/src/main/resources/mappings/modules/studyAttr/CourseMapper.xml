@@ -294,4 +294,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				COURSE_NAME as label
 		from TF_EL_COURSE
 	</select>
+    <select id="typeBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select null as id,
+			   COURSE_TYPE as label
+		from TF_EL_COURSE
+		group by COURSE_TYPE
+	</select>
+	<select id="levBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select null as id,
+			   COURSE_LEV as label
+		from TF_EL_COURSE
+		where COURSE_TYPE = #{courseType}
+	</select>
+	<select id="courseBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select COURSE_ID as id ,
+			   COURSE_NAME as label
+		from TF_EL_COURSE
+		where COURSE_TYPE = #{courseType}
+		and course_lev = #{courseLev}
+	</select>
 </mapper>

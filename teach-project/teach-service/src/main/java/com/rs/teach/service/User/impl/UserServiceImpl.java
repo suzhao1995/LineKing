@@ -112,10 +112,14 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteUser(String userId) {
-        //删除用户
-        dao.deleteUser(userId);
-        //删除用户的头像
-        mapper.deletePic(userId);
+        try {
+            //删除用户
+            dao.deleteUser(userId);
+            //删除用户的头像
+            mapper.deletePic(userId);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override

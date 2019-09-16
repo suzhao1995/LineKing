@@ -15,4 +15,10 @@ public class SchoolCourseServiceImpl implements SchoolCourseService {
 
     @Autowired
     private SchoolCourseMapper schoolCourseMapper;
+
+    @Override
+    public String[] echoCourse(String schoolId) {
+
+        return schoolCourseMapper.echoCourse(schoolId);
+    }
 }

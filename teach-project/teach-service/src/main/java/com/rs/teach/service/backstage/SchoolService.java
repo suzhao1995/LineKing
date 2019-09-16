@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface SchoolService {
     /**
-     * 新增加判断用户是否为管理员
+     * 新增学校
      * @param school
      */
     void addSchool(School school) throws Exception;

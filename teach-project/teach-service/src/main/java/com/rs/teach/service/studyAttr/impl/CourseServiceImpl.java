@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import cn.hutool.core.collection.CollUtil;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
@@ -168,8 +171,25 @@ public class CourseServiceImpl implements CourseService{
     }
 
 	@Override
-	public List<OptionVo> queryOptionVo() {
-		return mapper.queryOptionVo();
+	public List<ConditionExtVo> queryOptionVo() {
+		List<ConditionExtVo> typeAllList = mapper.typeBy();
+		for (ConditionExtVo typeVo : typeAllList) {
+			// 等级
+			List<ConditionExtVo> levAllList = mapper.levBy(typeVo.getLabel());
+			if (CollUtil.isNotEmpty(levAllList)){
+				typeVo.setChildren(levAllList);
+
+				for (ConditionExtVo levVo : levAllList) {
+					//课程
+					List<ConditionExtVo> courseAllList = mapper.courseBy(typeVo.getLabel(),levVo.getLabel());
+					if (CollUtil.isNotEmpty(courseAllList)) {
+						levVo.setChildren(courseAllList);
+					}
+				}
+			}
+		}
+
+		return typeAllList;
 	}
 
 }

@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.backstage.entity.TFClass;
-import com.rs.teach.mapper.backstage.vo.SchoolVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @author 汪航

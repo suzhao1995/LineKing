@@ -21,7 +21,4 @@ public class SchoolVo implements Serializable {
     private String schoolAddress;     //学校地址
     private Integer classNum;   //班级数量
     private Integer teacherNum;  //教师用户数量
-    private List<SchoolCourseRela> list; //当前学校所授权的课程
-
-
 }

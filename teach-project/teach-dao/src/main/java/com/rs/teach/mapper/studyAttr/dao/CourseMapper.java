@@ -3,6 +3,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
@@ -165,4 +166,23 @@ public interface CourseMapper{
 	 */
 	List<OptionVo> queryOptionVo();
 
+	/**
+	 * 查询所有courseType
+	 * @return
+	 */
+    List<ConditionExtVo> typeBy();
+
+	/**
+	 * 查询所有courseLev（根据courseType）
+	 * @param courseType
+	 */
+	List<ConditionExtVo> levBy(@Param("courseType") String courseType);
+
+	/**
+	 * 查询课程
+	 * @param courseType
+	 * @param courseLev
+	 * @return
+	 */
+	List<ConditionExtVo> courseBy(@Param("courseType") String courseType, @Param("courseLev") String courseLev);
 }

@@ -30,4 +30,18 @@ public interface SchoolCourseMapper {
      * @param schoolId
      */
     void deleteSchoolCourse(@Param("schoolId") String schoolId);
+
+    /**
+     * 该学校是否添加了课程
+     * @param schoolId
+     * @return
+     */
+    Integer count(@Param("schoolId") String schoolId);
+
+    /**
+     * 权限课程回显
+     * @param schoolId
+     * @return
+     */
+    String[] echoCourse(@Param("schoolId") String schoolId);
 }
