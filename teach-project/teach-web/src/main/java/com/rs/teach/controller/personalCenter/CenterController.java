@@ -265,7 +265,15 @@ public class CenterController{
 		if("all".equals(classId)){
 			classId = null;
 		}
-		
+
+		/**
+		 * 后台管理系统教师查询自己的课表
+		 */
+		if("not".equals(classId)){
+			classId = null;
+			userId = request.getParameter("userId");
+		}
+
 		//初始化分页信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
 		//查询用户所教各班级课程

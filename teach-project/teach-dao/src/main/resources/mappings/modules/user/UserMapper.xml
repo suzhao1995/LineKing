@@ -135,7 +135,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and t.USER_ID not in (select USER_ID from USER_TRAIN_DATA_RELA)
 	</select>
 	<select id="selectTeachBySchoolId" resultType="com.rs.teach.mapper.user.entity.User">
-		select user_id, user_name,SCHOOL_ID
+		select user_id, user_name,START_TIME,END_DATE,SCHOOL_ID
 		from TF_EL_TEACH_USER
 		where SCHOOL_ID = #{schoolId}
 	</select>
