@@ -38,4 +38,11 @@ public interface SchoolMapper {
      * @return
      */
     SchoolVo selectSchoolBySchoolId(School school);
+
+    /**
+     * 查询校区名
+     * @param schoolId
+     * @return
+     */
+    String selectSchoolName(@Param("schoolId") String schoolId);
 }

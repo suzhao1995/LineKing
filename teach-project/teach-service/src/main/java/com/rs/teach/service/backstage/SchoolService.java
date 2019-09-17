@@ -54,4 +54,11 @@ public interface SchoolService {
      * @return
      */
     SchoolVo selectSchoolBySchoolId(School school);
+
+    /**
+     * 查询校区名
+     * @param schoolId
+     * @return
+     */
+    String selectSchoolName(String schoolId);
 }

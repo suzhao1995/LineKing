@@ -99,4 +99,9 @@ public class SchoolServiceImpl implements SchoolService {
         SchoolVo vo = schoolMapper.selectSchoolBySchoolId(school);
         return vo;
     }
+
+    @Override
+    public String selectSchoolName(String schoolId) {
+        return schoolMapper.selectSchoolName(schoolId);
+    }
 }

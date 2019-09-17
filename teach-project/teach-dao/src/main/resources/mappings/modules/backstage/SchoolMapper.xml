@@ -50,4 +50,8 @@
         select * from TF_EL_SCHOOL
         where SCHOOL_ID = #{schoolId}
     </select>
+    <select id="selectSchoolName" resultType="java.lang.String">
+        select SCHOOL_NAME from TF_EL_SCHOOL
+        where SCHOOL_ID = #{schoolId}
+    </select>
 </mapper>

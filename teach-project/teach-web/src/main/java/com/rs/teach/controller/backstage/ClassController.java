@@ -8,6 +8,7 @@ import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.backstage.ClassService;
+import com.rs.teach.service.backstage.SchoolService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
 
 /**
  * @author 汪航
@@ -32,7 +35,8 @@ public class ClassController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private SchoolService schoolService;
 
     /**
      * 根据校区id查询所有班级
@@ -43,8 +47,14 @@ public class ClassController {
     @ResponseBody
     public ResponseBean selectClassBySchoolId(@RequestBody TFClass tfClass){
         ResponseBean bean = new ResponseBean();
+        HashMap<String, Object> map = new HashMap<>();
+
         PageInfo<TFClass> pageInfo = PageHelper.startPage(tfClass).doSelectPageInfo(() -> classService.selectClassBySchoolId(tfClass));
-        bean.addSuccess(pageInfo);
+        String schoolName = schoolService.selectSchoolName(tfClass.getSchoolId());
+        map.put("pageInfo",pageInfo);
+        map.put("schoolName",schoolName);
+
+        bean.addSuccess(map);
         return bean;
     }
 
@@ -57,8 +67,14 @@ public class ClassController {
     @ResponseBody
     public ResponseBean selectTeachBySchoolId(@RequestBody User user){
         ResponseBean bean = new ResponseBean();
+        HashMap<String, Object> map = new HashMap<>();
         PageInfo<User> pageInfo =  PageHelper.startPage(user).doSelectPageInfo(() -> userService.selectTeachBySchoolId(user.getSchoolId()));
-        bean.addSuccess(pageInfo);
+
+        String schoolName = schoolService.selectSchoolName(user.getSchoolId());
+        map.put("pageInfo",pageInfo);
+        map.put("schoolName",schoolName);
+
+        bean.addSuccess(map);
         return bean;
     }
 
