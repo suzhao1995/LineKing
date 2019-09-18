@@ -146,28 +146,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ConditionExtVo> queryOptionVo() {
-        List<ConditionExtVo> provinceAllList = dao.listBy(null, null);
-        List<ConditionExtVo> allList = dao.listBy(null, null);
-
-        Map<String, List<ConditionExtVo>> cacheMap = allList.stream()
-                .collect(Collectors.groupingBy(ConditionExtVo::getId));
-
-        for (ConditionExtVo provinceVo : provinceAllList) {
-            // 市
-            List<ConditionExtVo> cityList = cacheMap.get(provinceVo.getId());
-            if (CollUtil.isNotEmpty(cityList)) {
-                provinceVo.setChildren(cityList);
-
-                // 区
-                for (ConditionExtVo cityVo : cityList) {
-                    List<ConditionExtVo> areaList = cacheMap.get(cityVo.getId());
-                    if (CollUtil.isNotEmpty(areaList)) {
-                        cityVo.setChildren(areaList);
-                    }
-                }
+        List<ConditionExtVo> typeAllList = dao.schoolBy();
+        for (ConditionExtVo typeVo : typeAllList) {
+            // 用户
+            List<ConditionExtVo> levAllList = dao.userBy(typeVo.getId());
+            if (CollUtil.isNotEmpty(levAllList)){
+                typeVo.setChildren(levAllList);
             }
         }
-        return provinceAllList;
+        return typeAllList;
     }
 
 

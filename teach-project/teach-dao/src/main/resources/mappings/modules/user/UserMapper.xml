@@ -141,16 +141,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
     <select id="selectUserInfoById" resultType="com.rs.teach.mapper.user.vo.UserVo">
-		select user_id, user_name, serial_number, pass_word,school_id,end_date from TF_EL_TEACH_USER where USER_ID = #{userId}
+		select user_id, user_name, serial_number, pass_word,school_id,end_date,PIC_URL
+		from TF_EL_TEACH_USER,tf_el_pic_attr
+		where
+		USER_ID = ASSOCIATION_ID
+		and USER_ID = #{userId}
 	</select>
-    <select id="listBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
-		select
+
+	<select id="schoolBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select tu.SCHOOL_ID as id,
+				SCHOOL_NAME as label
+		from TF_EL_TEACH_USER tu,
+			  TF_EL_SCHOOL s
+		where s.SCHOOL_ID = tu.SCHOOL_ID
+	</select>
+	<select id="userBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select USER_ID as id,
+				USER_NAME as label
 		from TF_EL_TEACH_USER
-		<where>
-				and ADMIN_FLAG = '0'
-			<if test="label != null and label !=''">
-				and SCHOOL_ID = #{label}
-			</if>
-		</where>
+		where ADMIN_FLAG = '0'
+	  	and SCHOOL_ID = #{id}
 	</select>
 </mapper>

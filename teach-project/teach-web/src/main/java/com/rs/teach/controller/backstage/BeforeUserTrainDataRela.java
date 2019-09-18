@@ -73,20 +73,6 @@ public class BeforeUserTrainDataRela {
         return bean;
     }
 
-
-
-    /**
-     * 考核人员回显（已添加的不回显）
-     */
-    @RequestMapping(value = "/queryUserNotIn")
-    @ResponseBody
-    public ResponseBean queryUserNotIn() {
-        ResponseBean bean = new ResponseBean();
-        List<User> vo  = userService.queryUserNotIn();
-        bean.addSuccess(vo);
-        return bean;
-    }
-
     /**
      * 考核人员树状图
      */
@@ -105,9 +91,9 @@ public class BeforeUserTrainDataRela {
      * @param UserTrainDataRela(userIds,trainCourseId,dataId)
      * @return
      */
-    @RequestMapping(value = "/queryAnswerSheet", method = RequestMethod.POST)
+    @RequestMapping(value = "/addUserTrainData", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean queryAnswerSheet(@RequestBody UserTrainDataRela UserTrainDataRela, HttpServletRequest request) {
+    public ResponseBean addUserTrainData(@RequestBody UserTrainDataRela UserTrainDataRela, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         //指派人id
         String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();

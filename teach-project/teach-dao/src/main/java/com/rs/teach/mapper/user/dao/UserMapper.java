@@ -120,10 +120,15 @@ public interface UserMapper {
 	UserVo selectUserInfoById(@Param("userId") String userId);
 
 	/**
-	 *
-	 * @param o
-	 * @param label
+	 * 学校
 	 * @return
 	 */
-	List<ConditionExtVo> listBy(String o, @Param("label") String label);
+	List<ConditionExtVo> schoolBy();
+
+	/**
+	 * 用户
+	 * @param id
+	 * @return
+	 */
+	List<ConditionExtVo> userBy(@Param("id")String id);
 }

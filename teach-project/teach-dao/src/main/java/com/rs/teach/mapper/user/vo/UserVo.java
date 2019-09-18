@@ -18,4 +18,5 @@ public class UserVo implements Serializable {
     private String schoolId;	//校区id
     private String endDate;		//账号到期时间
     private String serialNumber;	//用户手机号码
+    private String picUrl;       //用户头像
 }
