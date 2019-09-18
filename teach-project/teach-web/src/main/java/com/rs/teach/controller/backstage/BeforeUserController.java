@@ -220,16 +220,10 @@ public class BeforeUserController {
             }
         }
         try {
-            if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = userService.updateUserInfoAndPic(user, picAttr);
-                if (i == 1) {
-                    //删除原始文件
-                    DeleteFileUtil.deleteFile(pic.getSavePath());
-                }
-            } else {
-                bean.addError(ResponseBean.CODE_PICTURE_ERROR, "头像上传失败");
-                log.error(ResponseBean.CODE_PICTURE_ERROR, "修改管理员-头像上传失败");
-                return bean;
+            int i = userService.updateUserInfoAndPic(user, picAttr);
+            if (i == 1) {
+                //删除原始文件
+                DeleteFileUtil.deleteFile(pic.getSavePath());
             }
             bean.addSuccess("修改成功");
         } catch (Exception e) {
@@ -387,12 +381,10 @@ public class BeforeUserController {
             }
         }
         try {
-            if (StrUtil.isNotBlank(picAttr.getPicId())) {
-                int i = userService.updateUserInfoAndPic(user, picAttr);
-                if (i == 1) {
-                    //删除原始文件
-                    DeleteFileUtil.deleteFile(pic.getSavePath());
-                }
+            int i = userService.updateUserInfoAndPic(user, picAttr);
+            if (i == 1) {
+                //删除原始文件
+                DeleteFileUtil.deleteFile(pic.getSavePath());
             }
             bean.addSuccess("修改成功");
         } catch (Exception e) {

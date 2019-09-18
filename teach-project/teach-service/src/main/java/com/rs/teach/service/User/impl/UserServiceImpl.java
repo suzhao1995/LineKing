@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     public String test() {
         return dao.getUserById("0001").getUserName();
     }
+
     @Autowired
     private PicAttrService picAttrService;
 
@@ -103,10 +104,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int updateUserInfoAndPic(User user, PicAttr picAttr) {
-        int i ;
+        int i = 0;
         try {
             dao.updateUserInfo(user);
-            i = picAttrService.modifyPic(picAttr);
+            if (StrUtil.isNotBlank(picAttr.getPicId())) {
+                i = picAttrService.modifyPic(picAttr);
+            }
         } catch (Exception e) {
             throw e;
         }
@@ -150,7 +153,7 @@ public class UserServiceImpl implements UserService {
         for (ConditionExtVo typeVo : typeAllList) {
             // 用户
             List<ConditionExtVo> levAllList = dao.userBy(typeVo.getId());
-            if (CollUtil.isNotEmpty(levAllList)){
+            if (CollUtil.isNotEmpty(levAllList)) {
                 typeVo.setChildren(levAllList);
             }
         }
