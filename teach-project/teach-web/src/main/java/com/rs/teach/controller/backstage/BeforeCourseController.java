@@ -166,7 +166,7 @@ public class BeforeCourseController {
     public ResponseBean updateCourse(@RequestParam(value = "file",required = false) MultipartFile file, CourseDto courseDto,
                                      HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
-        if(StringUtils.isNotEmpty(file.getOriginalFilename())) {
+        if(file != null) {
             if (!file.isEmpty()) {
                 //上传文件
                 Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
