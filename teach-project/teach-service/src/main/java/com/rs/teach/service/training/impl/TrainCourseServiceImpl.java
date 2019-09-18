@@ -4,6 +4,7 @@ import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     }
 
     @Override
-    public CourseDto echoCourse(CourseDto courseDto) {
+    public CourseVo echoCourse(CourseDto courseDto) {
 
         return trainCourseMapper.echoCourse(courseDto.getCourseId());
     }

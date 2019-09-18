@@ -1,5 +1,6 @@
 package com.rs.teach.mapper.user.dao;
 
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.mapper.user.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
@@ -117,4 +118,12 @@ public interface UserMapper {
 	 * @return
 	 */
 	UserVo selectUserInfoById(@Param("userId") String userId);
+
+	/**
+	 *
+	 * @param o
+	 * @param label
+	 * @return
+	 */
+	List<ConditionExtVo> listBy(String o, @Param("label") String label);
 }

@@ -1,5 +1,6 @@
 package com.rs.teach.service.User;
 
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.mapper.user.vo.UserVo;
@@ -104,4 +105,10 @@ public interface UserService {
 	 * @return
 	 */
     UserVo selectUserInfoById(String userId);
+
+	/**
+	 * 考核人员树状图
+	 * @return
+	 */
+	List<ConditionExtVo> queryOptionVo();
 }

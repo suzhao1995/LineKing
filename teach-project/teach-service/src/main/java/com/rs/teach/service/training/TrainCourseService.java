@@ -2,6 +2,7 @@ package com.rs.teach.service.training;
 
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 import java.util.List;
@@ -55,5 +56,5 @@ public interface TrainCourseService {
      * 修改课程回显
      * @param courseDto
      */
-    CourseDto echoCourse(CourseDto courseDto);
+    CourseVo echoCourse(CourseDto courseDto);
 }

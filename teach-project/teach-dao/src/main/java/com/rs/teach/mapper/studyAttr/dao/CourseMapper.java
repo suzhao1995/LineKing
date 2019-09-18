@@ -7,6 +7,7 @@ import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -197,5 +198,5 @@ public interface CourseMapper{
 	 * @param courseId
 	 * @return
 	 */
-	CourseDto echoCourse(String courseId);
+	CourseVo echoCourse(@Param("courseId") String courseId);
 }

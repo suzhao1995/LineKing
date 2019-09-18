@@ -318,7 +318,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_COURSE
 	</select>
 	<select id="echoCourse" resultType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
-		select COURSE_ID,COURSE_NAME,COURSE_TYPE,COURSE_LEV,COURSEPIC_URL
+		select '1' as isTrain,COURSE_ID,COURSE_NAME,COURSE_TYPE,COURSE_LEV,COURSEPIC_URL
 		from TF_EL_COURSE
 		where COURSE_ID = #{courseId}
 	</select>

@@ -1,6 +1,8 @@
 package com.rs.teach.service.User.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.resourcesAttr.dao.PicAttrMapper;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.user.dao.UserMapper;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -138,6 +142,32 @@ public class UserServiceImpl implements UserService {
     public UserVo selectUserInfoById(String userId) {
 
         return dao.selectUserInfoById(userId);
+    }
+
+    @Override
+    public List<ConditionExtVo> queryOptionVo() {
+        List<ConditionExtVo> provinceAllList = dao.listBy(null, null);
+        List<ConditionExtVo> allList = dao.listBy(null, null);
+
+        Map<String, List<ConditionExtVo>> cacheMap = allList.stream()
+                .collect(Collectors.groupingBy(ConditionExtVo::getId));
+
+        for (ConditionExtVo provinceVo : provinceAllList) {
+            // 市
+            List<ConditionExtVo> cityList = cacheMap.get(provinceVo.getId());
+            if (CollUtil.isNotEmpty(cityList)) {
+                provinceVo.setChildren(cityList);
+
+                // 区
+                for (ConditionExtVo cityVo : cityList) {
+                    List<ConditionExtVo> areaList = cacheMap.get(cityVo.getId());
+                    if (CollUtil.isNotEmpty(areaList)) {
+                        cityVo.setChildren(areaList);
+                    }
+                }
+            }
+        }
+        return provinceAllList;
     }
 
 

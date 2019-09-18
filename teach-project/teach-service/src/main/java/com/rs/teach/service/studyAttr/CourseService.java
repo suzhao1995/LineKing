@@ -9,6 +9,7 @@ import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.entity.NoteSummary;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 
 /**
@@ -163,5 +164,5 @@ public interface CourseService{
 	 * @param courseDto
 	 * @return
 	 */
-	CourseDto echoCourse(CourseDto courseDto);
+	CourseVo echoCourse(CourseDto courseDto);
 }

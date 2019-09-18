@@ -1,10 +1,8 @@
 package com.rs.teach.service.studyAttr.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import cn.hutool.core.collection.CollUtil;
 import com.rs.teach.mapper.common.ConditionExtVo;
@@ -12,6 +10,7 @@ import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.mapper.video.dao.VideoMapper;
 
@@ -198,7 +197,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public CourseDto echoCourse(CourseDto courseDto) {
+    public CourseVo echoCourse(CourseDto courseDto) {
         return mapper.echoCourse(courseDto.getCourseId());
     }
 

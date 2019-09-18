@@ -6,10 +6,10 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
-import com.rs.teach.mapper.backstage.dao.AnswerSheetMapper;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.backstage.AnswerSheetService;
@@ -45,7 +45,7 @@ public class BeforeUserTrainDataRela {
     @Autowired
     private AnswerSheetService answerSheetService;
     /**
-     * 分页查询考核人员信息(此接口未写完   测试时改进)
+     * 分页查询考核人员信息
      *
      * @param trainData(取主键id) pageDto
      * @return
@@ -84,6 +84,18 @@ public class BeforeUserTrainDataRela {
         ResponseBean bean = new ResponseBean();
         List<User> vo  = userService.queryUserNotIn();
         bean.addSuccess(vo);
+        return bean;
+    }
+
+    /**
+     * 考核人员树状图
+     */
+    @RequestMapping(value = "/queryConditionExtVo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean queryConditionExtVo() {
+        ResponseBean bean = new ResponseBean();
+        List<ConditionExtVo> list = userService.queryOptionVo();
+        bean.addSuccess(list);
         return bean;
     }
 

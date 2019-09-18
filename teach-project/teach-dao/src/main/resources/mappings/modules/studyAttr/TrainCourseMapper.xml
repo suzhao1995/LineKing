@@ -54,8 +54,8 @@
          TRAIN_COURSE_NAME as label
          from TF_EL_TRAIN_COURSE
     </select>
-    <select id="echoCourse" resultType="com.rs.teach.mapper.studyAttr.dto.CourseDto">
-        select TRAIN_COURSE_ID as courseId,TRAIN_COURSE_NAME as courseName,TRAIN_COURSEPIC_URL as coursePicUrl
+    <select id="echoCourse" resultType="com.rs.teach.mapper.studyAttr.vo.CourseVo">
+        select '0' as isTrain,TRAIN_COURSE_ID as courseId,TRAIN_COURSE_NAME as courseName,TRAIN_COURSEPIC_URL as coursePicUrl
         from TF_EL_TRAIN_COURSE
         where TRAIN_COURSE_ID = #{courseId}
     </select>

@@ -9,6 +9,7 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
+import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.studyAttr.CourseService;
 import com.rs.teach.service.training.TrainCourseService;
@@ -136,7 +137,7 @@ public class BeforeCourseController {
     @ResponseBody
     public ResponseBean echoCourse(@RequestBody CourseDto courseDto) {
         ResponseBean bean = new ResponseBean();
-        CourseDto vo;
+        CourseVo vo;
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
                 vo = trainCourseService.echoCourse(courseDto);

@@ -143,4 +143,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectUserInfoById" resultType="com.rs.teach.mapper.user.vo.UserVo">
 		select user_id, user_name, serial_number, pass_word,school_id,end_date from TF_EL_TEACH_USER where USER_ID = #{userId}
 	</select>
+    <select id="listBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select
+		from TF_EL_TEACH_USER
+		<where>
+				and ADMIN_FLAG = '0'
+			<if test="label != null and label !=''">
+				and SCHOOL_ID = #{label}
+			</if>
+		</where>
+	</select>
 </mapper>
