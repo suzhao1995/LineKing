@@ -60,4 +60,10 @@ public class TrainCourseServiceImpl implements TrainCourseService {
         return trainCourseMapper.trainCourseList();
     }
 
+    @Override
+    public CourseDto echoCourse(CourseDto courseDto) {
+
+        return trainCourseMapper.echoCourse(courseDto.getCourseId());
+    }
+
 }

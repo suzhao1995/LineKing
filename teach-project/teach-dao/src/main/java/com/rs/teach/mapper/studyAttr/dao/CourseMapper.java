@@ -185,4 +185,17 @@ public interface CourseMapper{
 	 * @return
 	 */
 	List<ConditionExtVo> courseBy(@Param("courseType") String courseType, @Param("courseLev") String courseLev);
+
+	/**
+	 * 课程类型下拉框
+	 * @return
+	 */
+	List<OptionVo> courseType();
+
+	/***
+	 * 修改时回显
+	 * @param courseId
+	 * @return
+	 */
+	CourseDto echoCourse(String courseId);
 }

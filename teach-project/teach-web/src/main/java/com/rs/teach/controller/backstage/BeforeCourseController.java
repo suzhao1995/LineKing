@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
+import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
@@ -14,6 +15,7 @@ import com.rs.teach.service.training.TrainCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,21 @@ public class BeforeCourseController {
 
     @Autowired
     private TrainCourseService trainCourseService;
+
+
+    /**
+     * 课程类型下拉列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/courseType")
+    @ResponseBody
+    public ResponseBean courseType() {
+        ResponseBean bean = new ResponseBean();
+        List<OptionVo> list = courseService.courseType();
+        bean.addSuccess(list);
+        return bean;
+    }
 
     /**
      * 添加课程
@@ -110,6 +127,32 @@ public class BeforeCourseController {
     }
 
     /**
+     * 修改课程回显
+     *
+     * @param courseDto
+     * @return
+     */
+    @RequestMapping(value = "/echoCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean echoCourse(@RequestBody CourseDto courseDto) {
+        ResponseBean bean = new ResponseBean();
+        CourseDto vo;
+        try {
+            if (StrUtil.equals("1", courseDto.getIsTrain())) {
+                vo = trainCourseService.echoCourse(courseDto);
+            } else {
+                vo = courseService.echoCourse(courseDto);
+            }
+            bean.addSuccess(vo);
+        } catch (Exception e) {
+            logger.error("课程-回显-失败", e);
+            bean.addError("回显失败");
+        }
+        return bean;
+    }
+
+
+    /**
      * 修改课程
      *
      * @param file
@@ -119,19 +162,20 @@ public class BeforeCourseController {
      */
     @RequestMapping(value = "/updateCourse", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateCourse(@RequestParam("file") MultipartFile file, CourseDto courseDto,
+    public ResponseBean updateCourse(@RequestParam(value = "file",required = false) MultipartFile file, CourseDto courseDto,
                                      HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
-
-        if (!file.isEmpty()) {
-            //上传文件
-            Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-            //文件上传是否成功
-            if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(ResponseBean.CODE_PICTURE_ERROR,resultMap.get("message").toString());
-                return bean;
+        if(StringUtils.isNotEmpty(file.getOriginalFilename())) {
+            if (!file.isEmpty()) {
+                //上传文件
+                Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+                //文件上传是否成功
+                if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
+                    bean.addError(ResponseBean.CODE_PICTURE_ERROR, resultMap.get("message").toString());
+                    return bean;
+                }
+                courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
             }
-            courseDto.setCoursePicUrl(resultMap.get("picUrl").toString());
         }
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
@@ -169,7 +213,6 @@ public class BeforeCourseController {
             PageInfo<Course> pageInfo = PageHelper.startPage(courseDto).doSelectPageInfo(() -> courseService.selectCourse(courseDto));
             bean.addSuccess(pageInfo);
         }
-
         return bean;
     }
 

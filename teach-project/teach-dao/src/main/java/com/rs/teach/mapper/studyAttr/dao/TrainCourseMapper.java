@@ -51,4 +51,10 @@ public interface TrainCourseMapper {
      */
     List<OptionVo> trainCourseList();
 
+    /**
+     * 修改课程时回显
+     * @param courseId
+     * @return
+     */
+    CourseDto echoCourse(String courseId);
 }

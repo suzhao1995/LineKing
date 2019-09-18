@@ -192,4 +192,14 @@ public class CourseServiceImpl implements CourseService{
 		return typeAllList;
 	}
 
+    @Override
+    public List<OptionVo> courseType() {
+        return mapper.courseType();
+    }
+
+    @Override
+    public CourseDto echoCourse(CourseDto courseDto) {
+        return mapper.echoCourse(courseDto.getCourseId());
+    }
+
 }

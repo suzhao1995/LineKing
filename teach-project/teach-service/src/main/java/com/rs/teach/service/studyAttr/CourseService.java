@@ -152,4 +152,16 @@ public interface CourseService{
 	 */
 	List<ConditionExtVo> queryOptionVo();
 
+	/**
+	 * 课程类型下拉框
+	 * @return
+	 */
+    List<OptionVo> courseType();
+
+	/**
+	 * 修改课程回显
+	 * @param courseDto
+	 * @return
+	 */
+	CourseDto echoCourse(CourseDto courseDto);
 }

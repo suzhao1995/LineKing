@@ -50,4 +50,10 @@ public interface TrainCourseService {
      * @return
      */
     List<OptionVo> trainCourseList();
+
+    /**
+     * 修改课程回显
+     * @param courseDto
+     */
+    CourseDto echoCourse(CourseDto courseDto);
 }
