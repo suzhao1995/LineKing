@@ -187,7 +187,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from
          (
             select ID,TOTLE_SECTION_SORT,TOTLE_SECTION_NAME,COURSE_ID
-            from TF_EL_TOTLE_SECTION
+            from TF_EL_TRAIN_TOTLE_SECTION
             where COURSE_ID = #{courseId}
             order by TOTLE_SECTION_SORT desc
         )
@@ -195,7 +195,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<insert id="addAllTotleSection">
-		insert into TF_EL_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
+		insert into TF_EL_TRAIN_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
 		select SEQ_EL_TOTLE_SECTION.nextval,A.* from(
 			<foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
 				SELECT
@@ -208,7 +208,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
-		select * from TF_EL_TOTLE_SECTION
+		select * from TF_EL_TRAIN_TOTLE_SECTION
 		<where>
 			1 = 1
 			<if test="courseId != null and courseId !='' ">
@@ -219,18 +219,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
     <update id="updateTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto">
-		update TF_EL_TOTLE_SECTION
+		update TF_EL_TRAIN_TOTLE_SECTION
         set TOTLE_SECTION_NAME = #{totleSectionNameforUpdate}
         where id = #{id}
 	</update>
 	<select id="IsEmpty" resultType="java.lang.Integer">
-		select count(1) from TF_EL_TOTLE_SECTION
+		select count(1) from TF_EL_TRAIN_TOTLE_SECTION
         where COURSE_ID = #{courseId}
 	</select>
 	<select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
-		select count(1) from TF_EL_SECTION
-        where COURSE_ID = #{courseId}
-        and TOTLESECTION_SORT = #{sectionSort}
+		select count(1) from TF_EL_SECTION,TF_EL_TRAIN_TOTLE_SECTION
+        where TF_EL_SECTION.TOTLESECTION_SORTID = TF_EL_TRAIN_TOTLE_SECTION.ID
+        and TF_EL_SECTION.COURSE_ID = #{courseId}
+        and TOTLE_SECTION_SORT = #{sectionSort}
 	</select>
 	<select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto"
 			resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
@@ -244,9 +245,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 SCHOOLWORKID AS practiceId ,
                 PAPERID AS testpaperId,
                 COURSEWARE_ID AS coursewareId
-            from TF_EL_SECTION
-            where COURSE_ID = #{courseId}
-            and TOTLESECTION_SORT = #{sectionSort}
+            from TF_EL_SECTION s, TF_EL_TRAIN_TOTLE_SECTION tts
+            where s.TOTLESECTION_SORTID = tts.ID
+            and s.COURSE_ID = #{courseId}
+            and TOTLE_SECTION_SORT = #{sectionSort}
             order by SECTION_SORT desc
         )
         where rownum = 1

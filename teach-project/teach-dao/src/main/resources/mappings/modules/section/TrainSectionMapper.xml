@@ -124,9 +124,10 @@
                 practice_id as workId,
                 testpaper_id as testPaperId,
                 courseware_id as coursewareId
-        from TF_EL_TRAIN_SECTION
-        where TRAIN_COURSE_ID = #{courseId}
-        order by train_section_sort,train_litter_section_sort
+        from TF_EL_TRAIN_SECTION,TF_EL_TRAIN_TOTLE_SECTION
+        where ID = TRAIN_SECTION_SORTID
+        and TRAIN_COURSE_ID = #{courseId}
+        order by TOTLE_SECTION_SORT,train_litter_section_sort
     </select>
 
 
