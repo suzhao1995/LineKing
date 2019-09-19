@@ -221,10 +221,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where COURSE_ID = #{courseId}
 	</select>
 	<select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
-		select count(1) from TF_EL_SECTION,TF_EL_TRAIN_TOTLE_SECTION
-        where TF_EL_SECTION.TOTLESECTION_SORTID = TF_EL_TRAIN_TOTLE_SECTION.ID
-        and TF_EL_SECTION.COURSE_ID = #{courseId}
-        and TOTLE_SECTION_SORT = #{sectionSort}
+		select count(1) from TF_EL_SECTION
+        where  COURSE_ID = #{courseId}
+        and TOTLESECTION_SORTID = #{sectionSortid}
 	</select>
 	<select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto"
 			resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
