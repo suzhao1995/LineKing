@@ -171,18 +171,18 @@
         where COURSE_ID = #{courseId}
     </select>
     <select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
-        select count(1) from TF_EL_TRAIN_SECTION
-        where TRAIN_COURSE_ID = #{courseId}
-        and TRAIN_SECTION_SORT = #{sectionSort}
+        select count(1) from TF_EL_TRAIN_TOTLE_SECTION
+        where COURSE_ID = #{courseId}
+        and TOTLE_SECTION_SORT = #{sectionSort}
     </select>
     <select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
         select * from
          (
             select *
-            from TF_EL_TRAIN_SECTION
-            where TRAIN_COURSE_ID = #{courseId}
-            and TRAIN_SECTION_SORT = #{sectionSort}
-            order by TRAIN_LITTER_SECTION_SORT desc
+            from TF_EL_TRAIN_TOTLE_SECTION
+            where COURSE_ID = #{courseId}
+            and TOTLE_SECTION_SORT = #{sectionSort}
+            order by TOTLE_SECTION_SORT desc
         )
         where rownum = 1
     </select>
