@@ -102,10 +102,10 @@ public interface SectionMapper{
 	/**
 	 * 查询小章节信息
 	 * @param courseId
-	 * @param trainSectionSort
+	 * @param trainSectionSortid
 	 * @return
 	 */
-	List<TrainLitterSectionVo> selectLitterSection(@Param("courseId") String courseId, @Param("trainSectionSort") String trainSectionSort);
+	List<TrainLitterSectionVo> selectLitterSection(@Param("courseId") String courseId, @Param("trainSectionSortid") String trainSectionSortid);
 
 	/**
 	 * 修改课程章节信息

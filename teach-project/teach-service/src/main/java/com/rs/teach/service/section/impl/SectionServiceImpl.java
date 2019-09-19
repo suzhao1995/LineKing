@@ -93,7 +93,7 @@ public class SectionServiceImpl implements SectionService {
         List<TrainSectionVo> trainSectionVoList = mapper.selectSectionById(courseId);
         for (TrainSectionVo vo : trainSectionVoList) {
             //查询小章节
-            List<TrainLitterSectionVo> litterSectionVoList = mapper.selectLitterSection(courseId, vo.getTrainSectionSort());
+            List<TrainLitterSectionVo> litterSectionVoList = mapper.selectLitterSection(courseId, vo.getId());
 
             for (TrainLitterSectionVo litterSectionVo : litterSectionVoList) {
                 //课件文件全部路径

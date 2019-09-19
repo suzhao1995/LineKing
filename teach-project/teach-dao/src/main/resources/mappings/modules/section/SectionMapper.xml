@@ -161,11 +161,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
-	select distinct TOTLESECTION_SORT as trainSectionSort,
-	TOTLESECTION_NAME as trainSectionName
-        FROM TF_EL_SECTION
-        WHERE COURSE_ID = #{courseId}
-        order by TOTLESECTION_SORT
+		select * from TF_EL_TRAIN_TOTLE_SECTION
+		where COURSE_ID = #{courseId}
+		order by TOTLE_SECTION_SORT
 	</select>
 	<select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
 		select SECTION_ID AS trainSectionId,
@@ -179,7 +177,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 COURSEWARE_ID AS coursewareId
         FROM TF_EL_SECTION
         WHERE COURSE_ID = #{courseId}
-        and TOTLESECTION_SORT = #{trainSectionSort}
+        and TOTLESECTION_SORTID = #{trainSectionSortid}
          order by SECTION_SORT
 
 	</select>
@@ -209,12 +207,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
 		select * from TF_EL_TRAIN_TOTLE_SECTION
-		<where>
-			1 = 1
-			<if test="courseId != null and courseId !='' ">
-				and COURSE_ID = #{courseId}
-			</if>
-		</where>
+		where COURSE_ID = #{courseId}
 		order by TOTLE_SECTION_SORT
 	</select>
 
