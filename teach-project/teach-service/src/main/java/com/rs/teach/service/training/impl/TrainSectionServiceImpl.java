@@ -55,12 +55,13 @@ public class TrainSectionServiceImpl implements TrainSectionService {
             List<TrainLitterSectionVo> trainLitterSectionVoList = trainSectionMapper.selectTrainLitterSection(courseId, vo.getId());
 
             for (TrainLitterSectionVo trainLitterSectionVo : trainLitterSectionVoList) {
-                //课件文件全部路径
-                String coursewareUrl = fileMappingPath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
-                        + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
-                        + trainLitterSectionVo.getTrainLitterSectionType();
-                trainLitterSectionVo.setCoursewareUrl(coursewareUrl);
-
+                if (StrUtil.isNotEmpty(trainLitterSectionVo.getTrainLitterSectionUrl())) {
+                    //课件文件全部路径
+                    String coursewareUrl = fileMappingPath + trainLitterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                            + "\\" + trainLitterSectionVo.getCoursewareId() + "_" + trainLitterSectionVo.getUpdateFileName()
+                            + trainLitterSectionVo.getTrainLitterSectionType();
+                    trainLitterSectionVo.setCoursewareUrl(coursewareUrl);
+                }
                 if (StrUtil.isNotEmpty(trainLitterSectionVo.getPracticeId())) {
                     Practice practice = testAndWorkMapper.queryPracticeById(trainLitterSectionVo.getPracticeId());
                     trainLitterSectionVo.setPid(practice.getPid());

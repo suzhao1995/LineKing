@@ -182,7 +182,6 @@
             select *
             from TF_EL_TRAIN_TOTLE_SECTION
             where COURSE_ID = #{courseId}
-            and TOTLE_SECTION_SORT = #{sectionSort}
             order by TOTLE_SECTION_SORT desc
         )
         where rownum = 1

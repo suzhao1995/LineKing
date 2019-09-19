@@ -238,10 +238,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 SCHOOLWORKID AS practiceId ,
                 PAPERID AS testpaperId,
                 COURSEWARE_ID AS coursewareId
-            from TF_EL_SECTION s, TF_EL_TRAIN_TOTLE_SECTION tts
-            where s.TOTLESECTION_SORTID = tts.ID
-            and s.COURSE_ID = #{courseId}
-            and TOTLE_SECTION_SORT = #{sectionSort}
+            from TF_EL_SECTION
+            where COURSE_ID = #{courseId}
+            and TOTLESECTION_SORTID = #{sectionSortid}
             order by SECTION_SORT desc
         )
         where rownum = 1

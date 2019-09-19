@@ -96,12 +96,13 @@ public class SectionServiceImpl implements SectionService {
             List<TrainLitterSectionVo> litterSectionVoList = mapper.selectLitterSection(courseId, vo.getId());
 
             for (TrainLitterSectionVo litterSectionVo : litterSectionVoList) {
-                //课件文件全部路径
-                String coursewareUrl = fileMappingPath + litterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
-                        + "\\" + litterSectionVo.getCoursewareId() + "_" + litterSectionVo.getUpdateFileName()
-                        + litterSectionVo.getTrainLitterSectionType();
-                litterSectionVo.setCoursewareUrl(coursewareUrl);
-
+                if (StrUtil.isNotEmpty(litterSectionVo.getTrainLitterSectionUrl())) {
+                    //课件文件全部路径
+                    String coursewareUrl = fileMappingPath + litterSectionVo.getTrainLitterSectionUrl().replace("/", "\\")
+                            + "\\" + litterSectionVo.getCoursewareId() + "_" + litterSectionVo.getUpdateFileName()
+                            + litterSectionVo.getTrainLitterSectionType();
+                    litterSectionVo.setCoursewareUrl(coursewareUrl);
+                }
                 if (StrUtil.isNotEmpty(litterSectionVo.getPracticeId())) {
                     Practice practice = testAndWorkMapper.queryPracticeById(litterSectionVo.getPracticeId());
                     litterSectionVo.setPid(practice.getPid());
