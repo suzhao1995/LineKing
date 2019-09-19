@@ -161,7 +161,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
-		select * from TF_EL_TRAIN_TOTLE_SECTION
+		select id, totle_section_sort as trainSectionSort, totle_section_name as trainSectionName from TF_EL_TRAIN_TOTLE_SECTION
 		where COURSE_ID = #{courseId}
 		order by TOTLE_SECTION_SORT
 	</select>
