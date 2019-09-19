@@ -153,7 +153,10 @@ public class SectionController {
      */
     @RequestMapping(value = "/addSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addSection(SectionDto sectionDto,
+    public ResponseBean addSection(@RequestParam(value = "courseWareFile" ,required = false) MultipartFile courseWareFile,
+                                   @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
+                                   @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile,
+                                   SectionDto sectionDto,
                                    HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
@@ -163,13 +166,11 @@ public class SectionController {
          * * @param practiceFileName（作业）
          * * @param testpaperFileName（试卷）
          */
-        MultipartFile[] files = sectionDto.getFiles();
         // TODO 课件
-        if (files[0] != null) {
-            String courseWareFileName = files[0].getOriginalFilename();
-            if (StrUtil.isNotBlank(courseWareFileName)) {
+        if (courseWareFile != null) {
+            if (!courseWareFile.isEmpty()) {
                 //课件文件上传
-                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
+                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, courseWareFile);
                 //文件上传是否成功
                 if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
                     bean.addError(ResponseBean.CODE_FILE_ERROR, courseWareMap.get("message").toString());
@@ -186,11 +187,10 @@ public class SectionController {
         }
         try {
             // TODO 作业
-            if (files[1] != null) {
-                String practiceFileName = files[1].getOriginalFilename();
-                if (StrUtil.isNotBlank(practiceFileName)) {
+            if (practiceFile != null) {
+                if (!courseWareFile.isEmpty()) {
                     //作业文件上传
-                    Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
+                    Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request,practiceFile);
                     //文件上传是否成功
                     if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
                         bean.addError(ResponseBean.CODE_FILE_ERROR, practiceMap.get("message").toString());
@@ -208,11 +208,10 @@ public class SectionController {
                 }
             }
             // TODO 试卷
-            if (files[2] != null) {
-                String testpaperFileName = files[2].getOriginalFilename();
-                if (StrUtil.isNotBlank(testpaperFileName)) {
+            if (testpaperFile != null) {
+                if (!courseWareFile.isEmpty()) {
                     //试卷文件上传
-                    Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
+                    Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
                     //文件上传是否成功
                     if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
                         bean.addError(ResponseBean.CODE_FILE_ERROR, testpaperMap.get("message").toString());
@@ -277,7 +276,10 @@ public class SectionController {
      */
     @RequestMapping(value = "/updateSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateSection(SectionDto sectionDto,
+    public ResponseBean updateSection(@RequestParam(value = "courseWareFile",required = false) MultipartFile courseWareFile,
+                                      @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
+                                      @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile,
+                                      SectionDto sectionDto,
                                       HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         Practice practice = new Practice();
@@ -288,13 +290,11 @@ public class SectionController {
          * * @param practiceFileName（作业）
          * * @param testpaperFileName（试卷）
          */
-        MultipartFile[] files = sectionDto.getFiles();
         // TODO 课件
-        if (files[0] != null) {
-            String courseWareFileName = files[0].getOriginalFilename();
-            if (StrUtil.isNotBlank(courseWareFileName)) {
+        if (courseWareFile != null) {
+            if (!courseWareFile.isEmpty()){
                 //课件文件上传
-                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, files[0]);
+                Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, courseWareFile);
                 //文件上传是否成功
                 if (!(courseWareMap != null && "0".equals(courseWareMap.get("code")))) {
                     bean.addError(ResponseBean.CODE_FILE_ERROR, courseWareMap.get("message").toString());
@@ -309,11 +309,10 @@ public class SectionController {
             }
         }
         // TODO 作业
-        if (files[1] != null) {
-            String practiceFileName = files[1].getOriginalFilename();
-            if (StrUtil.isNotBlank(practiceFileName)) {
+        if (practiceFile != null) {
+            if (!practiceFile.isEmpty()){
                 //作业文件上传
-                Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, files[1]);
+                Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
                 //文件上传是否成功
                 if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
                     bean.addError(ResponseBean.CODE_FILE_ERROR, practiceMap.get("message").toString());
@@ -329,11 +328,10 @@ public class SectionController {
             }
         }
         // TODO 试卷
-        if (files[2] != null) {
-            String testpaperFileName = files[2].getOriginalFilename();
-            if (StrUtil.isNotBlank(testpaperFileName)) {
+        if (testpaperFile != null) {
+            if (!testpaperFile.isEmpty()){
                 //试卷文件上传
-                Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, files[2]);
+                Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
                 //文件上传是否成功
                 if (!(testpaperMap != null && "0".equals(testpaperMap.get("code")))) {
                     bean.addError(ResponseBean.CODE_FILE_ERROR, testpaperMap.get("message").toString());

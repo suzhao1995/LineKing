@@ -43,7 +43,7 @@ public class SectionDto implements Serializable {
     private String tid;
 
     //文件数组
-    private MultipartFile[] files;
+    //private MultipartFile[] files;
 
     private String coursewareUrl;//课件文件全部路径
 
