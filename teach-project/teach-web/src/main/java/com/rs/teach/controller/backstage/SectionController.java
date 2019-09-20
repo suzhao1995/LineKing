@@ -239,7 +239,7 @@ public class SectionController {
             //添加失败删除文件
             String[] fileNames = {sectionDto.getCoursewareUrl(), practice.getPracticeUrl(), testpaper.getTestpaperUrl()};
             DeleteFileUtil.deleteFiles(fileNames);
-            bean.addError("-1", "添加失败");
+            bean.addError("添加失败");
         }
         return bean;
     }
@@ -401,7 +401,7 @@ public class SectionController {
             //修改失败删除文件
             String[] fileNames = {sectionDto.getCoursewareUrl(), practice.getPracticeUrl(), testpaper.getTestpaperUrl()};
             DeleteFileUtil.deleteFiles(fileNames);
-            bean.addError("-1", "修改失败");
+            bean.addError("修改失败");
         }
         return bean;
     }
