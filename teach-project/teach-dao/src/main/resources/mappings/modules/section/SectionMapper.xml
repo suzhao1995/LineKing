@@ -163,7 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
 		select id, totle_section_sort as trainSectionSort, totle_section_name as trainSectionName from TF_EL_TRAIN_TOTLE_SECTION
 		where COURSE_ID = #{courseId}
-		order by TOTLE_SECTION_SORT
+		order by to_number(TOTLE_SECTION_SORT)
 	</select>
 	<select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
 		select SECTION_ID AS trainSectionId,
@@ -178,7 +178,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM TF_EL_SECTION
         WHERE COURSE_ID = #{courseId}
         and TOTLESECTION_SORTID = #{trainSectionSortid}
-         order by SECTION_SORT
+         order by to_number(SECTION_SORT)
 
 	</select>
     <select id="selectTotoleSectionSortMax" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
@@ -187,7 +187,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             select ID,TOTLE_SECTION_SORT,TOTLE_SECTION_NAME,COURSE_ID
             from TF_EL_TRAIN_TOTLE_SECTION
             where COURSE_ID = #{courseId}
-            order by TOTLE_SECTION_SORT desc
+            order by to_number(TOTLE_SECTION_SORT) desc
         )
         where rownum = 1
 	</select>
@@ -208,7 +208,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
 		select * from TF_EL_TRAIN_TOTLE_SECTION
 		where COURSE_ID = #{courseId}
-		order by TOTLE_SECTION_SORT
+		order by to_number(TOTLE_SECTION_SORT)
 	</select>
 
     <update id="updateTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto">
@@ -240,7 +240,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             from TF_EL_SECTION
             where COURSE_ID = #{courseId}
             and TOTLESECTION_SORTID = #{sectionSortid}
-            order by SECTION_SORT desc
+            order by to_number(SECTION_SORT) desc
         )
         where rownum = 1
 	</select>

@@ -89,7 +89,7 @@
         where ts.TRAIN_SECTION_SORTID = tts.ID
         and train_course_Id = #{trainCourseId}
         and train_section_sortid = #{trainSectionSortid}
-        order by train_litter_section_sort asc
+        order by to_number(train_litter_section_sort) asc
     </select>
 
     <select id="selectTrainSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
@@ -105,7 +105,7 @@
         FROM TF_EL_TRAIN_SECTION
         WHERE TRAIN_COURSE_ID = #{courseId}
         and TRAIN_SECTION_SORTID = #{trainSectionSortid}
-        order by TRAIN_LITTER_SECTION_SORT
+        order by to_number(TRAIN_LITTER_SECTION_SORT)
     </select>
 
     <select id="selectSectionNum" resultType="java.lang.Integer">
@@ -137,7 +137,7 @@
             select ID,TOTLE_SECTION_SORT,TOTLE_SECTION_NAME,COURSE_ID
             from TF_EL_TRAIN_TOTLE_SECTION
             where COURSE_ID = #{courseId}
-            order by TOTLE_SECTION_SORT desc
+            order by to_number(TOTLE_SECTION_SORT) desc
         )
         where rownum = 1
     </select>
@@ -158,7 +158,7 @@
     <select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
         select * from TF_EL_TRAIN_TOTLE_SECTION
         where COURSE_ID = #{courseId}
-        order by TOTLE_SECTION_SORT
+        order by to_number(TOTLE_SECTION_SORT)
     </select>
 
     <update id="updateTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto">
@@ -180,9 +180,10 @@
         select * from
          (
             select *
-            from TF_EL_TRAIN_TOTLE_SECTION
-            where COURSE_ID = #{courseId}
-            order by TOTLE_SECTION_SORT desc
+            from TF_EL_TRAIN_SECTION
+            where TRAIN_COURSE_ID = #{courseId}
+            and TRAIN_SECTION_SORTID = #{sectionSortid}
+            order by to_number(TRAIN_LITTER_SECTION_SORT) desc
         )
         where rownum = 1
     </select>
