@@ -586,6 +586,10 @@ public class BeforeVideoController {
 		ResponseBean bean = new ResponseBean();
 		String videoSectionId = request.getParameter("videoSectionId");
 		
+		if(StringUtils.isEmpty(request.getParameter("videoSectionName")) && videoFile == null && practiceFile == null && testpaperFile == null){
+			bean.addSuccess();
+			return bean;
+		}
 		//查询小章节信息
 		VideoSection modify = videoService.getSectionBySecId(videoSectionId);
 		if(modify == null){
