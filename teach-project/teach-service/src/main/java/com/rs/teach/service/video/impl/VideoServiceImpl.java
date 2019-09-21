@@ -152,10 +152,20 @@ public class VideoServiceImpl implements VideoService{
 			throw e;
 		}
 	}
-
+	
+	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public void delVideoSection(String videoSectionId) {
-		mapper.delVideoSection(videoSectionId);
+	public void delVideoSection(String videoSectionId,String videoSectionSort, String videoTotleSortId) {
+		try {
+			
+			mapper.delVideoSection(videoSectionId);
+			
+			mapper.updateSort(videoSectionSort, videoTotleSortId);
+		} catch (Exception e) {
+			logger.error("---删除小章节视频失败---");
+			throw e;
+		}
+		
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)

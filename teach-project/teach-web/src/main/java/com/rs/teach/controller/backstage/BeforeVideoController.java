@@ -564,7 +564,7 @@ public class BeforeVideoController {
 		}
 		//删除小章节
 		DeleteFileUtil.deleteFile(videoSection.getVideoSectionUrl());
-		videoService.delVideoSection(videoSectionId);
+		videoService.delVideoSection(videoSectionId,videoSection.getVideoSectionSort(),videoSection.getVideoTotleSortId());
 		bean.addSuccess();
 		return bean;
 	}
