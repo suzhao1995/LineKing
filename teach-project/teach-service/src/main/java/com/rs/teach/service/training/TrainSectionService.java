@@ -75,4 +75,6 @@ public interface TrainSectionService {
      * @param totleSectionDto
      */
     void updateTotleSection(TotleSectionDto totleSectionDto);
+
+    SectionDto selectPidAndTid(String sectionId);
 }

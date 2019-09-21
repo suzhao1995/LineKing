@@ -187,4 +187,11 @@
         )
         where rownum = 1
     </select>
+    <select id="selectPidAndTid" resultType="com.rs.teach.mapper.section.dto.SectionDto">
+        select t.TID,p.PID
+        from TF_EL_TRAIN_SECTION s ,  TF_EL_TESTPAPER t, TF_EL_PRACTICE p
+        where s.TESTPAPER_ID = t.TESTPAPER_ID
+        and s.PRACTICE_ID = p.PRACTICE_ID
+        and s.TRAIN_SECTION_ID = #{sectionId}
+    </select>
 </mapper>

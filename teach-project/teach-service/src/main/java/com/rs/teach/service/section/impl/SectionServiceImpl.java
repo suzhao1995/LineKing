@@ -165,4 +165,9 @@ public class SectionServiceImpl implements SectionService {
         totleSectionDto.setTotleSectionNameforUpdate(totleSectionDto.getTotleSectionName()[0]);
         mapper.updateTotleSection(totleSectionDto);
     }
+
+    @Override
+    public SectionDto selectPidAndTid(String sectionId) {
+        return mapper.selectPidAndTid(sectionId);
+    }
 }

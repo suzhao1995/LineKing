@@ -230,7 +230,7 @@ public class SectionController {
             }
             if (StrUtil.equals("1", sectionDto.getIsTrain())) {
                 trainSectionService.addTrainSection(sectionDto);
-            } else {
+            } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
                 sectionService.addSection(sectionDto);
             }
             bean.addSuccess("添加成功！");
@@ -255,11 +255,11 @@ public class SectionController {
     public ResponseBean selectSection(@RequestBody SectionDto sectionDto) {
         ResponseBean bean = new ResponseBean();
         //返回结果集
-        TrainCourseVo trainCourseVo;
+        TrainCourseVo trainCourseVo = null;
         if (StrUtil.equals("1", sectionDto.getIsTrain())) {
             //单个课程以及含有的章节信息
             trainCourseVo = trainSectionService.selectCourseSection(sectionDto.getCourseId());
-        } else {
+        } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
             //单个课程以及含有的章节信息
             trainCourseVo = sectionService.selectCourseSection(sectionDto.getCourseId());
         }
@@ -290,6 +290,18 @@ public class SectionController {
          * * @param practiceFileName（作业）
          * * @param testpaperFileName（试卷）
          */
+
+        //获取作业表和试卷表主键
+        if (StrUtil.equals("1", sectionDto.getIsTrain())) {
+            SectionDto a = trainSectionService.selectPidAndTid(sectionDto.getSectionId());
+            sectionDto.setPid(a.getPid());
+            sectionDto.setTid(a.getTid());
+        }else if(StrUtil.equals("0", sectionDto.getIsTrain())){
+            SectionDto b = sectionService.selectPidAndTid(sectionDto.getSectionId());
+            sectionDto.setPid(b.getPid());
+            sectionDto.setTid(b.getTid());
+        }
+
         // TODO 课件
         if (courseWareFile != null) {
             if (!courseWareFile.isEmpty()){
@@ -380,7 +392,7 @@ public class SectionController {
                         DeleteFileUtil.deleteFile(coursewareUrl + ".pdf");
                     }
                 }
-            } else {
+            } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
                 //获取之前课件文件路径
                 Section section = sectionService.getSectionById(sectionDto.getSectionId());
                 sectionService.updateSection(sectionDto);

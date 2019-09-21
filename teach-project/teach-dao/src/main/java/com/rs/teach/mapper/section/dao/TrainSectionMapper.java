@@ -121,4 +121,6 @@ public interface TrainSectionMapper {
      * @return
      */
     TrainLitterSectionVo selectTrainLitterSectionSortMax(SectionDto sectionDto);
+
+    SectionDto selectPidAndTid(@Param("sectionId") String sectionId);
 }

@@ -90,7 +90,7 @@ public class BeforeCourseController {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
                 courseDto.setAddTime(DateUtil.now());
                 trainCourseService.addTrainCourse(courseDto);
-            } else {
+            } else if(StrUtil.equals("0", courseDto.getIsTrain())){
                 courseService.addCourse(courseDto);
             }
             bean.addSuccess("添加成功！");
@@ -116,7 +116,7 @@ public class BeforeCourseController {
         try {
             if (StrUtil.equals("1", isTrain)) {
                 trainCourseService.deleteTrainCourse(courseId);
-            } else {
+            } else if(StrUtil.equals("0", courseDto.getIsTrain())){
                 courseService.deleteCourse(courseId);
             }
             bean.addSuccess("删除成功！");
@@ -137,11 +137,11 @@ public class BeforeCourseController {
     @ResponseBody
     public ResponseBean echoCourse(@RequestBody CourseDto courseDto) {
         ResponseBean bean = new ResponseBean();
-        CourseVo vo;
+        CourseVo vo = null;
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
                 vo = trainCourseService.echoCourse(courseDto);
-            } else {
+            } else if(StrUtil.equals("0", courseDto.getIsTrain())) {
                 vo = courseService.echoCourse(courseDto);
             }
             bean.addSuccess(vo);
@@ -181,7 +181,7 @@ public class BeforeCourseController {
         try {
             if (StrUtil.equals("1", courseDto.getIsTrain())) {
                 trainCourseService.updateTrainCourse(courseDto);
-            } else {
+            } else if(StrUtil.equals("0", courseDto.getIsTrain())){
                 courseService.updateCourse(courseDto);
             }
             bean.addSuccess("修改成功！");
@@ -209,7 +209,7 @@ public class BeforeCourseController {
             //获取所有课程信息
             PageInfo<TrainCourseVo> pageInfo = PageHelper.startPage(courseDto).doSelectPageInfo(() -> trainCourseService.selectTrainCourse(courseDto));
             bean.addSuccess(pageInfo);
-        } else {
+        } else if(StrUtil.equals("0", courseDto.getIsTrain())){
             //获取所有课程信息
             PageInfo<Course> pageInfo = PageHelper.startPage(courseDto).doSelectPageInfo(() -> courseService.selectCourse(courseDto));
             bean.addSuccess(pageInfo);

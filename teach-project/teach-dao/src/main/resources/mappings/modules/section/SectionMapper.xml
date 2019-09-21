@@ -244,4 +244,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
         where rownum = 1
 	</select>
+    <select id="selectPidAndTid" resultType="com.rs.teach.mapper.section.dto.SectionDto">
+		select t.TID,p.PID
+		from TF_EL_SECTION s ,  TF_EL_TESTPAPER t, TF_EL_PRACTICE p
+		where s.PAPERID = t.TESTPAPER_ID
+		and s.SCHOOLWORKID = p.PRACTICE_ID
+		and s.SECTION_ID = #{sectionId}
+	</select>
 </mapper>

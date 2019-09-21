@@ -158,4 +158,9 @@ public class TrainSectionServiceImpl implements TrainSectionService {
         trainSectionMapper.updateTotleSection(totleSectionDto);
     }
 
+    @Override
+    public SectionDto selectPidAndTid(String sectionId) {
+        return trainSectionMapper.selectPidAndTid(sectionId);
+    }
+
 }
