@@ -422,11 +422,14 @@ public class BeforeVideoController {
 	*/
 	@RequestMapping("/addVideoSection")
 	@ResponseBody
-	public ResponseBean addVideoSection(HttpServletRequest request, HttpServletResponse response, @RequestParam("files") MultipartFile[] files){
+	public ResponseBean addVideoSection(HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam(value = "videoFile" ,required = false) MultipartFile videoFile,
+            @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
+            @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile){
 		ResponseBean bean = new ResponseBean();
 		String videoSectionName = request.getParameter("videoSectionName");
 		
-		if(StringUtils.isEmpty(files[0].getOriginalFilename())){
+		if(StringUtils.isEmpty(videoFile.getOriginalFilename())){
 			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "请上传指定视频课件");
 			return bean;
 		}
@@ -444,8 +447,8 @@ public class BeforeVideoController {
 			videoSection.setVideoSectionSort("1");
 		}
 		//上传视频
-		if(StringUtils.isNotEmpty(files[0].getOriginalFilename())){
-			MultipartFile videoSectionFile = files[0];
+		if(StringUtils.isNotEmpty(videoFile.getOriginalFilename())){
+			MultipartFile videoSectionFile = videoFile;
 			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
 				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
@@ -457,8 +460,8 @@ public class BeforeVideoController {
 		}
 		//上传作业
 		Practice work = new Practice();
-		if(StringUtils.isNotEmpty(files[1].getOriginalFilename())){
-			MultipartFile workFile = files[1];
+		if(StringUtils.isNotEmpty(practiceFile.getOriginalFilename())){
+			MultipartFile workFile = practiceFile;
 			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
 			if(workMap != null && "0".equals(workMap.get("code"))){
 				videoSection.setWorkId(workMap.get("upLoadId").toString());
@@ -475,8 +478,8 @@ public class BeforeVideoController {
 		
 		Testpaper test = new Testpaper();
 		//上传考试文件
-		if(StringUtils.isNotEmpty(files[2].getOriginalFilename())){
-			MultipartFile paperFile = files[2];
+		if(StringUtils.isNotEmpty(testpaperFile.getOriginalFilename())){
+			MultipartFile paperFile = testpaperFile;
 			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
 			if(paperMap != null && "0".equals(paperMap.get("code"))){
 				videoSection.setPaperId(paperMap.get("upLoadId").toString());
