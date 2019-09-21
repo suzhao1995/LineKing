@@ -293,12 +293,15 @@ public class BeforeVideoController {
 		video.setTestPaper(request.getParameter("testPaper"));	//是否有考试
 		video.setVideoWare(request.getParameter("videoWare"));	//是否有课件
 		
-		if(StringUtils.isNotEmpty(file.getOriginalFilename())){
-			//上传视频封面文件
-			Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-			if(resultMap != null && "0".equals(resultMap.get("code"))){
-				video.setVideoUrl(resultMap.get("picUrl").toString());	//视频封面url
-				video.setVideoPath(resultMap.get("saveUrl").toString());	//存在服务器的路径
+		if(file != null){
+			
+			if(StringUtils.isNotEmpty(file.getOriginalFilename())){
+				//上传视频封面文件
+				Map<String,Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+				if(resultMap != null && "0".equals(resultMap.get("code"))){
+					video.setVideoUrl(resultMap.get("picUrl").toString());	//视频封面url
+					video.setVideoPath(resultMap.get("saveUrl").toString());	//存在服务器的路径
+				}
 			}
 		}
 		try {
