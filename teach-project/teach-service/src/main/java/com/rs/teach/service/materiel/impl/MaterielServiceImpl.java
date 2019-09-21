@@ -54,6 +54,12 @@ public class MaterielServiceImpl implements MaterielService{
 	public List<Materiel> getMaterielByName(String name) {
 		return mapper.queryMaterielByName(name);
 	}
-	
-	
+
+    @Override
+    public Integer selectMaterielNum() {
+
+		return mapper.selectMaterielNum();
+    }
+
+
 }

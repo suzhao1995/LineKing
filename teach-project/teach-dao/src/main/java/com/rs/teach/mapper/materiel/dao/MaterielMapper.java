@@ -22,5 +22,6 @@ public interface MaterielMapper{
 	public List<Materiel> adminGetMateriel(String code);
 	
 	public List<Materiel> queryMaterielByName(String name);
-	
+
+    Integer selectMaterielNum();
 }

@@ -119,4 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			t.MATERIEL_CODE = c.code
 			and t.materiel_Name like '%'||#{name}||'%'
 	</select>
+    <select id="selectMaterielNum" resultType="java.lang.Integer">
+		select count(1) from TF_EL_MATERIEL
+	</select>
 </mapper>

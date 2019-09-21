@@ -3,6 +3,7 @@ package com.rs.teach.mapper.backstage.dao;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
+import com.rs.teach.mapper.backstage.vo.TrainDataVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -60,4 +61,6 @@ public interface TrainDataMapper {
      * @return
      */
     List<TrainDataAndAnswerVo> queryTrainDataAndAnswer(@Param("id") String id);
+
+    List<TrainDataVo> selectTrainDataVo();
 }

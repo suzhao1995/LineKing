@@ -21,5 +21,6 @@ public interface MaterielService{
 	public List<Materiel> adminGetMateriel(String code);
 	
 	public List<Materiel> getMaterielByName(String name);
-	
+
+    Integer selectMaterielNum();
 }

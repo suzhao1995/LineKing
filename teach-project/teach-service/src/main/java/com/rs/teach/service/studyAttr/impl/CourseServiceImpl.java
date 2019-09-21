@@ -201,4 +201,9 @@ public class CourseServiceImpl implements CourseService{
         return mapper.echoCourse(courseDto.getCourseId());
     }
 
+    @Override
+    public Integer selectCourseNum() {
+        return mapper.selectCourseNum();
+    }
+
 }

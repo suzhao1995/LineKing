@@ -165,4 +165,10 @@ public interface CourseService{
 	 * @return
 	 */
 	CourseVo echoCourse(CourseDto courseDto);
+
+	/**
+	 * 教学课程数量
+	 * @return
+	 */
+    Integer selectCourseNum();
 }

@@ -59,5 +59,8 @@
         from TF_EL_TRAIN_COURSE
         where TRAIN_COURSE_ID = #{courseId}
     </select>
+    <select id="selectTrainCourseNum" resultType="java.lang.Integer">
+        select count(1) from TF_EL_TRAIN_COURSE
+    </select>
 
 </mapper>

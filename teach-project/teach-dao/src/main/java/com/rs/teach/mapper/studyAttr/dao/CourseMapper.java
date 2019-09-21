@@ -199,4 +199,10 @@ public interface CourseMapper{
 	 * @return
 	 */
 	CourseVo echoCourse(@Param("courseId") String courseId);
+
+	/**
+	 * 教学课程数量
+	 * @return
+	 */
+    Integer selectCourseNum();
 }

@@ -57,4 +57,6 @@ public interface TrainCourseService {
      * @param courseDto
      */
     CourseVo echoCourse(CourseDto courseDto);
+
+    Integer selectTrainCourseNum();
 }

@@ -93,4 +93,10 @@
         and TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
         and ID = #{id}
     </select>
+    <select id="selectTrainDataVo" resultType="com.rs.teach.mapper.backstage.vo.TrainDataVo">
+        select TRAIN_DATA_NAME,count(USER_ID) as trainDataNum
+        from TF_EL_TRAIN_DATA td,USER_TRAIN_DATA_RELA tdr
+        where td.ID = tdr.DATA_ID
+        group by TRAIN_DATA_NAME
+    </select>
 </mapper>

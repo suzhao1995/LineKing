@@ -292,8 +292,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="adminGetVedioSection" parameterType="java.lang.String" resultType="com.rs.teach.mapper.video.entity.VideoSection">
 		select * from tf_el_video_section t where t.video_id = #{videoId} and t.VIDEOTOTLE_SORTID = #{totleSortId}
 	</select>
-	
-	<!-- 插入视频课件 -->
+    <select id="selectVideoNum" resultType="java.lang.Integer">
+		select count(1) from TF_EL_VIDEO
+	</select>
+
+    <!-- 插入视频课件 -->
 	<insert id="insertVideoSection" parameterType="com.rs.teach.mapper.video.entity.VideoSection">
 		insert into tf_el_video_section
 			(

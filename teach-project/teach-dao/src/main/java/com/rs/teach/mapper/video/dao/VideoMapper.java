@@ -71,5 +71,6 @@ public interface VideoMapper{
 	public void delVideoSection(String videoSectionId);
 	
 	public void updateVideoSection(VideoSection videoSection);
-	
+
+    Integer selectVideoNum();
 }

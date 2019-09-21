@@ -186,4 +186,9 @@ public class VideoServiceImpl implements VideoService{
 		}
 	}
 
+    @Override
+    public Integer selectVideoNum() {
+        return mapper.selectVideoNum();
+    }
+
 }

@@ -67,4 +67,9 @@ public class TrainCourseServiceImpl implements TrainCourseService {
         return trainCourseMapper.echoCourse(courseDto.getCourseId());
     }
 
+    @Override
+    public Integer selectTrainCourseNum() {
+        return trainCourseMapper.selectTrainCourseNum();
+    }
+
 }

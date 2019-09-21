@@ -322,4 +322,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_COURSE
 		where COURSE_ID = #{courseId}
 	</select>
+    <select id="selectCourseNum" resultType="java.lang.Integer">
+		select count(1) from TF_EL_COURSE
+	</select>
 </mapper>

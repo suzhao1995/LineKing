@@ -242,5 +242,11 @@ public interface VideoService{
 	* @date 2019年9月4日 下午5:39:43
 	*/
 	public void updateVideoSection(VideoSection oldSection ,VideoSection videoSection,Practice work, Testpaper test);
-	
+
+	/**
+	 * 视频课程数量
+	 * @return
+	 */
+    Integer selectVideoNum();
+
 }

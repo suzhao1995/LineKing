@@ -10,6 +10,7 @@ import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
+import com.rs.teach.mapper.backstage.vo.TrainDataVo;
 import com.rs.teach.service.backstage.TrainDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,5 +92,10 @@ public class TrainDataServiceImpl implements TrainDataService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @Override
+    public List<TrainDataVo> selectTrainDataVo() {
+        return trainDataMapper.selectTrainDataVo();
     }
 }

@@ -5,6 +5,7 @@ import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
+import com.rs.teach.mapper.backstage.vo.TrainDataVo;
 
 import java.util.List;
 
@@ -73,4 +74,6 @@ public interface TrainDataService {
      * @param userTrainDataRela
      */
     void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer, UserTrainDataRela userTrainDataRela);
+
+    List<TrainDataVo> selectTrainDataVo();
 }
