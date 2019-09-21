@@ -147,10 +147,10 @@ public class BeforeVideoController {
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		//初始化分页信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 8);
 		//查询所有视频信息
 		List<Video> list = videoService.adminVideosInit(videoName, videoType);
-		PageInfo<Video> info = new PageInfo<Video>(list,9);
+		PageInfo<Video> info = new PageInfo<Video>(list,8);
 		ajaxData.put("videoList", info);
 		bean.addSuccess(ajaxData);
 		return bean;
@@ -234,6 +234,34 @@ public class BeforeVideoController {
 		return bean;
 	}
 	
+	/**
+	* 管理员---编辑视频课程状态回显
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年9月3日 上午11:22:59
+	*/
+	@RequestMapping("/getVideoInfo")
+	@ResponseBody
+	public ResponseBean getVideoInfo(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		Map<String,Object> ajaxData = new HashMap<String,Object>();
+		
+		String videoId = request.getParameter("videoId");
+		if(StringUtils.isEmpty(videoId)){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"请选择一条记录");
+			return bean;
+		}
+		//查询该视频课程是否含有视频课件信息
+		Video video = videoService.getVideoById(videoId);
+		ajaxData.put("video", video);
+		//查询视频分类
+		List<SysCode> list = sysCodeService.getSysCodeList("VIDEO_CODE");
+		ajaxData.put("videoType", list);
+		bean.addSuccess(ajaxData);
+		return bean;
+	}
 	
 	/**
 	* 管理员---编辑视频课程
