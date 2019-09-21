@@ -443,7 +443,7 @@ public class BeforeVideoController {
 			videoSection.setVideoSectionSort("1");
 		}
 		//上传视频
-		if(StringUtils.isNotEmpty(videoFile.getOriginalFilename())){
+		if(!videoFile.isEmpty()){
 			MultipartFile videoSectionFile = videoFile;
 			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
@@ -456,7 +456,7 @@ public class BeforeVideoController {
 		}
 		//上传作业
 		Practice work = new Practice();
-		if(StringUtils.isNotEmpty(practiceFile.getOriginalFilename())){
+		if(!practiceFile.isEmpty()){
 			MultipartFile workFile = practiceFile;
 			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
 			if(workMap != null && "0".equals(workMap.get("code"))){
@@ -474,7 +474,7 @@ public class BeforeVideoController {
 		
 		Testpaper test = new Testpaper();
 		//上传考试文件
-		if(StringUtils.isNotEmpty(testpaperFile.getOriginalFilename())){
+		if(!testpaperFile.isEmpty()){
 			MultipartFile paperFile = testpaperFile;
 			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
 			if(paperMap != null && "0".equals(paperMap.get("code"))){
@@ -567,7 +567,10 @@ public class BeforeVideoController {
 	*/
 	@RequestMapping("/updateVideoSection")
 	@ResponseBody
-	public ResponseBean updateVideoSection(HttpServletRequest request, HttpServletResponse response, @RequestParam("files") MultipartFile[] files){
+	public ResponseBean updateVideoSection(HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam(value = "videoFile" ,required = false) MultipartFile videoFile,
+            @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
+            @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile){
 		ResponseBean bean = new ResponseBean();
 		String videoSectionId = request.getParameter("videoSectionId");
 		
@@ -584,8 +587,8 @@ public class BeforeVideoController {
 		videoSection.setVideoId(modify.getVideoId());	//视频课程id
 		videoSection.setVideoSectionSort(modify.getVideoSectionSort());	//视频章节序号
 		//上传视频
-		if(StringUtils.isNotEmpty(files[0].getOriginalFilename())){
-			MultipartFile videoSectionFile = files[0];
+		if(!videoFile.isEmpty()){
+			MultipartFile videoSectionFile = videoFile;
 			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
 			if(resultMap != null && "0".equals(resultMap.get("code"))){
 				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
@@ -597,8 +600,8 @@ public class BeforeVideoController {
 		}
 		//作业
 		Practice work = new Practice();
-		if(StringUtils.isNotEmpty(files[1].getOriginalFilename())){
-			MultipartFile workFile = files[1];
+		if(!practiceFile.isEmpty()){
+			MultipartFile workFile = practiceFile;
 			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
 			if(workMap != null && "0".equals(workMap.get("code"))){
 				videoSection.setWorkId(workMap.get("upLoadId").toString());
@@ -615,8 +618,8 @@ public class BeforeVideoController {
 		
 		Testpaper test = new Testpaper();
 		//上传考试文件
-		if(StringUtils.isNotEmpty(files[2].getOriginalFilename())){
-			MultipartFile paperFile = files[2];
+		if(!testpaperFile.isEmpty()){
+			MultipartFile paperFile = testpaperFile;
 			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
 			if(paperMap != null && "0".equals(paperMap.get("code"))){
 				videoSection.setPaperId(paperMap.get("upLoadId").toString());
