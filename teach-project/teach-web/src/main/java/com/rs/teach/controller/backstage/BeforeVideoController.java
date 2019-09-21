@@ -429,10 +429,6 @@ public class BeforeVideoController {
 		ResponseBean bean = new ResponseBean();
 		String videoSectionName = request.getParameter("videoSectionName");
 		
-		if(StringUtils.isEmpty(videoFile.getOriginalFilename())){
-			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "请上传指定视频课件");
-			return bean;
-		}
 		VideoSection videoSection = new VideoSection();
 		videoSection.setVideoSectionId(DateUtil.dateFormat(new Date(), "yyyyMMddHHmmss"));	//视频课件id
 		videoSection.setVideoSectionName(videoSectionName); 	//视频课件名称
