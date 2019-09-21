@@ -443,51 +443,60 @@ public class BeforeVideoController {
 			videoSection.setVideoSectionSort("1");
 		}
 		//上传视频
-		if(!videoFile.isEmpty()){
-			MultipartFile videoSectionFile = videoFile;
-			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
-			if(resultMap != null && "0".equals(resultMap.get("code"))){
-				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
-				videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(videoFile != null){
+			
+			if(!videoFile.isEmpty()){
+				MultipartFile videoSectionFile = videoFile;
+				Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
+				if(resultMap != null && "0".equals(resultMap.get("code"))){
+					videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
+					videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		//上传作业
 		Practice work = new Practice();
-		if(!practiceFile.isEmpty()){
-			MultipartFile workFile = practiceFile;
-			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
-			if(workMap != null && "0".equals(workMap.get("code"))){
-				videoSection.setWorkId(workMap.get("upLoadId").toString());
-				//插入作业表
-				work.setPracticeId(workMap.get("upLoadId").toString());
-				work.setPracticeFileName(workMap.get("updateFileName").toString());
-				work.setPracticePath(workMap.get("fileMappingPath").toString());
-				work.setPracticeUrl(workMap.get("pdfUrl").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(practiceFile != null){
+			
+			if(!practiceFile.isEmpty()){
+				MultipartFile workFile = practiceFile;
+				Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
+				if(workMap != null && "0".equals(workMap.get("code"))){
+					videoSection.setWorkId(workMap.get("upLoadId").toString());
+					//插入作业表
+					work.setPracticeId(workMap.get("upLoadId").toString());
+					work.setPracticeFileName(workMap.get("updateFileName").toString());
+					work.setPracticePath(workMap.get("fileMappingPath").toString());
+					work.setPracticeUrl(workMap.get("pdfUrl").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		
 		Testpaper test = new Testpaper();
 		//上传考试文件
-		if(!testpaperFile.isEmpty()){
-			MultipartFile paperFile = testpaperFile;
-			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
-			if(paperMap != null && "0".equals(paperMap.get("code"))){
-				videoSection.setPaperId(paperMap.get("upLoadId").toString());
-	
-				//插入试卷表
-				test.setTestpaperId(paperMap.get("upLoadId").toString());
-				test.setTestpaperName(paperMap.get("updateFileName").toString());
-				test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
-				test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(testpaperFile != null){
+			
+			if(!testpaperFile.isEmpty()){
+				MultipartFile paperFile = testpaperFile;
+				Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
+				if(paperMap != null && "0".equals(paperMap.get("code"))){
+					videoSection.setPaperId(paperMap.get("upLoadId").toString());
+					
+					//插入试卷表
+					test.setTestpaperId(paperMap.get("upLoadId").toString());
+					test.setTestpaperName(paperMap.get("updateFileName").toString());
+					test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
+					test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		
@@ -587,51 +596,60 @@ public class BeforeVideoController {
 		videoSection.setVideoId(modify.getVideoId());	//视频课程id
 		videoSection.setVideoSectionSort(modify.getVideoSectionSort());	//视频章节序号
 		//上传视频
-		if(!videoFile.isEmpty()){
-			MultipartFile videoSectionFile = videoFile;
-			Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
-			if(resultMap != null && "0".equals(resultMap.get("code"))){
-				videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
-				videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(videoFile != null){
+			
+			if(!videoFile.isEmpty()){
+				MultipartFile videoSectionFile = videoFile;
+				Map<String,Object> resultMap = FileUpDownUtil.videoUpload(videoSectionFile);
+				if(resultMap != null && "0".equals(resultMap.get("code"))){
+					videoSection.setVideoSectionUrl(resultMap.get("videoUrl").toString());
+					videoSection.setVideoSectionPath(resultMap.get("videoPath").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		//作业
 		Practice work = new Practice();
-		if(!practiceFile.isEmpty()){
-			MultipartFile workFile = practiceFile;
-			Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
-			if(workMap != null && "0".equals(workMap.get("code"))){
-				videoSection.setWorkId(workMap.get("upLoadId").toString());
-				//插入作业表
-				work.setPracticeId(workMap.get("upLoadId").toString());
-				work.setPracticeFileName(workMap.get("updateFileName").toString());
-				work.setPracticePath(workMap.get("fileMappingPath").toString());
-				work.setPracticeUrl(workMap.get("pdfUrl").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(practiceFile != null){
+			
+			if(!practiceFile.isEmpty()){
+				MultipartFile workFile = practiceFile;
+				Map<String,Object> workMap = FileUpDownUtil.fileUpLoad(request, workFile);
+				if(workMap != null && "0".equals(workMap.get("code"))){
+					videoSection.setWorkId(workMap.get("upLoadId").toString());
+					//插入作业表
+					work.setPracticeId(workMap.get("upLoadId").toString());
+					work.setPracticeFileName(workMap.get("updateFileName").toString());
+					work.setPracticePath(workMap.get("fileMappingPath").toString());
+					work.setPracticeUrl(workMap.get("pdfUrl").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		
 		Testpaper test = new Testpaper();
 		//上传考试文件
-		if(!testpaperFile.isEmpty()){
-			MultipartFile paperFile = testpaperFile;
-			Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
-			if(paperMap != null && "0".equals(paperMap.get("code"))){
-				videoSection.setPaperId(paperMap.get("upLoadId").toString());
-	
-				//插入试卷表
-				test.setTestpaperId(paperMap.get("upLoadId").toString());
-				test.setTestpaperName(paperMap.get("updateFileName").toString());
-				test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
-				test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
-			}else{
-				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
-				return bean;
+		if(testpaperFile != null){
+			
+			if(!testpaperFile.isEmpty()){
+				MultipartFile paperFile = testpaperFile;
+				Map<String,Object> paperMap = FileUpDownUtil.fileUpLoad(request, paperFile);
+				if(paperMap != null && "0".equals(paperMap.get("code"))){
+					videoSection.setPaperId(paperMap.get("upLoadId").toString());
+					
+					//插入试卷表
+					test.setTestpaperId(paperMap.get("upLoadId").toString());
+					test.setTestpaperName(paperMap.get("updateFileName").toString());
+					test.setTestpaperPath(paperMap.get("fileMappingPath").toString());
+					test.setTestpaperUrl(paperMap.get("pdfUrl").toString());
+				}else{
+					bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "视频课件上传失败！请重试");
+					return bean;
+				}
 			}
 		}
 		try {
