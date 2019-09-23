@@ -22,4 +22,6 @@ public interface SysCodeService{
 	
 	public int modifySysCode(SysCode sysCode);
 	
+	public SysCode getSysCodeByCode(String code,String codeType);
+	
 }

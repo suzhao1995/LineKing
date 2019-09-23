@@ -157,6 +157,7 @@ public class BeforeMaterielController{
 		Map<String,Object> ajaxData = new HashMap<String,Object>();
 		
 		String materielId = request.getParameter("materielId");
+		
 		//根据id查询物料信息
 		Materiel materiel = materielService.getMaterielById(materielId);
 		
@@ -167,6 +168,9 @@ public class BeforeMaterielController{
 		ajaxData.put("materielId", materiel.getMaterielId());
 		ajaxData.put("materielName", materiel.getMaterielName());
 		ajaxData.put("materielDetail", materiel.getMaterielDetail());
+		//查询物料分类
+		SysCode code = sysCodeService.getSysCodeByCode(materiel.getMaterielType(), "MATERIEL_CODE");
+		ajaxData.put("materielType", code.getCodeValue());
 		bean.addSuccess(ajaxData);
 		return bean;
 	}

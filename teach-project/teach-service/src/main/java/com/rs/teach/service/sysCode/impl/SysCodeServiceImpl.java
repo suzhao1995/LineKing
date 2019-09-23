@@ -39,5 +39,11 @@ public class SysCodeServiceImpl implements SysCodeService{
 	public int modifySysCode(SysCode sysCode) {
 		return mapper.updateSysCode(sysCode);
 	}
+
+	@Override
+	public SysCode getSysCodeByCode(String code, String codeType) {
+		
+		return mapper.querySysCodeByCode(code,codeType);
+	}
 	
 }
