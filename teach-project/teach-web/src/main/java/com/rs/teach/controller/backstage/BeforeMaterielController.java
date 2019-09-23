@@ -265,10 +265,10 @@ public class BeforeMaterielController{
 			code = null;
 		}
 		//初始化课程信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 6);
 		//分页查询物料信息
 		List<Materiel> list = materielService.adminGetMateriel(code,searchName);
-		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
+		PageInfo<Materiel> info = new PageInfo<Materiel>(list,6);
 		bean.addSuccess(info);
 		return bean;
 	}
