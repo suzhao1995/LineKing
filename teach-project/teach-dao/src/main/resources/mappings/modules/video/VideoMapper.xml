@@ -353,7 +353,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="updateSort" parameterType="java.lang.String">
-		update tf_el_video_section set videosection_sort = to_number(t.videosection_sort)-1 where 
+		update tf_el_video_section set videosection_sort = to_number(videosection_sort)-1 where 
 			videototle_sortid = #{videoTotleSortId} 
 			and VIDEO_ID = #{videoId}
 			and to_number(videosection_sort) > #{videoSectionSort}
