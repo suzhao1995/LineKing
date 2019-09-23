@@ -74,6 +74,6 @@ public interface VideoMapper{
 
     Integer selectVideoNum();
     
-    void updateSort(@Param("videoSectionSort") String videoSectionSort, @Param("videoTotleSortId") String videoTotleSortId);
+    void updateSort(@Param("videoSectionSort") String videoSectionSort, @Param("videoTotleSortId") String videoTotleSortId, @Param("videoId") String videoId);
     
 }
