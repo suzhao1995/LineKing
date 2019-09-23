@@ -229,35 +229,14 @@ public class BeforeMaterielController{
 		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
 		
 		String code = request.getParameter("code");
+		String searchName = request.getParameter("searchName");
 		if("all".equals(code)){
 			code = null;
 		}
 		//初始化课程信息
 		PageHelper.startPage(Integer.valueOf(pageNum), 9);
 		//分页查询物料信息
-		List<Materiel> list = materielService.adminGetMateriel(code);
-		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
-		bean.addSuccess(info);
-		return bean;
-	}
-	/**
-	* 管理员--搜索物料
-	* @param 
-	* @throws
-	* @return ResponseBean
-	* @author suzhao
-	* @date 2019年8月17日 下午4:35:17
-	*/
-	@RequestMapping("/searchMateriel")
-	@ResponseBody
-	public ResponseBean searchMateriel(HttpServletRequest request, HttpServletResponse response){
-		ResponseBean bean = new ResponseBean();
-		String pageNum = request.getParameter("pageNum") == null ? "1" : request.getParameter("pageNum");
-		String searchName = request.getParameter("searchName");
-		//初始化课程信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
-		//分页查询物料信息
-		List<Materiel> list = materielService.getMaterielByName(searchName);
+		List<Materiel> list = materielService.adminGetMateriel(code,searchName);
 		PageInfo<Materiel> info = new PageInfo<Materiel>(list,9);
 		bean.addSuccess(info);
 		return bean;
