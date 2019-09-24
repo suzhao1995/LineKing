@@ -1,7 +1,5 @@
 package com.rs.teach.service.backstage.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.dao.TrainDataAnswerMapper;
 import com.rs.teach.mapper.backstage.dao.TrainDataMapper;
 import com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper;
@@ -56,8 +54,8 @@ public class TrainDataServiceImpl implements TrainDataService {
     }
 
     @Override
-    public List<TrainData> selectTrainData() {
-        return trainDataMapper.selectTrainData();
+    public List<TrainData> selectTrainData(String trainDataName) {
+        return trainDataMapper.selectTrainData(trainDataName);
     }
 
     @Override

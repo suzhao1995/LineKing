@@ -38,8 +38,9 @@ public interface TrainDataService {
     /**
      * 查询所有的培训考核文件
      * @return
+     * @param trainDataName
      */
-    List<TrainData> selectTrainData();
+    List<TrainData> selectTrainData(String trainDataName);
 
     /**
      * 删除培训考核文件

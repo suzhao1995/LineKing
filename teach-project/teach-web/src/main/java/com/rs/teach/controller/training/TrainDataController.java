@@ -58,14 +58,14 @@ public class TrainDataController {
     /**
      * 查询所有培训考核文件
      *
-     * @param pageDto
+     * @param trainData
      * @return
      */
     @RequestMapping(value = "/trainDataSelect", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean trainDataSelect(@RequestBody PageDto pageDto) {
+    public ResponseBean trainDataSelect(@RequestBody TrainData trainData) {
         ResponseBean bean = new ResponseBean();
-        PageInfo<TrainData> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> trainDataService.selectTrainData());
+        PageInfo<TrainData> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> trainDataService.selectTrainData(trainData.getTrainDataName()));
         bean.addSuccess(pageInfo);
         return bean;
     }
