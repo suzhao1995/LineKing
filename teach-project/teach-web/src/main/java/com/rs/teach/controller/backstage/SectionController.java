@@ -438,6 +438,9 @@ public class SectionController {
         if (StrUtil.equals("1", isTrain)) {
             //查询培训课程资源考试与练习
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
+            if(StrUtil.isEmpty(trainSection.getCoursewareId()) && StrUtil.isEmpty(trainSection.getPracticeId()) && StrUtil.isEmpty(trainSection.getTestpaperId())){
+                bean.addError(ResponseBean.CODE_NOTFILE_ERROR,"此章节没有文件");
+            }
             downloadSectionDto.setSectionUrl(trainSection.getTrainLitterSectionUrl());
             downloadSectionDto.setCoursewareId(trainSection.getCoursewareId());
             downloadSectionDto.setUpdateFileName(trainSection.getUpdateFileName());
@@ -448,6 +451,9 @@ public class SectionController {
         } else {
             //查询课程资源考试与练习
             Section section = sectionService.getSectionById(sectionId);
+            if(StrUtil.isEmpty(section.getCoursewareId()) && StrUtil.isEmpty(section.getWorkId()) && StrUtil.isEmpty(section.getTestPaperId())){
+                bean.addError(ResponseBean.CODE_NOTFILE_ERROR,"此章节没有文件");
+            }
             downloadSectionDto.setSectionUrl(section.getSectionUrl());
             downloadSectionDto.setCoursewareId(section.getCoursewareId());
             downloadSectionDto.setUpdateFileName(section.getUpdateFileName());
