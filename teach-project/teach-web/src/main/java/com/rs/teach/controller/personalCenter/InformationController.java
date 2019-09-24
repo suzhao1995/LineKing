@@ -153,7 +153,8 @@ public class InformationController{
 		
 		int resultCode = messageService.modifyIsRead(userId, messageId);
 		if(resultCode == 1){
-			bean.addSuccess();
+			Message message = messageService.getMessageByMessageId(messageId);
+			bean.addSuccess(message);
 		}else{
 			bean.addError("系统异常");
 		}

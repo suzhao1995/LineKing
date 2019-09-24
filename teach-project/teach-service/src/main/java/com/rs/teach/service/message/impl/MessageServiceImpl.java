@@ -62,5 +62,10 @@ public class MessageServiceImpl implements MessageService{
 		}
 		return list;
 	}
+
+	@Override
+	public Message getMessageByMessageId(String messageId) {
+		return mapper.getMessageByMessageId(messageId);
+	}
 	
 }

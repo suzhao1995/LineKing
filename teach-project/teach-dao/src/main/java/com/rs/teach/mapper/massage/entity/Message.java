@@ -17,6 +17,7 @@ public class Message implements Serializable{
 	private String isRead;	//是否已读
 	private String isPopUp;	//是否展示到首页弹窗
 	private String sendUser;	//发送者
+	private String messageTitle;	//标题
 	private String extend1;	//预留字段
 	private String extend2;	//  
 	private String extend3;	//
@@ -88,6 +89,14 @@ public class Message implements Serializable{
 
 	public void setSendUser(String sendUser) {
 		this.sendUser = sendUser;
+	}
+
+	public String getMessageTitle() {
+		return messageTitle;
+	}
+
+	public void setMessageTitle(String messageTitle) {
+		this.messageTitle = messageTitle;
 	}
 
 	public String getExtend1() {

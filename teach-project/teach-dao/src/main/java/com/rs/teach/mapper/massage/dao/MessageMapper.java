@@ -95,4 +95,15 @@ public interface MessageMapper{
 	* @date 2019年9月2日 下午6:45:37
 	*/
 	public int addMessages(Message message);
+	
+	
+	/**
+	* 根据messageId查询消息
+	* @param 
+	* @throws
+	* @return Message
+	* @author suzhao
+	* @date 2019年9月24日 下午3:25:22
+	*/
+	public Message getMessageByMessageId(String messageId);
 }

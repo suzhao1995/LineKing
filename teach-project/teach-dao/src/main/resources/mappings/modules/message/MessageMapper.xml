@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				USER_ID,
 				SEND_USER,
 				IS_POPUP,
+				MESSAGE_TITLE
 				EXTEND1,
 				EXTEND2,
 				EXTEND3,
@@ -27,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{userId},
 				#{sendUser},
 				#{isPopUp},
+				#{messageTitle},
 				#{extend1},
 				#{extend2},
 				#{extend3},
@@ -43,6 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="isRead" column="IS_READ" />
 		<result property="isPopUp" column="IS_POPUP"/>
 		<result property="sendUser" column="SEND_USER"/>
+		<result property="messageTitle" column="MESSAGE_TITLE"/>
 	</resultMap>
 	<select id="queryMessage" parameterType="java.lang.String" resultMap="message">
 		select * from tf_el_message t 
@@ -66,18 +69,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 管理员 start -->
 	<select id="queryMessages" resultMap="message">
-		select distinct MASSAGE_CONTENT,MESSAGE_TIME from tf_el_message where send_user = #{userId} order by to_char(to_date(message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
+		select distinct MASSAGE_CONTENT,MESSAGE_TIME,MESSAGE_TITLE from tf_el_message where send_user = #{userId} order by to_char(to_date(message_time,'yyyy-MM-dd HH24:mi:ss'),'yyyyMMddHH24miss') desc
 	</select>
 	
 	<insert id="addMessages" parameterType="com.rs.teach.mapper.massage.entity.Message">
-		insert into tf_el_message(message_id,message_type,massage_content,message_time,user_id,IS_POPUP,SEND_USER)
+		insert into tf_el_message(message_id,message_type,massage_content,message_time,user_id,IS_POPUP,SEND_USER,MESSAGE_TITLE)
 	select SEQ_EL_MESSAGE.nextval,
 	       #{messageType},
 	       #{messageContent},
 	       #{messageTime},
 	       t.user_id,
 	       #{isPopUp},
-	       #{sendUser}
+	       #{sendUser},
+	       #{messageTitle}
 	       from tf_el_teach_user t where t.ADMIN_FLAG = '0'
 	</insert>
 	
@@ -94,4 +98,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</foreach>
 		</where>
 	</update>
+	
+	
+	<select id="getMessageByMessageId" parameterType="java.lang.String" resultMap="message">
+		select * from tf_el_message where MESSAGE_ID = #{messageId}
+	</select>
 </mapper>

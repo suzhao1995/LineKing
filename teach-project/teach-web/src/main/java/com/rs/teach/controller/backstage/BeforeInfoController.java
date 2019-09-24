@@ -80,6 +80,7 @@ public class BeforeInfoController{
 		
 		String messageContent = request.getParameter("messageContent");	//消息内容
 		String ipPopUp = request.getParameter("isPopUp");	//是否展示到首页弹窗
+		String messageTile = request.getParameter("messageTitle");	//标题
 		
 		Message message = new Message();
 		message.setMessageContent(messageContent);
@@ -87,6 +88,7 @@ public class BeforeInfoController{
 		message.setMessageType("2");
 		message.setIsPopUp(ipPopUp);
 		message.setSendUser(userId);
+		message.setMessageTitle(messageTile);
 		int count = messageService.addMessages(message);
 		if(count > 0){
 			bean.addSuccess();
