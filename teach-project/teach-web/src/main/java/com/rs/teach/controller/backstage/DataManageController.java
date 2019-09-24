@@ -72,11 +72,11 @@ public class DataManageController {
         map.put("MaterielNum", MaterielNum);
 
         // TODO 用户信息
-        PageInfo<SchoolVo> userInfo = PageHelper.startPage(userPageNum, 8).doSelectPageInfo(() -> schoolService.selectSchoolVo());
+        PageInfo<SchoolVo> userInfo = PageHelper.startPage(userPageNum, 6).doSelectPageInfo(() -> schoolService.selectSchoolVo());
         map.put("userInfo", userInfo);
 
         // TODO 培训考核
-        PageInfo<TrainDataVo> dataInfo = PageHelper.startPage(dataPageNum, 6).doSelectPageInfo(() -> trainDataService.selectTrainDataVo());
+        PageInfo<TrainDataVo> dataInfo = PageHelper.startPage(dataPageNum, 5).doSelectPageInfo(() -> trainDataService.selectTrainDataVo());
         map.put("dataInfo", dataInfo);
 
         bean.addSuccess(map);
