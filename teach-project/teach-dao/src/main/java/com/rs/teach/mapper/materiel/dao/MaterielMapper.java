@@ -19,7 +19,7 @@ public interface MaterielMapper{
 	
 	int updateMateriel(Materiel materiel);
 	
-	public List<Materiel> adminGetMateriel(String code);
+	public List<Materiel> adminGetMateriel(@Param("code")String code, @Param("name")String name);
 	
 	public List<Materiel> queryMaterielByName(String name);
 

@@ -54,4 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set c.CODE_VALUE = #{codeValue}, c.CREATE_BY = #{createBy},c.CREATE_DATE = #{createDate}
 		where c.CID = #{cid} and c.CODE_TYPE = #{codeType}
 	</update>
+	
+	<select id="querySysCodeByCode" parameterType="java.lang.String" resultMap="code">
+		select * from sys_code t where t.CODE = #{code} and t.CODE_TYPE = #{codeType}
+	</select>
 </mapper>

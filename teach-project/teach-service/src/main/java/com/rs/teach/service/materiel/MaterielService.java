@@ -18,7 +18,7 @@ public interface MaterielService{
 	
 	public int modifyMateriel(Materiel materiel);
 	
-	public List<Materiel> adminGetMateriel(String code);
+	public List<Materiel> adminGetMateriel(String code, String searchName);
 	
 	public List<Materiel> getMaterielByName(String name);
 

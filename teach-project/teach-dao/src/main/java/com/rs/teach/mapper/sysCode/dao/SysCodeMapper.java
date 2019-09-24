@@ -2,6 +2,8 @@ package com.rs.teach.mapper.sysCode.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.rs.teach.mapper.sysCode.entity.SysCode;
 
 /**
@@ -21,4 +23,6 @@ public interface SysCodeMapper{
 	public int insertSysCode(SysCode sysCode);
 	
 	public int updateSysCode(SysCode sysCode);
+	
+	public SysCode querySysCodeByCode(@Param("code")String code, @Param("codeType") String codeType);
 }

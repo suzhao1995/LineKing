@@ -228,7 +228,7 @@ public interface VideoService{
 	* @author suzhao
 	* @date 2019年9月4日 下午3:44:41
 	*/
-	public void delVideoSection(String videoSectionId);
+	public void delVideoSection(String videoSectionId, String videoSectionSort, String videoTotleSortId,String videoId);
 	
 	/**
 	* 修改视频课件

@@ -106,6 +106,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="code != null and code != ''">
 				and t.MATERIEL_CODE = #{code}
 			</if>
+			<if test="name != null and name != ''">
+				and t.materiel_Name like '%'||#{name}||'%'
+			</if>
 		</where> 
 	</select>
 	
