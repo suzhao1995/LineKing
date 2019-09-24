@@ -49,7 +49,7 @@
         <where>
             and TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
             <if test="trainDataName != null and trainDataName != ''">
-                TRAIN_DATA_NAME like '%'||#{trainDataName}||'%'
+              and  TRAIN_DATA_NAME like '%'||#{trainDataName}||'%'
             </if>
         </where>
     </select>
