@@ -2,7 +2,6 @@ package com.rs.teach.mapper.studyAttr.dao;
 
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
-import com.rs.teach.mapper.studyAttr.vo.CourseAllUrl;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
@@ -67,5 +66,5 @@ public interface TrainCourseMapper {
      * @param courseId
      * @return
      */
-    List<CourseAllUrl> isEmptyFile(@Param("courseId") String courseId);
+    Integer isEmptyFile(@Param("courseId") String courseId);
 }

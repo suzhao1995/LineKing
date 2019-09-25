@@ -171,4 +171,6 @@ public interface CourseService{
 	 * @return
 	 */
     Integer selectCourseNum();
+
+    boolean isEmptyFile(String courseId);
 }

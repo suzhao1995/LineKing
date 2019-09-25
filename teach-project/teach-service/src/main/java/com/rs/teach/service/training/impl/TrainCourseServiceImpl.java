@@ -76,9 +76,13 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     @Override
     public boolean isEmptyFile(String courseId) {
 
-        List<CourseAllUrl> list = trainCourseMapper.isEmptyFile(courseId);
-
-        return true;
+        Integer count = trainCourseMapper.isEmptyFile(courseId);
+        if(count > 1){
+            return true;
+        }else if(count < 1){
+            return false;
+        }
+        return false;
     }
 
 }

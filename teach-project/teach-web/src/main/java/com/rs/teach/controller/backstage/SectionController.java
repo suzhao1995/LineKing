@@ -555,6 +555,11 @@ public class SectionController {
             courseName = trainCourse.getTrainCourseName();
             sections = trainSectionService.getSectionByCourseId(courseId);
         } else {
+            boolean  bo = courseService.isEmptyFile(courseId);
+            if(!bo){
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR,"该课程下没有文件");
+                return bean;
+            }
             Course course = courseService.queryCourseByCourseId(courseId);
             courseName = course.getCourseName();
             sections = sectionService.getSectionByCourseId(courseId);

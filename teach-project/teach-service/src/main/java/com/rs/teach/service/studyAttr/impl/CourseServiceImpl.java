@@ -206,4 +206,15 @@ public class CourseServiceImpl implements CourseService{
         return mapper.selectCourseNum();
     }
 
+    @Override
+    public boolean isEmptyFile(String courseId) {
+		Integer count = mapper.isEmptyFile(courseId);
+		if(count > 1){
+			return true;
+		}else if(count < 1){
+			return false;
+		}
+		return false;
+    }
+
 }

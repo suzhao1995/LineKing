@@ -220,14 +220,15 @@ public class BeforeTrainDataController {
         try {
             //删除培训考核文件，返回文件所在服务器地址
             TrainDataFileAllUrlVo vo = trainDataService.selectFileAllUrl(trainData.getId());
-            fileNames.add(vo.getTrainAnswerUrl());
-            fileNames.add(vo.getTrainDataUrl());
-            if (CollUtil.isNotEmpty(vo.getList())) {
-                for (TrainDataAnswer tvo : vo.getList()) {
-                    fileNames.add(tvo.getTrainAnswerUrl());
+            if(vo != null){
+                fileNames.add(vo.getTrainAnswerUrl());
+                fileNames.add(vo.getTrainDataUrl());
+                if (CollUtil.isNotEmpty(vo.getList())) {
+                    for (TrainDataAnswer tvo : vo.getList()) {
+                        fileNames.add(tvo.getTrainAnswerUrl());
+                    }
                 }
             }
-
             trainDataService.trainDataDelete(trainData.getId());
             DeleteFileUtil.deleteFiles(fileNames);
 

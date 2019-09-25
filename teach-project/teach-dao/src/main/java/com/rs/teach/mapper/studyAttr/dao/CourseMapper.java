@@ -205,4 +205,6 @@ public interface CourseMapper{
 	 * @return
 	 */
     Integer selectCourseNum();
+
+	Integer isEmptyFile(String courseId);
 }
