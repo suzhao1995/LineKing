@@ -2,7 +2,6 @@ package com.rs.teach.service.backstage;
 
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
-import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataVo;
@@ -69,12 +68,11 @@ public interface TrainDataService {
     List<TrainDataAndAnswerVo> queryTrainDataAndAnswer(String id);
 
     /**
-     * //添加考核系列文件（考核文件添加，考核文件答案添加，考核人员与考核文件关联表添加）
+     * //添加考核系列文件（考核文件添加，考核文件答案添加）
      * @param trainData
      * @param trainDataAnswer
-     * @param userTrainDataRela
      */
-    void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer, UserTrainDataRela userTrainDataRela);
+    void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer);
 
     List<TrainDataVo> selectTrainDataVo();
 }

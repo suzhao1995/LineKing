@@ -31,9 +31,9 @@
             <if test="trainDataFileName != null and trainDataFileName != ''">
                 TRAIN_DATA_FILE_NAME = #{trainDataFileName},
             </if>
-            <if test="trainCourseId != null and trainCourseId != ''">
+            <!--<if test="trainCourseId != null and trainCourseId != ''">
                 TRAIN_COURSE_ID = #{trainCourseId},
-            </if>
+            </if>-->
         </set>
         where id = #{id}
 
@@ -55,7 +55,7 @@
     </select>
 
     <delete id="trainDataDelete">
-        delete from
+        delete
         from TF_EL_TRAIN_DATA td
         where td.ID = #{id}
 

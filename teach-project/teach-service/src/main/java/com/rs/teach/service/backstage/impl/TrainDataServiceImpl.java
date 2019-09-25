@@ -1,11 +1,11 @@
 package com.rs.teach.service.backstage.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.dao.TrainDataAnswerMapper;
 import com.rs.teach.mapper.backstage.dao.TrainDataMapper;
 import com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.TrainDataAnswer;
-import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.TrainDataAndAnswerVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataFileAllUrlVo;
 import com.rs.teach.mapper.backstage.vo.TrainDataVo;
@@ -42,7 +42,9 @@ public class TrainDataServiceImpl implements TrainDataService {
     public void UpdateTrainData(TrainData trainData, TrainDataAnswer trainDataAnswer) {
         try {
             trainDataMapper.UpdateTrainData(trainData);
-            trainDataAnswerMapper.updateTrainDataAnswer(trainDataAnswer);
+            if (StrUtil.isNotEmpty(trainDataAnswer.getAnswerId())) {
+                trainDataAnswerMapper.updateTrainDataAnswer(trainDataAnswer);
+            }
         } catch (Exception e) {
             throw e;
         }
@@ -80,13 +82,13 @@ public class TrainDataServiceImpl implements TrainDataService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer, UserTrainDataRela userTrainDataRela) {
+    public void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer) {
         try {
             trainDataMapper.addTrainData(trainData);
             //考核文件答案添加
             trainDataAnswerMapper.addTrainDataAnswer(trainDataAnswer);
             //考核人员与考核文件关联表添加
-            userTrainDataRelaMapper.addUserTrainData(userTrainDataRela);
+            /*userTrainDataRelaMapper.addUserTrainData(userTrainDataRela);*/
         } catch (Exception e) {
             throw e;
         }
