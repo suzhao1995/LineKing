@@ -4,6 +4,7 @@ import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseAllUrl;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainCourseService;
@@ -70,6 +71,14 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     @Override
     public Integer selectTrainCourseNum() {
         return trainCourseMapper.selectTrainCourseNum();
+    }
+
+    @Override
+    public boolean isEmptyFile(String courseId) {
+
+        List<CourseAllUrl> list = trainCourseMapper.isEmptyFile(courseId);
+
+        return true;
     }
 
 }

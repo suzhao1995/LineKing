@@ -2,6 +2,7 @@ package com.rs.teach.mapper.studyAttr.dao;
 
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseAllUrl;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
@@ -60,4 +61,11 @@ public interface TrainCourseMapper {
     CourseVo echoCourse(@Param("courseId") String courseId);
 
     Integer selectTrainCourseNum();
+
+    /**
+     * 是否存在文件
+     * @param courseId
+     * @return
+     */
+    List<CourseAllUrl> isEmptyFile(@Param("courseId") String courseId);
 }

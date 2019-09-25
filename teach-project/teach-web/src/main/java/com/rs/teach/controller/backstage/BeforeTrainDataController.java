@@ -75,7 +75,7 @@ public class BeforeTrainDataController {
         ResponseBean bean = new ResponseBean();
 
         if (trainDataFile.isEmpty() || answerFile.isEmpty()) {
-            bean.addError(ResponseBean.CODE_SHOP_ERROR, "未上传文件");
+            bean.addError(ResponseBean.CODE_NOTUPLOAD_ERROR, "未上传文件");
             return bean;
         }
         //考核文件上传
@@ -272,7 +272,7 @@ public class BeforeTrainDataController {
 
 
     /**
-     * 分页查询答卷表
+     * 分页查询答卷表（人员考核信息）
      *
      * @param trainData(只取id) pageDto
      * @return

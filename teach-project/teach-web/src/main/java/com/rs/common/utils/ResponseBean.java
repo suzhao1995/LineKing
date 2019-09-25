@@ -33,6 +33,7 @@ public class ResponseBean implements Serializable{
     public static final String CODE_REPEATEDADD_ERROR = "1015";  //不能重复添加学校！
     public static final String CODE_NOTFILE_ERROR = "1016";  //此章节没有文件
     public static final String CODE_NOTUPLOAD_ERROR = "1017";  //文件未上传
+    public static final String CODE_COURSENOTFILE_ERROR = "1018";  //该课程下无文件
     private String code = "0";
     private String message = "成功";
     private Object data = null;

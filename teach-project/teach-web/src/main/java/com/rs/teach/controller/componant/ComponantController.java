@@ -194,7 +194,7 @@ public class ComponantController{
 		System.out.println(request.getParameter("materielDetail"));
 		System.out.println(request.getParameter("code"));
 //		for(MultipartFile file: files){
-//			if(StringUtils.isEmpty(file.getOriginalFilename())){
+//			if(StringUtils.isEmptyFile(file.getOriginalFilename())){
 //				System.out.println("1");
 //			}else{
 //				System.out.println(file.getOriginalFilename());

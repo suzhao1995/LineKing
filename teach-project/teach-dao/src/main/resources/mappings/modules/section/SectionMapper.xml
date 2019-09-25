@@ -127,9 +127,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
 		select  t.section_id,t.section_sort,t.section_name,
-       			ts.totle_section_sort as totlesection_sort, ts.totle_section_name as totlesection_Name,
-       			t.totlesection_sortid, t.section_url,t.course_id,t.update_filename,t.section_type,
-       			t.schoolworkid,t.paperid,t.courseware_id
+       			ts.totle_section_sort as totlesection_sort,
+       			ts.totle_section_name as totlesection_Name,
+       			t.totlesection_sortid,
+       			t.section_url,
+       			t.course_id,
+       			t.update_filename,
+       			t.section_type,
+       			t.schoolworkid,
+       			t.paperid,
+       			t.courseware_id
        		from tf_el_section t, tf_el_train_totle_section ts 
        where t.totlesection_sortid = ts.id and t.course_id = #{courseId} order by ts.totle_section_sort, t.section_sort
 	</select>

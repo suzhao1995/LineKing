@@ -545,6 +545,12 @@ public class SectionController {
         List<Section> sections = null;
 
         if (StrUtil.equals("1", isTrain)) {
+            //是否含有文件
+            boolean  bo = trainCourseService.isEmptyFile(courseId);
+            if(!bo){
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR,"该课程下没有文件");
+                return bean;
+            }
             TrainCourseVo trainCourse = trainCourseService.selectTrainCourseById(courseId);
             courseName = trainCourse.getTrainCourseName();
             sections = trainSectionService.getSectionByCourseId(courseId);

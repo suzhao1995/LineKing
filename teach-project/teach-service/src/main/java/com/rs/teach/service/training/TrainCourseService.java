@@ -59,4 +59,11 @@ public interface TrainCourseService {
     CourseVo echoCourse(CourseDto courseDto);
 
     Integer selectTrainCourseNum();
+
+    /**
+     * 是否含有文件
+     * @param courseId
+     * @return
+     */
+    boolean isEmptyFile(String courseId);
 }

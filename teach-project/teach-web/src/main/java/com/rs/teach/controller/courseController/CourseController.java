@@ -416,7 +416,7 @@ public class CourseController{
 		List<Section> sections = sectionService.getSectionByCourseId(courseId);
 		
 		for(Section section : sections){
-			if(StringUtils.isEmpty(section.getSectionUrl())){
+			if(StringUtils.isEmptyFile(section.getSectionUrl())){
 				continue;
 			}
 			
@@ -507,7 +507,7 @@ public class CourseController{
 		//查询课程资源考试与练习
 		Section section = sectionService.getSectionById(sectionId);
 		
-		if(StringUtils.isEmpty(section.getSectionUrl())){
+		if(StringUtils.isEmptyFile(section.getSectionUrl())){
 			bean.addError("没有课件信息");
 			return bean;
 		}

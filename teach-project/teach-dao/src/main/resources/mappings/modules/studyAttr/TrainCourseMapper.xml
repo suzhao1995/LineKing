@@ -55,12 +55,21 @@
          from TF_EL_TRAIN_COURSE
     </select>
     <select id="echoCourse" resultType="com.rs.teach.mapper.studyAttr.vo.CourseVo">
-        select '0' as isTrain,TRAIN_COURSE_ID as courseId,TRAIN_COURSE_NAME as courseName,TRAIN_COURSEPIC_URL as coursePicUrl
+        select '1' as isTrain,TRAIN_COURSE_ID as courseId,TRAIN_COURSE_NAME as courseName,TRAIN_COURSEPIC_URL as coursePicUrl
         from TF_EL_TRAIN_COURSE
         where TRAIN_COURSE_ID = #{courseId}
     </select>
     <select id="selectTrainCourseNum" resultType="java.lang.Integer">
         select count(1) from TF_EL_TRAIN_COURSE
+    </select>
+    <select id="isEmptyFile" resultType="com.rs.teach.mapper.studyAttr.vo.CourseAllUrl">
+        select ts.COURSEWARE_ID ,
+                ts.TESTPAPER_ID,
+                ts.PRACTICE_ID
+        from TF_EL_TRAIN_COURSE tc , TF_EL_TRAIN_TOTLE_SECTION tts, TF_EL_TRAIN_SECTION ts
+        where tc.TRAIN_COURSE_ID = tts.COURSE_ID
+        and tts.ID = ts.TRAIN_SECTION_SORTID
+        and ts.TRAIN_COURSE_ID = #{courseId}
     </select>
 
 </mapper>

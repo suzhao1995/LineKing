@@ -67,7 +67,9 @@ public class TrainDataServiceImpl implements TrainDataService {
 
     @Override
     public TrainDataFileAllUrlVo selectFileAllUrl(String id) {
-        return trainDataMapper.selectFileAllUrl(id);
+        TrainDataFileAllUrlVo vo = trainDataMapper.selectFileAllUrl(id);
+        //是否存在
+        return vo;
     }
 
     @Override
