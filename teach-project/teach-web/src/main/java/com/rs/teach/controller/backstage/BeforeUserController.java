@@ -221,7 +221,7 @@ public class BeforeUserController {
         }
         try {
             int i = userService.updateUserInfoAndPic(user, picAttr);
-            if (i == 1) {
+            if (i == 1 && StrUtil.isNotEmpty(picAttr.getPicId())) {
                 //删除原始文件
                 DeleteFileUtil.deleteFile(pic.getSavePath());
             }

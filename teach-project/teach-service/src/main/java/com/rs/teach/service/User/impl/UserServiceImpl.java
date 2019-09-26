@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     public int updateUserInfoAndPic(User user, PicAttr picAttr) {
         int i = 0;
         try {
-            dao.updateUserInfo(user);
+             i = dao.updateUserInfo(user);
             if (StrUtil.isNotBlank(picAttr.getPicId())) {
                 i = picAttrService.modifyPic(picAttr);
             }

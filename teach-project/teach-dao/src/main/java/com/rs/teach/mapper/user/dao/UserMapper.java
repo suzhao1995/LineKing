@@ -92,7 +92,7 @@ public interface UserMapper {
 	 * 管理员修改用户信息
 	 * @param user
 	 */
-	void updateUserInfo(User user);
+	int updateUserInfo(User user);
 
 	/**
 	 * 删除用户
