@@ -548,11 +548,11 @@ public class BeforeVideoController {
 			//删除原有课件
 			String[] filePath = new String[5];
 			filePath[0] = videoSection.getVideoSectionUrl();	//删除视频文件
-			if(test != null){
+			if(StringUtils.isNotEmpty(test.getTestpaperUrl())){
 				filePath[1] = test.getTestpaperUrl();	//删除试卷文件
 				filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
 			}
-			if(work != null){
+			if(StringUtils.isNotEmpty(work.getPracticeUrl())){
 				filePath[3] = work.getPracticeUrl();	//删除作业文件
 				filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
 			}
@@ -726,11 +726,11 @@ public class BeforeVideoController {
 			//删除原有课件
 			String[] filePath = new String[5];
 			filePath[0] = videoSection.getVideoSectionUrl();	//删除视频文件
-			if(test != null){
+			if(StringUtils.isNotEmpty(test.getTestpaperUrl())){
 				filePath[1] = test.getTestpaperUrl();	//删除试卷文件
 				filePath[2] = test.getTestpaperUrl().split("[.]")[0] + ".ppt";	//删除试卷文件的原始文件
 			}
-			if(work != null){
+			if(StringUtils.isNotEmpty(work.getPracticeUrl())){
 				filePath[3] = work.getPracticeUrl();	//删除作业文件
 				filePath[4] = work.getPracticeUrl().split("[.]")[0] + ".ppt";	//删除作业文件的原始文件
 			}

@@ -142,10 +142,10 @@ public class VideoServiceImpl implements VideoService{
 		try {
 			
 			mapper.insertVideoSection(videoSection);
-			if(work != null){
+			if(StringUtils.isNotEmpty(work.getPracticeUrl())){
 				testAndWorkMapper.insertPractice(work);
 			}
-			if(test != null){
+			if(StringUtils.isNotEmpty(test.getTestpaperUrl())){
 				testAndWorkMapper.insertTestpaper(test);
 			}
 		} catch (Exception e) {
