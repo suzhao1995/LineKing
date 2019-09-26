@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rs.teach.mapper.backstage.entity.TotleSection;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
@@ -248,5 +249,12 @@ public interface VideoService{
 	 * @return
 	 */
     Integer selectVideoNum();
+
+
+	/**
+	 * 视频课程树状图
+	 * @return
+	 */
+	List<ConditionExtVo> queryOptionVo();
 
 }

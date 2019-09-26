@@ -3,6 +3,7 @@ package com.rs.teach.mapper.video.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rs.teach.mapper.common.ConditionExtVo;
 import org.apache.ibatis.annotations.Param;
 
 import com.rs.teach.mapper.backstage.entity.TotleSection;
@@ -75,5 +76,8 @@ public interface VideoMapper{
     Integer selectVideoNum();
     
     void updateSort(@Param("videoSectionSort") String videoSectionSort, @Param("videoTotleSortId") String videoTotleSortId, @Param("videoId") String videoId);
-    
+
+    List<ConditionExtVo> typeBy();
+
+	List<ConditionExtVo> videoBy(String id);
 }

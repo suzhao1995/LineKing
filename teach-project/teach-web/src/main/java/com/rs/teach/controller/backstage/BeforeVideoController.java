@@ -9,7 +9,11 @@ import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.common.utils.ZipUtil;
+import com.rs.teach.mapper.backstage.dao.SchoolCourseMapper;
+import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.entity.TotleSection;
+import com.rs.teach.mapper.backstage.entity.TrainData;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
@@ -17,6 +21,7 @@ import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.mapper.video.entity.Video;
 import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.mapper.video.entity.VideoSectionVo;
+import com.rs.teach.service.backstage.SchoolCourseService;
 import com.rs.teach.service.studyAttr.TestAndWorkService;
 import com.rs.teach.service.sysCode.SysCodeService;
 import com.rs.teach.service.video.VideoService;
@@ -25,7 +30,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,7 +69,37 @@ public class BeforeVideoController {
     
     @Autowired
 	private TestAndWorkService testAndWorkService;
-    
+	@Autowired
+	private SchoolCourseService schoolCourseService;
+
+	/**
+	 * 视频课程树状图
+	 */
+	@RequestMapping(value = "/queryConditionExtVo", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseBean queryConditionExtVo() {
+		ResponseBean bean = new ResponseBean();
+		List<ConditionExtVo> list = videoService.queryOptionVo();
+		bean.addSuccess(list);
+		return bean;
+	}
+
+	/**
+	 * 给学校添加视频课程(传视频课程id数组)
+	 */
+	@RequestMapping(value = "/addVideoInSchool", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseBean addVideoInSchool(@RequestBody School school) {
+		ResponseBean bean = new ResponseBean();
+		try {
+			schoolCourseService.addVideoInSchool(school);
+		} catch (Exception e) {
+			bean.addError("添加失败");
+		}
+		bean.addSuccess("添加成功");
+		return bean;
+	}
+
     /**
     * 下载单个视频课件
     * @param 

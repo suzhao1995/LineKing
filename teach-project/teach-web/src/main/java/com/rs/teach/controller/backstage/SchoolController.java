@@ -54,7 +54,7 @@ public class SchoolController {
 
 
     /**
-     * 回显权限课程（数组）
+     * 回显权限课程或视频（数组）
      * @return
      */
     @RequestMapping(value = "/echoCourse", method = RequestMethod.POST)

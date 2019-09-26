@@ -14,7 +14,7 @@ import java.util.List;
 public interface SchoolCourseMapper {
 
     /**
-     * 添加学校和课程关联表
+     * 添加学校和课程关联表(给学校添加视频课程)
      * @param school
      */
     void addSchoolCourse(School school);
@@ -44,4 +44,5 @@ public interface SchoolCourseMapper {
      * @return
      */
     String[] echoCourse(@Param("schoolId") String schoolId);
+
 }

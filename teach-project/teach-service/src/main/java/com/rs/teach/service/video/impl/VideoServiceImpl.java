@@ -3,7 +3,9 @@ package com.rs.teach.service.video.impl;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.collection.CollUtil;
 import com.rs.teach.mapper.backstage.entity.TotleSection;
+import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.studyAttr.dao.TestAndWorkMapper;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rs.teach.mapper.video.dao.VideoMapper;
 import com.rs.teach.mapper.video.entity.Video;
-import com.rs.teach.mapper.video.entity.VideoSection;
 import com.rs.teach.service.video.VideoService;
 
 @Service
@@ -200,5 +201,20 @@ public class VideoServiceImpl implements VideoService{
     public Integer selectVideoNum() {
         return mapper.selectVideoNum();
     }
+
+
+	@Override
+	public List<ConditionExtVo> queryOptionVo() {
+		//类型
+		List<ConditionExtVo> typeAllList = mapper.typeBy();
+		for (ConditionExtVo typeVo : typeAllList) {
+			// 视频
+			List<ConditionExtVo> videoList = mapper.videoBy(typeVo.getId());
+			if (CollUtil.isNotEmpty(videoList)) {
+				typeVo.setChildren(videoList);
+			}
+		}
+		return typeAllList;
+	}
 
 }

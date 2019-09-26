@@ -323,12 +323,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{workId}
 			)
 	</insert>
-	
+
 	<!-- 删除视频课件 -->
 	<delete id="delVideoSection" parameterType="java.lang.String">
 		delete from tf_el_video_section where VIDEOSECTION_ID = #{videoSectionId}
 	</delete>
-	
+
 	<!-- 修改视频课件 -->
 	<update id="updateVideoSection" parameterType="com.rs.teach.mapper.video.entity.VideoSection">
 		update tf_el_video_section
@@ -351,12 +351,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where VIDEOSECTION_ID = #{videoSectionId}
 	</update>
-	
+
 	<update id="updateSort" parameterType="java.lang.String">
-		update tf_el_video_section set videosection_sort = to_number(videosection_sort)-1 where 
-			videototle_sortid = #{videoTotleSortId} 
+		update tf_el_video_section set videosection_sort = to_number(videosection_sort)-1 where
+			videototle_sortid = #{videoTotleSortId}
 			and VIDEO_ID = #{videoId}
 			and to_number(videosection_sort) > #{videoSectionSort}
 	</update>
-	
+
+    <select id="typeBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select CODE as id,
+			   CODE_VALUE as label
+		from TF_EL_VIDEO,SYS_CODE
+		where VIDEO_TYPE = CODE
+		group by CODE,CODE_VALUE
+	</select>
+	<select id="videoBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
+		select VIDEO_ID as id,
+			   VIDEO_NAME as label
+		from TF_EL_VIDEO
+		where VIDEO_TYPE = #{id}
+	</select>
 </mapper>
