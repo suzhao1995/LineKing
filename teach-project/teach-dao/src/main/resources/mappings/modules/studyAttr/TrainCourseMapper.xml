@@ -62,15 +62,19 @@
     <select id="selectTrainCourseNum" resultType="java.lang.Integer">
         select count(1) from TF_EL_TRAIN_COURSE
     </select>
-    <select id="isEmptyFile" resultType="java.lang.Integer">
-        select count(1)
+    <select id="isEmptyFile" resultType="com.rs.teach.mapper.studyAttr.vo.CourseAllUrl">
+        select COURSEWARE_ID as courseUrl,PRACTICE_ID as practiceUrl,TESTPAPER_ID as testpaperUrl
         from TF_EL_TRAIN_COURSE tc , TF_EL_TRAIN_TOTLE_SECTION tts, TF_EL_TRAIN_SECTION ts
         where tc.TRAIN_COURSE_ID = tts.COURSE_ID
         and tts.ID = ts.TRAIN_SECTION_SORTID
         and ts.TRAIN_COURSE_ID = #{courseId}
-        and COURSEWARE_ID is not null
-        and TESTPAPER_ID is not null
-        and PRACTICE_ID is not null
+    </select>
+    <select id="isEmptyFileBySection" resultType="java.lang.Integer">
+        select count(1) from TF_EL_TRAIN_SECTION
+        where TRAIN_SECTION_ID = #{sectionId}
+        and COURSEWARE_ID is null
+        and TESTPAPER_ID is null
+        and PRACTICE_ID is null
     </select>
 
 </mapper>

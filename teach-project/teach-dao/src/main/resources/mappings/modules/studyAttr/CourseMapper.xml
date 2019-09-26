@@ -325,14 +325,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectCourseNum" resultType="java.lang.Integer">
 		select count(1) from TF_EL_COURSE
 	</select>
-	<select id="isEmptyFile" resultType="java.lang.Integer">
-		select count(1)
+	<select id="isEmptyFile" resultType="com.rs.teach.mapper.studyAttr.vo.CourseAllUrl">
+		select COURSEWARE_ID as courseUrl,SCHOOLWORKID as practiceUrl,PAPERID as testpaperUrl
         from TF_EL_COURSE tc , TF_EL_TRAIN_TOTLE_SECTION tts, TF_EL_SECTION ts
         where tc.COURSE_ID = tts.COURSE_ID
         and tts.ID = ts.TOTLESECTION_SORTID
         and ts.COURSE_ID = #{courseId}
-        and COURSEWARE_ID is not null
-        and SCHOOLWORKID is not null
-        and PAPERID is not null
+	</select>
+    <select id="isEmptyFileBySection" resultType="java.lang.Integer">
+		select count(1) from TF_EL_SECTION
+		where SECTION_ID = #{sectionId}
+		and COURSEWARE_ID is null
+        and SCHOOLWORKID is null
+        and PAPERID is null
 	</select>
 </mapper>

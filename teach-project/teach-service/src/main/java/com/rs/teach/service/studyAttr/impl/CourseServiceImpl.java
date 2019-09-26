@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseAllUrl;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.mapper.video.dao.VideoMapper;
@@ -208,13 +210,32 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public boolean isEmptyFile(String courseId) {
-		Integer count = mapper.isEmptyFile(courseId);
-		if(count > 1){
-			return true;
-		}else if(count < 1){
+		List<CourseAllUrl> list = mapper.isEmptyFile(courseId);
+		if (list == null ){
 			return false;
+		}
+		for (CourseAllUrl vo : list) {
+			if (StrUtil.isNotEmpty(vo.getCourseUrl())){
+				return true;
+			}
+			if (StrUtil.isNotEmpty(vo.getPracticeUrl())){
+				return true;
+			}
+			if (StrUtil.isNotEmpty(vo.getTestpaperUrl())){
+				return true;
+			}
 		}
 		return false;
     }
+
+	@Override
+	public boolean isEmptyFileBySection(String sectionId) {
+		Integer count = mapper.isEmptyFileBySection(sectionId);
+		if(count >= 1){
+			return false;
+		}else {
+			return true;
+		}
+	}
 
 }

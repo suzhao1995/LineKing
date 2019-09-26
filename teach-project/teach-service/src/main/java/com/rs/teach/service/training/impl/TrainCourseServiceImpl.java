@@ -1,5 +1,6 @@
 package com.rs.teach.service.training.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
 import com.rs.teach.mapper.studyAttr.dao.TrainCourseMapper;
@@ -76,13 +77,32 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     @Override
     public boolean isEmptyFile(String courseId) {
 
-        Integer count = trainCourseMapper.isEmptyFile(courseId);
-        if(count > 1){
-            return true;
-        }else if(count < 1){
+        List<CourseAllUrl> list = trainCourseMapper.isEmptyFile(courseId);
+        if (list == null ){
             return false;
         }
+        for (CourseAllUrl vo : list) {
+            if (StrUtil.isNotEmpty(vo.getCourseUrl())){
+                return true;
+            }
+            if (StrUtil.isNotEmpty(vo.getPracticeUrl())){
+                return true;
+            }
+            if (StrUtil.isNotEmpty(vo.getTestpaperUrl())){
+                return true;
+            }
+        }
         return false;
+    }
+
+    @Override
+    public boolean isEmptyFileBySection(String sectionId) {
+        Integer count = trainCourseMapper.isEmptyFileBySection(sectionId);
+        if(count >= 1){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }

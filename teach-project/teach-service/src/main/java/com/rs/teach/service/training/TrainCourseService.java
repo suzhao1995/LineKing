@@ -61,9 +61,16 @@ public interface TrainCourseService {
     Integer selectTrainCourseNum();
 
     /**
-     * 是否含有文件
+     * 课程是否含有文件
      * @param courseId
      * @return
      */
     boolean isEmptyFile(String courseId);
+
+    /**
+     * 该章节下是否含有文件
+     * @param sectionId
+     * @return
+     */
+    boolean isEmptyFileBySection(String sectionId);
 }

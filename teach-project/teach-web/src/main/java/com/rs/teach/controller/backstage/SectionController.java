@@ -153,9 +153,9 @@ public class SectionController {
      */
     @RequestMapping(value = "/addSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addSection(@RequestParam(value = "courseWareFile" ,required = false) MultipartFile courseWareFile,
-                                   @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
-                                   @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile,
+    public ResponseBean addSection(@RequestParam(value = "courseWareFile", required = false) MultipartFile courseWareFile,
+                                   @RequestParam(value = "practiceFile", required = false) MultipartFile practiceFile,
+                                   @RequestParam(value = "testpaperFile", required = false) MultipartFile testpaperFile,
                                    SectionDto sectionDto,
                                    HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
@@ -190,7 +190,7 @@ public class SectionController {
             if (practiceFile != null) {
                 if (!courseWareFile.isEmpty()) {
                     //作业文件上传
-                    Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request,practiceFile);
+                    Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
                     //文件上传是否成功
                     if (!(practiceMap != null && "0".equals(practiceMap.get("code")))) {
                         bean.addError(ResponseBean.CODE_FILE_ERROR, practiceMap.get("message").toString());
@@ -230,7 +230,7 @@ public class SectionController {
             }
             if (StrUtil.equals("1", sectionDto.getIsTrain())) {
                 trainSectionService.addTrainSection(sectionDto);
-            } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
+            } else if (StrUtil.equals("0", sectionDto.getIsTrain())) {
                 sectionService.addSection(sectionDto);
             }
             bean.addSuccess("添加成功！");
@@ -259,7 +259,7 @@ public class SectionController {
         if (StrUtil.equals("1", sectionDto.getIsTrain())) {
             //单个课程以及含有的章节信息
             trainCourseVo = trainSectionService.selectCourseSection(sectionDto.getCourseId());
-        } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
+        } else if (StrUtil.equals("0", sectionDto.getIsTrain())) {
             //单个课程以及含有的章节信息
             trainCourseVo = sectionService.selectCourseSection(sectionDto.getCourseId());
         }
@@ -276,9 +276,9 @@ public class SectionController {
      */
     @RequestMapping(value = "/updateSection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean updateSection(@RequestParam(value = "courseWareFile",required = false) MultipartFile courseWareFile,
-                                      @RequestParam(value = "practiceFile",required = false) MultipartFile practiceFile,
-                                      @RequestParam(value = "testpaperFile",required = false) MultipartFile testpaperFile,
+    public ResponseBean updateSection(@RequestParam(value = "courseWareFile", required = false) MultipartFile courseWareFile,
+                                      @RequestParam(value = "practiceFile", required = false) MultipartFile practiceFile,
+                                      @RequestParam(value = "testpaperFile", required = false) MultipartFile testpaperFile,
                                       SectionDto sectionDto,
                                       HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
@@ -294,17 +294,21 @@ public class SectionController {
         //获取作业表和试卷表主键
         if (StrUtil.equals("1", sectionDto.getIsTrain())) {
             SectionDto a = trainSectionService.selectPidAndTid(sectionDto.getSectionId());
-            sectionDto.setPid(a.getPid());
-            sectionDto.setTid(a.getTid());
-        }else if(StrUtil.equals("0", sectionDto.getIsTrain())){
+            if (a != null) {
+                sectionDto.setPid(a.getPid());
+                sectionDto.setTid(a.getTid());
+            }
+        } else if (StrUtil.equals("0", sectionDto.getIsTrain())) {
             SectionDto b = sectionService.selectPidAndTid(sectionDto.getSectionId());
-            sectionDto.setPid(b.getPid());
-            sectionDto.setTid(b.getTid());
+            if (b != null) {
+                sectionDto.setPid(b.getPid());
+                sectionDto.setTid(b.getTid());
+            }
         }
 
         // TODO 课件
         if (courseWareFile != null) {
-            if (!courseWareFile.isEmpty()){
+            if (!courseWareFile.isEmpty()) {
                 //课件文件上传
                 Map<String, Object> courseWareMap = FileUpDownUtil.fileUpLoad(request, courseWareFile);
                 //文件上传是否成功
@@ -322,7 +326,7 @@ public class SectionController {
         }
         // TODO 作业
         if (practiceFile != null) {
-            if (!practiceFile.isEmpty()){
+            if (!practiceFile.isEmpty()) {
                 //作业文件上传
                 Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
                 //文件上传是否成功
@@ -341,7 +345,7 @@ public class SectionController {
         }
         // TODO 试卷
         if (testpaperFile != null) {
-            if (!testpaperFile.isEmpty()){
+            if (!testpaperFile.isEmpty()) {
                 //试卷文件上传
                 Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
                 //文件上传是否成功
@@ -365,7 +369,7 @@ public class SectionController {
                 String practiceUrl = testAndWorkService.queryUrlByPid(sectionDto.getPid());
                 testAndWorkService.updatePractice(practice);
                 DeleteFileUtil.deleteFile(practiceUrl);
-            } else if(StrUtil.isNotBlank(practice.getPracticeId())){
+            } else if (StrUtil.isNotBlank(practice.getPracticeId())) {
                 testAndWorkService.insertPractice(practice);
             }
             /** 考试 */
@@ -374,7 +378,7 @@ public class SectionController {
                 String testpaperUrl = testAndWorkService.queryUrlByTid(sectionDto.getTid());
                 testAndWorkService.updateTestpaper(testpaper);
                 DeleteFileUtil.deleteFile(testpaperUrl);
-            } else if(StrUtil.isNotBlank(testpaper.getTestpaperId())){
+            } else if (StrUtil.isNotBlank(testpaper.getTestpaperId())) {
                 testAndWorkService.insertTestpaper(testpaper);
             }
 
@@ -392,7 +396,7 @@ public class SectionController {
                         DeleteFileUtil.deleteFile(coursewareUrl + ".pdf");
                     }
                 }
-            } else if(StrUtil.equals("0", sectionDto.getIsTrain())){
+            } else if (StrUtil.equals("0", sectionDto.getIsTrain())) {
                 //获取之前课件文件路径
                 Section section = sectionService.getSectionById(sectionDto.getSectionId());
                 sectionService.updateSection(sectionDto);
@@ -436,10 +440,16 @@ public class SectionController {
         DownloadSectionDto downloadSectionDto = new DownloadSectionDto();
 
         if (StrUtil.equals("1", isTrain)) {
+            //是否含有文件
+            boolean bo = trainCourseService.isEmptyFileBySection(sectionId);
+            if (!bo) {
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR, "该章节下没有文件");
+                return bean;
+            }
             //查询培训课程资源考试与练习
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
-            if(StrUtil.isEmpty(trainSection.getCoursewareId()) && StrUtil.isEmpty(trainSection.getPracticeId()) && StrUtil.isEmpty(trainSection.getTestpaperId())){
-                bean.addError(ResponseBean.CODE_NOTFILE_ERROR,"此章节没有文件");
+            if (StrUtil.isEmpty(trainSection.getCoursewareId()) && StrUtil.isEmpty(trainSection.getPracticeId()) && StrUtil.isEmpty(trainSection.getTestpaperId())) {
+                bean.addError(ResponseBean.CODE_NOTFILE_ERROR, "此章节没有文件");
             }
             downloadSectionDto.setSectionUrl(trainSection.getTrainLitterSectionUrl());
             downloadSectionDto.setCoursewareId(trainSection.getCoursewareId());
@@ -448,11 +458,17 @@ public class SectionController {
             downloadSectionDto.setWorkId(trainSection.getPracticeId());
             downloadSectionDto.setTestPaperId(trainSection.getTestpaperId());
             downloadSectionDto.setSectionName(trainSection.getTrainLitterSectionName());
-        } else {
+        } else if (StrUtil.equals("0", isTrain)){
+            //是否含有文件
+            boolean bo = courseService.isEmptyFileBySection(sectionId);
+            if (!bo) {
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR, "该章节下没有文件");
+                return bean;
+            }
             //查询课程资源考试与练习
             Section section = sectionService.getSectionById(sectionId);
-            if(StrUtil.isEmpty(section.getCoursewareId()) && StrUtil.isEmpty(section.getWorkId()) && StrUtil.isEmpty(section.getTestPaperId())){
-                bean.addError(ResponseBean.CODE_NOTFILE_ERROR,"此章节没有文件");
+            if (StrUtil.isEmpty(section.getCoursewareId()) && StrUtil.isEmpty(section.getWorkId()) && StrUtil.isEmpty(section.getTestPaperId())) {
+                bean.addError(ResponseBean.CODE_NOTFILE_ERROR, "此章节没有文件");
             }
             downloadSectionDto.setSectionUrl(section.getSectionUrl());
             downloadSectionDto.setCoursewareId(section.getCoursewareId());
@@ -546,18 +562,18 @@ public class SectionController {
 
         if (StrUtil.equals("1", isTrain)) {
             //是否含有文件
-            boolean  bo = trainCourseService.isEmptyFile(courseId);
-            if(!bo){
-                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR,"该课程下没有文件");
+            boolean bo = trainCourseService.isEmptyFile(courseId);
+            if (!bo) {
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR, "该课程下没有文件");
                 return bean;
             }
             TrainCourseVo trainCourse = trainCourseService.selectTrainCourseById(courseId);
             courseName = trainCourse.getTrainCourseName();
             sections = trainSectionService.getSectionByCourseId(courseId);
         } else {
-            boolean  bo = courseService.isEmptyFile(courseId);
-            if(!bo){
-                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR,"该课程下没有文件");
+            boolean bo = courseService.isEmptyFile(courseId);
+            if (!bo) {
+                bean.addError(ResponseBean.CODE_COURSENOTFILE_ERROR, "该课程下没有文件");
                 return bean;
             }
             Course course = courseService.queryCourseByCourseId(courseId);

@@ -118,4 +118,5 @@ public interface SectionService{
 	void updateTotleSection(TotleSectionDto totleSectionDto);
 
     SectionDto selectPidAndTid(String sectionId);
+
 }

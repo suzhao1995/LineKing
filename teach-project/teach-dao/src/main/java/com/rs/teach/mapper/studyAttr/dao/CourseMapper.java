@@ -7,6 +7,7 @@ import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
+import com.rs.teach.mapper.studyAttr.vo.CourseAllUrl;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import org.apache.ibatis.annotations.Param;
@@ -205,6 +206,16 @@ public interface CourseMapper{
 	 * @return
 	 */
     Integer selectCourseNum();
-
-	Integer isEmptyFile(String courseId);
+	/**
+	 * 该课程是否存在文件
+	 * @param courseId
+	 * @return
+	 */
+	List<CourseAllUrl> isEmptyFile(String courseId);
+	/**
+	 * 该章节是否含有文件
+	 * @param sectionId
+	 * @return
+	 */
+    Integer isEmptyFileBySection(String sectionId);
 }

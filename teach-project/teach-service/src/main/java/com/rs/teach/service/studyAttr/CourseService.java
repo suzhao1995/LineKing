@@ -172,5 +172,16 @@ public interface CourseService{
 	 */
     Integer selectCourseNum();
 
-    boolean isEmptyFile(String courseId);
+	/**
+	 * 该课程下是否含有文件
+	 * @param courseId
+	 * @return
+	 */
+	boolean isEmptyFile(String courseId);
+	/**
+	 * 该章节下是否含有文件
+	 * @param sectionId
+	 * @return
+	 */
+	boolean isEmptyFileBySection(String sectionId);
 }
