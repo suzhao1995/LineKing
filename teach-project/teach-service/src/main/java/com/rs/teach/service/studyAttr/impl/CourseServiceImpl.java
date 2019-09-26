@@ -174,6 +174,7 @@ public class CourseServiceImpl implements CourseService{
 
 	@Override
 	public List<ConditionExtVo> queryOptionVo() {
+		//courseType  类型
 		List<ConditionExtVo> typeAllList = mapper.typeBy();
 		for (ConditionExtVo typeVo : typeAllList) {
 			// 等级

@@ -305,6 +305,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   COURSE_LEV as label
 		from TF_EL_COURSE
 		where COURSE_TYPE = #{courseType}
+		group by COURSE_LEV
 	</select>
 	<select id="courseBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
 		select COURSE_ID as id ,
