@@ -292,7 +292,7 @@ public class CenterController{
 				double doubleDigit = Double.valueOf(getDoubleDigit(number,totleNum));	//进度条
 				int percentage = (int)(doubleDigit * 100);	
 				
-				map.put("percentage", percentage);	
+				map.put("percentage", percentage);
 			}else{
 				map.put("percentage", 0);
 			}
