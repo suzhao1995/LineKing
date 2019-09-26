@@ -23,14 +23,19 @@
         where ANSWER_SHEET_ID=#{answerSheetId}
     </select>
 
-    <select id="queryAnswerSheet" resultType="com.rs.teach.mapper.backstage.vo.AnswerSheetVo">
+    <select id="queryAnswerSheet" parameterType="com.rs.teach.mapper.backstage.entity.TrainData" resultType="com.rs.teach.mapper.backstage.vo.AnswerSheetVo">
          select TF_EL_ANSWER_SHEET.answer_sheet_id, TF_EL_ANSWER_SHEET.user_id,USER_NAME, train_sheet_id, train_sheet_url, train_sheet_path, train_sheet_type, TF_EL_ANSWER_SHEET.add_time, train_sheet_file_name, TF_EL_ANSWER_SHEET.evaluation_id, TF_EL_ANSWER_SHEET.train_course_id, grade, evaluation
         from TF_EL_ANSWER_SHEET,TF_EL_EVALUATION,TF_EL_TRAIN_DATA,USER_TRAIN_DATA_RELA,TF_EL_TEACH_USER
-        where TF_EL_TRAIN_DATA.ID = DATA_ID
-        and TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
-        and USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID = TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID
-        and TF_EL_ANSWER_SHEET.USER_ID = TF_EL_TEACH_USER.USER_ID
-        and TF_EL_TRAIN_DATA.ID = #{id}
+        <where>
+            TF_EL_TRAIN_DATA.ID = DATA_ID
+            and TF_EL_EVALUATION.EVALUATION_ID = TF_EL_ANSWER_SHEET.EVALUATION_ID
+            and USER_TRAIN_DATA_RELA.ANSWER_SHEET_ID = TF_EL_ANSWER_SHEET.ANSWER_SHEET_ID
+            and TF_EL_ANSWER_SHEET.USER_ID = TF_EL_TEACH_USER.USER_ID
+            and TF_EL_TRAIN_DATA.ID = #{id}
+            <if test="userName != null and userName != ''">
+               and  USER_NAME like '%'|| #{userName} ||'%'
+            </if>
+        </where>
     </select>
     <delete id="deleteAnswerSheetById">
         delete from TF_EL_ANSWER_SHEET where ANSWER_SHEET_ID = #{answerSheetId}

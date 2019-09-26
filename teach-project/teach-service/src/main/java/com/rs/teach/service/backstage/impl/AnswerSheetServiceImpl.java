@@ -1,13 +1,11 @@
 package com.rs.teach.service.backstage.impl;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import com.rs.teach.mapper.backstage.dao.AnswerSheetMapper;
 import com.rs.teach.mapper.backstage.dao.EvaluationMapper;
 import com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.Evaluation;
+import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.backstage.vo.AnswerSheetVo;
 import com.rs.teach.mapper.common.Enums.EvaluationGradeEnum;
@@ -64,8 +62,8 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
     }
 
     @Override
-    public List<AnswerSheetVo> queryAnswerSheet(String id) {
-        return answerSheetMapper.queryAnswerSheet(id);
+    public List<AnswerSheetVo> queryAnswerSheet(TrainData trainData) {
+        return answerSheetMapper.queryAnswerSheet(trainData);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -38,9 +38,14 @@
     <select id="queryUserTrainDataRela" resultType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
         select id, data_id, USER_TRAIN_DATA_RELA.user_id, admin_id,ANSWER_SHEET_ID, USER_TRAIN_DATA_RELA.train_course_id, user_name , train_course_name
         from USER_TRAIN_DATA_RELA,TF_EL_TEACH_USER,TF_EL_TRAIN_COURSE
-        where USER_TRAIN_DATA_RELA.USER_ID = TF_EL_TEACH_USER.USER_ID
-        and USER_TRAIN_DATA_RELA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
-        and data_id = #{id}
+        <where>
+            USER_TRAIN_DATA_RELA.USER_ID = TF_EL_TEACH_USER.USER_ID
+            and USER_TRAIN_DATA_RELA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
+            and data_id = #{id}
+            <if test="userName != null and userName != ''">
+                and USER_NAME like '%'|| #{userName} ||'%'
+            </if>
+        </where>
     </select>
     <select id="queryAdminName" resultType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
         select id, user_name as adminName

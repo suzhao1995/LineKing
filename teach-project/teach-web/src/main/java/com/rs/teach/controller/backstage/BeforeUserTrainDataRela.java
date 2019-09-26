@@ -45,7 +45,7 @@ public class BeforeUserTrainDataRela {
     @Autowired
     private AnswerSheetService answerSheetService;
     /**
-     * 分页查询考核人员信息
+     * 分页查询参与人员
      *
      * @param trainData(取主键id) pageDto
      * @return

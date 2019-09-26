@@ -28,4 +28,5 @@ public class TrainData extends PageDto implements Serializable {
 
     private String[] userIds;  //考核用户id数组
     private String adminId; //指派人ID
+    private String userName; //参与考核人的name
 }

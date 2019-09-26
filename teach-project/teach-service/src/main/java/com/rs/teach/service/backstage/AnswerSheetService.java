@@ -1,6 +1,7 @@
 package com.rs.teach.service.backstage;
 
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
+import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.vo.AnswerSheetVo;
 
 import java.util.List;
@@ -27,10 +28,10 @@ public interface AnswerSheetService {
 
     /**
      * 根据培训考核文件表主键查询考核人员上传答卷信息
-     * @param id
+     * @param trainData
      * @return
      */
-    List<AnswerSheetVo> queryAnswerSheet(String id);
+    List<AnswerSheetVo> queryAnswerSheet(TrainData trainData);
 
     /**
      * 根据id删除答卷表数据

@@ -273,7 +273,7 @@ public class BeforeTrainDataController {
 
 
     /**
-     * 分页查询答卷表（人员考核信息）
+     * 分页查询人员考核信息   即答卷
      *
      * @param trainData(只取id) pageDto
      * @return
@@ -283,7 +283,7 @@ public class BeforeTrainDataController {
     public ResponseBean queryAnswerSheet(@RequestBody TrainData trainData) {
         ResponseBean bean = new ResponseBean();
         //根据培训考核文件表主键查询考核人员上传答卷信息
-        PageInfo<AnswerSheetVo> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> answerSheetService.queryAnswerSheet(trainData.getId()));
+        PageInfo<AnswerSheetVo> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> answerSheetService.queryAnswerSheet(trainData));
         bean.addSuccess(pageInfo);
         return bean;
     }
