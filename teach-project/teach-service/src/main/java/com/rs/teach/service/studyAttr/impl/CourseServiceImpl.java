@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.common.ConditionExtVo;
 import com.rs.teach.mapper.common.OptionVo;
@@ -211,7 +212,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public boolean isEmptyFile(String courseId) {
 		List<CourseAllUrl> list = mapper.isEmptyFile(courseId);
-		if (list == null ){
+		if (CollectionUtil.isEmpty(list)){
 			return false;
 		}
 		for (CourseAllUrl vo : list) {

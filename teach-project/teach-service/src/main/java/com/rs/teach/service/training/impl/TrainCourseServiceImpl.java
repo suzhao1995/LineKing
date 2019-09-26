@@ -1,5 +1,6 @@
 package com.rs.teach.service.training.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.section.dao.TrainSectionMapper;
@@ -78,7 +79,7 @@ public class TrainCourseServiceImpl implements TrainCourseService {
     public boolean isEmptyFile(String courseId) {
 
         List<CourseAllUrl> list = trainCourseMapper.isEmptyFile(courseId);
-        if (list == null ){
+        if (CollectionUtil.isEmpty(list)){
             return false;
         }
         for (CourseAllUrl vo : list) {
