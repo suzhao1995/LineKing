@@ -290,7 +290,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据大章节序号 和 视频课程id查询章节信息 -->
 	<select id="adminGetVedioSection" parameterType="java.lang.String" resultType="com.rs.teach.mapper.video.entity.VideoSection">
-		select * from tf_el_video_section t where t.video_id = #{videoId} and t.VIDEOTOTLE_SORTID = #{totleSortId}
+		select * from tf_el_video_section t where t.video_id = #{videoId} and t.VIDEOTOTLE_SORTID = #{totleSortId} order by to_number(videosection_sort)
 	</select>
     <select id="selectVideoNum" resultType="java.lang.Integer">
 		select count(1) from TF_EL_VIDEO
