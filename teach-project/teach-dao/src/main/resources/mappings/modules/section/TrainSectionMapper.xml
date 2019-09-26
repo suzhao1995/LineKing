@@ -96,6 +96,7 @@
         select ID, TOTLE_SECTION_SORT as trainSectionSort,TOTLE_SECTION_NAME as trainSectionName
         from TF_EL_TRAIN_TOTLE_SECTION
         where course_id = #{courseId}
+        order by to_number(TOTLE_SECTION_SORT) asc
     </select>
 
     <select id="selectTrainLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">

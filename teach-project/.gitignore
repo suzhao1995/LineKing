@@ -1,0 +1,15 @@
+/target/
+/.settings/
+.classpath
+.project
+
+
+#IDEA
+/target
+/.idea
+*.iml
+/ci.sh
+static
+rebel.xml
+rebel-remote.xml
+.rebel-remote.xml.bak
