@@ -288,10 +288,14 @@ public class CenterController{
 			int number = finishSec == null ? 0 : finishSec.size();	//已学完章节数量
 			map.put("finishNumber", number);
 			int totleNum = Integer.valueOf(map.get("sectionNumber").toString());	//课程章节总数
-			double doubleDigit = Double.valueOf(getDoubleDigit(number,totleNum));	//进度条
-			int percentage = (int)(doubleDigit * 100);	
-			
-			map.put("percentage", percentage);	
+			if(totleNum != 0){
+				double doubleDigit = Double.valueOf(getDoubleDigit(number,totleNum));	//进度条
+				int percentage = (int)(doubleDigit * 100);	
+				
+				map.put("percentage", percentage);	
+			}else{
+				map.put("percentage", 0);
+			}
 		}
 		PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list,9);
 		ajaxData.put("speedInfo", pageInfo);
