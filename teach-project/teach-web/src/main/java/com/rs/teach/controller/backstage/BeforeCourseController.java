@@ -62,9 +62,9 @@ public class BeforeCourseController {
      * @return ResponseBean
      * @date 2019年8月17日 下午1:14:05
      */
-    @RequestMapping("/initVideoType")
+    @RequestMapping("/initCourseType")
     @ResponseBody
-    public ResponseBean initVideoType(){
+    public ResponseBean initCourseType(){
         ResponseBean bean = new ResponseBean();
         Map<String,Object> ajaxData = new HashMap<String,Object>();
         //初始化视频分类
@@ -80,9 +80,9 @@ public class BeforeCourseController {
      * @author suzhao
      * @date 2019年8月17日 下午1:14:05
      */
-    @RequestMapping("/delVideoType")
+    @RequestMapping("/delCourseType")
     @ResponseBody
-    public ResponseBean delVideoType(@RequestParam("cid") String cid){
+    public ResponseBean delCourseType(@RequestParam("cid") String cid){
         ResponseBean bean = new ResponseBean();
 
         //判断该视频分类是否有视频
@@ -145,9 +145,9 @@ public class BeforeCourseController {
      * @author suzhao
      * @date 2019年8月17日 下午1:14:05
      */
-    @RequestMapping("/updateVideoType")
+    @RequestMapping("/updateCourseType")
     @ResponseBody
-    public ResponseBean updateVideoType(HttpServletRequest request, @RequestBody SysCode sysCode){
+    public ResponseBean updateCourseType(HttpServletRequest request, @RequestBody SysCode sysCode){
         ResponseBean bean = new ResponseBean();
         String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
 
