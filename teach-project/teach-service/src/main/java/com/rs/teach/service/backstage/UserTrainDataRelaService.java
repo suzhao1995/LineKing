@@ -1,5 +1,6 @@
 package com.rs.teach.service.backstage;
 
+import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 
 import java.util.List;
@@ -37,9 +38,9 @@ public interface UserTrainDataRelaService {
 
     /**
      * 查询考核人信息
-     * @param id
+     * @param trainData
      */
-    List<UserTrainDataRela> queryUserTrainDataRela(String id);
+    List<UserTrainDataRela> queryUserTrainDataRela(TrainData trainData);
 
     /**
      * 删除考核参与人员(若上传答卷了 则删除答卷)

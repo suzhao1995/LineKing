@@ -1,5 +1,6 @@
 package com.rs.teach.mapper.backstage.dao;
 
+import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,9 +46,9 @@ public interface UserTrainDataRelaMapper {
 
     /**
      * 查询考核人信息
-     * @param id
+     * @param trainData
      */
-    List<UserTrainDataRela> queryUserTrainDataRela(@Param("id")String id);
+    List<UserTrainDataRela> queryUserTrainDataRela( TrainData trainData);
 
     /**
      * 查询指派人信息

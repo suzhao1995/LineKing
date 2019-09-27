@@ -2,6 +2,7 @@ package com.rs.teach.service.backstage.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.dao.UserTrainDataRelaMapper;
+import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.service.backstage.UserTrainDataRelaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
     }
 
     @Override
-    public List<UserTrainDataRela> queryUserTrainDataRela(String id) {
-        List<UserTrainDataRela> userTrainDataRelas = userTrainDataRelaMapper.queryUserTrainDataRela(id);
-        List<UserTrainDataRela> vos = userTrainDataRelaMapper.queryAdminName(id);
+    public List<UserTrainDataRela> queryUserTrainDataRela(TrainData trainData) {
+        List<UserTrainDataRela> userTrainDataRelas = userTrainDataRelaMapper.queryUserTrainDataRela(trainData);
+        List<UserTrainDataRela> vos = userTrainDataRelaMapper.queryAdminName(trainData.getTrainDataId());
 
         for (UserTrainDataRela vo1:userTrainDataRelas) {
             for (UserTrainDataRela vo2:vos) {

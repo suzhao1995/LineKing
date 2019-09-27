@@ -35,7 +35,7 @@
         and TRAIN_COURSE_ID = #{trainCourseId}
     </select>
 
-    <select id="queryUserTrainDataRela" resultType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
+    <select id="queryUserTrainDataRela" parameterType="com.rs.teach.mapper.backstage.entity.TrainData" resultType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela">
         select id, data_id, USER_TRAIN_DATA_RELA.user_id, admin_id,ANSWER_SHEET_ID, USER_TRAIN_DATA_RELA.train_course_id, user_name , train_course_name
         from USER_TRAIN_DATA_RELA,TF_EL_TEACH_USER,TF_EL_TRAIN_COURSE
         <where>

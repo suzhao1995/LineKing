@@ -55,7 +55,7 @@ public class BeforeUserTrainDataRela {
     public ResponseBean queryUserTrainDataRela(@RequestBody TrainData trainData) {
         ResponseBean bean = new ResponseBean();
         //根据培训考核文件表主键查询考核人员信息
-        PageInfo<UserTrainDataRela> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> userTrainDataRelaService.queryUserTrainDataRela(trainData.getId()));
+        PageInfo<UserTrainDataRela> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> userTrainDataRelaService.queryUserTrainDataRela(trainData));
         bean.addSuccess(pageInfo);
         return bean;
     }
