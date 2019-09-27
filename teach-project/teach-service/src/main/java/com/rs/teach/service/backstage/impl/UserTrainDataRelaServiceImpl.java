@@ -42,7 +42,6 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
     public List<UserTrainDataRela> queryUserTrainDataRela(TrainData trainData) {
         List<UserTrainDataRela> userTrainDataRelas = userTrainDataRelaMapper.queryUserTrainDataRela(trainData);
         List<UserTrainDataRela> vos = userTrainDataRelaMapper.queryAdminName(trainData.getId());
-
         for (UserTrainDataRela vo1:userTrainDataRelas) {
             for (UserTrainDataRela vo2:vos) {
                 if(StrUtil.equalsIgnoreCase(vo1.getId(),vo2.getId())){
