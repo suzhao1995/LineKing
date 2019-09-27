@@ -66,4 +66,10 @@
             and ID = #{id}
         )
     </delete>
+    <select id="echoPeople" parameterType="com.rs.teach.mapper.backstage.entity.UserTrainDataRela" resultType="java.lang.String">
+        select user_id
+        from user_train_data_rela
+        where DATA_ID = #{dataId}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </select>
 </mapper>

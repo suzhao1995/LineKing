@@ -7,6 +7,7 @@ import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
+import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.common.ConditionExtVo;
@@ -72,6 +73,20 @@ public class BeforeUserTrainDataRela {
         bean.addSuccess(vo);
         return bean;
     }
+
+    /**
+     * 回显参与考核人员（数组）
+     * @return
+     */
+    @RequestMapping(value = "/echoPeople", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean echoPeople(@RequestBody UserTrainDataRela UserTrainDataRela) {
+        ResponseBean bean = new ResponseBean();
+        String [] people = userTrainDataRelaService.echoPeople(UserTrainDataRela);
+        bean.addSuccess(people);
+        return bean;
+    }
+
 
     /**
      * 考核人员树状图

@@ -68,4 +68,9 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
             throw e;
         }
     }
+
+    @Override
+    public String[] echoPeople(UserTrainDataRela userTrainDataRela) {
+        return userTrainDataRelaMapper.echoPeople(userTrainDataRela);
+    }
 }

@@ -47,4 +47,11 @@ public interface UserTrainDataRelaService {
      * @param userTrainDataRela
      */
     void deleteUserTrainDataRela(UserTrainDataRela userTrainDataRela);
+
+    /**
+     * 考核人员回显
+     * @param userTrainDataRela
+     * @return
+     */
+    String[] echoPeople(UserTrainDataRela userTrainDataRela);
 }
