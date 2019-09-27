@@ -1,17 +1,22 @@
 package com.rs.teach.controller.backstage;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
+import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
+import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.service.studyAttr.CourseService;
+import com.rs.teach.service.sysCode.SysCodeService;
 import com.rs.teach.service.training.TrainCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +53,122 @@ public class BeforeCourseController {
 
     @Autowired
     private TrainCourseService trainCourseService;
+
+    @Autowired
+    private SysCodeService sysCodeService;
+
+    /**
+     * 管理员---初始化课程分类列表
+     * @return ResponseBean
+     * @date 2019年8月17日 下午1:14:05
+     */
+    @RequestMapping("/initVideoType")
+    @ResponseBody
+    public ResponseBean initVideoType(){
+        ResponseBean bean = new ResponseBean();
+        Map<String,Object> ajaxData = new HashMap<String,Object>();
+        //初始化视频分类
+        List<SysCode> list = sysCodeService.getSysCodeList("COURSE_CODE");
+        ajaxData.put("courseType", list);
+        bean.addSuccess(ajaxData);
+        return bean;
+    }
+
+    /**
+     * 管理员---删除视频分类
+     * @return ResponseBean
+     * @author suzhao
+     * @date 2019年8月17日 下午1:14:05
+     */
+    @RequestMapping("/delVideoType")
+    @ResponseBody
+    public ResponseBean delVideoType(@RequestParam("cid") String cid){
+        ResponseBean bean = new ResponseBean();
+
+        //判断该视频分类是否有视频
+        SysCode sysCode = sysCodeService.getSysCode(cid);
+        if(sysCode != null){
+            List<Course> list = courseService.adminGetVideos(sysCode.getCodeValue());
+            if(list != null && list.size() > 0){
+                bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"该课程分类中含有课程课件，请先删除课程课件");
+                return bean;
+            }
+        }
+        //删除课程分类
+        sysCodeService.delSysCode(cid);
+        bean.addSuccess();
+        return bean;
+    }
+
+
+    /**
+     * 添加课程分类
+     * @param sysCode
+     * @return
+     */
+    @RequestMapping(value = "/addCourseType", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean addCourseType(@RequestBody SysCode sysCode, HttpServletRequest request) {
+        ResponseBean bean = new ResponseBean();
+        String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+        //查询物料分类总数 限定9个
+        List<SysCode> list = sysCodeService.getSysCodeList("COURSE_CODE");
+        sysCode.setCid(DateUtil.format(DateTime.now(), DatePattern.PURE_DATETIME_PATTERN));
+        sysCode.setCodeType("COURSE_CODE");
+        sysCode.setCreateBy(userId);
+        sysCode.setCreateDate(DateUtil.format(DateTime.now(),DatePattern.PURE_DATE_PATTERN));
+        if(list.size() > 0){
+            SysCode lastCode = list.get(list.size() - 1);	//获取list集合最后一个对象
+            int code = Integer.valueOf(lastCode.getCode()) + 1;
+            int sort = Integer.valueOf(lastCode.getCodeSort()) + 10;
+            sysCode.setCode(String.valueOf(code));
+            sysCode.setCodeSort(String.valueOf(sort));
+        }else{
+            sysCode.setCode("3001");
+            sysCode.setCodeSort("1010");
+        }
+        try {
+            sysCodeService.addSysCode(sysCode);
+            bean.addSuccess("添加成功！");
+        } catch (Exception e) {
+            logger.error("课程分类-添加-失败", e);
+            bean.addError("添加失败");
+        }
+        return bean;
+    }
+
+    /**
+     * 管理员---修改课程分类
+     * @param
+     * @throws
+     * @return ResponseBean
+     * @author suzhao
+     * @date 2019年8月17日 下午1:14:05
+     */
+    @RequestMapping("/updateVideoType")
+    @ResponseBody
+    public ResponseBean updateVideoType(HttpServletRequest request, @RequestBody SysCode sysCode){
+        ResponseBean bean = new ResponseBean();
+        String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+
+        sysCode.setCodeType("COURSE_CODE");
+        sysCode.setCreateBy(userId);
+        sysCode.setCreateDate(DateUtil.format(DateTime.now(),DatePattern.PURE_DATE_PATTERN));
+
+        try {
+            int result = sysCodeService.modifySysCode(sysCode);
+            if(result == 0){
+                bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"修改课程分类失败");
+                return bean;
+            }
+            bean.addSuccess();
+        } catch (Exception e) {
+            bean.addError("系统异常");
+            logger.info("---------修改课程分类失败，系统异常--------", e);
+        }
+
+        return bean;
+    }
 
 
     /**

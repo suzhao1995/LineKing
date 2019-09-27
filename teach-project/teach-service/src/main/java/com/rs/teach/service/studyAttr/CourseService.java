@@ -184,4 +184,11 @@ public interface CourseService{
 	 * @return
 	 */
 	boolean isEmptyFileBySection(String sectionId);
+
+	/**
+	 * 根据此分类查询课程文件
+	 * @param codeValue
+	 * @return
+	 */
+    List<Course> adminGetVideos(String codeValue);
 }

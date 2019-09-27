@@ -218,4 +218,6 @@ public interface CourseMapper{
 	 * @return
 	 */
     Integer isEmptyFileBySection(String sectionId);
+
+    List<Course> adminGetVideos(@Param("codeValue") String codeValue);
 }

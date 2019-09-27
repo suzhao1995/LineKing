@@ -54,7 +54,7 @@ public class SchoolController {
 
 
     /**
-     * 回显权限课程或视频（数组）
+     * 回显权限课程（数组）
      * @return
      */
     @RequestMapping(value = "/echoCourse", method = RequestMethod.POST)
@@ -66,6 +66,18 @@ public class SchoolController {
         return bean;
     }
 
+    /**
+     * 回显权限视频（数组）
+     * @return
+     */
+    @RequestMapping(value = "/echoVideo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean echoVideo(@RequestBody School school) {
+        ResponseBean bean = new ResponseBean();
+        String [] videos = schoolCourseService.echoCourse(school.getSchoolId());
+        bean.addSuccess(videos);
+        return bean;
+    }
 
     /**
      * 添加学校

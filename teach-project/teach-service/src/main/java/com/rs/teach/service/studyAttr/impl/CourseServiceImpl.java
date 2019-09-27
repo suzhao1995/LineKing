@@ -240,4 +240,9 @@ public class CourseServiceImpl implements CourseService{
 		}
 	}
 
+    @Override
+    public List<Course> adminGetVideos(String codeValue) {
+        return mapper.adminGetVideos(codeValue);
+    }
+
 }
