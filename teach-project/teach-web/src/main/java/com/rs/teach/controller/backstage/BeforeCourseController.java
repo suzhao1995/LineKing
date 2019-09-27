@@ -9,7 +9,9 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
+import com.rs.teach.mapper.backstage.vo.SchoolVo;
 import com.rs.teach.mapper.common.OptionVo;
+import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
 import com.rs.teach.mapper.studyAttr.entity.Course;
 import com.rs.teach.mapper.studyAttr.vo.CourseVo;
@@ -62,15 +64,13 @@ public class BeforeCourseController {
      * @return ResponseBean
      * @date 2019年8月17日 下午1:14:05
      */
-    @RequestMapping("/initCourseType")
+    @RequestMapping(value = "/initCourseType",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean initCourseType(){
+    public ResponseBean initCourseType(@RequestBody PageDto pageDto){
         ResponseBean bean = new ResponseBean();
-        Map<String,Object> ajaxData = new HashMap<String,Object>();
         //初始化视频分类
-        List<SysCode> list = sysCodeService.getSysCodeList("COURSE_CODE");
-        ajaxData.put("courseType", list);
-        bean.addSuccess(ajaxData);
+        PageInfo<SysCode> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() ->sysCodeService.getSysCodeList("COURSE_CODE"));
+        bean.addSuccess(pageInfo);
         return bean;
     }
 
