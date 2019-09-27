@@ -41,7 +41,7 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
     @Override
     public List<UserTrainDataRela> queryUserTrainDataRela(TrainData trainData) {
         List<UserTrainDataRela> userTrainDataRelas = userTrainDataRelaMapper.queryUserTrainDataRela(trainData);
-        List<UserTrainDataRela> vos = userTrainDataRelaMapper.queryAdminName(trainData.getTrainDataId());
+        List<UserTrainDataRela> vos = userTrainDataRelaMapper.queryAdminName(trainData.getId());
 
         for (UserTrainDataRela vo1:userTrainDataRelas) {
             for (UserTrainDataRela vo2:vos) {
