@@ -9,7 +9,6 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
-import com.rs.teach.mapper.backstage.vo.SchoolVo;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.studyAttr.dto.CourseDto;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -116,7 +114,7 @@ public class BeforeCourseController {
         sysCode.setCid(DateUtil.format(DateTime.now(), DatePattern.PURE_DATETIME_PATTERN));
         sysCode.setCodeType("COURSE_CODE");
         sysCode.setCreateBy(userId);
-        sysCode.setCreateDate(DateUtil.format(DateTime.now(),DatePattern.PURE_DATE_PATTERN));
+        sysCode.setCreateDate(DateUtil.format(DateTime.now(),DatePattern.NORM_DATE_PATTERN));
         if(list.size() > 0){
             SysCode lastCode = list.get(list.size() - 1);	//获取list集合最后一个对象
             int code = Integer.valueOf(lastCode.getCode()) + 1;
