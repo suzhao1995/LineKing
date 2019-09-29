@@ -151,10 +151,15 @@ public class TrainSectionController {
             //查询返回页面信息（1.当前小章节全部信息)
             TrainSection trainSection = trainSectionService.selectTrainSection(sectionId);
             //查询返回页面信息（pdf图片文件）
-            String coursewareUrl = fileMappingPath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
-                    + "\\" + trainSection.getCoursewareId() + "_" + trainSection.getUpdateFileName()
-                    + ".pdf";
-            trainSection.setCoursewareUrl(coursewareUrl);
+            if(trainSection != null){
+                if (StrUtil.isNotEmpty(trainSection.getTrainLitterSectionUrl())) {
+                    String coursewareUrl = fileMappingPath + trainSection.getTrainLitterSectionUrl().replace("/", "\\")
+                            + "\\" + trainSection.getCoursewareId() + "_" + trainSection.getUpdateFileName()
+                            + ".pdf";
+                    trainSection.setCoursewareUrl(coursewareUrl);
+                }
+            }
+
 
             map.put("trainSection", trainSection);
 
