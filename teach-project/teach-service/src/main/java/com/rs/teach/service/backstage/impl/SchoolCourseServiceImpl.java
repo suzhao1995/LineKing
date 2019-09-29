@@ -26,9 +26,9 @@ public class SchoolCourseServiceImpl implements SchoolCourseService {
     @Override
     public void addVideoInSchool(School school) {
         //修改学校授权课程
-        if (schoolCourseMapper.count(school.getSchoolId()) > 0) {
-            schoolCourseMapper.deleteSchoolCourse(school.getSchoolId());
+        if (schoolCourseMapper.countVideo(school.getSchoolId()) > 0) {
+            schoolCourseMapper.deleteSchoolVideoCourse(school.getSchoolId());
         }
-        schoolCourseMapper.addSchoolCourse(school);
+        schoolCourseMapper.addSchoolVideoCourse(school);
     }
 }

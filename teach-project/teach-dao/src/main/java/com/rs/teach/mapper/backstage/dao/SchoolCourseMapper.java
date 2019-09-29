@@ -14,11 +14,16 @@ import java.util.List;
 public interface SchoolCourseMapper {
 
     /**
-     * 添加学校和课程关联表(给学校添加视频课程)
+     * 添加学校和课程关联表
      * @param school
      */
     void addSchoolCourse(School school);
 
+    /**
+     * 给学校添加视频课程
+     * @param school
+     */
+    void addSchoolVideoCourse(School school);
     /**
      * 根据校区id查询所授权课程
      * @param schoolId
@@ -26,17 +31,29 @@ public interface SchoolCourseMapper {
     List<SchoolCourseRela> selectCourseBySchoolId(@Param("schoolId") String schoolId);
 
     /**
-     * 删除关联表
+     * 删除关联表课程
      * @param schoolId
      */
     void deleteSchoolCourse(@Param("schoolId") String schoolId);
 
+    /**
+     * 删除关联表视频
+     * @param schoolId
+     */
+    void deleteSchoolVideoCourse(@Param("schoolId") String schoolId);
     /**
      * 该学校是否添加了课程
      * @param schoolId
      * @return
      */
     Integer count(@Param("schoolId") String schoolId);
+
+    /**
+     * 该学校是否添加了视频
+     * @param schoolId
+     * @return
+     */
+    Integer countVideo(String schoolId);
 
     /**
      * 权限课程回显
