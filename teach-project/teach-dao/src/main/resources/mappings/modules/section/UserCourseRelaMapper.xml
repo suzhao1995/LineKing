@@ -128,9 +128,9 @@
         and SECTION_ID is not null
     </update>
      
-    <update id="updateRela" parameterType="java.lang.String">
-    	update USER_COURSE_RELA set RELA_TYPE = #{relaType} 
+    <delete id="updateRela" parameterType="java.lang.String">
+    	delete from user_course_rela
     	where course_Id = #{courseId}
         and user_id = #{userId} and CLASS_ID = #{classId}
-    </update>
+    </delete>
 </mapper>
