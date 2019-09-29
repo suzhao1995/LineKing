@@ -46,6 +46,7 @@ public class SessionUtil {
 	//清除过期的session信息
 	private static synchronized ConcurrentHashMap<String, HttpSession> cleanMap(
 			ConcurrentHashMap<String, HttpSession> map) {
+		System.out.println("----------map.size()----------"+map.size());
 		if (map.size() < 1) {
 			return map;
 		}
@@ -53,6 +54,7 @@ public class SessionUtil {
 		Set<Entry<String, HttpSession>> entrySet = map.entrySet();
 		List<String> list = new ArrayList<>();
 		for (Entry<String, HttpSession> entry : entrySet) {
+			System.out.println("---------session---------"+entry.getValue());
 			// 如果session过期了，就清除掉这个session
 			long max_age = sessionMaxAge * 1000L;
 			long time = new Date().getTime();
