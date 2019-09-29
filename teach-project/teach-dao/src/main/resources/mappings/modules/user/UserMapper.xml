@@ -134,10 +134,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where t.ADMIN_FLAG = '0'
 		and t.USER_ID not in (select USER_ID from USER_TRAIN_DATA_RELA)
 	</select>
+	<!--sssss-->
 	<select id="selectTeachBySchoolId" resultType="com.rs.teach.mapper.user.entity.User">
-		select user_id, user_name,START_TIME,END_DATE,SCHOOL_ID
-		from TF_EL_TEACH_USER
-		where SCHOOL_ID = #{schoolId}
+		select tu.user_id, tu.user_name,tu.START_TIME,tu.END_DATE,tu.SCHOOL_ID,pa.PIC_ID,pa.PIC_URL,pa.SAVE_PATH
+		from TF_EL_TEACH_USER tu,TF_EL_PIC_ATTR pa
+		where tu.USER_ID = pa.ASSOCIATION_ID
+		and SCHOOL_ID = #{schoolId}
 	</select>
 
     <select id="selectUserInfoById" resultType="com.rs.teach.mapper.user.vo.UserVo">
