@@ -136,6 +136,8 @@ public class TeachAspect {
 		}else if(StringUtils.isNotBlank(request.getHeader("sessionKey"))){
 			sessionId = request.getHeader("sessionKey");
 		}
+	    System.out.println("-----------sessionId---------"+sessionId);
+	    
 	    Map<String,String> remoteLoginMap = SessionUtil.getRemoteLoginMap();
 	    if(StringUtils.isNotEmpty(remoteLoginMap.get(sessionId))){
 	    	resultMap.put("isLogin", "1030");		//异地登录code

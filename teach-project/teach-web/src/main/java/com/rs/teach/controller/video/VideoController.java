@@ -187,14 +187,14 @@ public class VideoController{
 		String classId = request.getParameter("classId");
 		
 		try {
-			//判断课程是否添加过我的课程
-			int count = userCourseRelaService.isAddCourse(courseId, userId, classId);
-			if(count > 0){
-				//修改relaType
-				userCourseRelaService.modifyRelaType(courseId, userId, classId,"2");
-				bean.addSuccess();
-				return bean;
-			}
+//			//判断课程是否添加过我的课程
+//			int count = userCourseRelaService.isAddCourse(courseId, userId, classId);
+//			if(count > 0){
+//				//修改relaType
+//				userCourseRelaService.modifyRelaType(courseId, userId, classId,"2");
+//				bean.addSuccess();
+//				return bean;
+//			}
 			//添加课程信息
 			int result = userCourseRelaService.addCourse(courseId, userId, classId,"3");
 			if(result == 1){
