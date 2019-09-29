@@ -138,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        			t.paperid,
        			t.courseware_id
        		from tf_el_section t, tf_el_train_totle_section ts 
-       where t.totlesection_sortid = ts.id and t.course_id = #{courseId} order by ts.totle_section_sort, t.section_sort
+       where t.totlesection_sortid = ts.id and t.course_id = #{courseId} order by to_number(ts.totle_section_sort), to_number(t.section_sort)
 	</select>
 	<resultMap type="java.util.HashMap" id="sMap">
 		<result property="sectionId" column="section_id"/>
@@ -159,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        where se.section_id = ucr.section_id and se.totlesection_sortid = ts.id
              and se.course_id = #{courseId}
              and ucr.user_id = #{userId}
-             and ucr.class_id = #{classId} order by ts.totle_section_sort, se.section_sort
+             and ucr.class_id = #{classId} order by to_number(ts.totle_section_sort), to_number(se.section_sort)
 	</select>
 
     <select id="selectSectionNum" resultType="java.lang.String">

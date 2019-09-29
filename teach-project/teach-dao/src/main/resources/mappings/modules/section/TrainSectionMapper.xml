@@ -128,7 +128,7 @@
         from TF_EL_TRAIN_SECTION,TF_EL_TRAIN_TOTLE_SECTION
         where ID = TRAIN_SECTION_SORTID
         and TRAIN_COURSE_ID = #{courseId}
-        order by TOTLE_SECTION_SORT,train_litter_section_sort
+        order by to_number(TOTLE_SECTION_SORT),to_number(train_litter_section_sort)
     </select>
 
 
