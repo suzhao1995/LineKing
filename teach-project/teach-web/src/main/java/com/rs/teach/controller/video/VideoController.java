@@ -91,7 +91,7 @@ public class VideoController{
 		}
 		
 		//初始化分页信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 8);
 		List<Video> list = videoService.getVideos(videoType,schoolId);
 		
 		//查询属于我的课程的信息
@@ -99,7 +99,7 @@ public class VideoController{
 		for(Video video : list){
 			MyCourseToList(video,MyVideo);
 		}
-		PageInfo<Video> pageInfo = new PageInfo<Video>(list, 9);
+		PageInfo<Video> pageInfo = new PageInfo<Video>(list, 8);
 		
 		bean.addSuccess(pageInfo);
 		return bean;
