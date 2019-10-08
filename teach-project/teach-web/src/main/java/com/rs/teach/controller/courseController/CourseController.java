@@ -102,7 +102,7 @@ public class CourseController{
 		
 		
 		//初始化课程信息
-		PageHelper.startPage(Integer.valueOf(pageNum), 9);
+		PageHelper.startPage(Integer.valueOf(pageNum), 8);
 		//分页查询课程
 		List<Course> list = courseService.getCourse(courseType, schoolId, courseLev,likeSearch);
 		//查询我的课程
@@ -114,7 +114,7 @@ public class CourseController{
 			course.setSectionNumber(String.valueOf(sections.size()));
 			MyCourseToList(course,myCourse);
 		}
-		PageInfo<Course> pageInfo = new PageInfo<Course>(list,9);
+		PageInfo<Course> pageInfo = new PageInfo<Course>(list,8);
 		bean.addSuccess(pageInfo);
 		return bean;
 	}
