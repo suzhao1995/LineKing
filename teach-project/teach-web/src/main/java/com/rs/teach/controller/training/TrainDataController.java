@@ -14,6 +14,8 @@ import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
+import com.rs.teach.mapper.user.dao.UserMapper;
+import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.backstage.AnswerSheetService;
 import com.rs.teach.service.backstage.TrainDataService;
 import com.rs.teach.service.backstage.UserTrainDataRelaService;
@@ -54,6 +56,8 @@ public class TrainDataController {
     @Autowired
     private UserTrainDataRelaService userTrainDataRelaService;
 
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 查询所有培训考核文件
@@ -85,11 +89,13 @@ public class TrainDataController {
         String id = request.getParameter("id");
         String trainCourseId = request.getParameter("trainCourseId");
         String userid = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-        //是否有考核权限
-        Integer count = userTrainDataRelaService.isEmpty(id, trainCourseId, userid);
-        if (count == 0) {
-            bean.addError("对不起！您暂时不能参加考核！");
-            return bean;
+        if (StrUtil.equals("0",userMapper.getTeachUser(userid).getAdminFlag())){
+            //是否有考核权限
+            Integer count = userTrainDataRelaService.isEmpty(id, trainCourseId, userid);
+            if (count == 0) {
+                bean.addError("对不起！您暂时不能参加考核！");
+                return bean;
+            }
         }
         TrainData trainData = trainDataService.selectTrainDataById(id);
         try {
