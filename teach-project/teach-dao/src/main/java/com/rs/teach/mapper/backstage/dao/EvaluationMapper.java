@@ -32,5 +32,5 @@ public interface EvaluationMapper {
      * 删除评价表
      * @param answerSheetId
      */
-    void selectEvaluationId(@Param("answerSheetId") String answerSheetId);
+    void deleteEvaluationId(@Param("answerSheetId") String answerSheetId);
 }

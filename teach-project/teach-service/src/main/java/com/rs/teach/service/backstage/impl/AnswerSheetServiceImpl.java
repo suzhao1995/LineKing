@@ -71,7 +71,7 @@ public class AnswerSheetServiceImpl implements AnswerSheetService {
     public void deleteAnswerSheetById(String answerSheetId) {
         try {
             answerSheetMapper.deleteAnswerSheetById(answerSheetId);
-            evaluationMapper.selectEvaluationId(answerSheetId);
+            evaluationMapper.deleteEvaluationId(answerSheetId);
         } catch (Exception e) {
             throw e;
         }
