@@ -53,6 +53,29 @@
             </if>
         </where>
     </select>
+    <!--<select id="trainDataAll" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
+        select ID,TRAIN_DATA_NAME,TF_EL_TRAIN_DATA.ADD_TIME,TRAIN_DATA_URL,ANSWER_ID,
+              TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME,m
+        from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE,
+        (
+            select data_id ,count(1) m
+            from tf_el_train_data td , user_train_data_rela dr
+            where td.id = dr.data_id and dr.user_id = '0002'
+            group by data_id
+        ) a
+        where
+            TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
+            and a.data_id = TF_EL_TRAIN_DATA.ID
+    </select>-->
+    <select id="trainDataAll" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
+        select TF_EL_TRAIN_DATA.ID,TRAIN_DATA_NAME,TF_EL_TRAIN_DATA.ADD_TIME,TRAIN_DATA_URL,ANSWER_ID,
+                TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME
+        from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE,user_train_data_rela dr
+        where
+        TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
+        and TF_EL_TRAIN_DATA.id = dr.data_id
+        and dr.user_id = #{userId}
+    </select>
 
     <delete id="trainDataDelete">
         delete

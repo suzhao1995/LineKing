@@ -32,12 +32,18 @@ public interface TrainDataMapper {
     TrainData selectTrainDataById(@Param("id") String id);
 
     /**
-     * 查询所有的培训考核文件
+     * 查询所有的培训考核文件（后台）
      * @return
      * @param trainDataName
      */
     List<TrainData> selectTrainData(@Param("trainDataName") String trainDataName);
 
+    /**
+     * 查询所有的培训考核文件(前台)
+     * @return
+     * @param userId
+     */
+    List<TrainData> trainDataAll(@Param("userId") String userId);
     /**
      * 删除培训考核文件
      * @param id
@@ -64,4 +70,5 @@ public interface TrainDataMapper {
     List<TrainDataAndAnswerVo> queryTrainDataAndAnswer(@Param("id") String id);
 
     List<TrainDataVo> selectTrainDataVo();
+
 }

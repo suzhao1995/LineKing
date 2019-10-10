@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
+import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.TrainData;
@@ -60,7 +61,24 @@ public class TrainDataController {
     private UserMapper userMapper;
 
     /**
-     * 查询所有培训考核文件
+     * 查询所有培训考核文件(前台)
+     *
+     * @param trainData
+     * @return
+     */
+    @RequestMapping(value = "/trainDataAll", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean trainDataAll(@RequestBody TrainData trainData,HttpServletRequest request) {
+        ResponseBean bean = new ResponseBean();
+        String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+        PageInfo<TrainData> pageInfo = PageHelper.startPage(trainData).doSelectPageInfo(() -> trainDataService.trainDataAll(userId));
+        bean.addSuccess(pageInfo);
+        return bean;
+    }
+
+
+    /**
+     * 查询所有培训考核文件（后台）
      *
      * @param trainData
      * @return

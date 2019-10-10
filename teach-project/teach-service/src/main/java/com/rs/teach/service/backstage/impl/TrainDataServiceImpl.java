@@ -61,6 +61,11 @@ public class TrainDataServiceImpl implements TrainDataService {
     }
 
     @Override
+    public List<TrainData> trainDataAll(String userId) {
+        return trainDataMapper.trainDataAll(userId);
+    }
+
+    @Override
     public void trainDataDelete(String id) {
         trainDataMapper.trainDataDelete(id);
     }

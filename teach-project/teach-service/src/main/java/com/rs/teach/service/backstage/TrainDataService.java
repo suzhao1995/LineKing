@@ -35,12 +35,18 @@ public interface TrainDataService {
     TrainData selectTrainDataById(String id);
 
     /**
-     * 查询所有的培训考核文件
+     * 查询所有的培训考核文件（后台）
      * @return
      * @param trainDataName
      */
     List<TrainData> selectTrainData(String trainDataName);
 
+    /**
+     * 查询所有的培训考核文件(前台)
+     * @return
+     * @param userId
+     */
+    List<TrainData> trainDataAll(String userId);
     /**
      * 删除培训考核文件
      * @param id
@@ -75,4 +81,6 @@ public interface TrainDataService {
     void addTrainDataAll(TrainData trainData, TrainDataAnswer trainDataAnswer);
 
     List<TrainDataVo> selectTrainDataVo();
+
+
 }
