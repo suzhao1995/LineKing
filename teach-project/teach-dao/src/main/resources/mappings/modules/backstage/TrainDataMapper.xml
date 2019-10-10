@@ -129,7 +129,7 @@
     </select>
     <select id="myTrainData" resultType="com.rs.teach.mapper.backstage.entity.TrainData">
         select TF_EL_TRAIN_DATA.ID,TRAIN_DATA_NAME,TF_EL_TRAIN_DATA.ADD_TIME,TRAIN_DATA_URL,ANSWER_ID,
-                TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME
+                TF_EL_TRAIN_DATA.TRAIN_COURSE_ID,TRAIN_COURSE_NAME,dr.ANSWER_SHEET_ID
         from TF_EL_TRAIN_DATA,TF_EL_TRAIN_COURSE,user_train_data_rela dr
 
         where TF_EL_TRAIN_DATA.TRAIN_COURSE_ID = TF_EL_TRAIN_COURSE.TRAIN_COURSE_ID
