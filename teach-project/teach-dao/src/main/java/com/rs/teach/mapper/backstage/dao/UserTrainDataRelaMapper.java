@@ -75,4 +75,21 @@ public interface UserTrainDataRelaMapper {
      * @return
      */
     String[] echoPeople(UserTrainDataRela userTrainDataRela);
+
+    /**
+     * 修改为我的考核，ANSWER_SHEET_ID为"加入"时即为加入我的考核，不为0和1是就是已提交考核答案文件了
+     * @param id
+     * @param trainCourseId
+     * @param userid
+     */
+    void updateAnswerSheetId(@Param("id") String id, @Param("trainCourseId") String trainCourseId, @Param("userid") String userid);
+
+    /**
+     * 是否以及上传了考卷
+     * @param id
+     * @param trainCourseId
+     * @param userid
+     * @return
+     */
+    String selectAnswerSheetId(@Param("id") String id, @Param("trainCourseId") String trainCourseId, @Param("userid") String userid);
 }

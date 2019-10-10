@@ -71,4 +71,10 @@ public interface TrainDataMapper {
 
     List<TrainDataVo> selectTrainDataVo();
 
+    /**
+     * 我的考核
+     * @return
+     * @param userId
+     */
+    List<TrainData> myTrainData(@Param("userId") String userId);
 }

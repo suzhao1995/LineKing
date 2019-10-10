@@ -73,4 +73,18 @@ public class UserTrainDataRelaServiceImpl implements UserTrainDataRelaService {
     public String[] echoPeople(UserTrainDataRela userTrainDataRela) {
         return userTrainDataRelaMapper.echoPeople(userTrainDataRela);
     }
+
+    @Override
+    public void updateAnswerSheetId(String id, String trainCourseId, String userid) {
+        userTrainDataRelaMapper.updateAnswerSheetId( id,  trainCourseId,  userid);
+    }
+
+    @Override
+    public boolean isBlank(String id, String trainCourseId, String userid) {
+        String result = userTrainDataRelaMapper.selectAnswerSheetId(id,  trainCourseId,  userid);
+        if (StrUtil.equals("0",result) || StrUtil.equals("加入",result)){
+            return true;
+        }
+        return false;
+    }
 }

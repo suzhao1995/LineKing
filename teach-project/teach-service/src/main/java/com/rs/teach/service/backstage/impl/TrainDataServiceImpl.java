@@ -104,4 +104,10 @@ public class TrainDataServiceImpl implements TrainDataService {
     public List<TrainDataVo> selectTrainDataVo() {
         return trainDataMapper.selectTrainDataVo();
     }
+
+    @Override
+    public List<TrainData> myTrainData(String userId) {
+
+        return trainDataMapper.myTrainData(userId);
+    }
 }

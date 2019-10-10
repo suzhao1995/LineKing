@@ -9,14 +9,12 @@ import com.github.pagehelper.PageInfo;
 import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.FileUpDownUtil;
 import com.rs.common.utils.ResponseBean;
-import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.common.OptionVo;
 import com.rs.teach.mapper.common.PageDto;
 import com.rs.teach.mapper.user.dao.UserMapper;
-import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.backstage.AnswerSheetService;
 import com.rs.teach.service.backstage.TrainDataService;
 import com.rs.teach.service.backstage.UserTrainDataRelaService;
@@ -59,6 +57,23 @@ public class TrainDataController {
 
     @Autowired
     private UserMapper userMapper;
+
+    /**
+     * 我的考核(前台)
+     *
+     * @param pageDto
+     * @return
+     */
+    @RequestMapping(value = "/myTrainData", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean myTrainData(@RequestBody PageDto pageDto,HttpServletRequest request) {
+        ResponseBean bean = new ResponseBean();
+        String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
+        PageInfo<TrainData> pageInfo = PageHelper.startPage(pageDto).doSelectPageInfo(() -> trainDataService.myTrainData(userId));
+        bean.addSuccess(pageInfo);
+        return bean;
+    }
+
 
     /**
      * 查询所有培训考核文件(前台)
@@ -107,7 +122,9 @@ public class TrainDataController {
         String id = request.getParameter("id");
         String trainCourseId = request.getParameter("trainCourseId");
         String userid = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-        if (StrUtil.equals("0",userMapper.getTeachUser(userid).getAdminFlag())){
+        String adminFlag = userMapper.getTeachUser(userid).getAdminFlag();
+        boolean flag = userTrainDataRelaService.isBlank(id, trainCourseId, userid);
+        if (StrUtil.equals("0",adminFlag)){
             //是否有考核权限
             Integer count = userTrainDataRelaService.isEmpty(id, trainCourseId, userid);
             if (count == 0) {
@@ -120,6 +137,10 @@ public class TrainDataController {
             Map<String, Object> resultMap = FileUpDownUtil.fileDownLoad(request, response, trainData.getTrainDataUrl(), trainData.getTrainDataType(), trainData.getTrainDataName());
             if (resultMap != null && "0".equals(resultMap.get("code"))) {
                 log.info("培训考核文件下载-成功");
+                if (StrUtil.equals("0",adminFlag) && flag){
+                    //修改为我的考核，ANSWER_SHEET_ID为“加入”时即为加入我的考核，不为0和1是就是已提交考核答案文件了
+                    userTrainDataRelaService.updateAnswerSheetId(id, trainCourseId, userid);
+                }
                 bean.addSuccess("成功");
             } else {
                 bean.addError(resultMap.get("message").toString());

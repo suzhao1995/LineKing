@@ -82,5 +82,9 @@ public interface TrainDataService {
 
     List<TrainDataVo> selectTrainDataVo();
 
-
+    /**
+     * 我的考核
+     * @param userId
+     */
+    List<TrainData> myTrainData(String userId);
 }

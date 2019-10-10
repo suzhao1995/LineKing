@@ -27,6 +27,13 @@
         and USER_ID = #{userid}
         and TRAIN_COURSE_ID = #{trainCourseId}
     </select>
+    <update id="updateAnswerSheetId">
+        update USER_TRAIN_DATA_RELA
+        set ANSWER_SHEET_ID = '加入'
+        where DATA_ID = #{id}
+        and USER_ID = #{userid}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </update>
 
     <select id="answerSheetIdIsEmpty" resultType="java.lang.String">
         select ANSWER_SHEET_ID from USER_TRAIN_DATA_RELA
@@ -70,6 +77,13 @@
         select user_id
         from user_train_data_rela
         where DATA_ID = #{dataId}
+        and TRAIN_COURSE_ID = #{trainCourseId}
+    </select>
+    <select id="selectAnswerSheetId" resultType="java.lang.String">
+        select ANSWER_SHEET_ID
+        from USER_TRAIN_DATA_RELA
+        where DATA_ID = #{id}
+        and USER_ID = #{userid}
         and TRAIN_COURSE_ID = #{trainCourseId}
     </select>
 </mapper>
