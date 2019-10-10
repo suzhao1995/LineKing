@@ -1,5 +1,6 @@
 package com.rs.teach.service.backstage.impl;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.dao.ClassMapper;
 import com.rs.teach.mapper.backstage.dao.SchoolCourseMapper;
@@ -61,11 +62,13 @@ public class SchoolServiceImpl implements SchoolService {
                 //修改学校name和address
                 schoolMapper.updateSchool(school);
             } else {
-                //修改学校授权课程
-                if (schoolCourseMapper.count(school.getSchoolId()) > 0) {
-                    schoolCourseMapper.deleteSchoolCourse(school.getSchoolId());
+                if (ArrayUtil.isNotEmpty(school.getCourseIds())) {
+                    //修改学校授权课程
+                    if (schoolCourseMapper.count(school.getSchoolId()) > 0) {
+                        schoolCourseMapper.deleteSchoolCourse(school.getSchoolId());
+                    }
+                    schoolCourseMapper.addSchoolCourse(school);
                 }
-                schoolCourseMapper.addSchoolCourse(school);
             }
         } catch (Exception e) {
             throw e;

@@ -1,5 +1,6 @@
 package com.rs.teach.controller.backstage;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -7,11 +8,9 @@ import com.rs.common.utils.DeleteFileUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.backstage.entity.AnswerSheet;
-import com.rs.teach.mapper.backstage.entity.School;
 import com.rs.teach.mapper.backstage.entity.TrainData;
 import com.rs.teach.mapper.backstage.entity.UserTrainDataRela;
 import com.rs.teach.mapper.common.ConditionExtVo;
-import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.backstage.AnswerSheetService;
 import com.rs.teach.service.backstage.TrainDataService;
@@ -29,7 +28,7 @@ import java.util.List;
 
 /**
  * @author wanghang
- * @Description  考核人员与考核文件关联controller
+ * @Description 考核人员与考核文件关联controller
  * @create 2019-09-06 11:46
  */
 @Slf4j
@@ -45,6 +44,7 @@ public class BeforeUserTrainDataRela {
     private UserService userService;
     @Autowired
     private AnswerSheetService answerSheetService;
+
     /**
      * 分页查询参与人员
      *
@@ -69,20 +69,21 @@ public class BeforeUserTrainDataRela {
     @ResponseBody
     public ResponseBean queryTrainDataCourseId() {
         ResponseBean bean = new ResponseBean();
-        List<TrainData> vo  = trainDataService.queryTrainDataCourseId();
+        List<TrainData> vo = trainDataService.queryTrainDataCourseId();
         bean.addSuccess(vo);
         return bean;
     }
 
     /**
      * 回显参与考核人员（数组）
+     *
      * @return
      */
     @RequestMapping(value = "/echoPeople", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean echoPeople(@RequestBody UserTrainDataRela UserTrainDataRela) {
         ResponseBean bean = new ResponseBean();
-        String [] people = userTrainDataRelaService.echoPeople(UserTrainDataRela);
+        String[] people = userTrainDataRelaService.echoPeople(UserTrainDataRela);
         bean.addSuccess(people);
         return bean;
     }
@@ -102,19 +103,24 @@ public class BeforeUserTrainDataRela {
 
 
     /**
-     *  添加参与人员
-     * @param UserTrainDataRela(userIds,trainCourseId,dataId)
+     * 添加参与人员
+     *
+     * @param userTrainDataRela(userIds,trainCourseId,dataId)
      * @return
      */
     @RequestMapping(value = "/addUserTrainData", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addUserTrainData(@RequestBody UserTrainDataRela UserTrainDataRela, HttpServletRequest request) {
+    public ResponseBean addUserTrainData(@RequestBody UserTrainDataRela userTrainDataRela, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         //指派人id
         String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
-        UserTrainDataRela.setAdminId(adminId);
+        userTrainDataRela.setAdminId(adminId);
         try {
-            userTrainDataRelaService.addUserTrainData(UserTrainDataRela);
+            if (ArrayUtil.isNotEmpty(userTrainDataRela.getUserIds())) {
+                userTrainDataRelaService.addUserTrainData(userTrainDataRela);
+            }else {
+                bean.addError(ResponseBean.CODE_MESSAGE_ERROR,"请选择参与人员");
+            }
             bean.addSuccess();
             log.info("添加参与人员-成功");
         } catch (Exception e) {
@@ -126,7 +132,8 @@ public class BeforeUserTrainDataRela {
 
 
     /**
-     *  删除参与人员
+     * 删除参与人员
+     *
      * @param userTrainDataRela(主键id,answerSheetId)
      * @return
      */
@@ -135,7 +142,7 @@ public class BeforeUserTrainDataRela {
     public ResponseBean queryAnswerSheet(@RequestBody UserTrainDataRela userTrainDataRela) {
         ResponseBean bean = new ResponseBean();
         AnswerSheet answerSheet = new AnswerSheet();
-        if(!StrUtil.equalsIgnoreCase("0",userTrainDataRela.getAnswerSheetId())){
+        if (!StrUtil.equalsIgnoreCase("0", userTrainDataRela.getAnswerSheetId())) {
             answerSheet = answerSheetService.selectAnswerSheet(userTrainDataRela.getAnswerSheetId());
         }
         try {
