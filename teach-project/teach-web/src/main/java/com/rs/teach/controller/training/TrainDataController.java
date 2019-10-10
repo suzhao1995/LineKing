@@ -188,7 +188,7 @@ public class TrainDataController {
         }
         //是否重复提交
         String result = userTrainDataRelaService.answerSheetIdIsEmpty(id, trainCourseId, userid);
-        if (!StrUtil.equalsIgnoreCase("0",result)) {
+        if (!StrUtil.equalsIgnoreCase("0",result) && !StrUtil.equalsIgnoreCase("加入",result)) {
             bean.addError("对不起！不能重复提交！");
             return bean;
         }
