@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -309,22 +310,29 @@ public class BeforeUserController {
      */
     @RequestMapping(value = "/addUserSupperAdmin", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean addUserSupperAdmin(@RequestParam(value = "file") MultipartFile file, User user, HttpServletRequest request) {
+    public ResponseBean addUserSupperAdmin(@RequestParam(value = "file", required = false) MultipartFile file, User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         PicAttr picAttr = new PicAttr();
 
-        if (!file.isEmpty()) {
-            //上传文件
-            Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
-            //文件上传是否成功
-            if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
-                bean.addError(ResponseBean.CODE_PICTURE_ERROR, resultMap.get("message").toString());
-                return bean;
+        if (file != null) {
+            if (!file.isEmpty()) {
+                //上传文件
+                Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
+                //文件上传是否成功
+                if (!(resultMap != null && "0".equals(resultMap.get("code")))) {
+                    bean.addError(ResponseBean.CODE_PICTURE_ERROR, resultMap.get("message").toString());
+                    return bean;
+                }
+                picAttr.setAssociationId(user.getUserId());
+                picAttr.setPicUrl(resultMap.get("picUrl").toString());
+                picAttr.setSavePath(resultMap.get("saveUrl").toString());
+                picAttr.setPicId(resultMap.get("picId").toString());
             }
+        } else {
+            picAttr.setPicId(UUID.randomUUID().toString().replace("-", ""));
             picAttr.setAssociationId(user.getUserId());
-            picAttr.setPicUrl(resultMap.get("picUrl").toString());
-            picAttr.setSavePath(resultMap.get("saveUrl").toString());
-            picAttr.setPicId(resultMap.get("picId").toString());
+            picAttr.setPicUrl("/teach-web/upLoad/img/0/0/1418f4fd6bc29a32ef647abda51b62a7.png");
+            picAttr.setSavePath("D:\\RSUpLoad\\img\\0\\0\\1418f4fd6bc29a32ef647abda51b62a7.png");
         }
         //用户图像属性
         user.setAdminFlag(PermissionEnum.admin.getValue());
@@ -344,7 +352,9 @@ public class BeforeUserController {
         } catch (Exception e) {
             log.error("用户管理员模块-添加管理员-失败！", e);
             bean.addError("添加失败!");
-            DeleteFileUtil.deleteFile(picAttr.getSavePath());
+            if (!StrUtil.equals("D:\\RSUpLoad\\img\\0\\0\\1418f4fd6bc29a32ef647abda51b62a7.png", picAttr.getSavePath())) {
+                DeleteFileUtil.deleteFile(picAttr.getSavePath());
+            }
         }
         return bean;
     }
@@ -382,7 +392,7 @@ public class BeforeUserController {
         }
         try {
             int i = userService.updateUserInfoAndPic(user, picAttr);
-            if (i == 1) {
+            if (i == 1 && !StrUtil.equals("D:\\RSUpLoad\\img\\0\\0\\1418f4fd6bc29a32ef647abda51b62a7.png", pic.getSavePath())) {
                 //删除原始文件
                 DeleteFileUtil.deleteFile(pic.getSavePath());
             }
