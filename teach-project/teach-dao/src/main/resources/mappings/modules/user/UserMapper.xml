@@ -157,6 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from TF_EL_TEACH_USER tu,
 			  TF_EL_SCHOOL s
 		where s.SCHOOL_ID = tu.SCHOOL_ID
+		and s.SCHOOL_ID != 'admin'
 		group by tu.SCHOOL_ID,SCHOOL_NAME
 	</select>
 	<select id="userBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">
