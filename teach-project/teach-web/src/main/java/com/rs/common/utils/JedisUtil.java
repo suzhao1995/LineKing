@@ -37,7 +37,8 @@ public class JedisUtil{
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
-			value = jedis.keys("USER_INFO*");
+			value = jedis.keys("USER_INFO_*");
+			logger.info("getKeys{} = {"+value+"}");
 		} catch (Exception e) {
 			logger.error("getKeys {} = {"+value+"}",e);
 		} finally {

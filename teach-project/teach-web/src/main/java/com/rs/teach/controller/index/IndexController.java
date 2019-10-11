@@ -283,8 +283,8 @@ public class IndexController {
 		userInfos.put("schoolId", schoolId);
 		
 		
-		JedisUtil.setMap("USER_INFO_"+sessionKey, userInfos,86400);
-		
+		JedisUtil.setMap("USER_INFO_"+sessionKey, userInfos,60 * 60 * 24);
+		logger.info("=====LOGIN_KEY=========" + sessionKey + "====" + JedisUtil.getMap("USER_INFO_"+sessionKey));
 		System.out.println("=====LOGIN_KEY=========" + sessionKey + "====" + JedisUtil.getMap("USER_INFO_"+sessionKey));
 		
 		loginFlag = true;

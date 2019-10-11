@@ -8,6 +8,8 @@ import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.user.dao.UserMapper;
 import com.rs.teach.mapper.user.entity.User;
+import com.sun.media.jfxmedia.logging.Logger;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -138,11 +140,13 @@ public class TeachAspect {
 		}else if(StringUtils.isNotBlank(request.getHeader("sessionKey"))){
 			sessionId = request.getHeader("sessionKey");
 		}
-	    System.out.println("-----------sessionId---------"+sessionId);
+	    log.info("-----sessionId----"+sessionId);
 	    
-	    Map<String,String> remoteLoginMap = UserInfoUtil.getRemoteLogin(sessionId);
-	    if(StringUtils.isNotEmpty(remoteLoginMap.get(sessionId))){
+	    UserInfoUtil.getRemoteLogin(sessionId);
+	    String remoteKey = "REMOTE_USER_INFO_"+sessionId;
+	    if("true".equals(JedisUtil.get(remoteKey))){
 	    	resultMap.put("isLogin", "1030");		//异地登录code
+	    	JedisUtil.del(remoteKey);
 	    }else{
 	    	
 	    	if(sessionId != null){

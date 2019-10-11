@@ -40,8 +40,7 @@ public class UserInfoUtil{
 		return userInfoMap;
 	}
 	
-	public static Map<String,String> getRemoteLogin(String sessionKey){
-		Map<String,String> remoteLoginMap = new HashMap<String,String>();
+	public static void getRemoteLogin(String sessionKey){
 		//获取现有的用户信息
 		Map<String,String> userInfos = JedisUtil.getMap("USER_INFO_"+sessionKey);
 		
@@ -50,14 +49,15 @@ public class UserInfoUtil{
 			Set<String> userSets = JedisUtil.getKeys();
 			for(String key : userSets){
 				Map<String,String> keyMap = JedisUtil.getMap(key);
-				if(keyMap != null && userInfos.get("userId").equals(keyMap.get("userId"))){
+				if(keyMap != null && userInfos.get("userId").equals(keyMap.get("userId")) && !key.equals("USER_INFO_"+sessionKey)){
 					//删除原有key
 					JedisUtil.del(key);
-					remoteLoginMap.put("sessionId", sessionKey);
+					JedisUtil.set("REMOTE_"+key, "true", 60 * 60 * 24);
+					break;
 				}
 			}
 		}
-		return remoteLoginMap;
+		
 	}
 	
 }
