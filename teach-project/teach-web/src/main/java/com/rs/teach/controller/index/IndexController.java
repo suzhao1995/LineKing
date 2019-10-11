@@ -5,21 +5,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.rs.common.utils.DateUtil;
 import com.rs.common.utils.ImageUtil;
+import com.rs.common.utils.JedisUtil;
 import com.rs.common.utils.ResponseBean;
-import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.massage.entity.Message;
 import com.rs.teach.mapper.timeTable.entity.Schedule;
@@ -133,13 +134,18 @@ public class IndexController {
 					messageService.addMessage(message);
 				}
 				//登录成功，保存用户信息到session
-				String sessionInfo = loginUser.getUserId()+","+loginUser.getSchoolId();
-				SessionUtil.cleanOldSession(sessionInfo);	//如果用户再次登录清除已存在的session，确保每个用户只有一个session
-				HttpSession session = request.getSession(true);
-				session.setAttribute("userInfo", sessionInfo);
-				session.setMaxInactiveInterval(-1);	//设置session过期时间
-				String sessionKey = System.currentTimeMillis()+"";
-				SessionUtil.getSessionMap().put(sessionKey, session);
+//				String sessionInfo = loginUser.getUserId()+","+loginUser.getSchoolId();
+//				SessionUtil.cleanOldSession(sessionInfo);	//如果用户再次登录清除已存在的session，确保每个用户只有一个session
+//				HttpSession session = request.getSession(true);
+//				session.setAttribute("userInfo", sessionInfo);
+//				session.setMaxInactiveInterval(-1);	//设置session过期时间
+//				SessionUtil.getSessionMap().put(sessionKey, session);
+				String sessionKey = UUID.randomUUID().toString().replace("-", "");
+				boolean login = userInfoAction(request, loginUser,sessionKey);
+				if(!login){
+					bean.addError("登录失败");
+					return bean;
+				}
 				loginUser.setSessionKey(sessionKey);
 				json.put("userInfo", loginUser);
 				bean.addSuccess(json);
@@ -250,6 +256,40 @@ public class IndexController {
 			}
 		}
 		return nextSchedule;
+	}
+	
+	/**
+	* 用户登录将用户信息存入缓存
+	* @param 
+	* @throws
+	* @return boolean
+	* @author suzhao
+	* @date 2019年9月19日 上午11:33:40
+	*/
+	public boolean userInfoAction(HttpServletRequest request,User user, String sessionKey)throws Exception{
+    	boolean loginFlag = false;
+		
+		
+		Map<String,String> userInfos = new HashMap<String,String>();
+		//这里记录:是否登录
+		userInfos.put("isValidate","true");
+		//这里记录：用户名
+		userInfos.put("userId",user.getUserId());
+    	
+		//这里记录:登录时间
+		userInfos.put("loginDate",DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		//这里记录:校区id
+		String schoolId = StringUtils.isEmpty(user.getSchoolId()) ? "admin" : user.getSchoolId();
+		userInfos.put("schoolId", schoolId);
+		
+		
+		JedisUtil.setMap("USER_INFO_"+sessionKey, userInfos,86400);
+		
+		System.out.println("=====LOGIN_KEY=========" + sessionKey + "====" + JedisUtil.getMap("USER_INFO_"+sessionKey));
+		
+		loginFlag = true;
+		
+		return loginFlag;
 	}
 
 }

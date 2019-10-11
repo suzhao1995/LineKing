@@ -1,6 +1,8 @@
 package com.rs.common.spring;
 
 import cn.hutool.core.util.StrUtil;
+
+import com.rs.common.utils.JedisUtil;
 import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.SessionUtil;
 import com.rs.common.utils.UserInfoUtil;
@@ -138,20 +140,25 @@ public class TeachAspect {
 		}
 	    System.out.println("-----------sessionId---------"+sessionId);
 	    
-	    Map<String,String> remoteLoginMap = SessionUtil.getRemoteLoginMap();
+	    Map<String,String> remoteLoginMap = UserInfoUtil.getRemoteLogin(sessionId);
 	    if(StringUtils.isNotEmpty(remoteLoginMap.get(sessionId))){
 	    	resultMap.put("isLogin", "1030");		//异地登录code
-	    	SessionUtil.cleanOldRemoteMap(sessionId);
 	    }else{
 	    	
 	    	if(sessionId != null){
-	    		session = (HttpSession) SessionUtil.getSessionMap().get(sessionId);
-	    		if (session != null) {
-	    			String sessionValue = (String) session.getAttribute("userInfo");
-	    			if (StringUtils.isNotBlank(sessionValue)) {
+	    		Map<String,String> userInfo = JedisUtil.getMap("USER_INFO_"+sessionId);
+	    		if(userInfo != null){
+	    			if("true".equals(userInfo.get("isValidate"))){
 	    				resultMap.put("isLogin", "0");	//已登录
 	    			}
 	    		}
+//	    		session = (HttpSession) SessionUtil.getSessionMap().get(sessionId);
+//	    		if (session != null) {
+//	    			String sessionValue = (String) session.getAttribute("userInfo");
+//	    			if (StringUtils.isNotBlank(sessionValue)) {
+//	    				resultMap.put("isLogin", "0");	//已登录
+//	    			}
+//	    		}
 	    	}
 	    }
 	    return resultMap;
