@@ -426,7 +426,9 @@ public class BeforeUserController {
             //获取用户之前图像本地路径
             PicAttr pic = picAttrService.getPic(userId);
             userService.deleteUser(userId);
-            DeleteFileUtil.deleteFile(pic.getSavePath());
+            if (!StrUtil.equals("D:\\RSUpLoad\\img\\0\\0\\1418f4fd6bc29a32ef647abda51b62a7.png", pic.getSavePath())) {
+                DeleteFileUtil.deleteFile(pic.getSavePath());
+            }
             bean.addSuccess();
             log.info("删除管理员-成功");
         } catch (Exception e) {
