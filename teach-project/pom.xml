@@ -74,7 +74,17 @@
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 				</dependency>
-				
+			<!--redis相关 -->
+	        <dependency>
+	            <groupId>org.springframework.data</groupId>
+	            <artifactId>spring-data-redis</artifactId>
+	            <version>1.8.6.RELEASE</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>redis.clients</groupId>
+	            <artifactId>jedis</artifactId>
+	            <version>2.9.0</version>
+	        </dependency>
 			<!-- log start -->
 			<dependency>
 			    <groupId>log4j</groupId>
