@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -137,6 +138,9 @@ public class BeforeUserController {
         ResponseBean bean = new ResponseBean();
         PicAttr picAttr = new PicAttr();
 
+        //移除账号密码中的空格
+        StrUtil.removeAll(user.getUserId()," ");
+        StrUtil.removeAll(user.getPassWord()," ");
         if (!file.isEmpty()) {
             //上传文件
             Map<String, Object> resultMap = FileUpDownUtil.picUpLoad(request, file);
@@ -201,6 +205,9 @@ public class BeforeUserController {
         String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
         user.setModifier(adminId);
         user.setUpdate(DateUtil.now());
+        //移除账号密码中的空格
+        StrUtil.removeAll(user.getUserId()," ");
+        StrUtil.removeAll(user.getPassWord()," ");
         //获取用户之前图像本地路径（修改成功就删除）
         PicAttr pic = picAttrService.getPic(user.getUserId());
         PicAttr picAttr = new PicAttr();
@@ -313,7 +320,9 @@ public class BeforeUserController {
     public ResponseBean addUserSupperAdmin(@RequestParam(value = "file", required = false) MultipartFile file, User user, HttpServletRequest request) {
         ResponseBean bean = new ResponseBean();
         PicAttr picAttr = new PicAttr();
-
+        //移除账号密码中的空格
+        StrUtil.removeAll(user.getUserId()," ");
+        StrUtil.removeAll(user.getPassWord()," ");
         if (file != null) {
             if (!file.isEmpty()) {
                 //上传文件
@@ -372,6 +381,9 @@ public class BeforeUserController {
         String adminId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
         user.setModifier(adminId);
         user.setUpdate(DateUtil.now());
+        //移除账号密码中的空格
+        StrUtil.removeAll(user.getUserId()," ");
+        StrUtil.removeAll(user.getPassWord()," ");
         //获取用户之前图像本地路径（修改成功就删除）
         PicAttr pic = picAttrService.getPic(user.getUserId());
         PicAttr picAttr = new PicAttr();
