@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				USER_ID,
 				SEND_USER,
 				IS_POPUP,
-				MESSAGE_TITLE
+				MESSAGE_TITLE,
 				EXTEND1,
 				EXTEND2,
 				EXTEND3,
