@@ -7,10 +7,13 @@ import com.rs.common.utils.ResponseBean;
 import com.rs.common.utils.UserInfoUtil;
 import com.rs.teach.mapper.resourcesAttr.entity.PicAttr;
 import com.rs.teach.mapper.section.entity.Section;
+import com.rs.teach.mapper.sysCode.entity.SysCode;
 import com.rs.teach.mapper.user.entity.User;
 import com.rs.teach.service.User.UserService;
 import com.rs.teach.service.resourcesAttr.PicAttrService;
 import com.rs.teach.service.section.SectionService;
+import com.rs.teach.service.sysCode.SysCodeService;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +58,27 @@ public class ComponantController{
 	
 	@Value("${filePath}")
 	private String filePath;	//文件存放根目录
+	
+	@Autowired
+	private SysCodeService sysCodeService;
+	
+	/**
+	* 课程等级下拉框
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年11月18日 上午10:35:04
+	*/
+	@RequestMapping("/courseType")
+	@ResponseBody
+	public ResponseBean sectionLev(HttpServletRequest request, HttpServletResponse response){
+		ResponseBean bean = new ResponseBean();
+		
+		List<SysCode> list = sysCodeService.getSysCodeList("COURSE_TYPE");
+		bean.addSuccess(list);
+		return bean;
+	}
 	
 	/**
 	* 课件资源下载
