@@ -204,7 +204,7 @@ public class CenterController{
 		schedule.setCurriculumId(request.getParameter("courseId"));
 		//新增班级
 		StudyTeam team = new StudyTeam();
-		team.setClassId(System.currentTimeMillis()+"");
+		team.setClassId(request.getParameter("classId"));
 		team.setClassName(request.getParameter("classId"));
 		team.setSchoolName(String.valueOf(userInfo.get("schoolId")));
 		studyTeamService.addStudyTeam(team);
