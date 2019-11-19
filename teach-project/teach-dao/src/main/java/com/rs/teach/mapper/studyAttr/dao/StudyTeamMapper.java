@@ -14,4 +14,14 @@ public interface StudyTeamMapper{
 	* @date 2019年7月26日 上午11:22:21
 	*/
 	public List<StudyTeam> queryClassByUserId(String userId);
+	
+	/**
+	* 新增班级
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年11月19日 上午11:25:42
+	*/
+	public void addStudyTeam(StudyTeam team);
 }

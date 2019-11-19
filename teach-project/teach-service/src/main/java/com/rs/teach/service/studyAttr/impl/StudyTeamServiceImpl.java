@@ -19,5 +19,10 @@ public class StudyTeamServiceImpl implements StudyTeamService{
 	public List<StudyTeam> getClassById(String userId) {
 		return mapper.queryClassByUserId(userId);
 	}
+
+	@Override
+	public void addStudyTeam(StudyTeam team) {
+		mapper.addStudyTeam(team);
+	}
 	
 }

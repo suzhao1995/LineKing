@@ -13,4 +13,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where tu.school_id = ca.school_id and tu.user_id = #{userId}
 	</select>
 	
+	<insert id="addStudyTeam" parameterType="com.rs.teach.mapper.studyAttr.entity.StudyTeam">
+			insert into TF_EL_CLASS
+				(
+					CLASS_ID,
+					SCHOOL_ID,
+					CLASS_NAME,
+					EXTEND1,
+					EXTEND2,
+					EXTEND3,
+					EXTEND4
+				)
+			values
+				(
+					#{classId},
+					#{schoolName},
+					#{className},
+					#{extends1},
+					#{extends2},
+					#{extends3},
+					#{extends4}
+				)
+	</insert>
+	
 </mapper>

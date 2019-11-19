@@ -21,4 +21,14 @@ public interface StudyTeamService{
 	* @date 2019年7月29日 上午10:25:44
 	*/
 	public List<StudyTeam> getClassById(String userId);
+	
+	/**
+	* 新增班级
+	* @param 
+	* @throws
+	* @return void
+	* @author suzhao
+	* @date 2019年11月19日 上午11:25:42
+	*/
+	public void addStudyTeam(StudyTeam team);
 }

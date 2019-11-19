@@ -202,6 +202,12 @@ public class CenterController{
 		schedule.setEndDate(request.getParameter("endDate"));
 		schedule.setClassId(request.getParameter("classId"));
 		schedule.setCurriculumId(request.getParameter("courseId"));
+		//新增班级
+		StudyTeam team = new StudyTeam();
+		team.setClassId(System.currentTimeMillis()+"");
+		team.setClassName(request.getParameter("classId"));
+		team.setSchoolName(String.valueOf(userInfo.get("schoolId")));
+		studyTeamService.addStudyTeam(team);
 		if("0".equals(flag)){
 			//新增
 			resultCode = scheduleService.addSchedule(schedule);
