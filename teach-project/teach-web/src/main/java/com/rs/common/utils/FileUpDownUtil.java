@@ -123,6 +123,7 @@ public class FileUpDownUtil {
         //图片格式
         upLoadPicType.add(".jpg");
         upLoadPicType.add(".png");
+        upLoadPicType.add(".jpeg");
         //文件格式
         upLoadType.add(".ppt");
         upLoadType.add(".pdf");
