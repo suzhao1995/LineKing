@@ -108,6 +108,55 @@ public class BeforeMaterielController{
 	}
 	
 	/**
+	* 管理员--保存上传的物料信息	上传文件MultipartFile[]大小指定为2
+	* @param 
+	* @throws
+	* @return ResponseBean
+	* @author suzhao
+	* @date 2019年8月17日 下午4:10:15
+	*/
+	@RequestMapping("/saveZipMateriel")
+	@ResponseBody
+	public ResponseBean saveZipMateriel(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(value = "materielFile",required = false) MultipartFile materielFile){
+		ResponseBean bean = new ResponseBean();
+		
+		
+		if(materielFile == null){
+			bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "缺少物料");
+			return bean;
+		}
+		
+		
+		//物料文件上传
+		Map<String,Object> materielFileMap = FileUpDownUtil.materielUpLoad(request, materielFile);
+		
+		if("0".equals(materielFileMap.get("code"))){
+			
+			Materiel materiel = new Materiel();
+			materiel.setMaterielId(materielFileMap.get("materielId").toString());	//物料id
+			materiel.setMaterielName(request.getParameter("materielName"));	//物料名称
+			materiel.setMaterielUrl(materielFileMap.get("materielUrl").toString());	//物料保存在服务器的路径
+			materiel.setMaterielStatus("1");
+			materiel.setMaterielDetail(request.getParameter("materielDetail"));	//物料说明
+			materiel.setMaterielPath("/teach-web/upLoad/img/0/0/1418f4fd6bc29a32ef647abda51b62a7.png");	//物料封面映射路径
+			materiel.setMaterielType(request.getParameter("code"));	//物料分类的code值
+			materiel.setCreateDate(DateUtil.dateFormat(new Date(), "yyyy-MM-dd"));	//物料创建时间
+//			materiel.setMaterielImgUrl();	//物料封面保存在服务器的路径
+			try {
+				materielService.addMateriel(materiel);
+				bean.addSuccess();
+			} catch (Exception e) {
+				//入库失败删除服务器文件
+				//删除服务器文件
+				DeleteFileUtil.deleteFile(materiel.getMaterielUrl());
+				bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败");
+			}
+		}
+		return bean;
+	}
+	
+	/**
 	* 管理员--删除物料
 	* @param 
 	* @throws

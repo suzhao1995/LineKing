@@ -132,6 +132,8 @@ public class FileUpDownUtil {
         uploadMaterielType.add(".png");
         uploadMaterielType.add(".ppt");
         uploadMaterielType.add(".pdf");
+        uploadMaterielType.add(".zip");
+        uploadMaterielType.add(".rar");
         //视频格式
         uploadVideoType.add(".mp4");
         //培训考核文件格式
