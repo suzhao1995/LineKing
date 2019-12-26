@@ -188,7 +188,7 @@ public class SectionController {
         try {
             // TODO 作业
             if (practiceFile != null) {
-                if (!courseWareFile.isEmpty()) {
+                if (!practiceFile.isEmpty()) {
                     //作业文件上传
                     Map<String, Object> practiceMap = FileUpDownUtil.fileUpLoad(request, practiceFile);
                     //文件上传是否成功
@@ -209,7 +209,7 @@ public class SectionController {
             }
             // TODO 试卷
             if (testpaperFile != null) {
-                if (!courseWareFile.isEmpty()) {
+                if (!testpaperFile.isEmpty()) {
                     //试卷文件上传
                     Map<String, Object> testpaperMap = FileUpDownUtil.fileUpLoad(request, testpaperFile);
                     //文件上传是否成功
