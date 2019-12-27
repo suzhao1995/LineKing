@@ -230,7 +230,7 @@
         and to_number(TOTLE_SECTION_SORT) &gt; #{totleSectionSort}
     </update>
     <update id="updateSectionSort" parameterType="com.rs.teach.mapper.section.entity.Section">
-        update TF_EL_SECTION set to_number(SECTION_SORT) = SECTION_SORT -1
+        update TF_EL_SECTION set SECTION_SORT = to_number(SECTION_SORT) -1
         where COURSE_ID = #{courseId}
         and TOTLESECTION_SORTID = #{totleSectionSortid}
         and <![CDATA[to_number(SECTION_SORT) > #{sectionSort}]]>
