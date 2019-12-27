@@ -233,7 +233,8 @@
         update TF_EL_SECTION set SECTION_SORT = to_number(SECTION_SORT) -1
         where COURSE_ID = #{courseId}
         and TOTLESECTION_SORTID = #{totleSectionSortid}
-        and <![CDATA[to_number(SECTION_SORT) > #{sectionSort}]]>
+        and <![CDATA[to_number(SECTION_SORT) > #{sectionSort}
+        ]]>
     </update>
     <select id="IsEmpty" resultType="java.lang.Integer">
 		select count(1) from TF_EL_TRAIN_TOTLE_SECTION
@@ -272,11 +273,11 @@
 	</select>
     <select id="isEmptySection" resultType="java.lang.Integer">
         select (
-                    (select count(1) from TF_EL_TRAIN_SECTION where TRAIN_SECTION_SORTID = '1040')
+                    (select count(1) from TF_EL_TRAIN_SECTION where TRAIN_SECTION_SORTID = #{id})
                     +
-                    (select count(1) from TF_EL_SECTION where TOTLESECTION_SORTID = '1040')
+                    (select count(1) from TF_EL_SECTION where TOTLESECTION_SORTID = #{id})
                 ) as num
-        from DUAL;
+        from DUAL
 	</select>
     <select id="selectByPrimaryKey" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
         select * from TF_EL_TRAIN_TOTLE_SECTION
