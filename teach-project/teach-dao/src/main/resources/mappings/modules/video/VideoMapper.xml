@@ -356,7 +356,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update tf_el_video_section set videosection_sort = to_number(videosection_sort)-1 where
 			videototle_sortid = #{videoTotleSortId}
 			and VIDEO_ID = #{videoId}
-			and to_number(videosection_sort) > #{videoSectionSort}
+			and to_number(videosection_sort) &gt; #{videoSectionSort}
 	</update>
 
     <select id="typeBy" resultType="com.rs.teach.mapper.common.ConditionExtVo">

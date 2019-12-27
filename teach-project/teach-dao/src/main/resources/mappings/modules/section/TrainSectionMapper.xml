@@ -175,7 +175,7 @@
         update TF_EL_TRAIN_SECTION set to_number(TRAIN_LITTER_SECTION_SORT) = TRAIN_LITTER_SECTION_SORT -1
         where TRAIN_COURSE_ID = #{trainCourseId}
         and TRAIN_SECTION_SORTID = #{trainSectionSortid}
-        and to_number(TRAIN_LITTER_SECTION_SORT) > #{trainLitterSectionSort}
+        and to_number(TRAIN_LITTER_SECTION_SORT) &gt; #{trainLitterSectionSort}
     </update>
 
     <select id="IsEmpty" resultType="java.lang.Integer">

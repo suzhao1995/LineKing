@@ -227,13 +227,13 @@
     <update id="updateSort" parameterType="com.rs.teach.mapper.backstage.entity.TotleSection">
         update TF_EL_TRAIN_TOTLE_SECTION set TOTLE_SECTION_SORT = to_number(TOTLE_SECTION_SORT) - 1
         where COURSE_ID = #{courseId}
-        and to_number(TOTLE_SECTION_SORT) > #{totleSectionSort}
+        and to_number(TOTLE_SECTION_SORT) &gt; #{totleSectionSort}
     </update>
     <update id="updateSectionSort" parameterType="com.rs.teach.mapper.section.entity.Section">
-update TF_EL_SECTION set to_number(SECTION_SORT) = SECTION_SORT -1
+        update TF_EL_SECTION set to_number(SECTION_SORT) = SECTION_SORT -1
         where COURSE_ID = #{courseId}
         and TOTLESECTION_SORTID = #{totleSectionSortid}
-        and to_number(SECTION_SORT) > #{sectionSort}
+        and <![CDATA[to_number(SECTION_SORT) > #{sectionSort}]]>
     </update>
     <select id="IsEmpty" resultType="java.lang.Integer">
 		select count(1) from TF_EL_TRAIN_TOTLE_SECTION
