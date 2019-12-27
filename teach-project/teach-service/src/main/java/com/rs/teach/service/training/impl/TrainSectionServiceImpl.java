@@ -15,9 +15,11 @@ import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
 import com.rs.teach.service.training.TrainSectionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.List;
  * @Description
  * @create 2019-08-03 11:21
  */
+@Slf4j
 @Service
 public class TrainSectionServiceImpl implements TrainSectionService {
 
@@ -161,6 +164,19 @@ public class TrainSectionServiceImpl implements TrainSectionService {
     @Override
     public SectionDto selectPidAndTid(String sectionId) {
         return trainSectionMapper.selectPidAndTid(sectionId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteTrainSection(String sectionId) {
+        try {
+            TrainSection trainSection = trainSectionMapper.selectTrainSection(sectionId);
+            trainSectionMapper.deleteTrainSection(sectionId);
+            trainSectionMapper.updateSort(trainSection);
+        } catch (Exception e) {
+            log.error("培训小章节删除-数据库错误",e);
+            throw e;
+        }
     }
 
 }

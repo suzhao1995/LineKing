@@ -123,4 +123,8 @@ public interface TrainSectionMapper {
     TrainLitterSectionVo selectTrainLitterSectionSortMax(SectionDto sectionDto);
 
     SectionDto selectPidAndTid(@Param("sectionId") String sectionId);
+
+    void deleteTrainSection(@Param("sectionId") String sectionId);
+
+    void updateSort(TrainSection trainSection);
 }

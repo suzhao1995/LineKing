@@ -145,6 +145,31 @@ public class SectionController {
     }
 
     /**
+     * 大章节删除
+     */
+    @RequestMapping(value = "/deleteTotleSection", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBean deleteTotleSection(@RequestParam("id") String id) {
+        ResponseBean bean = new ResponseBean();
+        try {
+            //查询大章节下有无小章节
+            Boolean result = sectionService.isEmptySection(id);
+            if (result) {
+                bean.addError(ResponseBean.CODE_SYS_ERROR, "请先删除所有小章节！");
+                return bean;
+            }
+            sectionService.deleteTotleSection(id);
+            logger.info("删除-大章节-成功");
+            bean.addSuccess();
+        } catch (Exception e) {
+            logger.error("删除-大章节-失败", e);
+            bean.addError("删除大章节失败");
+        }
+        return bean;
+    }
+
+
+    /**
      * 添加小章节
      *
      * @param sectionDto
@@ -422,6 +447,27 @@ public class SectionController {
         return bean;
     }
 
+    /**
+     * 小章节删除
+     */
+    @RequestMapping(value = "/deleteSection", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean deleteSection(@RequestBody SectionDto sectionDto) {
+        ResponseBean bean = new ResponseBean();
+        try {
+            if (StrUtil.equals("1", sectionDto.getIsTrain())) {
+                trainSectionService.deleteTrainSection(sectionDto.getSectionId());
+            } else if (StrUtil.equals("0", sectionDto.getIsTrain())) {
+                sectionService.deleteSection(sectionDto.getSectionId());
+            }
+            logger.info("删除-小章节-成功");
+            bean.addSuccess();
+        } catch (Exception e) {
+            logger.error("删除-小章节-失败", e);
+            bean.addError("删除小章节失败");
+        }
+        return bean;
+    }
 
     /**
      * 本节资源下载
@@ -458,7 +504,7 @@ public class SectionController {
             downloadSectionDto.setWorkId(trainSection.getPracticeId());
             downloadSectionDto.setTestPaperId(trainSection.getTestpaperId());
             downloadSectionDto.setSectionName(trainSection.getTrainLitterSectionName());
-        } else if (StrUtil.equals("0", isTrain)){
+        } else if (StrUtil.equals("0", isTrain)) {
             //是否含有文件
             boolean bo = courseService.isEmptyFileBySection(sectionId);
             if (!bo) {

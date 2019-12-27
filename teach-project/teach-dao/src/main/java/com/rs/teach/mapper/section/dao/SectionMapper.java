@@ -159,4 +159,18 @@ public interface SectionMapper{
 	TrainLitterSectionVo selectTrainLitterSectionSortMax(SectionDto sectionDto);
 
     SectionDto selectPidAndTid(@Param("sectionId") String sectionId);
+
+    Integer isEmptySection(@Param("id") String id);
+
+	void deleteTotleSection(@Param("id") String id);
+
+	TotleSection selectByPrimaryKey(@Param("id") String id);
+
+	void updateSort(TotleSection totleSection);
+
+	void deleteSection(@Param("sectionId") String sectionId);
+
+	Section selectSection(@Param("sectionId") String sectionId);
+
+	void updateSectionSort(Section section);
 }

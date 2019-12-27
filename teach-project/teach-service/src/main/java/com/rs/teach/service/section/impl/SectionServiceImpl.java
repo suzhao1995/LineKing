@@ -1,13 +1,11 @@
 package com.rs.teach.service.section.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.backstage.entity.TotleSection;
+import com.rs.teach.mapper.section.dao.SectionMapper;
 import com.rs.teach.mapper.section.dto.SectionDto;
 import com.rs.teach.mapper.section.dto.TotleSectionDto;
+import com.rs.teach.mapper.section.entity.Section;
 import com.rs.teach.mapper.section.vo.TrainLitterSectionVo;
 import com.rs.teach.mapper.section.vo.TrainSectionVo;
 import com.rs.teach.mapper.studyAttr.dao.CourseMapper;
@@ -15,14 +13,18 @@ import com.rs.teach.mapper.studyAttr.dao.TestAndWorkMapper;
 import com.rs.teach.mapper.studyAttr.entity.Practice;
 import com.rs.teach.mapper.studyAttr.entity.Testpaper;
 import com.rs.teach.mapper.studyAttr.vo.TrainCourseVo;
+import com.rs.teach.service.section.SectionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.rs.teach.mapper.section.dao.SectionMapper;
-import com.rs.teach.mapper.section.entity.Section;
-import com.rs.teach.service.section.SectionService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 public class SectionServiceImpl implements SectionService {
 
@@ -72,7 +74,7 @@ public class SectionServiceImpl implements SectionService {
     public void addSection(SectionDto sectionDto) {
         Integer result = mapper.IsBlank(sectionDto);
         Integer sort = 0;
-        if (result > 0){
+        if (result > 0) {
             TrainLitterSectionVo trainLitterSectionVo = mapper.selectTrainLitterSectionSortMax(sectionDto);
             if (StrUtil.isNotBlank(trainLitterSectionVo.getTrainLitterSectionSort())) {
                 sort = Integer.valueOf(trainLitterSectionVo.getTrainLitterSectionSort());
@@ -169,5 +171,40 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public SectionDto selectPidAndTid(String sectionId) {
         return mapper.selectPidAndTid(sectionId);
+    }
+
+    @Override
+    public Boolean isEmptySection(String id) {
+        Integer num = mapper.isEmptySection(id);
+        if (num > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public void deleteTotleSection(String id) {
+        try {
+            TotleSection totleSection = mapper.selectByPrimaryKey(id);
+            mapper.deleteTotleSection(id);
+            mapper.updateSort(totleSection);
+        } catch (Exception e) {
+            log.error("删除失败", e);
+            throw e;
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteSection(String sectionId) {
+        try {
+            Section section = mapper.selectSection(sectionId);
+            mapper.deleteSection(sectionId);
+            mapper.updateSectionSort(section);
+        } catch (Exception e) {
+            log.error("删除失败", e);
+            throw e;
+        }
     }
 }

@@ -119,4 +119,9 @@ public interface SectionService{
 
     SectionDto selectPidAndTid(String sectionId);
 
+    Boolean isEmptySection(String id);
+
+	void deleteTotleSection(String id);
+
+	void deleteSection(String sectionId);
 }

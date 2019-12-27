@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rs.teach.mapper.section.dao.SectionMapper">
-	<resultMap type="com.rs.teach.mapper.section.entity.Section" id="sectionMap">
-		<result property="upLoadId" column="UPLOAD_ID" />
-		<result property="sectionId" column="SECTION_ID" />
-		<result property="sectionSort" column="SECTION_SORT" />
-		<result property="sectionName" column="SECTION_NAME" />
-		<result property="totleSectionSort" column="totlesection_sort" />
-		<result property="totleSectionName" column="totlesection_Name" />
-		<result property="totleSortId" column="totlesection_sortId" />
-		<result property="sectionUrl" column="SECTION_URL" />
-		<result property="courseId" column="COURSE_ID" />
-		<result property="updateUser" column="UPDATE_USER" />
-		<result property="updateFileName" column="UPDATE_FILENAME" />
-		<result property="sectionType" column="section_type"/>
-		<result property="workId" column="SCHOOLWORKID" />
-		<result property="testPaperId" column="PAPERID"/>
-		<result property="coursewareId" column="COURSEWARE_ID"/>
-		<result property="uploadPath" column="UPLOAD_PATH"/>
-		<result property="extend1" column="EXTEND1" />
-		<result property="extend2" column="EXTEND2" />
-		<result property="extend3" column="EXTEND3" />
-		<result property="extend4" column="EXTEND4" />
-	</resultMap>
+    <resultMap type="com.rs.teach.mapper.section.entity.Section" id="sectionMap">
+        <result property="upLoadId" column="UPLOAD_ID"/>
+        <result property="sectionId" column="SECTION_ID"/>
+        <result property="sectionSort" column="SECTION_SORT"/>
+        <result property="sectionName" column="SECTION_NAME"/>
+        <result property="totleSectionSort" column="totlesection_sort"/>
+        <result property="totleSectionName" column="totlesection_Name"/>
+        <result property="totleSortId" column="totlesection_sortId"/>
+        <result property="sectionUrl" column="SECTION_URL"/>
+        <result property="courseId" column="COURSE_ID"/>
+        <result property="updateUser" column="UPDATE_USER"/>
+        <result property="updateFileName" column="UPDATE_FILENAME"/>
+        <result property="sectionType" column="section_type"/>
+        <result property="workId" column="SCHOOLWORKID"/>
+        <result property="testPaperId" column="PAPERID"/>
+        <result property="coursewareId" column="COURSEWARE_ID"/>
+        <result property="uploadPath" column="UPLOAD_PATH"/>
+        <result property="extend1" column="EXTEND1"/>
+        <result property="extend2" column="EXTEND2"/>
+        <result property="extend3" column="EXTEND3"/>
+        <result property="extend4" column="EXTEND4"/>
+    </resultMap>
 
-	<select id="querySectionByUser" parameterType="java.lang.String" resultMap="sectionMap">
+    <select id="querySectionByUser" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.SECTION_ID = #{sectionId} and t.UPDATE_USER = #{userId}
 	</select>
-	
-	<select id="querySection" parameterType="java.lang.String" resultMap="sectionMap">
+
+    <select id="querySection" parameterType="java.lang.String" resultMap="sectionMap">
 		select  t.section_id,t.section_sort,t.section_name,
        			ts.totle_section_sort as totlesection_sort, ts.totle_section_name as totlesection_Name,
        			t.totlesection_sortid, t.section_url,t.course_id,t.update_filename,t.section_type,
        			t.schoolworkid,t.paperid,t.courseware_id
-       		from tf_el_section t, tf_el_train_totle_section ts 
+       		from tf_el_section t, tf_el_train_totle_section ts
        where t.totlesection_sortid = ts.id and t.section_id = #{sectionId}
 	</select>
-	
-	<insert id="insertTeachUpSection" parameterType="com.rs.teach.mapper.section.entity.Section">
-		insert into TF_EL_UPLOAD_FILE 
+
+    <insert id="insertTeachUpSection" parameterType="com.rs.teach.mapper.section.entity.Section">
+		insert into TF_EL_UPLOAD_FILE
 			(
 				UPLOAD_ID,
 				SECTION_ID,
@@ -85,47 +85,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
     <update id="updateSection" parameterType="com.rs.teach.mapper.section.dto.SectionDto">
-		update TF_EL_SECTION
-		<set>
-			<if test="courseId != null and courseId != ''">
-				course_id = #{courseId},
-			</if>
-			<if test="litterSectionName != null and litterSectionName != ''">
-				section_name = #{litterSectionName},
-			</if>
-			<if test="litterSectionUrl != null and litterSectionUrl != ''">
-				section_url = #{litterSectionUrl},
-			</if>
-			<if test="litterSectionType != null and litterSectionType != ''">
-				section_type = #{litterSectionType},
-			</if>
-			<if test="litterSectionSort != null and litterSectionSort != ''">
-				section_sort = #{litterSectionSort},
-			</if>
-			<if test="updateFileName != null and updateFileName != ''">
-				update_filename = #{updateFileName},
-			</if>
-			<if test="sectionSortid != null and sectionSortid != ''">
-				TOTLESECTION_SORTID = #{sectionSortid},
-			</if>
-			<if test="testpaperId != null and testpaperId != ''">
-				paperid = #{testpaperId},
-			</if>
-			<if test="practiceId != null and practiceId != ''">
-				schoolworkid = #{practiceId},
-			</if>
-			<if test="coursewareId != null and coursewareId != ''">
-				COURSEWARE_ID = #{coursewareId},
-			</if>
-		</set>
-		where  SECTION_ID = #{sectionId}
-	</update>
+        update TF_EL_SECTION
+        <set>
+            <if test="courseId != null and courseId != ''">
+                course_id = #{courseId},
+            </if>
+            <if test="litterSectionName != null and litterSectionName != ''">
+                section_name = #{litterSectionName},
+            </if>
+            <if test="litterSectionUrl != null and litterSectionUrl != ''">
+                section_url = #{litterSectionUrl},
+            </if>
+            <if test="litterSectionType != null and litterSectionType != ''">
+                section_type = #{litterSectionType},
+            </if>
+            <if test="litterSectionSort != null and litterSectionSort != ''">
+                section_sort = #{litterSectionSort},
+            </if>
+            <if test="updateFileName != null and updateFileName != ''">
+                update_filename = #{updateFileName},
+            </if>
+            <if test="sectionSortid != null and sectionSortid != ''">
+                TOTLESECTION_SORTID = #{sectionSortid},
+            </if>
+            <if test="testpaperId != null and testpaperId != ''">
+                paperid = #{testpaperId},
+            </if>
+            <if test="practiceId != null and practiceId != ''">
+                schoolworkid = #{practiceId},
+            </if>
+            <if test="coursewareId != null and coursewareId != ''">
+                COURSEWARE_ID = #{coursewareId},
+            </if>
+        </set>
+        where SECTION_ID = #{sectionId}
+    </update>
 
-	<select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
+    <select id="queryUpLoadSection" parameterType="java.lang.String" resultMap="sectionMap">
 		select * from TF_EL_UPLOAD_FILE t where t.UPLOAD_ID = #{upLoadId}
 	</select>
-	
-	<select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
+
+    <select id="querySectionByCourseId" parameterType="java.lang.String" resultMap="sectionMap">
 		select  t.section_id,t.section_sort,t.section_name,
        			ts.totle_section_sort as totlesection_sort,
        			ts.totle_section_name as totlesection_Name,
@@ -137,22 +137,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        			t.schoolworkid,
        			t.paperid,
        			t.courseware_id
-       		from tf_el_section t, tf_el_train_totle_section ts 
+       		from tf_el_section t, tf_el_train_totle_section ts
        where t.totlesection_sortid = ts.id and t.course_id = #{courseId} order by to_number(ts.totle_section_sort), to_number(t.section_sort)
 	</select>
-	<resultMap type="java.util.HashMap" id="sMap">
-		<result property="sectionId" column="section_id"/>
-		<result property="totleSectionSort" column="totlesection_sort"/>
-		<result property="totleSectionName" column="totlesection_name"/>
-		<result property="sectionSort" column="section_sort"/>
-		<result property="sectionName" column="section_name"/>
-		<result property="courseId" column="course_id"/>
-		<result property="studyStatus" column="isfinish"/>
-		<result property="classId" column="class_id"/>
-		<result property="coursewareId" column="courseware_id"/>
-	</resultMap>
-	<!-- 查询章节学习状态-->
-	<select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
+    <resultMap type="java.util.HashMap" id="sMap">
+        <result property="sectionId" column="section_id"/>
+        <result property="totleSectionSort" column="totlesection_sort"/>
+        <result property="totleSectionName" column="totlesection_name"/>
+        <result property="sectionSort" column="section_sort"/>
+        <result property="sectionName" column="section_name"/>
+        <result property="courseId" column="course_id"/>
+        <result property="studyStatus" column="isfinish"/>
+        <result property="classId" column="class_id"/>
+        <result property="coursewareId" column="courseware_id"/>
+    </resultMap>
+    <!-- 查询章节学习状态-->
+    <select id="querySectionStatus" parameterType="java.lang.String" resultMap="sMap">
 		select se.section_id,ts.totle_section_sort as totlesection_sort,ts.totle_section_name as totlesection_name,se.section_sort,se.section_name,
        se.course_id,ucr.isfinish,ucr.class_id,se.courseware_id
      from tf_el_section se, user_course_rela ucr, tf_el_train_totle_section ts
@@ -167,12 +167,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where COURSE_ID=#{courseId}
 	</select>
 
-	<select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
+    <select id="selectSectionById" resultType="com.rs.teach.mapper.section.vo.TrainSectionVo">
 		select id, totle_section_sort as trainSectionSort, totle_section_name as trainSectionName from TF_EL_TRAIN_TOTLE_SECTION
 		where COURSE_ID = #{courseId}
 		order by to_number(TOTLE_SECTION_SORT)
 	</select>
-	<select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
+    <select id="selectLitterSection" resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
 		select SECTION_ID AS trainSectionId,
 				SECTION_SORT AS trainLitterSectionSort,
 				SECTION_NAME AS trainLitterSectionName,
@@ -199,20 +199,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where rownum = 1
 	</select>
 
-	<insert id="addAllTotleSection">
-		insert into TF_EL_TRAIN_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
-		select SEQ_EL_TOTLE_SECTION.nextval,A.* from(
-			<foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
-				SELECT
-				#{item.totleSectionSort,jdbcType=VARCHAR},
-				#{item.totleSectionName,jdbcType=VARCHAR},
-				#{item.courseId,jdbcType=VARCHAR}
-				FROM DUAL
-			</foreach>
-		) A
-	</insert>
+    <insert id="addAllTotleSection">
+        insert into TF_EL_TRAIN_TOTLE_SECTION(id, totle_section_sort, totle_section_name, course_id)
+        select SEQ_EL_TOTLE_SECTION.nextval,A.* from(
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
+            SELECT
+            #{item.totleSectionSort,jdbcType=VARCHAR},
+            #{item.totleSectionName,jdbcType=VARCHAR},
+            #{item.courseId,jdbcType=VARCHAR}
+            FROM DUAL
+        </foreach>
+        ) A
+    </insert>
 
-	<select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+    <select id="selectTotleSection" parameterType="com.rs.teach.mapper.section.dto.TotleSectionDto"
+            resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
 		select * from TF_EL_TRAIN_TOTLE_SECTION
 		where COURSE_ID = #{courseId}
 		order by to_number(TOTLE_SECTION_SORT)
@@ -223,17 +224,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         set TOTLE_SECTION_NAME = #{totleSectionNameforUpdate}
         where id = #{id}
 	</update>
-	<select id="IsEmpty" resultType="java.lang.Integer">
+    <update id="updateSort" parameterType="com.rs.teach.mapper.backstage.entity.TotleSection">
+        update TF_EL_TRAIN_TOTLE_SECTION set TOTLE_SECTION_SORT = to_number(TOTLE_SECTION_SORT) - 1
+        where COURSE_ID = #{courseId}
+        and to_number(TOTLE_SECTION_SORT) > #{totleSectionSort}
+    </update>
+    <update id="updateSectionSort" parameterType="com.rs.teach.mapper.section.entity.Section">
+update TF_EL_SECTION set to_number(SECTION_SORT) = SECTION_SORT -1
+        where COURSE_ID = #{courseId}
+        and TOTLESECTION_SORTID = #{totleSectionSortid}
+        and to_number(SECTION_SORT) > #{sectionSort}
+    </update>
+    <select id="IsEmpty" resultType="java.lang.Integer">
 		select count(1) from TF_EL_TRAIN_TOTLE_SECTION
         where COURSE_ID = #{courseId}
 	</select>
-	<select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
+    <select id="IsBlank" parameterType="com.rs.teach.mapper.section.dto.SectionDto" resultType="java.lang.Integer">
 		select count(1) from TF_EL_SECTION
         where  COURSE_ID = #{courseId}
         and TOTLESECTION_SORTID = #{sectionSortid}
 	</select>
-	<select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto"
-			resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
+    <select id="selectTrainLitterSectionSortMax" parameterType="com.rs.teach.mapper.section.dto.SectionDto"
+            resultType="com.rs.teach.mapper.section.vo.TrainLitterSectionVo">
 		select * from
          (
             select SECTION_ID AS trainSectionId,
@@ -258,4 +270,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and s.SCHOOLWORKID = p.PRACTICE_ID
 		and s.SECTION_ID = #{sectionId}
 	</select>
+    <select id="isEmptySection" resultType="java.lang.Integer">
+        select (
+                    (select count(1) from TF_EL_TRAIN_SECTION where TRAIN_SECTION_SORTID = '1040')
+                    +
+                    (select count(1) from TF_EL_SECTION where TOTLESECTION_SORTID = '1040')
+                ) as num
+        from DUAL;
+	</select>
+    <select id="selectByPrimaryKey" resultType="com.rs.teach.mapper.backstage.entity.TotleSection">
+        select * from TF_EL_TRAIN_TOTLE_SECTION
+        where id = #{id}
+    </select>
+    <select id="selectSection" resultType="com.rs.teach.mapper.section.entity.Section">
+        select * from TF_EL_SECTION
+        where SECTION_ID = #{sectionId}
+    </select>
+    <delete id="deleteTotleSection">
+        delete from TF_EL_TRAIN_TOTLE_SECTION
+        where id = #{id}
+    </delete>
+    <delete id="deleteSection">
+      delete from TF_EL_SECTION
+      where SECTION_ID = #{sectionId}
+    </delete>
 </mapper>

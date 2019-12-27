@@ -77,4 +77,6 @@ public interface TrainSectionService {
     void updateTotleSection(TotleSectionDto totleSectionDto);
 
     SectionDto selectPidAndTid(String sectionId);
+
+    void deleteTrainSection(String sectionId);
 }
