@@ -525,14 +525,15 @@ public class SectionController {
             downloadSectionDto.setSectionName(section.getSectionName());
         }
 
-        if (StringUtils.isEmpty(downloadSectionDto.getSectionUrl())) {
-            bean.addError("没有课件信息");
-            return bean;
+        if (StringUtils.isNotEmpty(downloadSectionDto.getSectionUrl())) {
+            /*bean.addError("没有课件信息");
+            return bean;*/
+
+            String savePath = filePath;
+            String filePath = savePath + downloadSectionDto.getSectionUrl().replace("/", "\\");
+            String fileRealPath = filePath + "\\" + downloadSectionDto.getCoursewareId() + "_" + downloadSectionDto.getUpdateFileName() + downloadSectionDto.getSectionType();
+            fileUrl.add(fileRealPath);
         }
-        String savePath = filePath;
-        String filePath = savePath + downloadSectionDto.getSectionUrl().replace("/", "\\");
-        String fileRealPath = filePath + "\\" + downloadSectionDto.getCoursewareId() + "_" + downloadSectionDto.getUpdateFileName() + downloadSectionDto.getSectionType();
-        fileUrl.add(fileRealPath);
         //查询练习信息
         if (StringUtils.isNotEmpty(downloadSectionDto.getWorkId())) {
             Practice work = testAndWorkService.getPracticeById(downloadSectionDto.getWorkId());
@@ -558,7 +559,7 @@ public class SectionController {
         if (!file.exists()) {
             file.mkdirs();
         }
-        String tempFilePath = temporaryPath + tempFileName;
+        String tempFilePath = temporaryPath +"/"+ tempFileName;
         File tempFile = new File(tempFilePath);
         //文件输出流
         FileOutputStream outStream;
