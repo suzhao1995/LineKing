@@ -15,7 +15,7 @@ import com.rs.teach.mapper.video.entity.VideoSection;
  * @create 2019-08-02 16:53
  */
 @Data
-public class TrainSectionVo implements Serializable{
+public class TrainSectionVo implements Serializable,Comparable<TrainSectionVo>{
 
     private static final long serialVersionUID = -442561324686250187L;
 
@@ -39,4 +39,11 @@ public class TrainSectionVo implements Serializable{
     
     //视频课程资源大章节下的小章节集合
     private List<VideoSection> VideoList;
+
+	@Override
+	public int compareTo(TrainSectionVo o) {
+		return Integer.valueOf(this.trainSectionSort) - Integer.valueOf(o.trainSectionSort);
+	}
+    
+    
 }

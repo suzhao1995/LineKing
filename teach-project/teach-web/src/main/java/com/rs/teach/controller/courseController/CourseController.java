@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -191,7 +192,7 @@ public class CourseController{
 			sectionVo.setSectionList(entry.getValue());
 			sectionList.add(sectionVo);
 		}
-		
+		Collections.sort(sectionList);
 		ajaxData.put("sectionList", sectionList);
 		//查询我的课程
 		List<Course> myCourse = courseService.getCourseByUserId(userId);
