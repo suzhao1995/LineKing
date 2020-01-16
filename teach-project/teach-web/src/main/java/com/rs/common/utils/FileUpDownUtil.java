@@ -313,8 +313,8 @@ public class FileUpDownUtil {
 
                     Map<String, Object> officeMap = Office2PdfUtil.Word2Pdf(officeUrl, pdfUrl);
                     if ("-1".equals(officeMap.get("resultCode"))) {
-                        resultMap.put("code", "-1");
-                        resultMap.put("message", "文件上传异常");
+                        resultMap.put("code", "1050");
+                        resultMap.put("message", "非office解码文件");
                         //删除原始文件
                         File officeFile = new File(catchFilePath);
                         if (officeFile.exists()) {

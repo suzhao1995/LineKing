@@ -42,7 +42,7 @@ public class Office2PdfUtil{
             // 调用openoffice服务线程
             String command = "C:\\Program Files (x86)\\OpenOffice 4\\program\\soffice.exe -headless -accept=\"socket,host=127.0.0.1,port=8100;urp;\"";
             p = Runtime.getRuntime().exec(command);
- 
+
             // 连接openoffice服务
             connection = new SocketOpenOfficeConnection(
                     "127.0.0.1", 8100);
