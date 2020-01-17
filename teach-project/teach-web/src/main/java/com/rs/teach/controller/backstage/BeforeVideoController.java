@@ -241,7 +241,7 @@ public class BeforeVideoController {
             }
         }else{
             logger.error("错误信息"+resultMap.get("message"));
-            bean.addError((String) resultMap.get("message"));
+            bean.addError("1050",(String) resultMap.get("message"));
         }
 
         return bean;
