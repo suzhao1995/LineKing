@@ -239,6 +239,9 @@ public class BeforeVideoController {
                 DeleteFileUtil.deleteFile(video.getVideoPath());
                 bean.addError(ResponseBean.CODE_MESSAGE_ERROR, "上传失败");
             }
+        }else{
+            logger.error("错误信息"+resultMap.get("message"));
+            bean.addError((String) resultMap.get("message"));
         }
 
         return bean;
