@@ -160,9 +160,10 @@ public class FileUpDownUtil {
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
-
+                
+                String[] fileNames = file.getOriginalFilename().split("[.]");
                 String updateFileName = file.getOriginalFilename().split("[.]")[0];
-                String sectionType = "." + file.getOriginalFilename().split("[.]")[1];
+                String sectionType = "." + file.getOriginalFilename().split("[.]")[fileNames.length - 1];
                 if (!uploadMaterielType.contains(sectionType)) {
                     resultMap.put("code", "-1");
                     resultMap.put("message", "上传文件格式错误！");
@@ -224,9 +225,11 @@ public class FileUpDownUtil {
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
-
+                
+                String[] fileNames = file.getOriginalFilename().split("[.]");
+                
                 String updateFileName = file.getOriginalFilename().split("[.]")[0];
-                String sectionType = "." + file.getOriginalFilename().split("[.]")[1];
+                String sectionType = "." + file.getOriginalFilename().split("[.]")[fileNames.length - 1];
                 if (!upLoadPicType.contains(sectionType)) {
                     resultMap.put("code", "-1");
                     resultMap.put("message", "上传文件格式错误！");
@@ -289,9 +292,10 @@ public class FileUpDownUtil {
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成章节id
-
+                
+                String[] fileNames = file.getOriginalFilename().split("[.]");
                 String updateFileName = file.getOriginalFilename().split("[.]")[0];
-                String sectionType = "." + file.getOriginalFilename().split("[.]")[1];
+                String sectionType = "." + file.getOriginalFilename().split("[.]")[fileNames.length - 1];
                 if (!upLoadType.contains(sectionType)) {
                     resultMap.put("code", "-1");
                     resultMap.put("message", "上传文件格式错误！");
@@ -373,9 +377,10 @@ public class FileUpDownUtil {
         if (!file.isEmpty()) {
             try {
                 String trainDataId = UUID.randomUUID().toString().replace("-", "");//生成文件id
-
+                String[] fileNames = file.getOriginalFilename().split("[.]");
+                
                 String trainDataFileName = file.getOriginalFilename().split("[.]")[0];
-                String trainDataType = "." + file.getOriginalFilename().split("[.]")[1];
+                String trainDataType = "." + file.getOriginalFilename().split("[.]")[fileNames.length - 1];
                 if (!uploadTrainDataType.contains(trainDataType)) {
                     resultMap.put("code", "-1");
                     resultMap.put("message", "上传文件格式错误！");
@@ -444,9 +449,10 @@ public class FileUpDownUtil {
         if (!file.isEmpty()) {
             try {
                 String upLoadId = UUID.randomUUID().toString().replace("-", "");//生成文件id
-
+                String[] fileNames = file.getOriginalFilename().split("[.]");
+                
                 String updateFileName = file.getOriginalFilename().split("[.]")[0];
-                String sectionType = "." + file.getOriginalFilename().split("[.]")[1];
+                String sectionType = "." + file.getOriginalFilename().split("[.]")[fileNames.length - 1];
                 if (!uploadVideoType.contains(sectionType)) {
                     resultMap.put("code", "-1");
                     resultMap.put("message", "上传文件格式错误！");
