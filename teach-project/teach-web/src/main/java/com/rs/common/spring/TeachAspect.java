@@ -33,7 +33,7 @@ public class TeachAspect {
 	private UserMapper userMapper;
 
     /**
-     * 判断用户是否登录
+     * 判断用户是否登
      * @param joinPoint
      * @return
      */
@@ -81,7 +81,7 @@ public class TeachAspect {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Signature signature = joinPoint.getSignature();
         String methodName = signature.getName();
-	    /*if(!methodName.toUpperCase().startsWith("VERIFY")){
+	    if(!methodName.toUpperCase().startsWith("VERIFY")){
             String userId = UserInfoUtil.getUserInfo(request.getParameter("sessionKey")).get("userId").toString();
             User user = userMapper.getTeachUser(userId);
             if (!StrUtil.equals("1", user.getAdminFlag()) && !StrUtil.equals("2", user.getAdminFlag())) {
@@ -89,7 +89,7 @@ public class TeachAspect {
                 bean.addError("-1", "用户沒有权限");
                 return bean;
             }
-        }*/
+        }
         try {
             returnObject = joinPoint.proceed();
         } catch (Throwable throwable) {

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.grade.dao.GradePreschoolOptionMapper">
+  <!--################################ Mybatis逆向工程生成,请勿编辑! ################################-->
+  <resultMap id="BaseResultMap" type="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    <!--@mbg.generated-->
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="PRESCHOOL_ID" jdbcType="DECIMAL" property="preschoolId" />
+    <result column="ANSWER_OPTION" jdbcType="VARCHAR" property="answerOption" />
+    <result column="ANSWER_PICTURE_URL" jdbcType="VARCHAR" property="answerPictureUrl" />
+    <result column="ANSWER_WORD" jdbcType="VARCHAR" property="answerWord" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, PRESCHOOL_ID, ANSWER_OPTION, ANSWER_PICTURE_URL, ANSWER_WORD
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from GRADE_PRESCHOOL_OPTION
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    <!--@mbg.generated-->
+    delete from GRADE_PRESCHOOL_OPTION
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    <!--@mbg.generated-->
+    insert into GRADE_PRESCHOOL_OPTION (ID, PRESCHOOL_ID, ANSWER_OPTION, 
+      ANSWER_PICTURE_URL, ANSWER_WORD)
+    values (#{id,jdbcType=DECIMAL}, #{preschoolId,jdbcType=DECIMAL}, #{answerOption,jdbcType=VARCHAR}, 
+      #{answerPictureUrl,jdbcType=VARCHAR}, #{answerWord,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    <!--@mbg.generated-->
+    insert into GRADE_PRESCHOOL_OPTION
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="preschoolId != null">
+        PRESCHOOL_ID,
+      </if>
+      <if test="answerOption != null">
+        ANSWER_OPTION,
+      </if>
+      <if test="answerPictureUrl != null">
+        ANSWER_PICTURE_URL,
+      </if>
+      <if test="answerWord != null">
+        ANSWER_WORD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="preschoolId != null">
+        #{preschoolId,jdbcType=DECIMAL},
+      </if>
+      <if test="answerOption != null">
+        #{answerOption,jdbcType=VARCHAR},
+      </if>
+      <if test="answerPictureUrl != null">
+        #{answerPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="answerWord != null">
+        #{answerWord,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    <!--@mbg.generated-->
+    update GRADE_PRESCHOOL_OPTION
+    <set>
+      <if test="preschoolId != null">
+        PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL},
+      </if>
+      <if test="answerOption != null">
+        ANSWER_OPTION = #{answerOption,jdbcType=VARCHAR},
+      </if>
+      <if test="answerPictureUrl != null">
+        ANSWER_PICTURE_URL = #{answerPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="answerWord != null">
+        ANSWER_WORD = #{answerWord,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    <!--@mbg.generated-->
+    update GRADE_PRESCHOOL_OPTION
+    set PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL},
+      ANSWER_OPTION = #{answerOption,jdbcType=VARCHAR},
+      ANSWER_PICTURE_URL = #{answerPictureUrl,jdbcType=VARCHAR},
+      ANSWER_WORD = #{answerWord,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <!--################################ Mybatis逆向工程生成,请勿编辑! ################################-->
+</mapper>

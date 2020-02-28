@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rs.teach.mapper.grade.dao.GradePreschoolMapper">
+  <!--################################ Mybatis逆向工程生成,请勿编辑! ################################-->
+  <resultMap id="BaseResultMap" type="com.rs.teach.mapper.grade.entity.GradePreschool">
+    <!--@mbg.generated-->
+    <id column="PRESCHOOL_ID" jdbcType="DECIMAL" property="preschoolId" />
+    <result column="QUESTION" jdbcType="VARCHAR" property="question" />
+    <result column="SORT" jdbcType="DECIMAL" property="sort" />
+    <result column="QUESTION_AUDIO" jdbcType="VARCHAR" property="questionAudio" />
+    <result column="RIGHT_ANSWER" jdbcType="VARCHAR" property="rightAnswer" />
+    <result column="QUESTION_TYPE" jdbcType="VARCHAR" property="questionType" />
+    <result column="QUESTION_PICTURE" jdbcType="VARCHAR" property="questionPicture" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    PRESCHOOL_ID, QUESTION, SORT, QUESTION_AUDIO, RIGHT_ANSWER, QUESTION_TYPE, QUESTION_PICTURE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from GRADE_PRESCHOOL
+    where PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    <!--@mbg.generated-->
+    delete from GRADE_PRESCHOOL
+    where PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.rs.teach.mapper.grade.entity.GradePreschool">
+    <!--@mbg.generated-->
+    insert into GRADE_PRESCHOOL (PRESCHOOL_ID, QUESTION, SORT,
+      QUESTION_AUDIO, RIGHT_ANSWER, QUESTION_TYPE,
+      QUESTION_PICTURE)
+    values (#{preschoolId,jdbcType=DECIMAL}, #{question,jdbcType=VARCHAR}, #{sort,jdbcType=DECIMAL},
+      #{questionAudio,jdbcType=VARCHAR}, #{rightAnswer,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR},
+      #{questionPicture,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rs.teach.mapper.grade.entity.GradePreschool">
+    <!--@mbg.generated-->
+    insert into GRADE_PRESCHOOL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="preschoolId != null">
+        PRESCHOOL_ID,
+      </if>
+      <if test="question != null">
+        QUESTION,
+      </if>
+      <if test="sort != null">
+        SORT,
+      </if>
+      <if test="questionAudio != null">
+        QUESTION_AUDIO,
+      </if>
+      <if test="rightAnswer != null">
+        RIGHT_ANSWER,
+      </if>
+      <if test="questionType != null">
+        QUESTION_TYPE,
+      </if>
+      <if test="questionPicture != null">
+        QUESTION_PICTURE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="preschoolId != null">
+        #{preschoolId,jdbcType=DECIMAL},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="questionAudio != null">
+        #{questionAudio,jdbcType=VARCHAR},
+      </if>
+      <if test="rightAnswer != null">
+        #{rightAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionPicture != null">
+        #{questionPicture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.rs.teach.mapper.grade.entity.GradePreschool">
+    <!--@mbg.generated-->
+    update GRADE_PRESCHOOL
+    <set>
+      <if test="question != null">
+        QUESTION = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        SORT = #{sort,jdbcType=DECIMAL},
+      </if>
+      <if test="questionAudio != null">
+        QUESTION_AUDIO = #{questionAudio,jdbcType=VARCHAR},
+      </if>
+      <if test="rightAnswer != null">
+        RIGHT_ANSWER = #{rightAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        QUESTION_TYPE = #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionPicture != null">
+        QUESTION_PICTURE = #{questionPicture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rs.teach.mapper.grade.entity.GradePreschool">
+    <!--@mbg.generated-->
+    update GRADE_PRESCHOOL
+    set QUESTION = #{question,jdbcType=VARCHAR},
+      SORT = #{sort,jdbcType=DECIMAL},
+      QUESTION_AUDIO = #{questionAudio,jdbcType=VARCHAR},
+      RIGHT_ANSWER = #{rightAnswer,jdbcType=VARCHAR},
+      QUESTION_TYPE = #{questionType,jdbcType=VARCHAR},
+      QUESTION_PICTURE = #{questionPicture,jdbcType=VARCHAR}
+    where PRESCHOOL_ID = #{preschoolId,jdbcType=DECIMAL}
+  </update>
+  <!--################################ Mybatis逆向工程生成,请勿编辑! ################################-->
+
+  <insert id="addBaby" parameterType="com.rs.teach.mapper.grade.dto.GradeDto">
+    <selectKey keyProperty="babyId" order="BEFORE" resultType="integer">
+      select
+      SEQ_GRADE_BABY.nextval from dual
+    </selectKey>
+    insert into GRADE_BABY(BABY_ID, BABY_NAME, BABY_AGE, ENGLISH_GRADE)
+    values(#{babyId},#{babyName},#{babyAge},#{englishGrade})
+  </insert>
+  <insert id="addSheet" parameterType="com.rs.teach.mapper.grade.dto.GradeDto">
+    insert into GRADE_SHEET(id, baby_id, answer, sort)
+    values(SEQ_GRADE_SHEET.nextval,#{babyId},#{babyAnswer},#{sort})
+  </insert>
+
+  <select id="selectQuestion" parameterType="com.rs.teach.mapper.grade.dto.GradeDto"
+          resultType="com.rs.teach.mapper.grade.vo.GradeVo">
+    select p.PRESCHOOL_ID, p.QUESTION, p.SORT, p.QUESTION_AUDIO,
+    p.RIGHT_ANSWER, p.QUESTION_PICTURE
+    from GRADE_PRESCHOOL p
+    where p.SORT = #{sort}
+    and p.QUESTION_TYPE = #{englishGrade}
+  </select>
+  <select id="selectAnswers" resultType="com.rs.teach.mapper.grade.entity.GradePreschoolOption">
+    select * from GRADE_PRESCHOOL_OPTION
+    where PRESCHOOL_ID = #{preschoolId}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    select count(1) from GRADE_SHEET
+    where BABY_ID = #{babyId}
+    and ANSWER = 'true'
+  </select>
+</mapper>
