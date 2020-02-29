@@ -39,7 +39,7 @@ public class GradeDto implements Serializable {
     private Integer sort;
 
     /**
-     * 题目宝宝id
+     * 宝宝id
      */
     private Integer babyId;
 }

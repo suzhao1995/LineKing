@@ -48,6 +48,11 @@ public class GradePreschool implements Serializable {
     private String questionPicture;
 
     /**
+     * 样式类型
+     */
+    private String type;
+
+    /**
      * GRADE_PRESCHOOL
      */
     private static final long serialVersionUID = 1L;

@@ -142,7 +142,7 @@
   <select id="selectQuestion" parameterType="com.rs.teach.mapper.grade.dto.GradeDto"
           resultType="com.rs.teach.mapper.grade.vo.GradeVo">
     select p.PRESCHOOL_ID, p.QUESTION, p.SORT, p.QUESTION_AUDIO,
-    p.RIGHT_ANSWER, p.QUESTION_PICTURE
+    p.RIGHT_ANSWER, p.QUESTION_PICTURE,p.TYPE
     from GRADE_PRESCHOOL p
     where p.SORT = #{sort}
     and p.QUESTION_TYPE = #{englishGrade}

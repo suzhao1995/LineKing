@@ -59,4 +59,9 @@ public class GradeVo implements Serializable {
      * 题目宝宝id
      */
     private Integer babyId;
+
+    /**
+     * 样式类型
+     */
+    private String type;
 }
