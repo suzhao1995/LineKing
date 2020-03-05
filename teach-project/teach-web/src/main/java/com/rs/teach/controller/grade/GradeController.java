@@ -52,4 +52,13 @@ public class GradeController {
         bean.addSuccess(gradeVo);
         return bean;
     }
+
+    @RequestMapping("/textToVoice")
+    @ResponseBody
+    public ResponseBean verifyTextToVoice(){
+        ResponseBean bean = new ResponseBean();
+        gradeService.textToVoice();
+        return bean;
+    }
+
 }

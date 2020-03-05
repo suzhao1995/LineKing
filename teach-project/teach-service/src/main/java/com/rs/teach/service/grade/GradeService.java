@@ -12,4 +12,7 @@ public interface GradeService {
     GradeVo selectQuestion(GradeDto gradeDto);
 
     GradeVo selectQuestionOne(GradeDto gradeDto);
+
+    void textToVoice();
+
 }

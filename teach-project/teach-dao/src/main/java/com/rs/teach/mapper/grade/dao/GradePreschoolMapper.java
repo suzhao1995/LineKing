@@ -67,4 +67,10 @@ public interface GradePreschoolMapper {
     void addSheet(GradeDto gradeDto);
 
     Integer selectCount(@Param("babyId") Integer babyId);
+
+    List<GradePreschool> selectAll();
+
+    void addQuestionAudio(@Param("list") List<GradePreschool> list);
+
+    void addAudio(GradePreschool gradePreschool);
 }

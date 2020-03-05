@@ -1,14 +1,18 @@
 package com.rs.teach.service.grade.impl;
 
+import cn.hutool.core.codec.Base64Decoder;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rs.teach.mapper.grade.dao.GradePreschoolMapper;
 import com.rs.teach.mapper.grade.dto.GradeDto;
+import com.rs.teach.mapper.grade.entity.GradePreschool;
 import com.rs.teach.mapper.grade.vo.GradeVo;
 import com.rs.teach.service.grade.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author wanghang
@@ -39,7 +43,7 @@ public class GradeServiceImpl implements GradeService {
             } else if (count == 10) {
                 gradeVo.setAcc("99%");
             } else {
-                gradeVo.setAcc(StrUtil.format("{}%", count / 10));
+                gradeVo.setAcc(StrUtil.format("{}%", count * 10));
             }
         }
 
@@ -57,5 +61,15 @@ public class GradeServiceImpl implements GradeService {
         gradeVo.setList(gradePreschoolMapper.selectAnswers(gradeVo.getPreschoolId()));
         gradeVo.setBabyId(gradeDto.getBabyId());
         return gradeVo;
+    }
+
+    @Override
+    public void textToVoice() {
+        List<GradePreschool> list = gradePreschoolMapper.selectAll();
+        List<GradePreschool> gradePreschools = TextToVoice.questionAudio(list);
+        //gradePreschoolMapper.addQuestionAudio(gradePreschools);
+        for (GradePreschool gradePreschool : gradePreschools) {
+            gradePreschoolMapper.addAudio(gradePreschool);
+        }
     }
 }
