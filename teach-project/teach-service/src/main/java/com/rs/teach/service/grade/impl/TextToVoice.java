@@ -25,9 +25,9 @@ import com.tencentcloudapi.tts.v20190823.models.TextToVoiceResponse;
  */
 public class TextToVoice {
 
-    private static final String IMGPATH = "D:\\RSUpLoad\\ceping\\yinpin";    //图片路径
+    private static final String IMGPATH = "D:\\RSUpLoad\\ceping\\yinpin\\";    //图片路径
 
-    private static final String SERVERPATH = "http://teachatlke.com/teach-web/upLoad/ceping/yinpin";    //服务器地址
+    private static final String SERVERPATH = "http://teachatlke.com/teach-web/upLoad/ceping/yinpin/";    //服务器地址
 
     private static final String FILETYPE = ".mp3";    //文件格式
 
@@ -71,9 +71,9 @@ public class TextToVoice {
      * @return
      */
     public static String base64Decode(String audio, Integer preschoolId) {
-        File file = new File(StrUtil.format("{}{}{}", IMGPATH, StrUtil.format("{}TI", preschoolId), FILETYPE));
+        File file = new File(StrUtil.format("{}{}{}", IMGPATH, StrUtil.format("yinpin{}TI", preschoolId), FILETYPE));
         Base64.decodeToFile(audio, file);
-        return StrUtil.format("{}{}{}", SERVERPATH, StrUtil.format("{}TI", preschoolId), FILETYPE);
+        return StrUtil.format("{}{}{}", SERVERPATH, StrUtil.format("yinpin{}TI", preschoolId), FILETYPE);
     }
 
     /**

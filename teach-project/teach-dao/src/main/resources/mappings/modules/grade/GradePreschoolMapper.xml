@@ -161,7 +161,11 @@
         <include refid="Base_Column_List"></include>
         from GRADE_PRESCHOOL
         where <![CDATA[
-            PRESCHOOL_ID = 20
+            PRESCHOOL_ID <= 19
+        ]]>
+        and
+        <![CDATA[
+            PRESCHOOL_ID >= 16
         ]]>
     </select>
    <!--<foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
